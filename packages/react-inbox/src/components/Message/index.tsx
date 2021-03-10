@@ -1,24 +1,25 @@
 import React from "react";
-import { Root, Container, Title, Body, Icon, ReadIndicator } from "./styled";
+import { Container, Title, Body, Icon } from "./styled";
 
 interface MessageProps {
   title: string;
   body: string;
   icon?: string;
-  onClick: (event: React.MouseEvent) => void;
-  read?: boolean;
+  data?: {
+    clickAction: string;
+  };
 }
 
-function Message({ title, body, icon, onClick, read }: MessageProps) {
+function Message({ title, body, icon, data }: MessageProps) {
   return (
-    <Root data-test-id="inbox-message" read={read} onClick={onClick}>
-      {read && <ReadIndicator />}
+    <Container data-test-id="inbox-message">
       <Icon src={icon} />
-      <Container>
+      <div>
         <Title>{title}</Title>
         <Body>{body}</Body>
-      </Container>
-    </Root>
+      </div>
+      {data?.clickAction && <button>View Details</button>}
+    </Container>
   );
 }
 
