@@ -1,5 +1,5 @@
 import React from "react";
-import { IMessage } from "../../transports/types";
-export interface IToastMessage extends IMessage {
+import { ICourierMessage } from "@trycourier/react-provider";
+export interface ICourierToastMessage extends ICourierMessage {
   onClick?: (event: React.MouseEvent) => void;
 }

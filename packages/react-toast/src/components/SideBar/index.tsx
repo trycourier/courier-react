@@ -1,11 +1,14 @@
 import React from "react";
 import { Container, Button } from "./styled";
-import { useToastConfig } from "../../hooks";
+import { useToast } from "../../hooks";
 
 function SideBar({ open, dismiss, href }) {
-  const {
-    config: { theme },
-  } = useToastConfig();
+  const [
+    ,
+    {
+      config: { theme },
+    },
+  ] = useToast();
 
   return (
     <Container theme={theme?.sidebar} data-test-id="toast-sidebar">

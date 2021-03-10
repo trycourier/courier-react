@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
-import { IToastMessage } from "../Toast/types";
+import { ICourierToastMessage } from "../Toast/types";
 import SideBar from "../SideBar";
 import { Body, Title, Content } from "./styled";
 import { getIcon, sendClickedRequest } from "./helpers";
-import { useToastConfig } from "../../hooks";
+import { useToast } from "../../hooks";
 
-const ToastBody: React.FunctionComponent<Partial<IToastMessage>> = ({
+const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
   body: content,
   icon,
@@ -18,10 +18,14 @@ const ToastBody: React.FunctionComponent<Partial<IToastMessage>> = ({
   const dismiss = useCallback(() => toast.dismiss(toastProps.toastId), [
     toastProps.toastId,
   ]);
-  const {
-    clientKey,
-    config: { theme, defaultIcon },
-  } = useToastConfig();
+  const [
+    ,
+    {
+      clientKey,
+      config: { theme, defaultIcon },
+    },
+  ] = useToast();
+
   const hasAction = data?.clickAction || onClick;
 
   const open = useCallback(

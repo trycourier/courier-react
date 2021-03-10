@@ -1,6 +1,6 @@
-import { IProviderConfig } from "../providers/types";
+import { IToastConfig } from "./types";
 
-export const defaultConfig: IProviderConfig = {
+export const defaultConfig: IToastConfig = {
   hideProgressBar: false,
   position: "top-right",
   theme: {

@@ -3,9 +3,9 @@
   "version": "0.1.10",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "typings/index.d.ts",
   "scripts": {
-    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\" --copy-files",
+    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",

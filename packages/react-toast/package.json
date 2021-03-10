@@ -3,7 +3,7 @@
   "version": "0.1.10",
   "description": "Beautiful, easy React toast notifications",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "typings/index.d.ts",
   "author": "Courier <support@courier.com>",
   "homepage": "https://github.com/trycourier/courier-react-toast",
   "repository": {
@@ -11,7 +11,7 @@
     "url": "https://github.com/trycourier/courier-react-toast"
   },
   "scripts": {
-    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\" --copy-files",
+    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",
@@ -22,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
+    "@trycourier/react-provider": "0.1.10",
     "react-toastify": "^6.2.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.2.1"

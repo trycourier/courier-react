@@ -6,15 +6,13 @@ module.exports = {
   // Jest transformations -- this adds support for TypeScript
   // using ts-jest
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "\\.(ts|tsx|js|jsx)$": "ts-jest",
   },
 
   // Runs special logic, such as cleaning up components
   // when using React Testing Library and adds special
   // extended assertions to Jest
-  setupFilesAfterEnv: [
-    "@testing-library/jest-dom/extend-expect",
-  ],
+  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
 
   // Test spec file resolution pattern
   // Matches parent folder `__tests__` and filename
@@ -24,7 +22,8 @@ module.exports = {
   // Module file extensions for importing
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+      "<rootDir>/src/__mocks__/fileMock.js",
     "\\.(scss|sass|css)$": "identity-obj-proxy",
   },
 };
