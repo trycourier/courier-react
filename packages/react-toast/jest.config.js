@@ -1,7 +1,14 @@
 module.exports = {
   // The root of your source code, typically /src
   // `<rootDir>` is a token Jest substitutes
-  roots: ["<rootDir>/src"],
+  roots: ["<rootDir>"],
+  verbose: true,
+
+  globals: {
+    "ts-jest": {
+      babelConfig: require("./babel.config.js"),
+    },
+  },
 
   // Jest transformations -- this adds support for TypeScript
   // using ts-jest
@@ -25,10 +32,11 @@ module.exports = {
   // Module file extensions for importing
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
+    "~(.*)$": "<rootDir>/src/$1",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-      "<rootDir>/src/__mocks__/fileMock.js",
+      "<rootDir>/__mocks__/fileMock.js",
     "\\.(scss|sass|css)$": "identity-obj-proxy",
   },
-  setupFiles: ["<rootDir>/src/__tests__/setup.ts"],
+  setupFiles: ["<rootDir>/__tests__/setup.ts"],
   collectCoverage: true,
 };

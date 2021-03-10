@@ -9,7 +9,7 @@ export { useToast } from "./hooks";
 
 export const ToastProvider: React.FunctionComponent<
   ICourierContext & {
-    config: IToastConfig;
+    config?: IToastConfig;
   }
 > = ({ children, transport, clientKey, config }) => {
   return (

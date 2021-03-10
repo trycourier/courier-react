@@ -3,15 +3,8 @@ import { ThemeProvider } from "styled-components";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import { useCloseOnClickOut } from "../../hooks";
-import {
-  Body,
-  Container,
-  Footer,
-  Title,
-  Header,
-  Close,
-  SubTitle,
-} from "./styled";
+import { Body, Container, Footer, Title, Header, SubTitle } from "./styled";
+
 import CloseSvg from "./close.svg";
 import CourierSvg from "./courier.svg";
 

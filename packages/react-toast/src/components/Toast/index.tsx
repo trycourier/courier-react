@@ -17,9 +17,15 @@ import Body from "~/components/Body";
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
 export const Toast: React.FunctionComponent<{
-  config: IToastConfig;
+  config?: IToastConfig;
 }> = ({ config }) => {
-  const { clientKey, setContext, transport } = useCourier();
+  const courierContext = useCourier();
+
+  if (!courierContext) {
+    throw new Error("Missing Courier Provider");
+  }
+
+  const { clientKey, transport, setContext } = courierContext;
 
   const toastConfig = useMemo(() => {
     return {

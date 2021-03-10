@@ -1,8 +1,8 @@
 import { Transport } from "./transports";
 
 export interface ICourierContext {
-  clientKey: string;
+  clientKey?: string;
   userSignature?: string;
-  transport: Transport;
+  transport?: Transport;
   setContext?: (mergeContext: any) => void;
 }

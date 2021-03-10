@@ -8,10 +8,10 @@ import { COURIER_CLIENT_HEADER } from "../constants";
 export const useToast: UseToast = () => {
   const {toast, toastConfig, clientKey} = useCourier<{
     toast: ToastCaller,
-    toastConfig: IToastConfig
+    toastConfig?: IToastConfig
   }>();
 
-  return [toast, { config: toastConfig, clientKey }];
+  return [toast, { config: toastConfig ?? {}, clientKey }];
 };
 
 export const useListenForTransportEvent = (clientKey: string, transport: ICourierContext["transport"], handleToast) => {
