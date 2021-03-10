@@ -1,6 +1,7 @@
 module.exports = {
   sourceType: "unambiguous",
   plugins: [
+    "inline-react-svg",
     "@babel/transform-runtime",
     "babel-plugin-styled-components",
     "transform-class-properties",

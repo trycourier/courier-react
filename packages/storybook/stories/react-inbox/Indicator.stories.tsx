@@ -1,5 +1,5 @@
 import React from "react";
-import { Indicator } from "../src";
+import { Indicator } from "@trycourier/react-inbox";
 
 export default {
   title: "Inbox/Indicator",

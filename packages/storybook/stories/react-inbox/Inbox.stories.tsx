@@ -1,5 +1,5 @@
 import React from "react";
-import { Inbox } from "../src";
+import { Inbox } from "@trycourier/react-inbox";
 
 export default {
   title: "Inbox/Inbox",

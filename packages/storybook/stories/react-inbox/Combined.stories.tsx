@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Inbox, Indicator } from "../src";
+import { Inbox, Indicator } from "@trycourier/react-inbox";
 
 export default {
   title: "Inbox/Combined",

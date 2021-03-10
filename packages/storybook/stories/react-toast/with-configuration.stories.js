@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CourierToast, ToastProvider, useToast } from "../src";
+import { CourierToast, ToastProvider, useToast } from "@trycourier/react-toast";
 import { Button } from "./styled";
 import WarningIcon from "./warning.svg";
 

@@ -12,8 +12,8 @@ import {
   Close,
   SubTitle,
 } from "./styled";
-import close from "./close.svg";
-import courier from "./courier.svg";
+import CloseSvg from "./close.svg";
+import CourierSvg from "./courier.svg";
 
 function Inbox({
   closeOnClickOut,
@@ -36,7 +36,9 @@ function Inbox({
     <Container data-test-id="inbox-container" ref={rootRef} show={show}>
       <Header>
         <Title>{title}</Title>
-        <Close onClick={onClose} src={close} />
+        <button onClick={onClose}>
+          <CloseSvg />
+        </button>
       </Header>
       <SubTitle>INBOX</SubTitle>
       <Body>
@@ -49,7 +51,7 @@ function Inbox({
         ))}
       </Body>
       <Footer>
-        <img src={courier} />
+        <CourierSvg />
       </Footer>
     </Container>
   );

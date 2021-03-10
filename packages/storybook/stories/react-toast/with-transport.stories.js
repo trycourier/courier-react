@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { CourierToast, ToastProvider, CourierTransport } from "../src";
+import {
+  CourierToast,
+  ToastProvider,
+  CourierTransport,
+} from "@trycourier/react-toast";
 import { Button, Input, Label } from "./styled";
 
 export default {

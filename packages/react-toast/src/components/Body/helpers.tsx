@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { COURIER_CLIENT_HEADER } from "../../constants";
 import { Icon } from "./styled";
-import courierIcon from "./courier-icon.svg";
+import CourierIcon from "./courier-icon.svg";
 
 export function sendClickedRequest(clientKey, clickedUrl) {
   if (clientKey && clickedUrl) {
@@ -25,11 +25,7 @@ export function getIcon(icon) {
     return (props) => <Icon src={icon} {...props} />;
   }
 
-  if (!icon) {
-    return (props) => <Icon src={courierIcon} {...props} />;
-  }
-
-  return styled(icon)((props) => ({
+  return styled(icon ?? CourierIcon)((props) => ({
     flexShrink: 0,
     marginRight: "12.17px",
     objectFit: "contain",
