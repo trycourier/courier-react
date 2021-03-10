@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Toast, ToastProvider, useToast } from "../src";
+import { CourierToast, ToastProvider, useToast } from "../src";
 import { Button } from "./styled";
 
 export default {
   title: "Toast",
-  component: Toast,
+  component: CourierToast,
   args: {
     bodyText: "One API for notifications!",
   },

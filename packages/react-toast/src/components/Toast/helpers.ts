@@ -7,11 +7,8 @@ export function getTransition(type?: string) {
   case "slide": return Slide;
   case "zoom": return Zoom;
   case "bounce": return Bounce;
-<<<<<<< HEAD
+
   default: {
     return Slide;
-  }
-=======
->>>>>>> first
   }
 }

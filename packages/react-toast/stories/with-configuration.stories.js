@@ -1,12 +1,12 @@
 import React from "react";
 
-import { Toast, ToastProvider, useToast } from "../src";
+import { CourierToast, ToastProvider, useToast } from "../src";
 import { Button } from "./styled";
 import WarningIcon from "./warning.svg";
 
 export default {
   title: "Toast",
-  component: Toast,
+  component: CourierToast,
   argTypes: {
     position: {
       control: {
