@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "lerna": "lerna",
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap && yarn build",
     "build": "lerna run build && yarn types",
     "build:watch": "lerna run build:watch --stream --parallel",
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
