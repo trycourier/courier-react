@@ -1,0 +1,36 @@
+{
+  "name": "@trycourier/react-toast",
+  "version": "0.1.10",
+  "description": "Beautiful, easy React toast notifications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Courier <support@courier.com>",
+  "homepage": "https://github.com/trycourier/courier-react-toast",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trycourier/courier-react-toast"
+  },
+  "scripts": {
+    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\" --copy-files",
+    "build:watch": "yarn babel --watch",
+    "build": "rimraf dist && yarn babel",
+    "clean": "rimraf dist",
+    "test": "jest -c jest.config.js --runInBand --silent",
+    "type-check": "tsc --noEmit",
+    "types": "rimraf typings && tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+  },
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "react-toastify": "^6.2.0",
+    "rimraf": "^3.0.2",
+    "styled-components": "^5.2.1"
+  },
+  "peerDependencies": {
+    "react": ">=17.X.X",
+    "react-dom": ">=17.X.X"
+  },
+  "files": [
+    "dist/"
+  ]
+}
