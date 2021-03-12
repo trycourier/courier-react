@@ -16,7 +16,6 @@
     "test": "NODE_ENV=test jest --verbose",
     "prepublishOnly": "yarn test && yarn build",
     "start": "lerna run build:watch --stream --parallel & yarn types & lerna run storybook --stream",
-    "build-storybook": "build-storybook",
     "types": "lerna run types",
     "type-check": "lerna run type-check --parallel --stream",
     "type-coverage:detail": "type-coverage --strict --detail",
