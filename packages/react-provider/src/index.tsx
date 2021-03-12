@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import * as types from "./types";
 
 export { default as useCourier } from "./use-courier";
@@ -11,13 +11,24 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "INIT_TOAST":
+      return {
+        ...state,
+        toastConfig: action.payload.config,
+        toast: action.payload.toast,
+      };
+  }
+}
+
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   children,
   clientKey,
   transport,
   userSignature,
 }) => {
-  const [context, setContext] = useState<ICourierContext>({
+  const [state, dispatch] = useReducer(reducer, {
     clientKey,
     transport,
     userSignature,
@@ -26,8 +37,8 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   return (
     <CourierContext.Provider
       value={{
-        ...context,
-        setContext,
+        ...state,
+        dispatch,
       }}
     >
       {children}

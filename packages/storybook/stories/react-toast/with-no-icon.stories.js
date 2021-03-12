@@ -4,7 +4,7 @@ import { CourierToast, ToastProvider, useToast } from "@trycourier/react-toast";
 import { Button } from "./styled";
 
 export default {
-  title: "Toast",
+  title: "Toast/Toast",
   component: CourierToast,
   args: {
     bodyText: "One API for notifications!",

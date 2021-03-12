@@ -25,7 +25,7 @@ export const Toast: React.FunctionComponent<{
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, transport, setContext } = courierContext;
+  const { clientKey, transport, dispatch } = courierContext;
 
   const toastConfig = useMemo(() => {
     return {
@@ -55,13 +55,16 @@ export const Toast: React.FunctionComponent<{
   );
 
   useEffect(() => {
-    if (!setContext) {
+    if (!dispatch) {
       return;
     }
 
-    setContext({
-      toast: handleToast,
-      toastConfig,
+    dispatch({
+      type: "INIT_TOAST",
+      payload: {
+        toast: handleToast,
+        toastConfig,
+      },
     });
   }, [toastConfig, handleToast]);
 
