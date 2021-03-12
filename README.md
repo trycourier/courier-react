@@ -34,26 +34,26 @@ All commands in a monorepo are run in the `root` of the project. You should neve
 
 ### Commands
 
-`yarn`
+- `yarn`
 
-There is a postinstall task that will bootstrap the `lerna` project and `symlink` each package to eachother if they have dependencies to other packages in this repo.
+  There is a postinstall task that will bootstrap the `lerna` project and `symlink` each package to eachother if they have dependencies to other packages in this repo.
 
-`yarn start`
+- `yarn start`
 
-This will initiate a `storybook` instance inside `packages/storybook`. THis is where all development for these packages should be done.
+  This will initiate a `storybook` instance inside `packages/storybook`. THis is where all development for these packages should be done.
 
-`yarn publish`
+- `yarn publish`
 
-This will publish the packages to `npm` and version them together. This should only be run via `github actions`.
+  This will publish the packages to `npm` and version them together. This should only be run via `github actions`.
 
-`yarn typecheck`
+- `yarn typecheck`
 
-Run typechecking on each package
+  Run typechecking on each package
 
-`yarn build`
+- `yarn build`
 
-Run `babel` and transpile each package to a consumable js `dist` folder.
+  Run `babel` and transpile each package to a consumable js `dist` folder.
 
-`yarn clean`
+- `yarn clean`
 
-Cleans all `node_modules` from each package and deletes the root `node_modules`. Sometimes useful if packages have gotten out of date.
+  Cleans all `node_modules` from each package and deletes the root `node_modules`. Sometimes useful if packages have gotten out of date.
