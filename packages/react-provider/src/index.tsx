@@ -17,6 +17,7 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
 
 enum ActionType {
   INIT_TOAST = "INIT_TOAST",
+  INIT_INBOX = "INIT_INBOX",
 }
 interface IAction {
   type: ActionType;
