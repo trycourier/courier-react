@@ -32,7 +32,6 @@ const Message: React.FunctionComponent<MessageProps> = ({
   const icon = getIcon(content?.icon ?? config?.defaultIcon);
   const handleOnClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    console.log(content?.data?.clickAction);
   };
 
   const timeAgo = useMemo(() => {
