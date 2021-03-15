@@ -2,7 +2,11 @@ import React, { useReducer } from "react";
 import * as types from "./types";
 
 export { default as useCourier } from "./use-courier";
+export { default as useActions } from "./use-actions";
+
+import { useGraphqlClient } from "./use-graphql-client";
 import * as TransportTypes from "./transports/types";
+import { ApolloProvider } from "@apollo/client";
 
 export type ICourierMessage = TransportTypes.ICourierMessage;
 
@@ -11,37 +15,57 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
-function reducer(state, action) {
+enum ActionType {
+  INIT_TOAST = "INIT_TOAST",
+}
+interface IAction {
+  type: ActionType;
+  payload: any;
+}
+
+const reducer = (state, action) => {
+  console.log(state, action);
   switch (action.type) {
-    case "INIT_TOAST":
+    case "INIT_TOAST": {
       return {
         ...state,
         toastConfig: action.payload.config,
         toast: action.payload.toast,
       };
+    }
   }
-}
+  return state;
+};
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   children,
   clientKey,
   transport,
+  userId,
   userSignature,
 }) => {
-  const [state, dispatch] = useReducer(reducer, {
+  const graphqlClient = useGraphqlClient(clientKey, userId, userSignature);
+  const [context, dispatch] = useReducer<
+    React.Reducer<ICourierContext, IAction>
+  >(reducer, {
     clientKey,
     transport,
+    userId,
     userSignature,
   });
 
   return (
     <CourierContext.Provider
       value={{
-        ...state,
+        ...context,
         dispatch,
       }}
     >
-      {children}
+      {graphqlClient ? (
+        <ApolloProvider client={graphqlClient}>{children}</ApolloProvider>
+      ) : (
+        children
+      )}
     </CourierContext.Provider>
   );
 };

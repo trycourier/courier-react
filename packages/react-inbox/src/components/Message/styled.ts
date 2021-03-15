@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
-export const Root = styled.button<{read?: boolean}>(({ theme }) => ({
+export const Container = styled.button<{read?: boolean}>(({ theme }) => ({
   display: "flex",
   cursor: "pointer",
   outline: "none",
   border: "none",
-  backgroundColor: "initial",
+  width: "100%",
   position: "relative",
-  ...theme.message?.root,
+  margin: "10px 0",
+  borderRadius: 6,
+  ...theme.message?.container,
 }));
-
 
 export const ReadIndicator = styled.div(({ theme }) => ({
   backgroundColor: "rgba(157, 55, 137, .5)",
@@ -28,10 +29,6 @@ export const Title = styled.div(({ theme }) => ({
   ...theme.message?.title,
 }));
 
-export const Container = styled.div(({ theme }) => ({
-  margin: "0 20px",
-  ...theme.message?.container,
-}));
 
 export const Body = styled.div(({ theme }) => ({
   marginTop: "2px",
@@ -47,6 +44,5 @@ export const Icon = styled.img(({ theme }) => ({
   padding: "5px",
   backgroundColor: "rgb(249, 249, 249)",
   borderRadius: "50%",
-  marginLeft: "10px",
   ...theme.message?.icon,
 }));
