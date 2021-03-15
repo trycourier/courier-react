@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Messages from "../Messages";
 import Tippy, { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import Bell from "./Bell";
+import { useCourier, useActions } from "@trycourier/react-provider";
 
 import { InboxProps } from "../../types";
 const GlobalStyle = createGlobalStyle`${tippyCss}`;
 
 const StyledTippy = styled(Tippy)(({ theme }) => ({
+  fontFamily: `"Nunito Sans", sans-serif`,
   background: "#f9fafb !important",
   backgroundColor: "#f9fafb !important",
   boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
@@ -28,6 +30,13 @@ const StyledTippy = styled(Tippy)(({ theme }) => ({
 }));
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
+  const courierActions = useActions();
+  const courierContext = useCourier();
+
+  if (!courierContext) {
+    throw new Error("Missing Courier Provider");
+  }
+
   const [visible, setVisible] = useState(false);
 
   const handleBellOnClick = () => {
@@ -46,11 +55,25 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     };
   }
 
+  useEffect(() => {
+    if (!courierActions) {
+      return;
+    }
+
+    courierActions.initInbox({
+      inboxConfig: props.config,
+    });
+  }, [props]);
+
   return (
     <ThemeProvider theme={props.theme ?? {}}>
       <GlobalStyle />
       <StyledTippy {...tippyProps} content={<Messages {...props} />}>
-        <Bell onClick={handleBellOnClick} />
+        {props.renderIcon ? (
+          <span>{props.renderIcon({})}</span>
+        ) : (
+          <Bell onClick={handleBellOnClick} />
+        )}
       </StyledTippy>
     </ThemeProvider>
   );

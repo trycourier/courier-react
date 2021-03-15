@@ -1,26 +1,60 @@
-import React from "react";
-import { Container, Title, Body, Icon } from "./styled";
+import React, { useMemo } from "react";
+import {
+  Container,
+  TimeAgo,
+  Title,
+  Body,
+  getIcon,
+  ClickAction,
+} from "./styled";
+import { useInbox } from "~/use-inbox";
+import distanceInWords from "date-fns/formatDistanceStrict";
 
 interface MessageProps {
-  title: string;
-  body: string;
-  icon?: string;
-  data?: {
-    clickAction: string;
+  messageId: string;
+  created: number;
+  content: {
+    title: string;
+    body: string;
+    icon?: string;
+    data?: {
+      clickAction: string;
+    };
   };
 }
 
-function Message({ title, body, icon, data }: MessageProps) {
+const Message: React.FunctionComponent<MessageProps> = ({
+  created,
+  content,
+}) => {
+  const [, { config }] = useInbox();
+
+  const icon = getIcon(content?.icon ?? config?.defaultIcon);
+  const handleOnClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    console.log(content?.data?.clickAction);
+  };
+
+  const timeAgo = useMemo(() => {
+    return distanceInWords(new Date(created).getTime(), Date.now(), {
+      addSuffix: true,
+      roundingMethod: "floor",
+    });
+  }, [created]);
+
   return (
     <Container data-test-id="inbox-message">
-      <Icon src={icon} />
+      {icon}
       <div>
-        <Title>{title}</Title>
-        <Body>{body}</Body>
+        <Title>{content?.title}</Title>
+        <Body>{content?.body}</Body>
+        <TimeAgo>{timeAgo}</TimeAgo>
       </div>
-      {data?.clickAction && <button>View Details</button>}
+      {content?.data?.clickAction && (
+        <ClickAction onClick={handleOnClick}>View Details</ClickAction>
+      )}
     </Container>
   );
-}
+};
 
 export default Message;

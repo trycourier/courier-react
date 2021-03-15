@@ -1,7 +1,8 @@
 import React from "react";
 import Message from "../Message";
+
 import { InboxProps } from "../../types";
-import { Body, Footer, Header } from "./styled";
+import { Body, Footer, Header, Loading } from "./styled";
 
 import useMessages from "../../use-messages";
 
@@ -17,11 +18,15 @@ const Messages: React.FunctionComponent<InboxProps> = ({
     <>
       {renderHeader ? renderHeader({}) : <Header>{title}</Header>}
       <Body>
-        {messages?.map((message) =>
-          renderMessage ? (
-            renderMessage(message)
-          ) : (
-            <Message key={message.messageId} {...message} />
+        {messages?.loading ? (
+          <Loading size={100} color="#9E3789" />
+        ) : (
+          messages?.data?.messages?.nodes?.map((message) =>
+            renderMessage ? (
+              renderMessage(message)
+            ) : (
+              <Message key={message.messageId} {...message} />
+            )
           )
         )}
       </Body>

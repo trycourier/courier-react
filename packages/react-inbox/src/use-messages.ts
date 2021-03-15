@@ -7,6 +7,11 @@ export const GET_MESSAGES = gql`
         id
         messageId
         created
+        content {
+          title
+          body
+          data
+        }
       }
     }
   }
@@ -14,10 +19,7 @@ export const GET_MESSAGES = gql`
 
 const useMessages = () => {
   const results = useQuery(GET_MESSAGES);
-  return results?.data?.messages?.nodes?.map(message => ({
-    messageId: message.messageId,
-    created: message.created,
-  }));
+  return results;
 };
 
 export default useMessages;

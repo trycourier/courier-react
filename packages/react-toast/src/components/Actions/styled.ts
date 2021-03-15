@@ -19,7 +19,7 @@ export const Container = styled.div(({ theme }) => ({
   "> :nth-child(2)": {
     "border-top": "1px solid #CBD5E0",
   },
-  ...theme,
+  ...theme?.actions,
 }));
 
 export const Button = styled.a(({ color, theme }) => ({
@@ -32,5 +32,5 @@ export const Button = styled.a(({ color, theme }) => ({
   ":visited":  {
     color,
   },
-  ...theme,
+  ...theme?.actions?.details,
 }));

@@ -8,6 +8,13 @@ export default () => {
         type: "INIT_TOAST",
         payload
       });
+    },
+
+    initInbox: (payload) => {
+      dispatch({
+        type: "INIT_INBOX",
+        payload
+      });
     }
   }
 }

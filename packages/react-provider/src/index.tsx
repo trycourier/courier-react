@@ -24,13 +24,19 @@ interface IAction {
 }
 
 const reducer = (state, action) => {
-  console.log(state, action);
   switch (action.type) {
     case "INIT_TOAST": {
       return {
         ...state,
         toastConfig: action.payload.config,
         toast: action.payload.toast,
+      };
+    }
+
+    case "INIT_INBOX": {
+      return {
+        ...state,
+        inboxConfig: action.payload.config,
       };
     }
   }

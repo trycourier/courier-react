@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { Pulse } from "better-react-spinkit";
 
 export const Body = styled.div(({ theme }) => ({
-  maxHeight: 300,
+  maxHeight: 390,
   padding: "0 14px",
   background: "#F9FAFB",
   overflow: "scroll",
@@ -25,4 +26,13 @@ export const Header = styled.div(({ theme }) => ({
   borderTopLeftRadius: 24,
   borderTopRightRadius: 24,
   ...theme.header,
+}));
+
+export const Loading = styled(Pulse)(({theme}) => ({
+  display: "block",
+  textAlign: "center",
+  div:  {
+    display: "inline-block",
+  },
+  ...theme.loading
 }));

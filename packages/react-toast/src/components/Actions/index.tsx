@@ -2,7 +2,11 @@ import React from "react";
 import { Container, Button } from "./styled";
 import { useToast } from "../../hooks";
 
-function SideBar({ open, dismiss, href }) {
+const Actions: React.FunctionComponent<{
+  onClickDetails?: (event: React.MouseEvent) => void;
+  onClickDismiss?: (event: React.MouseEvent) => void;
+  href?: string;
+}> = ({ onClickDetails, onClickDismiss, href }) => {
   const [
     ,
     {
@@ -12,26 +16,24 @@ function SideBar({ open, dismiss, href }) {
 
   return (
     <Container theme={theme?.sidebar} data-test-id="toast-sidebar">
-      {open && (
+      {onClickDetails && (
         <Button
-          theme={theme?.sidebar?.details}
           href={href}
           color="#9D3789"
-          onClick={open}
+          onClick={onClickDetails}
           data-test-id="toast-sidebar-button-details"
         >
           Details
         </Button>
       )}
       <Button
-        theme={theme?.sidebar?.dismiss}
-        onClick={dismiss}
+        onClick={onClickDismiss}
         data-test-id="toast-sidebar-button-dismiss"
       >
         Dismiss
       </Button>
     </Container>
   );
-}
+};
 
-export default SideBar;
+export default Actions;

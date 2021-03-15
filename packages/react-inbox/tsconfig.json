@@ -14,5 +14,10 @@
     "**/dist/**",
     "**/__tests__/**"
   ],
-  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
+  "include": [
+    "../types/@types/*/index.d.ts",
+    "**/*.ts",
+    "src/index.tsx",
+    "src/components/Message/styled.tsx"
+  ]
 }

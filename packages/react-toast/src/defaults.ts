@@ -4,7 +4,7 @@ export const defaultConfig: IToastConfig = {
   hideProgressBar: false,
   position: "top-right",
   theme: {
-    root:{
+    root: {
       fontFamily: `"Nunito Sans", sans-serif`,
     },
     toast: {

@@ -12,7 +12,6 @@
     "storybook": "start-storybook -p 6320"
   },
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
     "@storybook/addon-actions": "^6.1.14",
     "@storybook/addon-controls": "^6.1.14",
@@ -24,6 +23,7 @@
     "@trycourier/react-provider": "0.1.10",
     "@trycourier/react-toast": "0.1.10",
     "storybook": "^6.1.21",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "styled-normalize": "^8.0.7"
   }
 }

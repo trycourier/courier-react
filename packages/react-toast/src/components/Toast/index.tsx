@@ -60,6 +60,8 @@ export const Toast: React.FunctionComponent<{
       return;
     }
 
+    console.log("toastConfig", toastConfig);
+
     courierActions.initToast({
       toast: handleToast,
       toastConfig,
