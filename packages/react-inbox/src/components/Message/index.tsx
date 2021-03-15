@@ -7,7 +7,7 @@ import {
   getIcon,
   ClickAction,
 } from "./styled";
-import { useInbox } from "~/use-inbox";
+import { useInbox } from "~/hooks/use-inbox";
 import distanceInWords from "date-fns/formatDistanceStrict";
 
 interface MessageProps {

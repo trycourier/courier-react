@@ -11,6 +11,7 @@ export interface InboxProps {
   title?: string;
   config?: IInboxConfig;
   theme?: ThemeObject;
+  renderIcon?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderMessage?: React.FunctionComponent;
   renderFooter?: React.FunctionComponent;

@@ -1,5 +1,5 @@
 import { useCourier } from "@trycourier/react-provider";
-import { IInboxConfig } from './types';
+import { IInboxConfig } from '../types';
 
 export const useInbox: () => [
   string, 
