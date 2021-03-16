@@ -1,7 +1,3 @@
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/trycourier/courier-react-toast/Test?label=Unit%20Tests)
-[![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg?label=Stability)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-[![codecov](https://codecov.io/gh/trycourier/courier-react-toast/branch/main/graph/badge.svg?token=NVTDWY9UH4)](https://codecov.io/gh/trycourier/courier-react-toast)
-
 # Courier React Toast
 
 <img src="https://user-images.githubusercontent.com/16184018/109372638-6ebc6a00-785f-11eb-876a-e33260566c80.gif">
@@ -168,15 +164,7 @@ All `ToastProvider` configurations are optional.
 | hideProgressBar | boolean | Optionally show or hide the progress bar |
 | position | string | The location of where the toast component will show |
 | role | string | The alert role can be used to tell the user an element has been dynamically updated. Default: "status" |
-<<<<<<< HEAD
-<<<<<<< HEAD
 | theme | [StyleObject](https://github.com/trycourier/courier-react/blob/main/src/providers/types.ts#L16) | Customize the styles of the toast component with a StyleObject. See below for details. |
-=======
-| theme | [StyleObject](https://github.com/trycourier/courier-react-toast/blob/main/src/providers/types.ts#L16) | Customize the styles of the toast component with a StyleObject. See below for details. |
->>>>>>> first
-=======
-| theme | [StyleObject](https://github.com/trycourier/courier-react/blob/main/src/providers/types.ts#L16) | Customize the styles of the toast component with a StyleObject. See below for details. |
->>>>>>> fix storybook
 | transition | boolean | Set the transition effect for the toast coming into the window and going out |
 
 ### [Custom Styling](#themeing)
