@@ -7,7 +7,7 @@ import { Body, Footer, Header, Loading } from "./styled";
 import useMessages from "../../hooks/use-messages";
 
 const Messages: React.FunctionComponent<InboxProps> = ({
-  title,
+  title = "Inbox",
   renderHeader,
   renderFooter,
   renderMessage,

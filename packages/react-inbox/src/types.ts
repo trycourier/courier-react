@@ -8,13 +8,14 @@ export interface IInboxConfig {
 }
 
 export interface InboxProps {
-  title?: string;
+  className?: string;
   config?: IInboxConfig;
-  theme?: ThemeObject;
-  renderIcon?: React.FunctionComponent;
-  renderHeader?: React.FunctionComponent;
-  renderMessage?: React.FunctionComponent;
   renderFooter?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent;
+  renderIcon?: React.FunctionComponent;
+  renderMessage?: React.FunctionComponent;
+  theme?: ThemeObject;
+  title?: string;
 }
 
 type ThemeObject = {

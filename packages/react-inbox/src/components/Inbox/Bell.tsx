@@ -19,11 +19,17 @@ export const StyledButton = styled.button`
 `;
 
 const Bell: React.ForwardRefExoticComponent<{
+  className?: string;
   ref?: React.Ref<HTMLButtonElement>;
   onClick: (event: React.MouseEvent) => void;
-}> = forwardRef(({ onClick }, ref) => {
+}> = forwardRef(({ className, onClick }, ref) => {
   return (
-    <StyledButton ref={ref} onClick={onClick} data-testid="bell-svg">
+    <StyledButton
+      className={className}
+      data-testid="bell-svg"
+      onClick={onClick}
+      ref={ref}
+    >
       <svg
         width="54px"
         height="63px"

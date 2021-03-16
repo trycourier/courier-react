@@ -75,7 +75,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {props.renderIcon ? (
           <span>{props.renderIcon({})}</span>
         ) : (
-          <Bell onClick={handleBellOnClick} />
+          <Bell className={props.className} onClick={handleBellOnClick} />
         )}
       </StyledTippy>
     </ThemeProvider>
