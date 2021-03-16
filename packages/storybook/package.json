@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/storybook",
-  "version": "0.1.10",
+  "version": "0.1.8",
   "description": "Beautiful, easy React toast notifications",
   "author": "Courier <support@courier.com>",
   "homepage": "https://github.com/trycourier/courier-react",
