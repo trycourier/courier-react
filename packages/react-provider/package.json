@@ -16,7 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.3.11",
-    "graphql": "^15.5.0"
+    "graphql": "^15.5.0",
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",
