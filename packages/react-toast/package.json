@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-toast",
-  "version": "0.1.10-alpha.3",
+  "version": "0.1.10-alpha.4",
   "description": "Beautiful, easy React toast notifications",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@trycourier/react-provider": "^0.1.10-alpha.2",
+    "@trycourier/react-provider": "^0.1.10-alpha.4",
     "react-toastify": "^6.2.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.2.1"
