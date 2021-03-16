@@ -33,7 +33,7 @@
   "files": [
     "dist/"
   ],
-  "gitHead": "28df2aca7dfb62dd4e75680b426c6651eec2d7d2",
+  "gitHead": "42d87d9b603373d2f77995ccb8ea26f30bbd521a",
   "publishConfig": {
     "access": "public"
   }
