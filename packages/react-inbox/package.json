@@ -31,10 +31,8 @@
     "react-dom": "^17.0.1"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "typings/"
   ],
-  "gitHead": "f6d567d66f4d5978726403c220b42a6711cc5730",
-  "publishConfig": {
-    "access": "public"
-  }
+  "gitHead": "f6d567d66f4d5978726403c220b42a6711cc5730"
 }
