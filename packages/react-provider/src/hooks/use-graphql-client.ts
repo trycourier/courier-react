@@ -28,7 +28,7 @@ export default () => {
         },
       }),
     })
-  }, [clientKey, userId, userSignature]) ;
+  }, [apiUrl, clientKey, userId, userSignature]) ;
 
   return client;
 }

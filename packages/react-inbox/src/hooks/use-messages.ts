@@ -23,7 +23,6 @@ const useMessages = () => {
 
   const results = useQuery(GET_MESSAGES, {
     client: graphQlClient,
-    skip: !graphQlClient,
   });
   return results;
 };
