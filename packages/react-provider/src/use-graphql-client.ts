@@ -8,12 +8,9 @@ export const useGraphqlClient = (clientKey?: string, userId?: string, userSignat
     }
 
     return new ApolloClient({
-      // https://github.com/apollographql/apollo-feature-requests/issues/6#issuecomment-704451917
-    cache: new InMemoryCache({
-      addTypename: false,
-    }),
+    cache: new InMemoryCache(),
     link: new HttpLink({
-      uri: `https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q`,
+      uri: `${process.env.API_URL ?? `https://api.courier.com`}/client/q`,
       fetch: async (uri, options) => {
         const headers = {
           ...options?.headers,
