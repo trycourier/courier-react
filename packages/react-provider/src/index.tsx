@@ -69,11 +69,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         dispatch,
       }}
     >
-      {graphqlClient ? (
-        <ApolloProvider client={graphqlClient}>{children}</ApolloProvider>
-      ) : (
-        children
-      )}
+      <ApolloProvider client={graphqlClient}>{children}</ApolloProvider>
     </CourierContext.Provider>
   );
 };
