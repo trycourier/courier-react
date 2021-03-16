@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import * as types from "./types";
 
 export * from "./transports";
@@ -13,17 +13,25 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
-enum ActionType {
-  INIT_TOAST = "INIT_TOAST",
-  INIT_INBOX = "INIT_INBOX",
-}
 interface IAction {
-  type: ActionType;
+  type: "INIT" | "INIT_TOAST" | "INIT_INBOX";
   payload: any;
 }
 
 const reducer = (state, action) => {
+  console.log(state, action);
   switch (action.type) {
+    case "INIT": {
+      return {
+        ...state,
+        apiUrl: action.payload.apiUrl,
+        clientKey: action.payload.clientKey,
+        transport: action.payload.transport,
+        userId: action.payload.userId,
+        userSignature: action.payload.userSignature,
+      };
+    }
+
     case "INIT_TOAST": {
       return {
         ...state,
@@ -59,6 +67,19 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     userId,
     userSignature,
   });
+
+  useEffect(() => {
+    dispatch({
+      type: "INIT",
+      payload: {
+        apiUrl,
+        clientKey,
+        transport,
+        userId,
+        userSignature,
+      },
+    });
+  }, [apiUrl, clientKey, transport, userId, userSignature]);
 
   return (
     <CourierContext.Provider

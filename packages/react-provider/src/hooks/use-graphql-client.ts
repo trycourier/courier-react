@@ -6,10 +6,6 @@ export default () => {
   const {clientKey, userId, userSignature, apiUrl} = useCourier();
 
   const client = useMemo(() => {
-    if (!clientKey || !userId) {
-      return;
-    }
-
     return new ApolloClient({
       cache: new InMemoryCache(),
       link: new HttpLink({
