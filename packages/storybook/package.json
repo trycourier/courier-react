@@ -21,7 +21,7 @@
     "@storybook/addon-links": "^6.1.14",
     "@storybook/react": "^6.1.14",
     "@trycourier/react-inbox": "^0.1.10-alpha.0",
-    "@trycourier/react-provider": "0.1.9",
+    "@trycourier/react-provider": "0.1.10-alpha.0",
     "@trycourier/react-toast": "^0.1.10-alpha.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
