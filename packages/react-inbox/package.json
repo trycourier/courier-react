@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@tippyjs/react": "^4.2.3",
+    "@trycourier/react-provider": "0.1.10",
     "better-react-spinkit": "^2.0.4",
     "date-fns": "^2.19.0",
     "styled-components": "^5.2.1"

@@ -12,7 +12,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   renderFooter,
   renderMessage,
 }) => {
-  const messages = useMessages();
+  const messageResults = useMessages();
 
   return (
     <>
@@ -22,10 +22,10 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         <Header data-testid="header">{title}</Header>
       )}
       <Body data-testid="messages">
-        {messages?.loading ? (
+        {messageResults?.loading ? (
           <Loading size={100} color="#9E3789" />
         ) : (
-          messages?.data?.messages?.nodes?.map((message) =>
+          messageResults?.data?.messages?.nodes?.map((message) =>
             renderMessage ? (
               renderMessage(message)
             ) : (

@@ -6,10 +6,8 @@
 2. [Client Install](#client-install)
 3. [Courier Provider](#courier-provider)
 4. [Using Transport](#using-transport)
-5. [Using Hook](#using-hook)
-6. [Options](#options)
-7. [Themeing](#themeing)
-8. [Advanced Usage](#advanced-usage)
+5. [Props](#props)
+6. [Inbox Config](#config)
 
 ## [Overview](#overview)
 
@@ -93,3 +91,21 @@ function MyComponent() {
   );
 }
 ```
+
+### [Props](#props)
+
+| Key           | Type                | Description                               |
+| ------------- | ------------------- | ----------------------------------------- |
+| config        | `InboxConfig`       | See [Inbox Config](#config)               |
+| title         | `string`            | Title of the Inbox                        |
+| theme         | `Theme`             | Theme object used to override base styles |
+| renderIcon    | `FunctionComponent` | Override Indicator Icon Component         |
+| renderHeader  | `FunctionComponent` | Override Header Component                 |
+| renderMessage | `FunctionComponent` | Override Message Component                |
+| renderFooter  | `FunctionComponent` | Override Footer Component                 |
+
+### [Inbox Config](#config)
+
+| Key         | Type             | Description                               |
+| ----------- | ---------------- | ----------------------------------------- |
+| defaultIcon | `string | false` | Default Icon to use if no Icon is present |

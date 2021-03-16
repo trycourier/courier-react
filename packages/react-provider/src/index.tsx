@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import * as types from "./types";
 
+export * from "./transports";
 export { default as useCourier } from "./use-courier";
 export { default as useActions } from "./use-actions";
 
