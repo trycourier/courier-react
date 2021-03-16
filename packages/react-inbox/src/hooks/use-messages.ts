@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { useGraphQlClient } from '@trycourier/react-provider';
 
 export const GET_MESSAGES = gql`
   query {
@@ -18,7 +19,12 @@ export const GET_MESSAGES = gql`
 `;
 
 const useMessages = () => {
-  const results = useQuery(GET_MESSAGES);
+  const graphQlClient = useGraphQlClient();
+
+  const results = useQuery(GET_MESSAGES, {
+    client: graphQlClient,
+    skip: !graphQlClient,
+  });
   return results;
 };
 

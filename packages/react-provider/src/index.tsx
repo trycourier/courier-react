@@ -2,12 +2,9 @@ import React, { useReducer } from "react";
 import * as types from "./types";
 
 export * from "./transports";
-export { default as useCourier } from "./use-courier";
-export { default as useActions } from "./use-actions";
+export * from "./hooks";
 
-import { useGraphqlClient } from "./use-graphql-client";
 import * as TransportTypes from "./transports/types";
-import { ApolloProvider } from "@apollo/client";
 
 export type ICourierMessage = TransportTypes.ICourierMessage;
 
@@ -46,16 +43,17 @@ const reducer = (state, action) => {
 };
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
+  apiUrl,
   children,
   clientKey,
   transport,
   userId,
   userSignature,
 }) => {
-  const graphqlClient = useGraphqlClient(clientKey, userId, userSignature);
   const [context, dispatch] = useReducer<
     React.Reducer<ICourierContext, IAction>
   >(reducer, {
+    apiUrl,
     clientKey,
     transport,
     userId,
@@ -69,7 +67,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         dispatch,
       }}
     >
-      <ApolloProvider client={graphqlClient}>{children}</ApolloProvider>
+      {children}
     </CourierContext.Provider>
   );
 };

@@ -1,23 +1,24 @@
 import { useMemo } from 'react';
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import useCourier from './use-courier';
 
-export const useGraphqlClient = (clientKey?: string, userId?: string, userSignature?: string) => {
+export default () => {
+  const {clientKey, userId, userSignature, apiUrl} = useCourier();
+
   const client = useMemo(() => {
+    if (!clientKey || !userId) {
+      return;
+    }
+
     return new ApolloClient({
       cache: new InMemoryCache(),
       link: new HttpLink({
-        uri: `${process.env.API_URL ?? `https://api.courier.com`}/client/q`,
+        uri: `${apiUrl ?? process.env.API_URL ?? `https://api.courier.com`}/client/q`,
         fetch: async (uri, options) => {
           const headers = {
             ...options?.headers,
-          }
-
-          if (clientKey) {
-            headers["x-courier-client-key"] = clientKey;
-          }
-
-          if (userId) {
-            headers["x-courier-user-id"] = userId;
+            "x-courier-client-key": clientKey,
+            "x-courier-user-id": userId,
           }
 
           if (userSignature) {
