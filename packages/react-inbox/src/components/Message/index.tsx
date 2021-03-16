@@ -42,7 +42,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
   }, [created]);
 
   return (
-    <Container data-test-id="inbox-message">
+    <Container data-testid="inbox-message">
       {icon}
       <div>
         <Title>{content?.title}</Title>

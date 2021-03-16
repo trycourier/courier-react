@@ -42,10 +42,10 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
   return (
     <>
-      {Icon && <Icon data-test-id="toast-icon" />}
-      <Message data-test-id="message">
-        <Title data-test-id="message-title">{title}</Title>
-        <Body data-test-id="message-body">{body}</Body>
+      {Icon && <Icon data-testid="message-icon" />}
+      <Message data-testid="message">
+        <Title data-testid="message-title">{title}</Title>
+        <Body data-testid="message-body">{body}</Body>
       </Message>
       <Actions
         href={data?.clickAction}

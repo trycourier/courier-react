@@ -15,21 +15,18 @@ const Actions: React.FunctionComponent<{
   ] = useToast();
 
   return (
-    <Container theme={theme?.sidebar} data-test-id="toast-sidebar">
+    <Container theme={theme?.sidebar} data-testid="message-actions">
       {onClickDetails && (
         <Button
           href={href}
           color="#9D3789"
           onClick={onClickDetails}
-          data-test-id="toast-sidebar-button-details"
+          data-testid="message-action-details"
         >
           Details
         </Button>
       )}
-      <Button
-        onClick={onClickDismiss}
-        data-test-id="toast-sidebar-button-dismiss"
-      >
+      <Button onClick={onClickDismiss} data-testid="message-action-dismiss">
         Dismiss
       </Button>
     </Container>

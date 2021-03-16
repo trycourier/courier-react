@@ -23,7 +23,7 @@ const Bell: React.ForwardRefExoticComponent<{
   onClick: (event: React.MouseEvent) => void;
 }> = forwardRef(({ onClick }, ref) => {
   return (
-    <StyledButton ref={ref} onClick={onClick}>
+    <StyledButton ref={ref} onClick={onClick} data-testid="bell-svg">
       <svg
         width="54px"
         height="63px"

@@ -11,7 +11,7 @@ module.exports = {
         extensions: [".css"],
       },
     ],
-    ["babel-plugin-react-remove-properties", { properties: ["data-test-id"] }],
+    ["babel-plugin-react-remove-properties", { properties: ["data-testid"] }],
     process.env.NODE_ENV !== "test" && [
       "babel-plugin-root-import",
       {

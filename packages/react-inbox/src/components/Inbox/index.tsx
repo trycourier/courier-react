@@ -30,13 +30,13 @@ const StyledTippy = styled(Tippy)(({ theme }) => ({
 }));
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
-  const courierActions = useActions();
   const courierContext = useCourier();
 
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
   }
 
+  const courierActions = useActions();
   const [visible, setVisible] = useState(false);
 
   const handleBellOnClick = () => {

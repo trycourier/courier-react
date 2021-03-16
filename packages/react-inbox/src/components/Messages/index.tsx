@@ -16,8 +16,12 @@ const Messages: React.FunctionComponent<InboxProps> = ({
 
   return (
     <>
-      {renderHeader ? renderHeader({}) : <Header>{title}</Header>}
-      <Body>
+      {renderHeader ? (
+        renderHeader({})
+      ) : (
+        <Header data-testid="header">{title}</Header>
+      )}
+      <Body data-testid="messages">
         {messages?.loading ? (
           <Loading size={100} color="#9E3789" />
         ) : (

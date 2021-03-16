@@ -19,13 +19,13 @@ const GlobalStyle = createGlobalStyle`${toastCss}`;
 export const Toast: React.FunctionComponent<{
   config?: IToastConfig;
 }> = ({ config }) => {
-  const courierActions = useActions();
   const courierContext = useCourier();
 
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
   }
 
+  const courierActions = useActions();
   const { clientKey, transport } = courierContext;
 
   const toastConfig = useMemo(() => {
@@ -72,7 +72,7 @@ export const Toast: React.FunctionComponent<{
     <>
       <GlobalStyle />
       <ToastStyled
-        data-test-id="crt-toast-container"
+        data-testid="crt-toast-container"
         closeButton={false}
         closeOnClick={false}
         {...toastConfig}
