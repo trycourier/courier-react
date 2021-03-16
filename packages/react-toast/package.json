@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@trycourier/react-provider": "0.1.10",
+    "@trycourier/react-provider": "0.1.9",
     "react-toastify": "^6.2.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.2.1"
