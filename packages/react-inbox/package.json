@@ -18,6 +18,7 @@
     "@types/styled-components": "^5.1.7"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
     "@trycourier/react-provider": "0.1.10-alpha.0",
     "better-react-spinkit": "^2.0.4",
@@ -31,5 +32,6 @@
   },
   "files": [
     "/dist/main.js"
-  ]
+  ],
+  "gitHead": "07a881f738dcee922a2e00f0748688d9f4e8421d"
 }

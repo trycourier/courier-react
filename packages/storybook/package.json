@@ -23,8 +23,6 @@
     "@trycourier/react-inbox": "^0.1.10-alpha.0",
     "@trycourier/react-provider": "0.1.10-alpha.0",
     "@trycourier/react-toast": "^0.1.10-alpha.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "storybook": "^6.1.21",
     "styled-components": "^5.2.1",
     "styled-normalize": "^8.0.7"
