@@ -26,7 +26,7 @@
   "files": [
     "/dist/main.js"
   ],
-  "gitHead": "42d87d9b603373d2f77995ccb8ea26f30bbd521a",
+  "gitHead": "cc0e4888ced7adac17e7bf8aea71a148d2472870",
   "publishConfig": {
     "access": "public"
   }
