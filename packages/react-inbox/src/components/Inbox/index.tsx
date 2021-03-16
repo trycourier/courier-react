@@ -17,6 +17,9 @@ const StyledTippy = styled(Tippy)(({ theme }) => ({
   color: "black !important",
   minWidth: 400,
   borderRadius: "20px !important",
+  "*": {
+    boxSizing: "border-box",
+  },
 
   ".tippy-content": {
     padding: 0,

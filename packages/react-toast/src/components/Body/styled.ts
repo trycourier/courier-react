@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 export const Icon = styled.img(({theme}) => ({
   flexShrink: "0",
-  marginRight: "12.17px",
+  marginLeft: 12,
+  marginRight: 12,
   objectFit: "contain",
   alignSelf: "center",
   padding: "2px",

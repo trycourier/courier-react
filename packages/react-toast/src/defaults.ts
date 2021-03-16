@@ -5,6 +5,9 @@ export const defaultConfig: IToastConfig = {
   position: "top-right",
   theme: {
     root: {
+      "*": {
+        boxSizing: "border-box",
+      },
       fontFamily: `"Nunito Sans", sans-serif`,
     },
     toast: {
@@ -16,12 +19,6 @@ export const defaultConfig: IToastConfig = {
     body: {
       "margin": 0,
       "display": "flex",
-      "> :nth-child(1)": {
-        "paddingLeft": 13.3,
-      },
-      "> *" : {
-        "padding": "13.3px 0",
-      },
     },
     progressBar: {
       background: "rgb(157, 55, 137)",

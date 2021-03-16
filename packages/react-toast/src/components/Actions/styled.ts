@@ -32,5 +32,8 @@ export const Button = styled.a(({ color, theme }) => ({
   ":visited":  {
     color,
   },
+  "&:hover":  {
+    background: "rgb(0 0 0 / 10%)",
+  },
   ...theme?.actions?.details,
 }));

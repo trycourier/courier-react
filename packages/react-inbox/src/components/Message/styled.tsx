@@ -49,7 +49,7 @@ export const ClickAction = styled.button(({ theme }) => ({
   color: "#9E3789",
   height: 32,
   outline: "none",
-  margin: "0 6px",
+  marginLeft: 6,
   width: 100,
   background: "#FFFFFF",
   boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
@@ -62,13 +62,11 @@ export const ClickAction = styled.button(({ theme }) => ({
 }));
 
 const iconStyles = ({ theme }) => ({
-  objectFit: "contain",
-  height: "40px",
-  width: "40px",
+  height: 35,
+  width: 35,
+  marginRight: 12,
   flexShrink: "0",
-  padding: "5px",
   backgroundColor: "rgb(249, 249, 249)",
-  borderRadius: "50%",
   ...theme.message?.icon,
 });
 
