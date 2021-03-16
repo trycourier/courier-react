@@ -33,7 +33,7 @@
   "files": [
     "/dist/main.js"
   ],
-  "gitHead": "e31613c7ba11a750b24e221af770e79b8bb7283d",
+  "gitHead": "f497da96ecf22227d27e03d4fda3bf72dfbdc432",
   "publishConfig": {
     "access": "public"
   }
