@@ -29,11 +29,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
   data,
 }) => {
   const { config } = useInbox();
-
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
-  const handleOnClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
 
   const timeAgo = useMemo(() => {
     return distanceInWords(new Date(created).getTime(), Date.now(), {
