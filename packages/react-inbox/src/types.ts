@@ -1,25 +1,21 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react";
 
-type InboxThemeOptions = "root" | "title" | "body" | "footer" | "header" | "close" | "subTitle" | "message";
-type MessageThemeOptions = "root" | "read" | "title" | "container" | "body" | "icon";
+type InboxThemeOptions = "root" | "body" | "footer" | "header"
+type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
+export interface IInboxConfig {
+  defaultIcon?: false | string;
+}
 
 export interface InboxProps {
-  messages: Message[];
-  title?: string;
-  onClose?: (event: React.MouseEvent) => void;
-  onMessageClick?: (Message) => void;
-  indicator?: boolean;
-  show?: boolean;
-  closeOnClickOut?: boolean;
+  className?: string;
+  config?: IInboxConfig;
+  renderFooter?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent;
+  renderIcon?: React.FunctionComponent;
+  renderMessage?: React.FunctionComponent;
   theme?: ThemeObject;
-}
-interface Message {
-  title: string;
-  body: string;
-  icon?: string;
-  id?: string | number;
-  read?: boolean;
+  title?: string;
 }
 
 type ThemeObject = {

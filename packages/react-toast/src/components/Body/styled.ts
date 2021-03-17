@@ -1,20 +1,19 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-`;
 
-export const Icon = styled.img(props => ({
+export const Icon = styled.img(({theme}) => ({
   flexShrink: "0",
-  marginRight: "12.17px",
+  marginLeft: 12,
+  marginRight: 12,
   objectFit: "contain",
   alignSelf: "center",
   padding: "2px",
   maxHeight: "35px !important",
   maxWidth: "35px !important",
-  ...props.theme,
+  ...theme.icon,
 }));
 
-export const Body = styled.div`
+export const Message = styled.div`
   width: 139.33px;
   flex-shrink: 0;
   font-family: Nunito Sans, sans-serif;
@@ -31,12 +30,14 @@ export const Body = styled.div`
   align-self: center;
 `;
 
+export const Body = styled.div(({ theme }) => ({
+  ...theme?.body,
+}));
+
+
 export const Title = styled.div(({ theme }) => ({
   fontWeight: 600,
   color: "#344563",
-  ...theme,
+  ...theme?.title,
 }));
 
-export const Content = styled.div(({ theme }) => ({
-  ...theme,
-}));

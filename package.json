@@ -6,6 +6,8 @@
   "private": true,
   "scripts": {
     "lerna": "lerna",
+    "lerna:version": "lerna version --no-push",
+    "release": "lerna publish ",
     "postinstall": "lerna bootstrap && yarn build",
     "build": "lerna run build && yarn types",
     "build:watch": "lerna run build:watch --stream --parallel",
@@ -14,7 +16,6 @@
     "export:storybook": "lerna run build && lerna run export:storybook",
     "prettier": "prettier --write \"packages/**/*{js,json,ts,tsx}\"",
     "test": "NODE_ENV=test jest --verbose",
-    "prepublishOnly": "yarn test && yarn build",
     "start": "lerna run build:watch --stream --parallel & yarn types & lerna run storybook --stream",
     "types": "lerna run types",
     "type-check": "lerna run type-check --parallel --stream",
@@ -31,9 +32,7 @@
     "url": "https://github.com/trycourier/courier-react/issues"
   },
   "homepage": "https://github.com/trycourier/courier-react#readme",
-  "dependencies": {
-    "babel-plugin-root-import": "^6.6.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.13.1",
@@ -53,26 +52,29 @@
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "babel-plugin-react-remove-properties": "^0.3.0",
+    "babel-plugin-root-import": "^6.6.0",
     "babel-plugin-styled-components": "^1.12.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "eslint": "^7.18.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^22.11.0",
     "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.2",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint": "^7.18.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.6.3",
     "jest-styled-components": "^7.0.3",
+    "jest": "^26.6.3",
     "lerna": "^4.0.0",
-    "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react": "^17.0.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.3"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
 }

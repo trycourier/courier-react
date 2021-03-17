@@ -1,59 +1,56 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
-import SideBar from "../SideBar";
-import { Body, Title, Content } from "./styled";
+import Actions from "../Actions";
+import { Message, Title, Body } from "./styled";
 import { getIcon, sendClickedRequest } from "./helpers";
-import { useToast } from "../../hooks";
+import { useToast } from "~/hooks";
 
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
-  body: content,
+  body,
   icon,
   data,
   onClick,
   ...props
 }) => {
   const { toastProps } = props as { toastProps: any };
-  const dismiss = useCallback(() => toast.dismiss(toastProps.toastId), [
-    toastProps.toastId,
-  ]);
-  const [
-    ,
-    {
-      clientKey,
-      config: { theme, defaultIcon },
-    },
-  ] = useToast();
+  const handleOnClickDismiss = useCallback(
+    () => toast.dismiss(toastProps.toastId),
+    [toastProps.toastId]
+  );
+  const [, { clientKey, config }] = useToast();
 
-  const hasAction = data?.clickAction || onClick;
-
-  const open = useCallback(
+  const handleOnClickDetails = useCallback(
     (event) => {
+      if (!data?.clickAction && !onClick) {
+        return;
+      }
+
       if (onClick) {
         onClick(event);
       }
-      sendClickedRequest(clientKey, data?.clickedUrl);
+
+      if (data?.clickedUrl) {
+        sendClickedRequest(clientKey, data?.clickedUrl);
+      }
     },
-    [clientKey, data?.clickedUrl, onClick]
+    [clientKey, data, onClick]
   );
-  const Icon = getIcon(icon ?? defaultIcon);
+
+  const Icon = getIcon(icon ?? config?.defaultIcon);
 
   return (
     <>
-      {Icon && <Icon theme={theme?.icon} data-test-id="toast-icon" />}
-      <Body theme={theme?.body} data-test-id="toast-body">
-        <Title theme={theme?.title} data-test-id="toast-title">
-          {title}
-        </Title>
-        <Content theme={theme?.content} data-test-id="toast-content">
-          {content}
-        </Content>
-      </Body>
-      <SideBar
+      {Icon && <Icon data-testid="message-icon" />}
+      <Message data-testid="message">
+        <Title data-testid="message-title">{title}</Title>
+        <Body data-testid="message-body">{body}</Body>
+      </Message>
+      <Actions
         href={data?.clickAction}
-        open={hasAction ? open : null}
-        dismiss={dismiss}
+        onClickDetails={handleOnClickDetails}
+        onClickDismiss={handleOnClickDismiss}
       />
     </>
   );

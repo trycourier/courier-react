@@ -1,25 +1,59 @@
-import React from "react";
-import { Root, Container, Title, Body, Icon, ReadIndicator } from "./styled";
+import React, { useMemo } from "react";
+import {
+  Container,
+  TimeAgo,
+  Title,
+  Body,
+  getIcon,
+  ClickAction,
+} from "./styled";
+import { useInbox } from "~/hooks/use-inbox";
+import distanceInWords from "date-fns/formatDistanceStrict";
 
 interface MessageProps {
-  title: string;
-  body: string;
-  icon?: string;
-  onClick: (event: React.MouseEvent) => void;
-  read?: boolean;
+  messageId: string;
+  created: number;
+  content: {
+    title: string;
+    body: string;
+    icon?: string;
+    data?: {
+      clickAction: string;
+    };
+  };
 }
 
-function Message({ title, body, icon, onClick, read }: MessageProps) {
+const Message: React.FunctionComponent<MessageProps> = ({
+  created,
+  content,
+}) => {
+  const [, { config }] = useInbox();
+
+  const icon = getIcon(content?.icon ?? config?.defaultIcon);
+  const handleOnClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+  };
+
+  const timeAgo = useMemo(() => {
+    return distanceInWords(new Date(created).getTime(), Date.now(), {
+      addSuffix: true,
+      roundingMethod: "floor",
+    });
+  }, [created]);
+
   return (
-    <Root data-test-id="inbox-message" read={read} onClick={onClick}>
-      {read && <ReadIndicator />}
-      <Icon src={icon} />
-      <Container>
-        <Title>{title}</Title>
-        <Body>{body}</Body>
-      </Container>
-    </Root>
+    <Container data-testid="inbox-message">
+      {icon}
+      <div>
+        <Title>{content?.title}</Title>
+        <Body>{content?.body}</Body>
+        <TimeAgo>{timeAgo}</TimeAgo>
+      </div>
+      {content?.data?.clickAction && (
+        <ClickAction onClick={handleOnClick}>View Details</ClickAction>
+      )}
+    </Container>
   );
-}
+};
 
 export default Message;

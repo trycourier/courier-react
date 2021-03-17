@@ -27,10 +27,9 @@ export function getIcon(icon) {
 
   return styled(icon ?? CourierIcon)((props) => ({
     flexShrink: 0,
-    marginRight: "12.17px",
-    objectFit: "contain",
+    marginLeft: 12,
+    marginRight: 12,
     alignSelf: "center",
-    padding: "2px",
     maxHeight: "35px !important",
     maxWidth: "35px !important",
     ...props.theme,

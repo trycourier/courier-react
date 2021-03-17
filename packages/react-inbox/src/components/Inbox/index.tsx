@@ -1,61 +1,85 @@
-import React, { useRef } from "react";
-import { ThemeProvider } from "styled-components";
-import Message from "../Message";
+import React, { useState, useEffect } from "react";
+import Messages from "../Messages";
+import Tippy, { TippyProps } from "@tippyjs/react";
+import tippyCss from "tippy.js/dist/tippy.css";
+import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import Bell from "./Bell";
+import { useCourier, useActions } from "@trycourier/react-provider";
+
 import { InboxProps } from "../../types";
-import { useCloseOnClickOut } from "../../hooks";
-import { Body, Container, Footer, Title, Header, SubTitle } from "./styled";
+const GlobalStyle = createGlobalStyle`${tippyCss}`;
 
-import CloseSvg from "./close.svg";
-import CourierSvg from "./courier.svg";
+const StyledTippy = styled(Tippy)(({ theme }) => ({
+  fontFamily: `"Nunito Sans", sans-serif`,
+  background: "#f9fafb !important",
+  backgroundColor: "#f9fafb !important",
+  boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
+  color: "black !important",
+  minWidth: 400,
+  borderRadius: "20px !important",
+  "*": {
+    boxSizing: "border-box",
+  },
 
-function Inbox({
-  closeOnClickOut,
-  indicator,
-  messages,
-  onClose,
-  onMessageClick,
-  show: _show,
-  title,
-}: InboxProps) {
-  const rootRef = useRef(null);
-  const show = !indicator ? true : indicator && _show ? true : false;
-  useCloseOnClickOut(
-    rootRef.current,
-    Boolean(show && closeOnClickOut),
-    onClose
-  );
+  ".tippy-content": {
+    padding: 0,
+  },
+
+  ".tippy-arrow": {
+    color: "#f9fafb",
+  },
+
+  ...theme.root,
+}));
+
+const Inbox: React.FunctionComponent<InboxProps> = (props) => {
+  const courierContext = useCourier();
+
+  if (!courierContext) {
+    throw new Error("Missing Courier Provider");
+  }
+
+  const courierActions = useActions();
+  const [visible, setVisible] = useState(false);
+
+  const handleBellOnClick = () => {
+    setVisible(!visible);
+  };
+
+  let tippyProps: TippyProps = {
+    placement: "right",
+    interactive: true,
+  };
+
+  if (visible) {
+    tippyProps = {
+      ...tippyProps,
+      visible,
+    };
+  }
+
+  useEffect(() => {
+    if (!courierActions) {
+      return;
+    }
+
+    courierActions.initInbox({
+      inboxConfig: props.config,
+    });
+  }, [props]);
 
   return (
-    <Container data-test-id="inbox-container" ref={rootRef} show={show}>
-      <Header>
-        <Title>{title}</Title>
-        <button onClick={onClose}>
-          <CloseSvg />
-        </button>
-      </Header>
-      <SubTitle>INBOX</SubTitle>
-      <Body>
-        {messages.map((message, index) => (
-          <Message
-            onClick={() => onMessageClick && onMessageClick(message)}
-            key={index}
-            {...message}
-          />
-        ))}
-      </Body>
-      <Footer>
-        <CourierSvg />
-      </Footer>
-    </Container>
-  );
-}
-
-function ThemeWrapper({ theme = {}, ...props }: InboxProps) {
-  return (
-    <ThemeProvider theme={theme}>
-      <Inbox {...props} />
+    <ThemeProvider theme={props.theme ?? {}}>
+      <GlobalStyle />
+      <StyledTippy {...tippyProps} content={<Messages {...props} />}>
+        {props.renderIcon ? (
+          <span>{props.renderIcon({})}</span>
+        ) : (
+          <Bell className={props.className} onClick={handleBellOnClick} />
+        )}
+      </StyledTippy>
     </ThemeProvider>
   );
-}
+};
 
-export default ThemeWrapper;
+export default Inbox;

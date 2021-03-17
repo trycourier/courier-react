@@ -8,7 +8,7 @@ import {
 import { Button, Input, Label } from "./styled";
 
 export default {
-  title: "Toast",
+  title: "Toast/Toast",
   component: CourierToast,
 };
 

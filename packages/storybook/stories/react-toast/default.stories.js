@@ -1,6 +1,7 @@
 import React from "react";
 
 import { CourierToast, ToastProvider, useToast } from "@trycourier/react-toast";
+
 import { Button } from "./styled";
 
 export default {
@@ -34,7 +35,7 @@ export function NoIcon({ bodyText }) {
     <ToastProvider
       clientKey="client-key"
       config={{
-        icon: false,
+        defaultIcon: false,
       }}
     >
       <DefaultComponent body={bodyText} />

@@ -1,3 +1,7 @@
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/trycourier/courier-react/Test?label=Unit%20Tests)
+[![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg?label=Stability)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
+[![codecov](https://codecov.io/gh/trycourier/courier-react/branch/main/graph/badge.svg?token=NVTDWY9UH4)](https://codecov.io/gh/trycourier/courier-react)
+
 # Courier React Components (CRC)
 
 CRC is a monorepo using [Lerna](https://www.lerna.com) and contains many packages that are installed separately while depending on each other.

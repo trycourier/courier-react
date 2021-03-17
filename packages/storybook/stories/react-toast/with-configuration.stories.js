@@ -5,7 +5,7 @@ import { Button } from "./styled";
 import WarningIcon from "./warning.svg";
 
 export default {
-  title: "Toast",
+  title: "Toast/Toast",
   component: CourierToast,
   argTypes: {
     position: {

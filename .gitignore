@@ -1,3 +1,6 @@
+.vscode
+.npmrc
+
 # Logs
 logs
 *.log

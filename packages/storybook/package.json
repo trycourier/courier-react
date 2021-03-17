@@ -1,6 +1,7 @@
 {
   "name": "@trycourier/storybook",
-  "version": "0.1.10",
+  "version": "0.1.10-alpha.6",
+  "private": true,
   "description": "Beautiful, easy React toast notifications",
   "author": "Courier <support@courier.com>",
   "homepage": "https://github.com/trycourier/courier-react",
@@ -12,7 +13,6 @@
     "storybook": "start-storybook -p 6320"
   },
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
     "@storybook/addon-actions": "^6.1.14",
     "@storybook/addon-controls": "^6.1.14",
@@ -20,10 +20,11 @@
     "@storybook/addon-knobs": "^6.1.21",
     "@storybook/addon-links": "^6.1.14",
     "@storybook/react": "^6.1.14",
-    "@trycourier/react-inbox": "0.1.10",
-    "@trycourier/react-provider": "0.1.10",
-    "@trycourier/react-toast": "0.1.10",
+    "@trycourier/react-inbox": "^0.1.10-alpha.6",
+    "@trycourier/react-provider": "^0.1.10-alpha.6",
+    "@trycourier/react-toast": "^0.1.10-alpha.6",
     "storybook": "^6.1.21",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "styled-normalize": "^8.0.7"
   }
 }

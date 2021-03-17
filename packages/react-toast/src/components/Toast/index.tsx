@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 import { toast } from "react-toastify";
 
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, useActions } from "@trycourier/react-provider";
 
 import { getTransition } from "./helpers";
 import { ToastStyled } from "./styled";
@@ -25,7 +25,8 @@ export const Toast: React.FunctionComponent<{
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, transport, setContext } = courierContext;
+  const courierActions = useActions();
+  const { clientKey, transport } = courierContext;
 
   const toastConfig = useMemo(() => {
     return {
@@ -55,11 +56,11 @@ export const Toast: React.FunctionComponent<{
   );
 
   useEffect(() => {
-    if (!setContext) {
+    if (!courierActions) {
       return;
     }
 
-    setContext({
+    courierActions.initToast({
       toast: handleToast,
       toastConfig,
     });
@@ -71,7 +72,7 @@ export const Toast: React.FunctionComponent<{
     <>
       <GlobalStyle />
       <ToastStyled
-        data-test-id="crt-toast-container"
+        data-testid="crt-toast-container"
         closeButton={false}
         closeOnClick={false}
         {...toastConfig}

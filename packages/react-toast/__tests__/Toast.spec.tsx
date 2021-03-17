@@ -49,7 +49,7 @@ describe("<ToastProvider />", () => {
       expect(screen.getByText(body)).toBeInTheDocument();
       expect(screen.getByText("Dismiss")).toBeInTheDocument();
       expect(screen.getByText("Details")).toBeInTheDocument();
-      expect(screen.getByTestId("toast-icon").getAttribute("src")).toBe(icon);
+      expect(screen.getByTestId("message-icon").getAttribute("src")).toBe(icon);
     });
   });
 });

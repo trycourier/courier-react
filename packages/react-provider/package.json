@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-provider",
-  "version": "0.1.10",
+  "version": "0.1.10-alpha.6",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -14,13 +14,18 @@
     "types": "rimraf typings && tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "ISC",
-  "devDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "@apollo/client": "^3.3.11",
+    "graphql": "^15.5.0",
+    "rimraf": "^3.0.2"
+  },
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "files": [
-    "/dist/main.js"
-  ]
+    "dist/",
+    "typings/"
+  ],
+  "gitHead": "f6d567d66f4d5978726403c220b42a6711cc5730"
 }
