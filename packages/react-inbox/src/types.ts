@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react";
+import { TippyProps } from "@tippyjs/react";
 
 type InboxThemeOptions = "root" | "body" | "footer" | "header"
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
@@ -10,12 +11,14 @@ export interface IInboxConfig {
 export interface InboxProps {
   className?: string;
   config?: IInboxConfig;
+  placement?: TippyProps["placement"];
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent;
   renderMessage?: React.FunctionComponent;
   theme?: ThemeObject;
   title?: string;
+  trigger?: TippyProps["trigger"];
 }
 
 type ThemeObject = {

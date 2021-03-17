@@ -7,29 +7,30 @@ import {
   getIcon,
   ClickAction,
 } from "./styled";
-import { useInbox } from "~/hooks/use-inbox";
+import useInbox from "~/hooks/use-inbox";
 import distanceInWords from "date-fns/formatDistanceStrict";
 
 interface MessageProps {
   messageId: string;
   created: number;
-  content: {
-    title: string;
-    body: string;
-    icon?: string;
-    data?: {
-      clickAction: string;
-    };
+  title: string;
+  body: string;
+  icon?: string;
+  data?: {
+    clickAction: string;
   };
 }
 
 const Message: React.FunctionComponent<MessageProps> = ({
   created,
-  content,
+  title,
+  body,
+  icon,
+  data,
 }) => {
-  const [, { config }] = useInbox();
+  const { config } = useInbox();
 
-  const icon = getIcon(content?.icon ?? config?.defaultIcon);
+  const renderedIcon = getIcon(icon ?? config?.defaultIcon);
   const handleOnClick = (event: React.MouseEvent) => {
     event.preventDefault();
   };
@@ -43,14 +44,14 @@ const Message: React.FunctionComponent<MessageProps> = ({
 
   return (
     <Container data-testid="inbox-message">
-      {icon}
+      {renderedIcon}
       <div>
-        <Title>{content?.title}</Title>
-        <Body>{content?.body}</Body>
+        <Title>{title}</Title>
+        <Body>{body}</Body>
         <TimeAgo>{timeAgo}</TimeAgo>
       </div>
-      {content?.data?.clickAction && (
-        <ClickAction onClick={handleOnClick}>View Details</ClickAction>
+      {data?.clickAction && (
+        <ClickAction href={data?.clickAction}>View Details</ClickAction>
       )}
     </Container>
   );

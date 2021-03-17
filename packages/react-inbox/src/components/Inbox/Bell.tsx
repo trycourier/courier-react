@@ -21,7 +21,7 @@ export const StyledButton = styled.button`
 const Bell: React.ForwardRefExoticComponent<{
   className?: string;
   ref?: React.Ref<HTMLButtonElement>;
-  onClick: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
 }> = forwardRef(({ className, onClick }, ref) => {
   return (
     <StyledButton

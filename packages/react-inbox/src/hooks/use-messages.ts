@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { gql, useQuery } from "@apollo/client";
-import { useGraphQlClient } from '@trycourier/react-provider';
+import { useGraphQlClient, useCourier } from '@trycourier/react-provider';
+
+import useInbox from './use-inbox';
 
 export const GET_MESSAGES = gql`
   query {
@@ -18,13 +21,33 @@ export const GET_MESSAGES = gql`
   }
 `;
 
-const useMessages = () => {
-  const graphQlClient = useGraphQlClient();
 
+const useMessages = () => {
+  const inbox = useInbox();
+  const { transport } = useCourier();
+  const client = useGraphQlClient();
   const results = useQuery(GET_MESSAGES, {
-    client: graphQlClient,
+    client,
   });
-  return results;
+
+  useEffect(() => {
+    inbox.setLoading(results?.loading);
+
+    if (!results?.data) {
+      return;
+    }
+
+    inbox.setMessages(results?.data);
+  }, [results])
+
+  useEffect(() => {
+    transport?.listen({
+      id: "inbox-listener",
+      listener: (courierEvent) => {
+        inbox.newMessage(courierEvent?.data);
+      }
+    });
+  }, [transport]);
 };
 
 export default useMessages;
