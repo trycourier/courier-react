@@ -20,8 +20,8 @@ export class Transport {
       return;
     }
 
-    for (const listener of this.listeners) {
-      listener.listener(courierEvent);
+    for (const { listener } of this.listeners) {
+      listener(courierEvent);
     }
   };
 

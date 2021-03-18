@@ -12,7 +12,7 @@ export interface ICourierContext {
     [key: string]: any;
   };
   registerReducer?: (
-    scope: string, 
+    scope: "inbox" | "toast", 
     reducer: (state: any, action: IAction) => void
   ) => void; 
   transport?: Transport;
