@@ -34,7 +34,7 @@ const StyledTippy = styled(Tippy)(({ theme }) => ({
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const courierContext = useCourier();
-
+  
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
   }
