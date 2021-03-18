@@ -25,7 +25,6 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
     (event) => {
       if (data?.clickedUrl) {
         sendClickedRequest(clientKey, data?.clickedUrl);
-        sendReadRequest(clientKey, data?.readUrl);
       }
       if (!data?.clickAction && !onClick) {
         return;
