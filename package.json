@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "lerna": "lerna",
-    "lerna:version": "lerna version --no-push",
+    "lerna:version": "lerna version --no-push --no-git-tag-version",
     "release": "lerna publish ",
     "postinstall": "lerna bootstrap && yarn build",
     "build": "lerna run build && yarn types",
