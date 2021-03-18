@@ -23,17 +23,16 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
   const handleOnClickDetails = useCallback(
     (event) => {
+      if (data?.clickedUrl) {
+        sendClickedRequest(clientKey, data?.clickedUrl);
+        sendReadRequest(clientKey, data?.readUrl);
+      }
       if (!data?.clickAction && !onClick) {
         return;
       }
 
       if (onClick) {
         onClick(event);
-      }
-
-      if (data?.clickedUrl) {
-        sendClickedRequest(clientKey, data?.clickedUrl);
-        sendReadRequest(clientKey, data?.readUrl);
       }
     },
     [clientKey, data, onClick]
