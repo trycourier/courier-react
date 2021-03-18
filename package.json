@@ -9,7 +9,7 @@
     "lerna:version": "lerna version --no-push",
     "release": "lerna publish ",
     "postinstall": "lerna bootstrap && yarn build",
-    "build": "lerna run build && yarn types",
+    "build": "lerna run build",
     "build:watch": "lerna run build:watch --stream --parallel",
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
     "eslint": "eslint './packages/**/*.{ts,tsx}' --fix",
