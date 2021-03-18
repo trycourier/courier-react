@@ -31,7 +31,7 @@ export class Transport {
     listener: (courierEvent: ICourierEvent) => void
   }): void => {
     let didReplaceListener = false;
-    this.listeners.map(l => {
+    this.listeners = this.listeners.map(l => {
       if (l.id === listener.id) {
         didReplaceListener = true;
         return listener
