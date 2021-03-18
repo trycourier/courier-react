@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "lerna": "lerna",
-    "lerna:version": "lerna version --no-push",
-    "release": "lerna publish ",
+    "lerna:version": "lerna version --no-push --no-git-tag-version",
+    "release": "lerna publish from-package --yes --no-verify-access",
     "postinstall": "lerna bootstrap && yarn build",
     "build": "lerna run build && yarn types",
     "build:watch": "lerna run build:watch --stream --parallel",

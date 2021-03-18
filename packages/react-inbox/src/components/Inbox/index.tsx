@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Messages from "../Messages";
 import Tippy, { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import Bell from "./Bell";
-import { useCourier, useActions } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
+
+import useInbox from "~/hooks/use-inbox";
 
 import { InboxProps } from "../../types";
+import reducer from "~/reducer";
+
 const GlobalStyle = createGlobalStyle`${tippyCss}`;
 
 const StyledTippy = styled(Tippy)(({ theme }) => ({
@@ -39,34 +43,27 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
-  const courierActions = useActions();
-  const [visible, setVisible] = useState(false);
-
-  const handleBellOnClick = () => {
-    setVisible(!visible);
-  };
+  const inbox = useInbox();
 
   let tippyProps: TippyProps = {
-    placement: "right",
+    trigger: props.trigger ?? "click",
+    placement: props.placement ?? "right",
     interactive: true,
   };
 
-  if (visible) {
-    tippyProps = {
-      ...tippyProps,
-      visible,
-    };
-  }
+  useEffect(() => {
+    courierContext.registerReducer("inbox", reducer);
+  }, []);
 
   useEffect(() => {
-    if (!courierActions) {
-      return;
-    }
-
-    courierActions.initInbox({
-      inboxConfig: props.config,
+    inbox.init({
+      config: props.config,
     });
   }, [props]);
+
+  if (!courierContext?.reducers?.inbox) {
+    return null;
+  }
 
   return (
     <ThemeProvider theme={props.theme ?? {}}>
@@ -75,7 +72,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {props.renderIcon ? (
           <span>{props.renderIcon({})}</span>
         ) : (
-          <Bell className={props.className} onClick={handleBellOnClick} />
+          <Bell className={props.className} />
         )}
       </StyledTippy>
     </ThemeProvider>
