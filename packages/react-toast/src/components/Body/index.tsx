@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
 import { Message, Title, Body } from "./styled";
-import { getIcon, sendClickedRequest } from "./helpers";
+import { getIcon, sendClickedRequest, sendReadRequest } from "./helpers";
 import { useToast } from "~/hooks";
 
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
@@ -33,6 +33,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
       if (data?.clickedUrl) {
         sendClickedRequest(clientKey, data?.clickedUrl);
+        sendReadRequest(clientKey, data?.readUrl);
       }
     },
     [clientKey, data, onClick]
