@@ -1,22 +1,23 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
 
-export const StyledButton = styled.button`
-  border: none;
-  background: transparent;
-  padding: 0;
-  outline: none;
+export const StyledButton = styled.button(({ theme }) => ({
+  border: "none",
+  background: "transparent",
+  padding: 0,
+  outline: "none",
 
-  svg {
-    cursor: pointer;
-    height: 20px;
-    width: 20px;
-    :hover g {
-      fill: #9d3789;
-      transition: all 0.05s ease-in-out;
-    }
-  }
-`;
+  svg: {
+    cursor: "pointer",
+    height: 20,
+    width: 20,
+    ":hover g": {
+      fill: "#9d3789",
+      transition: "all 0.05s ease-in-out",
+    },
+  },
+  ...theme.icon,
+}));
 
 const Bell: React.ForwardRefExoticComponent<{
   className?: string;
