@@ -1,15 +1,38 @@
-import { useCourier } from "@trycourier/react-provider";
-import { IInboxConfig } from '../types';
+import {useCourier} from '@trycourier/react-provider';
 
-export const useInbox: () => [
-  string, 
-  { config: IInboxConfig, clientKey?: string}
-] = () => {
-  const {inboxConfig, clientKey} = useCourier<{
-    inboxConfig: IInboxConfig
-  }>();
+export default () => {
+  const { dispatch, inbox } = useCourier();
 
-  const inbox = "inbox";
+  return {
+    ...inbox,
+    init: (payload) => {
+      dispatch({
+        type: "inbox/INIT",
+        payload
+      });
+    },
 
-  return [inbox, { config: inboxConfig ?? {}, clientKey }];
-};
+    setLoading: (isLoading: boolean) => {
+      dispatch({
+        type: "inbox/SET_LOADING",
+        payload: {
+          isLoading
+        }
+      });
+    },
+
+    setMessages: (payload) => {
+      dispatch({
+        type: "inbox/SET_MESSAGES",
+        payload
+      });
+    },
+
+    newMessage: (payload) => {
+      dispatch({
+        type: "inbox/NEW_MESSAGE",
+        payload
+      });
+    }
+  }
+}

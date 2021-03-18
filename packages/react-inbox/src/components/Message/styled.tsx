@@ -42,19 +42,26 @@ export const TimeAgo = styled.div(({ theme }) => ({
   ...theme.message?.timeAgo,
 }));
 
-export const ClickAction = styled.button(({ theme }) => ({
+export const ClickAction = styled.a(({ theme }) => ({
   cursor: "pointer",
   border: "none",
   fontSize: 12,
   color: "#9E3789",
+  padding: "8px 15px",
+
   height: 32,
   outline: "none",
   marginLeft: 6,
   width: 100,
   background: "#FFFFFF",
   boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+  textDecoration: "none",
   "&:active": {
     boxShadow: "none",
+  },
+
+  "&:hover": {
+    background: "rgb(0 0 0 / 10%)",
   },
 
   borderRadius: 6,

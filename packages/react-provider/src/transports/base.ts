@@ -2,25 +2,49 @@ import { ICourierEvent, Interceptor } from "./types";
 
 export class Transport {
   constructor() {
-    this.listener = undefined;
+    this.listeners = [];
     this.interceptor = undefined;
   }
 
   /** Callback for emitted events  */
-  protected listener?: (courierEvent: ICourierEvent) => void;
+  protected listeners: Array<{
+    id: string;
+    listener: (courierEvent: ICourierEvent) => void
+  }>;
+  
   protected interceptor?: Interceptor;
   /** Wrapper method for emitted events  */
   protected emit = (courierEvent: ICourierEvent): void => {
-    if (!this.listener) {
-      console.warn("No Listener Registered");
+    if (!this.listeners.length) {
+      console.warn("No Listeners Registered");
       return;
     }
-    this.listener(courierEvent);
+
+    for (const { listener } of this.listeners) {
+      listener(courierEvent);
+    }
   };
 
   /** Setter method for a listener */
-  listen = (listener: (courierEvent: ICourierEvent) => void): void => {
-    this.listener = listener;
+  listen = (listener: {
+    id: string,
+    listener: (courierEvent: ICourierEvent) => void
+  }): void => {
+    let didReplaceListener = false;
+    this.listeners = this.listeners.map(l => {
+      if (l.id === listener.id) {
+        didReplaceListener = true;
+        return listener
+      }
+
+      return l;
+    });
+
+    if (didReplaceListener) {
+      return;
+    }
+
+    this.listeners.push(listener);
   };
 
   intercept = (cb: Interceptor): void => {

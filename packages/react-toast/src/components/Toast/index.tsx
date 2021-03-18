@@ -25,8 +25,8 @@ export const Toast: React.FunctionComponent<{
     throw new Error("Missing Courier Provider");
   }
 
-  const courierActions = useActions();
   const { clientKey, transport } = courierContext;
+  const courierActions = useActions();
 
   const toastConfig = useMemo(() => {
     return {

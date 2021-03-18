@@ -5,6 +5,7 @@ export * from "./transports";
 export * from "./hooks";
 
 import * as TransportTypes from "./transports/types";
+import reducer, { IAction } from "./reducer";
 
 export type ICourierMessage = TransportTypes.ICourierMessage;
 
@@ -12,42 +13,6 @@ export type ICourierContext = types.ICourierContext;
 export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
-
-interface IAction {
-  type: "INIT" | "INIT_TOAST" | "INIT_INBOX";
-  payload: any;
-}
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "INIT": {
-      return {
-        ...state,
-        apiUrl: action.payload.apiUrl,
-        clientKey: action.payload.clientKey,
-        transport: action.payload.transport,
-        userId: action.payload.userId,
-        userSignature: action.payload.userSignature,
-      };
-    }
-
-    case "INIT_TOAST": {
-      return {
-        ...state,
-        toastConfig: action.payload.config,
-        toast: action.payload.toast,
-      };
-    }
-
-    case "INIT_INBOX": {
-      return {
-        ...state,
-        inboxConfig: action.payload.config,
-      };
-    }
-  }
-  return state;
-};
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
@@ -64,12 +29,24 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     clientKey,
     transport,
     userId,
+    reducers: {
+      root: reducer,
+    },
     userSignature,
+    registerReducer: (scope, reducer) => {
+      dispatch({
+        type: "root/REGISTER_REDUCER",
+        payload: {
+          scope,
+          reducer,
+        },
+      });
+    },
   });
 
   useEffect(() => {
     dispatch({
-      type: "INIT",
+      type: "root/INIT",
       payload: {
         apiUrl,
         clientKey,

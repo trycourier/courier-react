@@ -20,19 +20,22 @@ export const useListenForTransportEvent = (clientKey: string, transport: ICourie
       return;
     }
 
-    transport.listen((courierEvent) => {
-      const courierData = courierEvent?.data?.data;
+    transport.listen({
+      id: "toast-listener",
+      listener: (courierEvent) => {
+        const courierData = courierEvent?.data?.data;
 
-      if (clientKey && courierData?.deliveredUrl) {
-        fetch(`${courierData?.deliveredUrl}`, {
-          method: "POST",
-          headers: {
-            [COURIER_CLIENT_HEADER]: clientKey,
-          },
-        });
+        if (clientKey && courierData?.deliveredUrl) {
+          fetch(`${courierData?.deliveredUrl}`, {
+            method: "POST",
+            headers: {
+              [COURIER_CLIENT_HEADER]: clientKey,
+            },
+          });
+        }
+
+        handleToast(courierEvent?.data);
       }
-
-      handleToast(courierEvent?.data);
     });
   }, [clientKey, handleToast, transport]);
 }

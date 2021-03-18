@@ -51,7 +51,7 @@ describe("<Inbox />", () => {
       throw new Error("Missing Bell");
     }
 
-    fireEvent.mouseEnter(bellSvg, { bubbles: true });
+    fireEvent.click(bellSvg, { bubbles: true });
     await waitFor(() => screen.getByTestId("messages"));
     expect(screen.getByTestId("header")).toBeInTheDocument();
   });
