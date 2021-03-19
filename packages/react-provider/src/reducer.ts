@@ -16,11 +16,6 @@ export const registerReducer = (scope, reducer) => {
 const rootReducer = (state, action) => {
   const [scope] = action.type.split("/");
 
-   
-  console.log("action", action);
-  console.log("state", state);
-
-
   if (scope !== "root" && reducers[scope]) {
     return {
       ...state,
