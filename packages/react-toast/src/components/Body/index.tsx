@@ -3,8 +3,9 @@ import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
 import { Message, Title, Body } from "./styled";
-import { getIcon, sendClickedRequest, sendReadRequest } from "./helpers";
+import { getIcon, sendClickedRequest } from "./helpers";
 import { useToast } from "~/hooks";
+import { useActions } from "@trycourier/react-provider";
 
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
@@ -15,28 +16,18 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   ...props
 }) => {
   const { toastProps } = props as { toastProps: any };
+  const { handleOnClick } = useActions();
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps.toastId),
     [toastProps.toastId]
   );
-  const [, { clientKey, config }] = useToast();
-
-  const handleOnClickDetails = useCallback(
-    (event) => {
-      if (data?.clickedUrl) {
-        sendClickedRequest(clientKey, data?.clickedUrl);
-      }
-      if (!data?.clickAction && !onClick) {
-        return;
-      }
-
-      if (onClick) {
-        onClick(event);
-      }
-    },
-    [clientKey, data, onClick]
-  );
-
+  const handleOnClickDetails = useCallback((event) => {
+    handleOnClick(data)
+    if (onClick) {
+      onClick(event);
+    }
+  }, [])
+  const [, { config }] = useToast();
   const Icon = getIcon(icon ?? config?.defaultIcon);
 
   return (
@@ -48,7 +39,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
       </Message>
       <Actions
         href={data?.clickAction}
-        onClickDetails={handleOnClickDetails}
+        onClickDetails={}
         onClickDismiss={handleOnClickDismiss}
       />
     </>

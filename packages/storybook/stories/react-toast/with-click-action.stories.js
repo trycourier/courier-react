@@ -26,8 +26,9 @@ function DefaultComponentWithAction({ body }) {
     title: "Courier",
     body,
     data: {
-      clickAction: "https://app.courier.com",
-      clickedUrl: "https://api.courier.com/something/send",
+      // clickAction: "https://app.courier.com",
+      clickedUrl: "https://a4imqw2244.execute-api.us-east-1.amazonaws.com/dev/e/f1p29xnsjq496hpgmsan0cjxzppk",
+      readUrl: "https://a4imqw2244.execute-api.us-east-1.amazonaws.com/dev/e/68wwg427xp4mfgha7nc9mmw5tfkw"
     },
     options: {
       hideProgressBar: false,

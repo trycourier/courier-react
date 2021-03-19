@@ -1,30 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { COURIER_CLIENT_HEADER } from "../../constants";
 import { Icon } from "./styled";
 import CourierIcon from "./courier-icon.svg";
-
-export function sendClickedRequest(clientKey, clickedUrl) {
-  if (clientKey && clickedUrl) {
-    fetch(`${clickedUrl}`, {
-      method: "POST",
-      headers: {
-        [COURIER_CLIENT_HEADER]: clientKey,
-      },
-    });
-  }
-}
-
-export function sendReadRequest(clientKey, readUrl) {
-  if (clientKey && readUrl) {
-    fetch(`${readUrl}`, {
-      method: "POST",
-      headers: {
-        [COURIER_CLIENT_HEADER]: clientKey,
-      },
-    });
-  }
-}
 
 export function getIcon(icon) {
   if (icon === false) {
