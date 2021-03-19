@@ -12,9 +12,10 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "src/index.html",
-    }),
+    process.env.NODE_ENV === "development" &&
+      new HtmlWebpackPlugin({
+        template: "src/index.html",
+      }),
     process.env.ANALYZE && new BundleAnalyzerPlugin(),
   ].filter(Boolean),
   module: {

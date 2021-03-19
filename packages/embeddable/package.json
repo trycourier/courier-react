@@ -11,7 +11,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "rimraf dist && webpack -p",
+    "build:embeds": "rimraf dist && webpack -p",
     "start:embeds": "rimraf dist && webpack && webpack-dev-server"
   },
   "license": "MIT",
@@ -20,6 +20,7 @@
     "@trycourier/react-inbox": "^0.1.10-alpha.7",
     "@trycourier/react-provider": "^0.1.10-alpha.7",
     "@trycourier/react-toast": "^0.1.10-alpha.7",
+    "aws-sdk": "^2.867.0",
     "babel-loader": "^8.0.6",
     "html-webpack-plugin": "^3.2.0",
     "preact": "^10.5.13",
