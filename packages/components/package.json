@@ -1,5 +1,5 @@
 {
-  "name": "@trycourier/embeddable",
+  "name": "@trycourier/components",
   "version": "0.1.10-alpha.7",
   "private": true,
   "description": "Beautiful, easy React toast notifications",

@@ -11,7 +11,7 @@
     "postinstall": "lerna bootstrap && yarn build",
     "build": "lerna run build --stream && yarn types",
     "build:embeds": "lerna run build:embeds --stream",
-    "analyze:embeds": "yarn run build && ANALYZE=true lerna run build:embeds --scope @trycourier/embeddable --stream",
+    "analyze:embeds": "yarn run build && ANALYZE=true lerna run build:embeds --scope @trycourier/components --stream",
     "build:watch": "lerna run build:watch --stream --parallel",
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
     "eslint": "eslint './packages/**/*.{ts,tsx}' --fix",

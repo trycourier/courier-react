@@ -4,15 +4,14 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const path = require("path");
 
-console.log(process.env);
-
 module.exports = {
   mode: "development",
   entry: path.resolve(__dirname, "./src/index.tsx"),
   output: {
+    filename: "latest.js",
+    chunkFilename: "[id].[chunkhash:8].js",
     path: path.resolve(__dirname, "./dist"),
   },
-
   plugins: [
     process.env.NODE_ENV === "development" &&
       new HtmlWebpackPlugin({
