@@ -11,8 +11,8 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build:embeds": "rimraf dist && webpack -p",
-    "start:embeds": "rimraf dist && webpack && webpack-dev-server"
+    "build:components": "rimraf dist && webpack -p",
+    "start:components": "rimraf dist && webpack && webpack-dev-server"
   },
   "license": "MIT",
   "dependencies": {

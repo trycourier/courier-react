@@ -23,7 +23,7 @@ jobs:
       - run: yarn lerna:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      - run: yarn build:embeds
+      - run: yarn build:components
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
