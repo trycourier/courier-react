@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      body {
+        cursor: default;
+        font-family: "Nunito Sans", sans-serif;
+        margin: 0;
+        padding: 32px;
+      }
+
+      body,
+      body * {
+        box-sizing: border-box;
+      }
+    </style>
+    <script type="text/javascript">
+      window.courierConfig = {
+        clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
+        userId: "3b17362c-0c91-4fcd-a829-885a2343eb67",
+        apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
+        wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Treva Homepage</h1>
+    <courier component="toast"></courier>
+    <courier component="inbox"></courier>
+  </body>
+</html>

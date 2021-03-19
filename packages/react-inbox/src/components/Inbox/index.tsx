@@ -4,7 +4,7 @@ import Tippy, { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import Bell from "./Bell";
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 
 import useInbox from "~/hooks/use-inbox";
 
@@ -52,7 +52,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   };
 
   useEffect(() => {
-    courierContext.registerReducer("inbox", reducer);
+    registerReducer("inbox", reducer);
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     });
   }, [props]);
 
-  if (!courierContext?.reducers?.inbox) {
+  if (!courierContext?.inbox) {
     return null;
   }
 

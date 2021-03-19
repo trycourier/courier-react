@@ -1,14 +1,16 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useMemo } from "react";
 import * as types from "./types";
 
 export * from "./transports";
 export * from "./hooks";
+export { registerReducer } from "./reducer";
 
 import * as TransportTypes from "./transports/types";
 import reducer, { IAction } from "./reducer";
 
-export type ICourierMessage = TransportTypes.ICourierMessage;
+import { CourierTransport } from "./transports/courier";
 
+export type ICourierMessage = TransportTypes.ICourierMessage;
 export type ICourierContext = types.ICourierContext;
 export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
@@ -22,6 +24,20 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   userId,
   userSignature,
 }) => {
+  transport = useMemo(() => {
+    if (transport) {
+      return transport;
+    }
+
+    if (!clientKey) {
+      return;
+    }
+
+    return new CourierTransport({
+      clientKey,
+    });
+  }, [transport, clientKey]);
+
   const [context, dispatch] = useReducer<
     React.Reducer<ICourierContext, IAction>
   >(reducer, {
@@ -29,20 +45,21 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     clientKey,
     transport,
     userId,
-    reducers: {
-      root: reducer,
-    },
     userSignature,
-    registerReducer: (scope, reducer) => {
-      dispatch({
-        type: "root/REGISTER_REDUCER",
-        payload: {
-          scope,
-          reducer,
-        },
-      });
-    },
   });
+
+  useEffect(() => {
+    if (!transport || !userId) {
+      return;
+    }
+
+    const courierTransport = transport as CourierTransport;
+    courierTransport.subscribe(userId);
+
+    return () => {
+      courierTransport.unsubscribe(userId);
+    };
+  }, [transport, userId]);
 
   useEffect(() => {
     dispatch({

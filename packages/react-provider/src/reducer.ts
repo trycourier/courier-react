@@ -1,21 +1,28 @@
 
 export interface IAction {
-  type: "root/INIT" | "root/REGISTER_REDUCER";
+  type: "root/INIT";
   payload: any;
 }
+const reducers = {};
 
-export default (state, action) => {
+export const registerReducer = (scope, reducer) => {
+  if (scope === 'root') {
+    return;
+  }
+
+  reducers[scope] = reducer;
+}
+
+const rootReducer = (state, action) => {
   const [scope] = action.type.split("/");
 
-  if (scope !== "root" && state.reducers[scope]) {
+  if (scope !== "root" && reducers[scope]) {
     return {
       ...state,
-      [scope]: state.reducers[scope](state?.[scope] ?? {}, action)
+      [scope]: reducers[scope](state?.[scope] ?? {}, action)
     }
   }
-  
-
-
+ 
   switch (action.type) {
     case "root/INIT": {
       return {
@@ -28,16 +35,6 @@ export default (state, action) => {
       };
     }
 
-    case "root/REGISTER_REDUCER": {
-      return {
-        ...state,
-        reducers: {
-          ...state.reducers,
-          [action.payload.scope]: action.payload.reducer
-        }
-      };
-    }
-
     case "INIT_TOAST": {
       return {
         ...state,
@@ -45,20 +42,10 @@ export default (state, action) => {
         toast: action.payload.toast,
       };
     }
-
-    case "INIT_INBOX": {
-      return {
-        ...state,
-        inboxConfig: action.payload.config,
-      };
-    }
-
-    case "GET_MESSAGES": {
-      return {
-        ...state,
-        inboxConfig: action.payload.messages,
-      };
-    }
   }
   return state;
 };
+
+
+
+export default rootReducer;

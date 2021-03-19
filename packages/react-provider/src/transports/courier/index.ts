@@ -8,7 +8,7 @@ export class CourierTransport extends Transport {
   protected channel: any;
   protected ws: WS;
   protected clientKey: string;
-  protected secretKey?: string;
+  protected userSignature?: string;
   protected interceptor?: Interceptor;
   
   constructor(options: ITransportOptions) {
@@ -18,7 +18,7 @@ export class CourierTransport extends Transport {
       throw new Error("Missing Client Key");
     }
     this.clientKey = options.clientKey;
-    this.secretKey = options.secretKey;
+    this.userSignature = options.userSignature;
     this.ws = new WS({ url: options.wsUrl ?? COURIER_WS_URL ?? "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production" });
     this.ws.connect(options.clientKey);
   }
@@ -33,9 +33,11 @@ export class CourierTransport extends Transport {
     });
   }
 
-  subscribe(channel: string, event: string): void {
-    this.ws.subscribe(channel, event, this.clientKey, ({ data }) => {
-      data = this.getDataFromInterceptor(data);
+  subscribe(channel: string, event?: string): void {
+    this.ws.subscribe(channel, event ?? "*", this.clientKey, ({ data }) => {
+      if (this.interceptor) {
+        data = this.interceptor(data);
+      }
 
       if (!data) {
         return;
@@ -45,15 +47,7 @@ export class CourierTransport extends Transport {
     });
   }
 
-  unsubscribe(channel: string, event: string): void {
-    this.ws.unsubscribe(channel, event, this.clientKey);
+  unsubscribe(channel: string, event?: string): void {
+    this.ws.unsubscribe(channel, event ?? "*", this.clientKey);
   }
-
-  getDataFromInterceptor = (data) => {
-    if (this.interceptor) {
-      data = this.interceptor(data);
-    }
-
-    return data;
-  };
 }
