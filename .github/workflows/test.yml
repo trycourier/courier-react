@@ -1,6 +1,6 @@
 name: Test
 
-on: push
+on: [pull_request]
 
 jobs:
   test:
@@ -8,8 +8,6 @@ jobs:
     steps:
       - run: echo "::set-output name=dir::$(yarn cache dir)"
         id: yarn-cache-dir-path
-      - name: Set Env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: actions/cache@v2
         id: yarn-cache
         with:
@@ -24,3 +22,6 @@ jobs:
       - run: yarn
       - name: Test
         run: yarn test
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
