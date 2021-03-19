@@ -1,5 +1,4 @@
 import { Transport } from "./transports";
-
 export interface ICourierContext {
   apiUrl?: string;
   clientKey?: string;
