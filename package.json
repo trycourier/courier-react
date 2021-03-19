@@ -10,6 +10,7 @@
     "lerna:publish": "lerna publish from-package --yes --no-verify-access",
     "postinstall": "lerna bootstrap && yarn build",
     "build": "lerna run build --stream && yarn types",
+    "build:embeds": "lerna run build:embeds --stream",
     "analyze:embeds": "yarn run build && ANALYZE=true lerna run build:embeds --scope @trycourier/embeddable --stream",
     "build:watch": "lerna run build:watch --stream --parallel",
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
