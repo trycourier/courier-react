@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 const path = require("path");
 
 module.exports = {
@@ -13,7 +15,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
     }),
-  ],
+    process.env.ANALYZE && new BundleAnalyzerPlugin(),
+  ].filter(Boolean),
   module: {
     rules: [
       {
@@ -37,5 +40,9 @@ module.exports = {
   resolve: {
     modules: ["node_modules", path.resolve(__dirname, "../../node_modules")],
     extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
   },
 };

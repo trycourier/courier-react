@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Pulse } from "better-react-spinkit";
+import Pulse from "better-react-spinkit/dist/Pulse";
 
 export const Body = styled.div(({ theme }) => ({
   maxHeight: 390,

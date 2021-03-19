@@ -1,5 +1,5 @@
 import { Transport } from "./transports";
-
+import { Interceptor } from './transports/types'
 interface IAction {
   type: string;
   payload: any
@@ -15,6 +15,11 @@ export interface ICourierContext {
     scope: "inbox" | "toast", 
     reducer: (state: any, action: IAction) => void
   ) => void; 
+  subscriptions?: Array<{
+   channel: string;
+   event: string;
+   onEvent?: Interceptor
+  }>
   transport?: Transport;
   userId?: string;
   userSignature?: string;

@@ -1,5 +1,5 @@
 export interface ITransportOptions {
   clientKey: string;
-  secretKey?: string;
+  userSignature?: string;
   wsUrl?: string;
 }
