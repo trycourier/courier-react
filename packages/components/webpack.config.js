@@ -8,6 +8,10 @@ module.exports = {
   mode: "development",
   entry: path.resolve(__dirname, "./src/index.tsx"),
   output: {
+    publicPath:
+      process.env.NODE_ENV === "production"
+        ? "https://courier-components-xvdza5.s3.amazonaws.com/"
+        : undefined,
     filename: "latest.js",
     chunkFilename: "[id].[chunkhash:8].js",
     path: path.resolve(__dirname, "./dist"),

@@ -20,7 +20,6 @@
     "@trycourier/react-inbox": "^0.1.10-alpha.9",
     "@trycourier/react-provider": "^0.1.10-alpha.9",
     "@trycourier/react-toast": "^0.1.10-alpha.9",
-    "aws-sdk": "^2.867.0",
     "babel-loader": "^8.0.6",
     "html-webpack-plugin": "^3.2.0",
     "preact": "^10.5.13",
