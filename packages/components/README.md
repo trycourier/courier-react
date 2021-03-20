@@ -23,8 +23,8 @@ Installation is simple. All you need to do is add `<courier>` components to your
 <body>
   <section>
     <h1>Hello World</h1>
-    <courier component="toast"></courier>
-    <courier component="inbox"></courier>
+    <courier-toast></courier-toast>
+    <courier-inbox></courier-inbox>
   </section>
   <script type="text/javascript">
     window.courierConfig = {
