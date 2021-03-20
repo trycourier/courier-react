@@ -6,4 +6,5 @@ export interface ICourierContext {
   transport?: Transport;
   userId?: string;
   userSignature?: string;
+  wsUrl?: string;
 }

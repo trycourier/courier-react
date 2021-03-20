@@ -23,6 +23,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   transport,
   userId,
   userSignature,
+  wsUrl,
 }) => {
   transport = useMemo(() => {
     if (transport) {
@@ -35,8 +36,9 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
 
     return new CourierTransport({
       clientKey,
+      wsUrl,
     });
-  }, [transport, clientKey]);
+  }, [transport, clientKey, wsUrl]);
 
   const [context, dispatch] = useReducer<
     React.Reducer<ICourierContext, IAction>
