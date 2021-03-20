@@ -57,6 +57,7 @@ Example:
     });
 
     window.courierSdk.transport.intercept((message) => {
+      const iWantToHideThisMessage = true;
       if (iWantToHideThisMessage) {
         return;
       }
