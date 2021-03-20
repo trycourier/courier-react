@@ -51,7 +51,7 @@ const CourierSdk: React.FunctionComponent<{
       init();
     }
 
-    window.courierAsyncInit = undefined;
+    window.courierAsyncInit = [];
   }, [courier]);
 
   return <>{children}</>;
