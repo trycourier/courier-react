@@ -4,6 +4,7 @@
 
 1. [Overview](#overview)
 2. [Client Install](#client-install)
+3. [SDK](#SDK)
 
 ## [Overview](#overview)
 
@@ -33,4 +34,36 @@ Installation is simple. All you need to do is add `<courier>` components to your
   </script>
   <script src="https://courier-components-xvdza5.s3.amazonaws.com/latest.js"></script>
 </body>
+```
+
+## [SDK](#SDK)
+
+To interact with the components, we have exposed an sdk on `window.courierSdk`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`.
+
+Example:
+
+```html
+<script type="text/javascript">
+  window.courierConfig = {
+    clientKey: "{{CLIENT_KEY}}",
+    userId: "{{USER_ID}}",
+  };
+
+  window.courierAsyncInit = window.courierAsyncInit || [];
+  window.courierAsyncInit.push(() => {
+    window.courierSdk.toast({
+      title: "Hello",
+      body: "World",
+    });
+
+    window.courierSdk.transport.intercept((message) => {
+      if (iWantToHideThisMessage) {
+        return;
+      }
+
+      // you can also mutate this message before displaying to a user
+      return message;
+    });
+  });
+</script>
 ```
