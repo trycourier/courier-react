@@ -5,6 +5,7 @@
 1. [Overview](#overview)
 2. [Client Install](#client-install)
 3. [SDK](#SDK)
+4. [Configuring Components](#config)
 
 ## [Overview](#overview)
 
@@ -67,4 +68,34 @@ Example:
     });
   });
 </script>
+```
+
+## [Configuring Components](#config)
+
+You can configure components in 2 different ways. Inline html attributes but also through `window.courierConfig`.
+
+1. Inline
+
+Configuring simple options through HTML attributes is simple. For each configuration, make sure you are using `kebab-case` https://www.theserverside.com/definition/Kebab-case instead of `camelCase` because HTML attributes are case insensitive.
+
+Example:
+
+```html
+<courier-toast auto-close="false"></courier-toast>
+```
+
+2. `window.courierConfig`
+
+Some components have many options and adding many attributes to HTML entities can be cumbersome, you can also add configuration through our `window.courierConfig` object.
+
+Example:
+
+```javascript
+window.courierConfig = {
+  components: {
+    toast: {
+      autoClose: false,
+    },
+  },
+};
 ```
