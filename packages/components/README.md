@@ -99,3 +99,5 @@ window.courierConfig = {
   },
 };
 ```
+
+> Inline configuration attributes will take precedence over `window.courierConfig` options
