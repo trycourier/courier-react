@@ -82,7 +82,6 @@ To listen for actions that happen inside Courier's SDK.
 ## [SDK Actions](#sdk-actions)
 
 - `toast/init`
-  Called when the Toast component has been initialized
 
 ```html
 <script>
