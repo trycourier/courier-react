@@ -23,11 +23,57 @@
         apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
         wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
       };
+
+      window.courierAsyncInit = window.courierAsyncInit || [];
+      window.courierAsyncInit.push(() => {
+        window.showToastOnClick = () => {
+          window.courierSdk.toast({
+            title: "Hello",
+            body: "World",
+          });
+        };
+
+        window.notifyClick = () => {
+          window.courierSdk.transport.send({
+            action: "notify",
+            data: {
+              channel: window.courierConfig.userId,
+              event: "*",
+              message: {
+                title: "Success!",
+                body: "We sent a toast with a websocket",
+              },
+            },
+          });
+        };
+
+        window.courierSdk.transport.intercept((message) => {
+          console.log(message);
+          return message;
+        });
+
+        const showToast = document.getElementById("show-toast");
+        showToast.removeAttribute("disabled");
+
+        const notify = document.getElementById("notify");
+        notify.removeAttribute("disabled");
+      });
     </script>
   </head>
   <body>
     <h1>Treva Homepage</h1>
-    <courier component="toast"></courier>
-    <courier component="inbox"></courier>
+    <courier-toast auto-close="false"></courier-toast>
+    <courier-inbox></courier-inbox>
+    <div>
+      <button id="show-toast" onclick="showToastOnClick()" disabled>
+        Show Toast
+      </button>
+    </div>
+
+    <div>
+      <button id="notify" onclick="notifyClick()" disabled>
+        Notify
+      </button>
+    </div>
   </body>
 </html>
