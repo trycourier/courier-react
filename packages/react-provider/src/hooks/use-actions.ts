@@ -15,7 +15,6 @@ export default () => {
         payload
       });
     },
-
     initInbox: (payload) => {
       dispatch({
         type: "INIT_INBOX",

@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
 import { Message, Title, Body } from "./styled";
-import { getIcon, sendClickedRequest } from "./helpers";
+import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useActions } from "@trycourier/react-provider";
 
@@ -39,7 +39,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
       </Message>
       <Actions
         href={data?.clickAction}
-        onClickDetails={}
+        onClickDetails={handleOnClickDetails}
         onClickDismiss={handleOnClickDismiss}
       />
     </>
