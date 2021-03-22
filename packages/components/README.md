@@ -74,6 +74,8 @@ Example:
 
 You can configure components in 2 different ways. Inline html attributes but also through `window.courierConfig`.
 
+> Inline configuration attributes will take precedence over `window.courierConfig` options
+
 1. Inline
 
 Configuring simple options through HTML attributes is simple. For each configuration, make sure you are using `kebab-case` https://www.theserverside.com/definition/Kebab-case instead of `camelCase` because HTML attributes are case insensitive.
@@ -99,5 +101,3 @@ window.courierConfig = {
   },
 };
 ```
-
-> Inline configuration attributes will take precedence over `window.courierConfig` options

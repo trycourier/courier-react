@@ -117,8 +117,6 @@ const CourierComponents: React.FunctionComponent = () => {
     ...getAttrsAsJson(toastElement),
   };
 
-  console.log("toastConfig", toastConfig);
-
   return (
     <CourierSdk
       activeComponents={{
