@@ -21,6 +21,11 @@ export const ReadIndicator = styled.div(({ theme }) => ({
   ...theme.message?.read,
 }));
 
+export const Contents = styled.div(({ theme }) => ({
+  maxWidth: "58%",
+  ...theme.message?.contents,
+}));
+
 export const Title = styled.div(({ theme }) => ({
   color: "rgb(52, 69, 99)",
   fontSize: "14px",
@@ -32,6 +37,7 @@ export const Body = styled.div(({ theme }) => ({
   color: "#666666",
   marginTop: "2px",
   fontSize: "12px",
+  wordBreak: "break-word",
   ...theme.message?.body,
 }));
 
@@ -73,6 +79,7 @@ const iconStyles = ({ theme }) => ({
   width: 35,
   marginRight: 12,
   flexShrink: "0",
+  flexBasis: "10%",
   backgroundColor: "rgb(249, 249, 249)",
   ...theme.message?.icon,
 });
