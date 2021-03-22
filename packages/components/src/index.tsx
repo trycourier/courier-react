@@ -43,7 +43,10 @@ const CourierSdk: React.FunctionComponent<{
   };
 }> = ({ activeComponents, children }) => {
   const courier = useCourier();
-  window.courierSdk.transport = courier.transport;
+
+  if (!window.courierSdk.transport) {
+    window.courierSdk.transport = courier.transport;
+  }
 
   useEffect(() => {
     for (const component of Object.keys(activeComponents)) {
