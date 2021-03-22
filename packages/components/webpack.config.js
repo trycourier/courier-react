@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const path = require("path");
@@ -28,6 +29,11 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
+          type: "javascript/auto",
+          test: /\.mjs$/,
+          use: [],
+        },
+        {
           test: /\.tsx?$/,
           exclude: /(node_modules|bower_components)/,
           use: {
@@ -52,6 +58,9 @@ module.exports = (env, argv) => {
         react: "preact/compat",
         "react-dom": "preact/compat",
       },
+    },
+    optimization: {
+      minimizer: [isProduction && new UglifyJsPlugin()].filter(Boolean),
     },
   };
 };

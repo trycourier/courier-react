@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Pulse from "better-react-spinkit/dist/Pulse";
 
 export const Body = styled.div(({ theme }) => ({
   maxHeight: 390,
@@ -28,7 +27,7 @@ export const Header = styled.div(({ theme }) => ({
   ...theme.header,
 }));
 
-export const Loading = styled(Pulse)(({theme}) => ({
+export const Loading = styled.div(({theme}) => ({
   display: "block",
   textAlign: "center",
   div:  {
