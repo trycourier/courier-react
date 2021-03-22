@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import {
-  CourierToast,
-  ToastProvider,
-} from "@trycourier/react-toast";
-import { CourierTransport } from "@trycourier/react-provider"
+import { CourierToast, ToastProvider } from "@trycourier/react-toast";
+import { CourierTransport } from "@trycourier/react-provider";
 import { Button, Input, Label } from "./styled";
 
 export default {
@@ -20,6 +17,8 @@ export function WithCourierTransport() {
   useEffect(() => {
     const courierTransport = new CourierTransport({
       secretKey: null,
+      apiUrl: process.env.API_URL,
+      wsUrl: process.env.WS_URL,
       clientKey: tenantIdToClientKey("87c50d2d-b03d-4ce1-bb3f-2ae93ed576f5"),
     });
     setTransport(courierTransport);

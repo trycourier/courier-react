@@ -3,9 +3,11 @@
 # Table of Contents
 
 1. [Overview](#overview)
-2. [Client Install](#client-install)
-3. [SDK](#SDK)
-4. [Configuring Components](#config)
+2. [Initialization](#initialization)
+3. [Config Options](#config-options)
+4. [Async Init](#async-init)
+5. [Courier SDK](#courier-sdk)
+6. [Configuring Components](#config)
 
 ## [Overview](#overview)
 
@@ -13,12 +15,14 @@
 
 _Courier Components_ are a set of components that can be embedded in any website using a simple `<script>` tag. This is useful if you don't have a React build but still want to use Courier's components.
 
-## [Client Install](#client-install)
+## [Initialization](#initialization)
 
 Installation is simple. All you need to do is add `<courier>` components to your page and add 2 script tags to the bottom of the `<body>` or `<footer>`.
 
-1. To setup the config
-2. To download the script
+1. Setup Courier Configurations
+2. Download the Components
+
+> This section covers synchronous initialization where you have all information like the `clientKey` and `userId` available on first render. See `Async Initialization` below for how to control the initialization.
 
 ```html
 <body>
@@ -37,35 +41,70 @@ Installation is simple. All you need to do is add `<courier>` components to your
 </body>
 ```
 
-## [SDK](#SDK)
+## [Config Option](#config-options)
 
-To interact with the components, we have exposed an sdk on `window.courierSdk`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`.
+The supported configuration of `window.courierConfig` are:
+
+| Key        | Type              | Description                                                                                                           |
+| ---------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| clientKey  | `string`          | Key associated with your account. Found on https://app.courier.com/integrations/courier                               |
+| userId     | `string`          | The current user logged into your app. Associated with Courier's `recipientId`                                        |
+| initOnLoad | `boolean`         | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization |
+| components | `ComponentConfig` | Map of configuration for each component (`toast`                                                                      | `inbox`) on the page |
+
+## [Asynchronous Initialization](#async-init)
+
+To interact with Courier and its components, we have exposed an sdk on `window.courierSdk`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`. When the sdk is ready we will call all the functions on this array.
 
 Example:
 
 ```html
 <script type="text/javascript">
-  window.courierConfig = {
-    clientKey: "{{CLIENT_KEY}}",
-    userId: "{{USER_ID}}",
-  };
-
   window.courierAsyncInit = window.courierAsyncInit || [];
   window.courierAsyncInit.push(() => {
-    window.courierSdk.toast({
-      title: "Hello",
-      body: "World",
-    });
+    console.log("Courier is Ready!");
+  });
+</script>
+```
 
-    window.courierSdk.transport.intercept((message) => {
-      const iWantToHideThisMessage = true;
-      if (iWantToHideThisMessage) {
-        return;
-      }
+## [Courier SDK](#courier-sdk)
 
-      // you can also mutate this message before displaying to a user
-      return message;
-    });
+After Courier has initialized, the object `window.courierSdk` is ready.
+
+- window.courierSdk.init(config);
+
+Use this function to initialize the rendering of the Courier components if you were not able to initialize synchronously.
+
+- window.courierSdk.on((action, cb));
+
+To listen for actions that happen inside Courier's SDK.
+
+## [SDK Actions](#sdk-actions)
+
+- `toast/init`
+  Called when the Toast component has been initialized
+
+```html
+<script>
+  window.courierAsyncInit.push(() => {
+    window.courierSdk.on("toast/init", () => {
+      window.courierSdk.toast({
+        title: "Hello",
+        body: "World",
+      });
+    };
+  });
+</script>
+```
+
+- `inbox/init`
+
+```html
+<script>
+  window.courierAsyncInit.push(() => {
+    window.courierSdk.on("inbox/init", () => {
+      console.log(window.courierSdk.inbox.config);
+    };
   });
 </script>
 ```

@@ -6,26 +6,35 @@ import { camelCase } from "camel-case";
 const Toast = lazy(() => import("./components/Toast"));
 const Inbox = lazy(() => import("./components/Inbox"));
 
+interface ICourierConfig {
+  initOnLoad?: boolean;
+  apiUrl?: string;
+  clientKey: string;
+  userId?: string;
+  userSignature?: string;
+  wsUrl?: string;
+  components?: {
+    inbox?: any;
+    toast?: any;
+  };
+}
 declare global {
   interface Window {
     courierSdk: {
-      toast: any;
-      inbox: any;
+      toast?: any;
+      inbox?: any;
+      transport?: any;
+      init: (config: ICourierConfig) => void;
+      on: (action: string, cb: () => void) => void;
     };
     courierAsyncInit?: Array<() => void>;
-    courierConfig: {
-      apiUrl?: string;
-      clientKey: string;
-      userId?: string;
-      userSignature?: string;
-      wsUrl?: string;
-      components?: {
-        inbox?: any;
-        toast?: any;
-      };
-    };
+    courierConfig: ICourierConfig;
   }
 }
+
+const actions: {
+  [action: string]: Array<() => void>;
+} = {};
 
 const CourierSdk: React.FunctionComponent<{
   activeComponents: {
@@ -34,30 +43,23 @@ const CourierSdk: React.FunctionComponent<{
   };
 }> = ({ activeComponents, children }) => {
   const courier = useCourier();
+  window.courierSdk.transport = courier.transport;
 
   useEffect(() => {
-    const courierSdk: any = {};
-
     for (const component of Object.keys(activeComponents)) {
-      if (!courier[component]) {
+      const typedComponent = component as "inbox" | "toast";
+
+      if (!courier[typedComponent] || window.courierSdk[typedComponent]) {
         return;
       }
 
-      courierSdk[component] = courier[component];
+      window.courierSdk[typedComponent] = courier[typedComponent];
+      const initActions = actions[`${typedComponent}/init`] ?? [];
+      for (const initAction of initActions) {
+        initAction();
+      }
     }
-
-    courierSdk.transport = courier.transport;
-    window.courierSdk = courierSdk;
-    if (!window.courierAsyncInit) {
-      return;
-    }
-
-    for (const init of window.courierAsyncInit) {
-      init();
-    }
-
-    window.courierAsyncInit = [];
-  }, [courier]);
+  }, [courier, activeComponents]);
 
   return <>{children}</>;
 };
@@ -142,16 +144,17 @@ const CourierComponents: React.FunctionComponent = () => {
   );
 };
 
-(async () => {
-  const {
-    clientKey,
-    apiUrl,
-    userId,
-    userSignature,
-    wsUrl,
-  } = window.courierConfig;
+let hasInit = false;
 
-  if (typeof document === "undefined") {
+const initCourier = async (courierConfig?: ICourierConfig) => {
+  const { clientKey, apiUrl, userId, userSignature, wsUrl } =
+    courierConfig ?? window.courierConfig;
+
+  if (hasInit || typeof document === "undefined") {
+    return;
+  }
+
+  if (!userId || !clientKey) {
     return;
   }
 
@@ -170,4 +173,26 @@ const CourierComponents: React.FunctionComponent = () => {
     </CourierProvider>,
     courierRoot
   );
-})();
+
+  hasInit = true;
+};
+
+window.courierSdk = {
+  init: initCourier,
+  on: (action: string, cb: () => void) => {
+    actions[action] = actions[action] ?? [];
+    actions[action].push(cb);
+  },
+};
+
+if (window.courierConfig.initOnLoad !== false) {
+  initCourier();
+}
+
+if (window.courierAsyncInit?.length) {
+  for (const init of window.courierAsyncInit) {
+    init();
+  }
+
+  window.courierAsyncInit = [];
+}

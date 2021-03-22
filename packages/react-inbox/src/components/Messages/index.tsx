@@ -37,7 +37,9 @@ const Messages: React.FunctionComponent<InboxProps> = ({
             )
           )
         )}
-        {!isLoading && !messages?.length && <div>You're all caught up!</div>}
+        {!isLoading && messages?.length === 0 && (
+          <div>You're all caught up!</div>
+        )}
       </Body>
       {renderFooter ? renderFooter({}) : <Footer />}
     </>

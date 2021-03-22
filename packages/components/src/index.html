@@ -26,12 +26,19 @@
 
       window.courierAsyncInit = window.courierAsyncInit || [];
       window.courierAsyncInit.push(() => {
-        window.showToastOnClick = () => {
-          window.courierSdk.toast({
-            title: "Hello",
-            body: "World",
-          });
-        };
+        window.courierSdk.on("toast/init", () => {
+          console.log("toast/init");
+
+          window.showToastOnClick = () => {
+            window.courierSdk.toast({
+              title: "Hello",
+              body: "World",
+            });
+          };
+
+          const showToast = document.getElementById("show-toast");
+          showToast.removeAttribute("disabled");
+        });
 
         window.notifyClick = () => {
           window.courierSdk.transport.send({
@@ -51,9 +58,6 @@
           console.log(message);
           return message;
         });
-
-        const showToast = document.getElementById("show-toast");
-        showToast.removeAttribute("disabled");
 
         const notify = document.getElementById("notify");
         notify.removeAttribute("disabled");

@@ -25,6 +25,7 @@ export const GET_MESSAGES = `
 const useMessages = () => {
   const inbox = useInbox();
   const { transport } = useCourier();
+
   const [results] = useQuery({
     query: GET_MESSAGES
   });
