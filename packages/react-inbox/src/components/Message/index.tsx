@@ -1,11 +1,12 @@
 import React, { useMemo } from "react";
 import {
+  Body,
+  ClickAction,
   Container,
+  Contents,
+  getIcon,
   TimeAgo,
   Title,
-  Body,
-  getIcon,
-  ClickAction,
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 import distanceInWords from "date-fns/formatDistanceStrict";
@@ -41,11 +42,11 @@ const Message: React.FunctionComponent<MessageProps> = ({
   return (
     <Container data-testid="inbox-message">
       {renderedIcon}
-      <div>
+      <Contents>
         <Title>{title}</Title>
         <Body>{body}</Body>
         <TimeAgo>{timeAgo}</TimeAgo>
-      </div>
+      </Contents>
       {data?.clickAction && (
         <ClickAction href={data?.clickAction}>View Details</ClickAction>
       )}
