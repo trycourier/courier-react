@@ -27,11 +27,3 @@ export const Header = styled.div(({ theme }) => ({
   ...theme.header,
 }));
 
-export const Loading = styled.div(({theme}) => ({
-  display: "block",
-  textAlign: "center",
-  div:  {
-    display: "inline-block",
-  },
-  ...theme.loading
-}));

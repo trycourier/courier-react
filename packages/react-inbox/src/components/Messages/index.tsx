@@ -2,7 +2,9 @@ import React from "react";
 import Message from "../Message";
 
 import { InboxProps } from "../../types";
-import { Body, Footer, Header, Loading } from "./styled";
+import { Body, Footer, Header } from "./styled";
+
+import Loading from "./loading";
 
 import useInbox from "../../hooks/use-inbox";
 import useMessages from "~/hooks/use-messages";

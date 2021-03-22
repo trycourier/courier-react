@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import Messages from "../Messages";
-import Tippy, { TippyProps } from "@tippyjs/react";
+import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import Bell from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
 
+import LazyTippy from "./LazyTippy";
 import useInbox from "~/hooks/use-inbox";
 
 import { InboxProps } from "../../types";
@@ -13,7 +14,7 @@ import reducer from "~/reducer";
 
 const GlobalStyle = createGlobalStyle`${tippyCss}`;
 
-const StyledTippy = styled(Tippy)(({ theme }) => ({
+const StyledTippy = styled(LazyTippy)(({ theme }) => ({
   fontFamily: `"Nunito Sans", sans-serif`,
   background: "#f9fafb !important",
   backgroundColor: "#f9fafb !important",
