@@ -27,8 +27,6 @@
       window.courierAsyncInit = window.courierAsyncInit || [];
       window.courierAsyncInit.push(() => {
         window.courierSdk.on("toast/init", () => {
-          console.log("toast/init");
-
           window.showToastOnClick = () => {
             window.courierSdk.toast({
               title: "Hello",
