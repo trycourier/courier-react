@@ -52,6 +52,8 @@ The supported configuration of `window.courierConfig` are:
 | initOnLoad | `boolean`         | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization |
 | components | `ComponentConfig` | Map of configuration for each component (`toast` and `inbox`) on the page                                             |
 
+> The components will not render unless we have both the `userId` and `clientKey`
+
 ## [Asynchronous Initialization](#async-init)
 
 To interact with Courier and its components, we have exposed an sdk on `window.courierSdk`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`. When the sdk is ready we will call all the functions on this array.
