@@ -2,6 +2,7 @@ import React, { forwardRef, useState } from "react";
 import Tippy, { TippyProps } from "@tippyjs/react";
 
 /*
+https://github.com/atomiks/tippyjs-react/issues/288
 found here: https://gist.github.com/atomiks/520f4b0c7b537202a23a3059d4eec908
 */
 const LazyTippy: React.FunctionComponent<TippyProps> = forwardRef(
