@@ -25,7 +25,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
       )}
       <Body data-testid="messages">
         {isLoading ? (
-          <Loading size={100} color="#9E3789" />
+          <Loading />
         ) : (
           messages?.map((message) =>
             renderMessage ? (

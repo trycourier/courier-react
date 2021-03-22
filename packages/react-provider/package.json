@@ -15,9 +15,9 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.3.11",
     "graphql": "^15.5.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "urql": "^2.0.1"
   },
   "peerDependencies": {
     "react": "^17.0.1",

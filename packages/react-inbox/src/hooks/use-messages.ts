@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { gql, useQuery } from "@apollo/client";
-import { useGraphQlClient, useCourier } from '@trycourier/react-provider';
+import { useQuery } from 'urql';
+import { useCourier } from '@trycourier/react-provider';
 
 import useInbox from './use-inbox';
 
-export const GET_MESSAGES = gql`
+export const GET_MESSAGES = `
   query {
     messages {
       nodes {
@@ -25,13 +25,12 @@ export const GET_MESSAGES = gql`
 const useMessages = () => {
   const inbox = useInbox();
   const { transport } = useCourier();
-  const client = useGraphQlClient();
-  const results = useQuery(GET_MESSAGES, {
-    client,
+  const [results] = useQuery({
+    query: GET_MESSAGES
   });
 
   useEffect(() => {
-    inbox.setLoading(results?.loading);
+    inbox.setLoading(results?.fetching);
 
     if (!results?.data) {
       return;

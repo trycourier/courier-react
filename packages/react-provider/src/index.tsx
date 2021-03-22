@@ -1,20 +1,29 @@
 import React, { useReducer, useEffect, useMemo } from "react";
 import * as types from "./types";
+import { Provider } from "urql";
 
 export * from "./transports";
 export * from "./hooks";
-export { registerReducer } from "./reducer";
 
-import * as TransportTypes from "./transports/types";
-import reducer, { IAction } from "./reducer";
-
+import useGraphQlClient from "./hooks/use-graphql-client";
 import { CourierTransport } from "./transports/courier";
+import * as TransportTypes from "./transports/types";
+import reducer, {
+  IAction,
+  registerReducer as _registerReducer,
+} from "./reducer";
 
+export const registerReducer = _registerReducer;
 export type ICourierMessage = TransportTypes.ICourierMessage;
 export type ICourierContext = types.ICourierContext;
 export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
+
+const GraphQLProvider: React.FunctionComponent = ({ children }) => {
+  const client = useGraphQlClient();
+  return <Provider value={client}>{children}</Provider>;
+};
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
@@ -81,7 +90,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         dispatch,
       }}
     >
-      {children}
+      <GraphQLProvider>{children}</GraphQLProvider>
     </CourierContext.Provider>
   );
 };
