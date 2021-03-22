@@ -8,7 +8,6 @@ const LazyTippy: React.FunctionComponent<TippyProps> = forwardRef(
     const lazyPlugin = {
       fn: () => ({
         onMount: () => setMounted(true),
-        onHidden: () => setMounted(false),
       }),
     };
 
