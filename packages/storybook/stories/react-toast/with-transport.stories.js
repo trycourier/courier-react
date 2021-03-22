@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   CourierToast,
   ToastProvider,
-  CourierTransport,
 } from "@trycourier/react-toast";
+import { CourierTransport } from "@trycourier/react-provider"
 import { Button, Input, Label } from "./styled";
 
 export default {

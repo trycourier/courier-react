@@ -27,7 +27,8 @@ function DefaultComponentWithAction({ body }) {
     body,
     data: {
       clickAction: "https://app.courier.com",
-      clickedUrl: "https://api.courier.com/something/send",
+      clickedUrl: "https://example.com/e/clicked",
+      readUrl: "https://example.com/e/read"
     },
     options: {
       hideProgressBar: false,

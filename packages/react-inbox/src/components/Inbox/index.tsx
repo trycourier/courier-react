@@ -39,7 +39,7 @@ const StyledTippy = styled(LazyTippy)(({ theme }) => ({
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const courierContext = useCourier();
-
+  
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
   }
