@@ -79,7 +79,6 @@ const iconStyles = ({ theme }) => ({
   width: 35,
   marginRight: 12,
   flexShrink: "0",
-  flexBasis: "10%",
   backgroundColor: "rgb(249, 249, 249)",
   ...theme.message?.icon,
 });
