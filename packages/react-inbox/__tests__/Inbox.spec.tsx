@@ -1,9 +1,10 @@
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-import { MockedProvider } from "@apollo/client/testing";
 
 import React from "react";
 import { Inbox, CourierProvider } from "../src";
 import { InboxProps } from "../src/types";
+
+import fetchMock from "fetch-mock";
 
 function renderInboxComponent(props?: Partial<InboxProps>) {
   const defaultProps: InboxProps = {
@@ -12,14 +13,44 @@ function renderInboxComponent(props?: Partial<InboxProps>) {
 
   return render(
     <CourierProvider>
-      <MockedProvider>
-        <Inbox {...defaultProps} {...props} />
-      </MockedProvider>
+      <Inbox {...defaultProps} {...props} />
     </CourierProvider>
   );
 }
 
 describe("<Inbox />", () => {
+  beforeEach(() => {
+    fetchMock.post("https://api.courier.com/client/q", {
+      data: {
+        messages: {
+          nodes: [
+            {
+              id: "123",
+              messageId: "1-6055153c-c0af468a3ebe8cb79665f556",
+              created: "2021-03-19T21:18:52.271Z",
+              content: {
+                title: "Template Published",
+                body: "Weekly Check-In was recently published",
+                data: {
+                  clickAction:
+                    "/designer/notifications/BFD3HKDEZR4478MBV5ZTGHWXXEDP",
+                  tenantId: "7aff2747-d1bb-4f47-9476-3eae1646ba02",
+                  triggeredBy: "Google_103278594813491371949",
+                },
+                __typename: "Content",
+              },
+              __typename: "Messages",
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  afterEach(() => {
+    fetchMock.reset();
+  });
+
   it("should throw an error without CourierProvider", () => {
     try {
       render(<Inbox />);
@@ -43,7 +74,7 @@ describe("<Inbox />", () => {
     expect(bellSvg).toBeVisible();
   });
 
-  it("should inbox when mouse hovers the bell", async () => {
+  it("should inbox when mouse clicks the bell", async () => {
     renderInboxComponent();
     const bellSvg = screen.getByTestId("bell-svg");
 
