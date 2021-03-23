@@ -24,8 +24,7 @@
         wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
       };
 
-      window.courierAsyncInit = window.courierAsyncInit || [];
-      window.courierAsyncInit.push(() => {
+      window.courierAsyncInit = () => {
         window.courier.on("toast/init", () => {
           window.showToastOnClick = () => {
             window.courier.toast.add({
@@ -59,7 +58,7 @@
 
         const notify = document.getElementById("notify");
         notify.removeAttribute("disabled");
-      });
+      };
     </script>
   </head>
   <body>

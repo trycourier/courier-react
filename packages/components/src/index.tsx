@@ -57,7 +57,7 @@ const CourierSdk: React.FunctionComponent<{
       const typedComponent = component as "inbox" | "toast";
 
       if (!courier[typedComponent] || window.courier[typedComponent]) {
-        return;
+        continue;
       }
 
       switch (typedComponent) {
