@@ -99,14 +99,14 @@ To listen for actions that happen inside Courier's SDK.
 
 ```html
 <script>
-  window.courierAsyncInit.push(() => {
+  window.courierAsyncInit = () => {
     window.courier.on("toast/init", () => {
       window.courier.toast({
         title: "Hello",
         body: "World",
       });
     };
-  });
+  };
 </script>
 ```
 
@@ -114,11 +114,11 @@ To listen for actions that happen inside Courier's SDK.
 
 ```html
 <script>
-  window.courierAsyncInit.push(() => {
+  window.courierAsyncInit = () => {
     window.courier.on("inbox/init", () => {
       console.log(window.courier.inbox.config);
     };
-  });
+  };
 </script>
 ```
 
