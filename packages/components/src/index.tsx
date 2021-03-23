@@ -31,7 +31,7 @@ declare global {
       init: (config: ICourierConfig) => void;
       on: (action: string, cb: () => void) => void;
     };
-    courierAsyncInit?: Array<() => void>;
+    courierAsyncInit?: () => void | Array<() => void>;
     courierConfig: ICourierConfig;
   }
 }
@@ -209,10 +209,14 @@ if (window.courierConfig.initOnLoad !== false) {
   initCourier();
 }
 
-if (window.courierAsyncInit?.length) {
+if (typeof window.courierAsyncInit === "function") {
+  window.courierAsyncInit();
+}
+
+if (Array.isArray(window.courierAsyncInit)) {
   for (const init of window.courierAsyncInit) {
     init();
   }
 
-  window.courierAsyncInit = [];
+  window.courierAsyncInit = undefined;
 }

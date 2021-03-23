@@ -56,9 +56,21 @@ The supported configuration of `window.courierConfig` are:
 
 ## [Asynchronous Initialization](#async-init)
 
-To interact with Courier and its components, we have exposed an sdk on `window.courier`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`. When the sdk is ready we will call all the functions on this array.
+To interact with Courier and its components, we have exposed an sdk on `window.courier`. Since this sdk initializes asynchronous, you can use `window.courierAsyncInit` to know when the Courier code has been loaded.
 
-Example:
+`window.courierAsyncInit` can either be a function or an array. Arrays are useful if you want to separate the logic for each component to different files.
+
+- Function Example:
+
+```html
+<script type="text/javascript">
+  window.courierAsyncInit = () => {
+    console.log("Courier is Ready!");
+  };
+</script>
+```
+
+- Array Example:
 
 ```html
 <script type="text/javascript">
