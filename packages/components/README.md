@@ -56,7 +56,7 @@ The supported configuration of `window.courierConfig` are:
 
 ## [Asynchronous Initialization](#async-init)
 
-To interact with Courier and its components, we have exposed an sdk on `window.courierSdk`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`. When the sdk is ready we will call all the functions on this array.
+To interact with Courier and its components, we have exposed an sdk on `window.courier`. Since this sdk initializes asynchronous, you can create and push initialization functions onto an array named `window.courierAsyncInit`. When the sdk is ready we will call all the functions on this array.
 
 Example:
 
@@ -71,13 +71,13 @@ Example:
 
 ## [Courier SDK](#courier-sdk)
 
-After Courier has initialized, the object `window.courierSdk` is ready.
+After Courier has initialized, the object `window.courier` is ready.
 
-- window.courierSdk.init(config);
+- window.courier.init(config);
 
 Use this function to initialize the rendering of the Courier components if you were not able to initialize synchronously.
 
-- window.courierSdk.on((action, cb));
+- window.courier.on((action, cb));
 
 To listen for actions that happen inside Courier's SDK.
 
@@ -88,8 +88,8 @@ To listen for actions that happen inside Courier's SDK.
 ```html
 <script>
   window.courierAsyncInit.push(() => {
-    window.courierSdk.on("toast/init", () => {
-      window.courierSdk.toast({
+    window.courier.on("toast/init", () => {
+      window.courier.toast({
         title: "Hello",
         body: "World",
       });
@@ -103,8 +103,8 @@ To listen for actions that happen inside Courier's SDK.
 ```html
 <script>
   window.courierAsyncInit.push(() => {
-    window.courierSdk.on("inbox/init", () => {
-      console.log(window.courierSdk.inbox.config);
+    window.courier.on("inbox/init", () => {
+      console.log(window.courier.inbox.config);
     };
   });
 </script>

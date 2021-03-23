@@ -26,9 +26,9 @@
 
       window.courierAsyncInit = window.courierAsyncInit || [];
       window.courierAsyncInit.push(() => {
-        window.courierSdk.on("toast/init", () => {
+        window.courier.on("toast/init", () => {
           window.showToastOnClick = () => {
-            window.courierSdk.toast({
+            window.courier.toast.add({
               title: "Hello",
               body: "World",
             });
@@ -39,7 +39,7 @@
         });
 
         window.notifyClick = () => {
-          window.courierSdk.transport.send({
+          window.courier.transport.send({
             action: "notify",
             data: {
               channel: window.courierConfig.userId,
@@ -52,7 +52,7 @@
           });
         };
 
-        window.courierSdk.transport.intercept((message) => {
+        window.courier.transport.intercept((message) => {
           console.log(message);
           return message;
         });

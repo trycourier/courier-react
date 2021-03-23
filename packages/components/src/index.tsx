@@ -20,9 +20,13 @@ interface ICourierConfig {
 }
 declare global {
   interface Window {
-    courierSdk: {
-      toast?: any;
-      inbox?: any;
+    courier: {
+      toast?: {
+        add: (message: { title: string; body: string }) => void;
+      };
+      inbox?: {
+        config: any;
+      };
       transport?: any;
       init: (config: ICourierConfig) => void;
       on: (action: string, cb: () => void) => void;
@@ -44,19 +48,32 @@ const CourierSdk: React.FunctionComponent<{
 }> = ({ activeComponents, children }) => {
   const courier = useCourier();
 
-  if (!window.courierSdk.transport) {
-    window.courierSdk.transport = courier.transport;
+  if (!window.courier.transport) {
+    window.courier.transport = courier.transport;
   }
 
   useEffect(() => {
     for (const component of Object.keys(activeComponents)) {
       const typedComponent = component as "inbox" | "toast";
 
-      if (!courier[typedComponent] || window.courierSdk[typedComponent]) {
+      if (!courier[typedComponent] || window.courier[typedComponent]) {
         return;
       }
 
-      window.courierSdk[typedComponent] = courier[typedComponent];
+      switch (typedComponent) {
+        case "inbox": {
+          window.courier.inbox = courier.inbox;
+          break;
+        }
+
+        case "toast": {
+          window.courier.toast = {
+            add: courier.toast,
+          };
+          break;
+        }
+      }
+
       const initActions = actions[`${typedComponent}/init`] ?? [];
       for (const initAction of initActions) {
         initAction();
@@ -180,7 +197,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
   hasInit = true;
 };
 
-window.courierSdk = {
+window.courier = {
   init: initCourier,
   on: (action: string, cb: () => void) => {
     actions[action] = actions[action] ?? [];
