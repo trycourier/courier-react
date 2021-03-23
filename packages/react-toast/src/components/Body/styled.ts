@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export const Icon = styled.img(({theme}) => ({
+export const Icon = styled.img(({ theme }) => ({
   flexShrink: "0",
   marginLeft: 12,
   marginRight: 12,
@@ -10,7 +10,7 @@ export const Icon = styled.img(({theme}) => ({
   padding: "2px",
   maxHeight: "35px !important",
   maxWidth: "35px !important",
-  ...theme.icon,
+  ...theme?.icon,
 }));
 
 export const Message = styled.div`
