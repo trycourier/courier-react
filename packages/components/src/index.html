@@ -24,17 +24,21 @@
         wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
       };
 
-      window.courierAsyncInit = window.courierAsyncInit || [];
-      window.courierAsyncInit.push(() => {
-        window.showToastOnClick = () => {
-          window.courierSdk.toast({
-            title: "Hello",
-            body: "World",
-          });
-        };
+      window.courierAsyncInit = () => {
+        window.courier.on("toast/init", () => {
+          window.showToastOnClick = () => {
+            window.courier.toast.add({
+              title: "Hello",
+              body: "World",
+            });
+          };
+
+          const showToast = document.getElementById("show-toast");
+          showToast.removeAttribute("disabled");
+        });
 
         window.notifyClick = () => {
-          window.courierSdk.transport.send({
+          window.courier.transport.send({
             action: "notify",
             data: {
               channel: window.courierConfig.userId,
@@ -47,17 +51,14 @@
           });
         };
 
-        window.courierSdk.transport.intercept((message) => {
+        window.courier.transport.intercept((message) => {
           console.log(message);
           return message;
         });
 
-        const showToast = document.getElementById("show-toast");
-        showToast.removeAttribute("disabled");
-
         const notify = document.getElementById("notify");
         notify.removeAttribute("disabled");
-      });
+      };
     </script>
   </head>
   <body>
@@ -69,7 +70,6 @@
         Show Toast
       </button>
     </div>
-
     <div>
       <button id="notify" onclick="notifyClick()" disabled>
         Notify
