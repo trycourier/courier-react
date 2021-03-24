@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Body = styled.div(({ theme }) => ({
   maxHeight: 390,
   padding: "0 14px",
-  background: "#F9FAFB",
+  background: "#FFFFFF",
   overflow: "scroll",
   ...theme.body,
 }));

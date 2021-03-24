@@ -3,10 +3,7 @@ import { ToastContainer } from "react-toastify";
 
 export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
   ["&.Toastify__toast-container"]: {
-    "*": {
-      boxSizing: "border-box",
-    },
-    fontFamily: `"Nunito Sans", sans-serif`,
+    fontFamily: `"Nunito", sans-serif`,
     ...theme?.root
   },
   [".Toastify__toast"]: {

@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   height: 38px;
   border: 1px solid #73819B;
+  background: #f9fafb;
   border-radius: 4px;
   > :first-child {
     border-radius: 4px 0px 0px 4px;
