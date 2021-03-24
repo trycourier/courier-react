@@ -1,14 +1,12 @@
-import React, { useMemo, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 import { toast } from "react-toastify";
 
 import { useCourier, useActions } from "@trycourier/react-provider";
 
-import { getTransition } from "./helpers";
+import { getTransition } from "../../lib";
 import { ToastStyled } from "./styled";
 import toastCss from "react-toastify/dist/ReactToastify.css";
-
-import { defaultConfig } from "~/defaults";
 import { ICourierToastMessage } from "~/components/Toast/types";
 import { IToastConfig } from "~/types";
 import { useListenForTransportEvent } from "~/hooks";
@@ -28,13 +26,6 @@ export const Toast: React.FunctionComponent<{
   const { clientKey, transport } = courierContext;
   const courierActions = useActions();
 
-  const toastConfig = useMemo(() => {
-    return {
-      ...defaultConfig,
-      ...config,
-    };
-  }, [config]);
-
   const handleToast = useCallback(
     (message: ICourierToastMessage | string) => {
       message =
@@ -46,13 +37,13 @@ export const Toast: React.FunctionComponent<{
           : message;
 
       toast(
-        <Body {...message} icon={message.icon ?? toastConfig.defaultIcon} />,
+        <Body {...message} icon={message.icon ?? config?.defaultIcon} />,
         {
-          role: toastConfig.role ?? "status",
+          role: config?.role ?? "status",
         }
       );
     },
-    [toastConfig]
+    [config]
   );
 
   useEffect(() => {
@@ -62,9 +53,9 @@ export const Toast: React.FunctionComponent<{
 
     courierActions.initToast({
       toast: handleToast,
-      toastConfig,
+      config,
     });
-  }, [toastConfig, handleToast]);
+  }, [config, handleToast]);
 
   useListenForTransportEvent(clientKey, transport, handleToast);
 
@@ -75,8 +66,8 @@ export const Toast: React.FunctionComponent<{
         data-testid="crt-toast-container"
         closeButton={false}
         closeOnClick={false}
-        {...toastConfig}
-        transition={getTransition(toastConfig?.transition)}
+        {...config}
+        transition={getTransition(config?.transition)}
       />
     </>
   );

@@ -1,12 +1,11 @@
 import React from "react";
 
-import { CourierToast, ToastProvider, useToast } from "@trycourier/react-toast";
+import { ToastProvider, useToast } from "@trycourier/react-toast";
 
 import { Button } from "./styled";
 
 export default {
-  title: "Toast",
-  component: CourierToast,
+  title: "Toast/Basic",
   args: {
     bodyText: "One API for notifications!",
   },
@@ -32,18 +31,13 @@ export function NoIcon({ bodyText }) {
   }
 
   return (
-    <ToastProvider
-      clientKey="client-key"
-      config={{
-        defaultIcon: false,
-      }}
-    >
+    <ToastProvider clientKey="client-key">
       <DefaultComponent body={bodyText} />
     </ToastProvider>
   );
 }
 
-export function NoTimer({ bodyText }) {
+export function NoAutoClose({ bodyText }) {
   function DefaultComponent({ body }) {
     const [toast] = useToast();
     return <Button onClick={() => toast(body)}>Show Toast</Button>;
@@ -55,6 +49,33 @@ export function NoTimer({ bodyText }) {
       config={{
         autoClose: false,
       }}
+    >
+      <DefaultComponent body={bodyText} />
+    </ToastProvider>
+  );
+}
+
+export function WithClickAction({ bodyText }) {
+  function DefaultComponent({ body }) {
+    const notification = {
+      title: "Courier",
+      body,
+      data: {
+        clickAction: "https://app.courier.com",
+        clickedUrl: "https://example.com/e/clicked",
+        readUrl: "https://example.com/e/read"
+      },
+      options: {
+        hideProgressBar: false,
+      },
+    };
+    const [toast] = useToast();
+    return <Button onClick={() => toast(notification)}>Show Toast</Button>;
+  }
+  
+  return (
+    <ToastProvider
+      clientKey="client-key"
     >
       <DefaultComponent body={bodyText} />
     </ToastProvider>

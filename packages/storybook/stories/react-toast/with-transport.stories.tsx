@@ -5,19 +5,17 @@ import { CourierTransport } from "@trycourier/react-provider";
 import { Button, Input, Label } from "./styled";
 
 export default {
-  title: "Toast/Toast",
+  title: "Toast/Transport",
   component: CourierToast,
 };
 
-export function WithCourierTransport() {
+export function CreateEvent() {
   const [subScribeChannel, setSubscribeChannel] = useState();
   const [subscribeEvent, setSubscribeEvent] = useState();
   const [transport, setTransport] = useState(null);
 
   useEffect(() => {
     const courierTransport = new CourierTransport({
-      secretKey: null,
-      apiUrl: process.env.API_URL,
       wsUrl: process.env.WS_URL,
       clientKey: tenantIdToClientKey("87c50d2d-b03d-4ce1-bb3f-2ae93ed576f5"),
     });

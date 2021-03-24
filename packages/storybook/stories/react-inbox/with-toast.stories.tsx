@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-
 import { Inbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
 import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
 
 export default {
-  title: "InboxWithTOast",
+  title: "Inbox/With Toast",
   component: Inbox,
   argTypes: {},
   args: {},
@@ -25,14 +24,10 @@ if (typeof window !== "undefined") {
 
 export function Default() {
   useEffect(() => {
-    if (!courierTransport) {
-      return;
-    }
-
-    courierTransport.subscribe(userId, channel);
+    courierTransport?.subscribe(userId, channel);
 
     return () => {
-      courierTransport.unsubscribe(userId, channel);
+      courierTransport?.unsubscribe(userId, channel);
     };
   }, []);
 
