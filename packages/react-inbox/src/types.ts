@@ -19,9 +19,10 @@ export interface InboxProps {
   theme?: ThemeObject;
   title?: string;
   trigger?: TippyProps["trigger"];
+  unreadCount: string;
 }
 
 type ThemeObject = {
   //https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/withStyles/withStyles.d.ts#L21
-  [key in InboxThemeOptions | MessageThemeOptions | string ]?: CSSProperties | ThemeObject;
+  [key in InboxThemeOptions | MessageThemeOptions | string]?: CSSProperties | ThemeObject;
 }

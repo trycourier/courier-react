@@ -2,8 +2,9 @@ import React from "react";
 import Message from "../Message";
 
 import { InboxProps } from "../../types";
-import { Body, Footer, Header } from "./styled";
+import { Body, Footer, Header, HeaderText } from "./styled";
 
+import TabBar from '../TabBar';
 import Loading from "./loading";
 
 import useInbox from "../../hooks/use-inbox";
@@ -14,17 +15,21 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   renderHeader,
   renderFooter,
   renderMessage,
+  unreadCount,
 }) => {
   useMessages();
   const { messages, isLoading } = useInbox();
-
   return (
     <>
       {renderHeader ? (
         renderHeader({})
       ) : (
-        <Header data-testid="header">{title}</Header>
+        <Header data-testid="header">
+          <HeaderText>{title}{unreadCount ? ` (${unreadCount})` : ''}</HeaderText>
+          {/* <BodyText style={{cursor: 'pointer'}}>Mark all as read</BodyText> */}
+        </Header>
       )}
+      <TabBar style={{margin: '24px 8px 8px 14px'}} />
       <Body data-testid="messages">
         {isLoading ? (
           <Loading />

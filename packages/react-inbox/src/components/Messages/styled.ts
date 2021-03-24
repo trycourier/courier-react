@@ -16,14 +16,28 @@ export const Footer = styled.div(({ theme }) => ({
 }));
 
 export const Header = styled.div(({ theme }) => ({
-  background: "white",
-  color: "rgb(52, 69, 99)",
-  fontSize: "16px",
-  fontWeight: "bold",
-  padding: "10px 18px",
+  padding: "18px 20px",
   userSelect: "none",
   borderTopLeftRadius: 24,
   borderTopRightRadius: 24,
+  display: 'flex',
+  justifyContent: 'space-between',
   ...theme.header,
 }));
 
+export const HeaderText = styled.div`
+  color: rgb(52, 69, 99);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: 0em;
+`
+
+export const BodyText = styled.div`
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  color: #9D3789;
+`
