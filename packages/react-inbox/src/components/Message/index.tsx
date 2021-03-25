@@ -12,6 +12,13 @@ import useInbox from "~/hooks/use-inbox";
 import distanceInWords from "date-fns/formatDistanceStrict";
 import OptionsDropdown from '../OptionsDropdown';
 import Actions from '../Actions';
+const options = [{
+  label: 'Mark as read',
+  onClick: () => {}
+},{
+  label: 'Delete',
+  onClick: () => {}
+}]
 
 interface MessageProps {
   messageId: string;
@@ -30,7 +37,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
   body,
   icon,
   data,
-  unread = true
+  unread,
 }) => {
   const { config } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
@@ -54,7 +61,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
         <TimeAgo>{timeAgo}</TimeAgo>
       </Contents>
       <Actions actions={actions} />
-      <OptionsDropdown />
+      {/* <OptionsDropdown options={options} /> */}
     </Container>
   );
 };

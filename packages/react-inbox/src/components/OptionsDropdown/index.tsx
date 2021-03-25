@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { ArrowContainer, Container } from './styled'
-import ArrowIcon from './arrow.svg'
+import DownArrowIcon from './down_arrow.svg'
 import styled from 'styled-components'
 import Tippy from '@tippyjs/react'
+import Options from './Options';
 
 const StyledTippy = styled(Tippy)`
-  .tippy-tooltip {
-    top: -15px;
-  }
   .tippy-content {
     font-family: "Nunito", sans-serif;
     background-color: #FFFFFF !important;
@@ -16,6 +14,12 @@ const StyledTippy = styled(Tippy)`
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
     color: #24324B;
     border-radius: 4px;
+    > div {
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+    }
   }
 `;
 let tippyProps = {
@@ -25,17 +29,17 @@ let tippyProps = {
   arrow: false,
   interactiveDebounce: 75,
   distance: 0,
-  offset: [0, -15]
+  offset: [0, -39]
 };
 
 
-function OptionsDropdown() {
+function OptionsDropdown({ options }) {
   const [showDropdown, setShowDropdown] = useState(false);
   return (
     <Container>
-      <StyledTippy {...tippyProps} content={"This is a message"}>
+      <StyledTippy visible={showDropdown} {...tippyProps} content={<Options close={() => setShowDropdown(false)} options={options} />}>
       <ArrowContainer onClick={() => setShowDropdown(!showDropdown)}>
-        <ArrowIcon data-popper-arrow="" />
+        <DownArrowIcon />
       </ArrowContainer>
       </StyledTippy>
     </Container>

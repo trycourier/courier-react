@@ -29,7 +29,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
           {/* <BodyText style={{cursor: 'pointer'}}>Mark all as read</BodyText> */}
         </Header>
       )}
-      <TabBar style={{margin: '24px 8px 8px 14px'}} />
+      {/* <TabBar style={{margin: '24px 8px 8px 14px'}} /> */}
       <Body data-testid="messages">
         {isLoading ? (
           <Loading />
