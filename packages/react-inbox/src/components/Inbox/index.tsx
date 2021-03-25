@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import classNames from "classnames";
 import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
@@ -83,10 +82,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     });
   }, [props]);
 
-  const handleOnClick = () => {
-    console.log("click");
-  };
-
   if (!courierContext?.inbox) {
     return null;
   }
@@ -103,7 +98,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           </span>
         ) : (
           <Bell
-            onClick={handleOnClick}
             hasUnreadMessages={inbox.hasUnreadMessages}
             className={props.className}
           />
