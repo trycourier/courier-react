@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { ArrowContainer, Container } from './styled'
-import DownArrowIcon from './down_arrow.svg'
+import { OptionsIconContainer, Container } from './styled'
+import OptionsIcon from './options.svg'
 import styled from 'styled-components'
 import Tippy from '@tippyjs/react'
 import Options from './Options';
@@ -38,9 +38,9 @@ function OptionsDropdown({ options }) {
   return (
     <Container>
       <StyledTippy visible={showDropdown} {...tippyProps} content={<Options close={() => setShowDropdown(false)} options={options} />}>
-      <ArrowContainer onClick={() => setShowDropdown(!showDropdown)}>
-        <DownArrowIcon />
-      </ArrowContainer>
+      <OptionsIconContainer onClick={() => setShowDropdown(!showDropdown)}>
+        <OptionsIcon />
+      </OptionsIconContainer>
       </StyledTippy>
     </Container>
   )

@@ -61,7 +61,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
         <TimeAgo>{timeAgo}</TimeAgo>
       </Contents>
       <Actions actions={actions} />
-      {/* <OptionsDropdown options={options} /> */}
+      <OptionsDropdown options={options} />
     </Container>
   );
 };

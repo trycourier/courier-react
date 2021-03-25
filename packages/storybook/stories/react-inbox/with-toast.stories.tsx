@@ -53,7 +53,7 @@ export function Default() {
         transport={courierTransport}
       >
         <Toast />
-        <Inbox title="Notifications" />
+        <Inbox title="Inbox" />
       </CourierProvider>
       <button onClick={handleNotify}>Test</button>
     </>

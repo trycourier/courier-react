@@ -4,14 +4,15 @@ import CourierSvg from "./courier-icon.svg";
 
 export const Container = styled.div(({ theme }) => ({
   display: "flex",
-  // width: "100%",
   position: "relative",
-  margin: "10px 0",
   padding: "10px 15px",
   backgroundColor: '#F9FAFB',
   alignItems: 'center',
   height: 90,
-  borderRadius: 4,
+  borderBottom: '1px solid rgba(203,213,224,.5)',
+  ':hover': {
+    background: '#EDE4ED'
+  },
   ...theme.message?.container,
 }));
 
