@@ -21,6 +21,7 @@ const options = [{
 }]
 
 interface MessageProps {
+  unread?: number;
   messageId: string;
   created: number;
   title: string;

@@ -49,7 +49,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
       </Body>
       {renderFooter ? renderFooter({}) : (
       <Footer>
-        <div>Powered by&nbsp;<CourierLogo /></div>
+        <div><span style={{marginTop: 2}}>Powered by&nbsp;&nbsp;</span><CourierLogo /></div>
       </Footer>)}
     </>
   );

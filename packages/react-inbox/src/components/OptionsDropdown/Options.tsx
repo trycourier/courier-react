@@ -1,19 +1,12 @@
 import React from 'react'
 import styled from 'styled-components';
-import UpArrowIcon from './up_arrow.svg'
-
-const StyledUpArrowIcon = styled(UpArrowIcon)`
-  align-self: flex-end;
-  margin-right: 14px;
-  margin-bottom: 15px;
-  cursor: pointer;
-`
 
 const Container = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  background-color: #344563;
+  border-radius: 4px !important;
 `;
 
 const Option = styled.div`
@@ -24,14 +17,13 @@ const Option = styled.div`
   line-height: 16px;
   letter-spacing: 0em;
   text-align: center;
-  color: black;
+  color: white;
   cursor: pointer;
   display: flex;
   padding-left: 10px;
   align-items: center;
   :hover {
-    background-color: #E4DFF0;
-    color: #9D3789;
+    background-color: #5C6A82;
   }
 `
 
@@ -39,9 +31,11 @@ const Option = styled.div`
 function Options({ options, close }) {
   return (
     <Container>
-      <StyledUpArrowIcon onClick={close} />
       {
-        options.map(({ label }) => <Option>{label}</Option>)
+        options.map(({ label, onClick = () => {} }) => <Option key={label} onClick={() => {
+          onClick();
+          close()
+        }}>{label}</Option>)
       }
     </Container>
   )

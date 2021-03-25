@@ -19,7 +19,7 @@ export interface InboxProps {
   theme?: ThemeObject;
   title?: string;
   trigger?: TippyProps["trigger"];
-  unreadCount: string;
+  unreadCount?: string;
 }
 
 type ThemeObject = {

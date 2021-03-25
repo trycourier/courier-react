@@ -1,11 +1,10 @@
 import React from "react";
-import { CourierToast, ToastProvider, useToast } from "@trycourier/react-toast";
+import { ToastProvider, useToast } from "@trycourier/react-toast";
 import { Button } from "./styled";
 import WarningIcon from "./warning.svg";
 
 export default {
   title: "Toast/Provider Configuration",
-  component: CourierToast,
   argTypes: {
     position: {
       control: {
