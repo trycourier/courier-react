@@ -28,7 +28,6 @@ const Message: React.FunctionComponent<MessageProps> = ({
   body,
   icon,
   data,
-  messageId,
 }) => {
   const { config } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
