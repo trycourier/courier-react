@@ -15,10 +15,17 @@ export default (state, action) => {
       };
     }
 
+    case "inbox/SET_HAS_UNREAD_MESSAGES": {
+      return {
+        ...state,
+        hasUnreadMessages: action.payload.hasUnreadMessages,
+      };
+    }
+
     case "inbox/SET_MESSAGES": {
       return {
         ...state,
-        messages: action?.payload?.messages?.nodes?.map(message => ({
+        messages: action?.payload?.map(message => ({
           messageId: message.messageId,
           created: message.created,
           title: message?.content?.title,

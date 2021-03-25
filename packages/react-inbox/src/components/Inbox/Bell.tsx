@@ -6,6 +6,17 @@ export const StyledButton = styled.button(({ theme }) => ({
   background: "transparent",
   padding: 0,
   outline: "none",
+  position: "relative",
+
+  ".unread-badge": {
+    position: "absolute",
+    top: -1,
+    right: -1,
+    borderRadius: "100%",
+    padding: 5,
+    background: "#de5063",
+    animation: "badge-pulse 10s infinite",
+  },
 
   svg: {
     cursor: "pointer",
@@ -21,9 +32,10 @@ export const StyledButton = styled.button(({ theme }) => ({
 
 const Bell: React.ForwardRefExoticComponent<{
   className?: string;
+  hasUnreadMessages?: boolean;
   ref?: React.Ref<HTMLButtonElement>;
   onClick?: (event: React.MouseEvent) => void;
-}> = forwardRef(({ className, onClick }, ref) => {
+}> = forwardRef(({ className, onClick, hasUnreadMessages }, ref) => {
   return (
     <StyledButton
       className={className}
@@ -31,6 +43,7 @@ const Bell: React.ForwardRefExoticComponent<{
       onClick={onClick}
       ref={ref}
     >
+      {hasUnreadMessages && <div className="unread-badge" />}
       <svg
         width="54px"
         height="63px"

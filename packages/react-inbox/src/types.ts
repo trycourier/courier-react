@@ -14,7 +14,9 @@ export interface InboxProps {
   placement?: TippyProps["placement"];
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
-  renderIcon?: React.FunctionComponent;
+  renderIcon?: React.FunctionComponent<{
+    hasUnreadMessages: boolean;
+  }>;
   renderMessage?: React.FunctionComponent;
   theme?: ThemeObject;
   title?: string;

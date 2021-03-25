@@ -21,6 +21,15 @@ export default () => {
       });
     },
 
+    setHasUnreadMessages: (hasUnreadMessages: boolean) => {
+      dispatch({
+        type: "inbox/SET_HAS_UNREAD_MESSAGES",
+        payload: {
+          hasUnreadMessages
+        }
+      });
+    },
+
     setMessages: (payload) => {
       dispatch({
         type: "inbox/SET_MESSAGES",

@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
 import { useQuery } from 'urql';
-import { useCourier } from '@trycourier/react-provider';
 
+import { useCourier } from '@trycourier/react-provider';
 import useInbox from './use-inbox';
 
 export const GET_MESSAGES = `
   query {
-    messages {
+    unread:messages(params: {
+      isRead: false
+    }) {
+      totalCount
       nodes {
         id
         messageId
@@ -33,11 +36,11 @@ const useMessages = () => {
   useEffect(() => {
     inbox.setLoading(results?.fetching);
 
-    if (!results?.data) {
+    if (!results?.data?.unread) {
       return;
     }
 
-    inbox.setMessages(results?.data);
+    inbox.setMessages(results?.data?.unread?.nodes);
   }, [results])
 
   useEffect(() => {
