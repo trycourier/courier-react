@@ -15,6 +15,13 @@ export default (state, action) => {
       };
     }
 
+    case "inbox/SET_HAS_UNREAD_MESSAGES": {
+      return {
+        ...state,
+        hasUnreadMessages: action.payload.hasUnreadMessages,
+      };
+    }
+
     case "inbox/SET_MESSAGES": {
       return {
         ...state,

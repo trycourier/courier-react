@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useQuery } from 'urql';
-import { useCourier } from '@trycourier/react-provider';
 
+import { useCourier } from '@trycourier/react-provider';
 import useInbox from './use-inbox';
 
 export const GET_MESSAGES = `
   query {
     messages {
+      totalCount
       nodes {
         id
         messageId
