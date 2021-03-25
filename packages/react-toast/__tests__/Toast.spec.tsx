@@ -10,11 +10,9 @@ jest.mock("styled-components", () => {
 
 describe("<Toast />", () => {
   it("should throw an error if missing CourierContext", () => {
-    try {
-      render(<Toast />);
-    } catch (ex) {
-      expect(String(ex)).toBe("Error: Missing Courier Provider");
-    }
+    expect(() => {
+      render(<Toast />)
+    }).toThrow('Missing Courier Provider')
   });
 });
 

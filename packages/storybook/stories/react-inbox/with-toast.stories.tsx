@@ -10,8 +10,8 @@ export default {
   args: {},
 };
 
-const clientKey = "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1";
-const userId = "3b17362c-0c91-4fcd-a829-885a2343eb67";
+const clientKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+const userId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;
@@ -53,7 +53,7 @@ export function Default() {
         transport={courierTransport}
       >
         <Toast />
-        <Inbox title="Notifications" />
+        <Inbox title="Inbox" />
       </CourierProvider>
       <button onClick={handleNotify}>Test</button>
     </>

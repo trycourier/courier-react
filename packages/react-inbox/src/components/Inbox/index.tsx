@@ -34,19 +34,24 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const StyledTippy = styled(LazyTippy)(({ theme }) => ({
-  fontFamily: `"Nunito Sans", sans-serif`,
-  background: "#f9fafb !important",
-  backgroundColor: "#f9fafb !important",
+  fontFamily: `"Nunito", sans-serif`,
+  background: "#FFFFFF !important",
+  backgroundColor: "#FFFFFF !important",
   boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
   color: "black !important",
-  minWidth: 400,
+  minWidth: 483,
+  maxHeight: 545,
   borderRadius: "20px !important",
-  "*": {
-    boxSizing: "border-box",
-  },
 
   ".tippy-content": {
     padding: 0,
+    maxHeight: 545,
+    display: 'flex',
+    flexDirection: 'column',
+    '> div': {
+      flex: 1,
+      maxHeight: 545,
+    }
   },
 
   ".tippy-arrow": {

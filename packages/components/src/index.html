@@ -1,79 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <style>
-      body {
-        cursor: default;
-        font-family: "Nunito Sans", sans-serif;
-        margin: 0;
-        padding: 32px;
-      }
 
-      body,
-      body * {
-        box-sizing: border-box;
-      }
-    </style>
-    <script type="text/javascript">
-      window.courierConfig = {
-        clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
-        userId: "3b17362c-0c91-4fcd-a829-885a2343eb67",
-        apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
-        wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
-      };
+<head>
+  <meta charset="utf-8" />
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <style>
+    body {
+      cursor: default;
+      font-family: "Nunito", sans-serif;
+      margin: 0;
+      padding: 32px;
+    }
+  </style>
+  <script type="text/javascript">
+    window.courierConfig = {
+      clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
+      userId: "3b17362c-0c91-4fcd-a829-885a2343eb67",
+      apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
+      wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+    };
 
-      window.courierAsyncInit = () => {
-        window.courier.on("toast/init", () => {
-          window.showToastOnClick = () => {
-            window.courier.toast.add({
-              title: "Hello",
-              body: "World",
-            });
-          };
-
-          const showToast = document.getElementById("show-toast");
-          showToast.removeAttribute("disabled");
-        });
-
-        window.notifyClick = () => {
-          window.courier.transport.send({
-            action: "notify",
-            data: {
-              channel: window.courierConfig.userId,
-              event: "*",
-              message: {
-                title: "Success!",
-                body: "We sent a toast with a websocket",
-              },
-            },
+    window.courierAsyncInit = () => {
+      window.courier.on("toast/init", () => {
+        window.showToastOnClick = () => {
+          window.courier.toast.add({
+            title: "Hello",
+            body: "World",
           });
         };
 
-        window.courier.transport.intercept((message) => {
-          console.log(message);
-          return message;
-        });
+        const showToast = document.getElementById("show-toast");
+        showToast.removeAttribute("disabled");
+      });
 
-        const notify = document.getElementById("notify");
-        notify.removeAttribute("disabled");
+      window.notifyClick = () => {
+        window.courier.transport.send({
+          action: "notify",
+          data: {
+            channel: window.courierConfig.userId,
+            event: "*",
+            message: {
+              title: "Success!",
+              body: "We sent a toast with a websocket",
+            },
+          },
+        });
       };
-    </script>
-  </head>
-  <body>
-    <h1>Treva Homepage</h1>
-    <courier-toast auto-close="false"></courier-toast>
-    <courier-inbox></courier-inbox>
-    <div>
-      <button id="show-toast" onclick="showToastOnClick()" disabled>
-        Show Toast
-      </button>
-    </div>
-    <div>
-      <button id="notify" onclick="notifyClick()" disabled>
-        Notify
-      </button>
-    </div>
-  </body>
+
+      window.courier.transport.intercept((message) => {
+        console.log(message);
+        return message;
+      });
+
+      const notify = document.getElementById("notify");
+      notify.removeAttribute("disabled");
+    };
+  </script>
+</head>
+
+<body>
+  <h1>Treva Homepage</h1>
+  <courier-toast auto-close="false"></courier-toast>
+  <courier-inbox></courier-inbox>
+  <div>
+    <button id="show-toast" onclick="showToastOnClick()" disabled>
+      Show Toast
+    </button>
+  </div>
+  <div>
+    <button id="notify" onclick="notifyClick()" disabled>
+      Notify
+    </button>
+  </div>
+</body>
+
 </html>
