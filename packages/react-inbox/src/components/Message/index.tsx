@@ -43,7 +43,6 @@ const Message: React.FunctionComponent<MessageProps> = ({
   return (
     <Container data-testid="inbox-message">
       {renderedIcon}
-      {messageId}
       <Contents>
         <Title>{title}</Title>
         <Body>{body}</Body>
