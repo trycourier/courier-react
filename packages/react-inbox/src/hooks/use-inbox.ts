@@ -1,4 +1,4 @@
-import {useCourier} from '@trycourier/react-provider';
+import { useCourier } from "@trycourier/react-provider";
 
 export default () => {
   const { dispatch, inbox } = useCourier();
@@ -8,7 +8,7 @@ export default () => {
     init: (payload) => {
       dispatch({
         type: "inbox/INIT",
-        payload
+        payload,
       });
     },
 
@@ -16,8 +16,8 @@ export default () => {
       dispatch({
         type: "inbox/SET_LOADING",
         payload: {
-          isLoading
-        }
+          isLoading,
+        },
       });
     },
 
@@ -25,23 +25,23 @@ export default () => {
       dispatch({
         type: "inbox/SET_HAS_UNREAD_MESSAGES",
         payload: {
-          hasUnreadMessages
-        }
+          hasUnreadMessages,
+        },
       });
     },
 
-    setMessages: (payload) => {
+    addMessages: (payload) => {
       dispatch({
-        type: "inbox/SET_MESSAGES",
-        payload
+        type: "inbox/ADD_MESSAGES",
+        payload,
       });
     },
 
     newMessage: (payload) => {
       dispatch({
         type: "inbox/NEW_MESSAGE",
-        payload
+        payload,
       });
-    }
-  }
-}
+    },
+  };
+};

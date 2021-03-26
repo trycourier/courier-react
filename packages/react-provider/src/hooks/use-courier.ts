@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {CourierContext} from '../'
+import { CourierContext } from "../";
 import { ICourierContext } from "../types";
 
 function useCourier<T = any>() {
