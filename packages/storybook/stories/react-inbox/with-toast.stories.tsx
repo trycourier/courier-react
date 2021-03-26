@@ -10,11 +10,12 @@ export default {
   args: {},
 };
 
-const clientKey = "YjAzNzA0NGMtYTQ5Yi00YzYzLTk1ZjUtNzg1Yzk5NjA0ZTQy";
-const userId = "f9e9603f-9179-4c56-b3d2-2ee4b890e08b";
+const clientKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+const userId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;
+
 if (typeof window !== "undefined") {
   courierTransport = new CourierTransport({
     wsUrl: process.env.WS_URL,

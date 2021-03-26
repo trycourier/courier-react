@@ -46,7 +46,6 @@ const useMessages = () => {
 
   const fetchMore = useCallback(() => {
     if (startCursor) {
-      debugger;
       setAfter(startCursor);
     }
   }, [startCursor]);
