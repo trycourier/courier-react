@@ -34,7 +34,7 @@ const Option = styled.button`
 function Options({ options }) {
   return (
     <Container>
-      {options.map(({ label, onClick = () => {} }) => (
+      {options.map(({ label, onClick }) => (
         <Option key={label} onClick={onClick}>
           {label}
         </Option>

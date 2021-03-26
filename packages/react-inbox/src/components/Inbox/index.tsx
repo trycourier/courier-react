@@ -46,12 +46,12 @@ const StyledTippy = styled(LazyTippy)(({ theme }) => ({
   ".tippy-content": {
     padding: 0,
     maxHeight: 545,
-    display: 'flex',
-    flexDirection: 'column',
-    '> div': {
+    display: "flex",
+    flexDirection: "column",
+    "> div": {
       flex: 1,
       maxHeight: 545,
-    }
+    },
   },
 
   ".tippy-arrow": {
@@ -83,7 +83,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useEffect(() => {
     inbox.init({
-      config: props.config,
+      config: props,
     });
   }, [props]);
 

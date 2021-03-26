@@ -75,6 +75,7 @@ const useMessages = () => {
       },
     });
   }, [transport]);
+  
   return {
     messages: inbox.messages,
     isLoading: inbox.isLoading,

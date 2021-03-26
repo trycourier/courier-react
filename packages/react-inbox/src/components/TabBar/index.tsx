@@ -1,14 +1,45 @@
-import React, { useState } from 'react'
-import { Container, Tab } from './styled';
+import React, { useMemo } from "react";
+import classNames from "classnames";
+import { Container, Tab } from "./styled";
 
-function TabBar({ style = {} }) {
-  const [activeTab, setActiveTab] = useState(0);
+const TabBar: React.FunctionComponent<{
+  activeTab: string;
+  onChange: (newTab: string) => void;
+}> = ({ activeTab, onChange }) => {
+  const handleOnChange = (newTab: string) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    onChange(newTab);
+  };
+
+  const tabs = useMemo(
+    () => [
+      {
+        label: "Unread",
+        id: "unread",
+      },
+      {
+        label: "All Messages",
+        id: "all",
+      },
+    ],
+    []
+  );
+
   return (
-    <Container style={style}>
-      <Tab  className={activeTab === 0 ? 'active' : ''} onClick={() => setActiveTab(0)}>Unread</Tab>
-      <Tab className={activeTab === 1 ? 'active' : ''}  onClick={() => setActiveTab(1)}>All notifications</Tab>
+    <Container>
+      {tabs.map((tab) => (
+        <Tab
+          key={tab.id}
+          className={classNames({
+            active: activeTab === tab.id,
+          })}
+          onClick={handleOnChange(tab.id)}
+        >
+          {tab.label}
+        </Tab>
+      ))}
     </Container>
-  )
-}
+  );
+};
 
-export default TabBar
+export default TabBar;

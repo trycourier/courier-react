@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 export const OptionsIconContainer = styled.div`
-  padding: 15px 15px 15px 15px;
   margin-right: -15px;
+  margin-top: 6px;
+  padding: 0 12px;
   cursor: pointer;
 `;
 

@@ -1,13 +1,9 @@
-import React, {
-  useEffect, useRef,
-} from "react";
+import React, { useEffect, useRef } from "react";
 import Message from "../Message";
 
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
-import {
-  Body, Header, HeaderText, BodyText, Empty,
-} from "./styled";
+import { Body, Header, HeaderText, BodyText, Empty } from "./styled";
 import Loading from "./loading";
 import { renderFooter as _renderFooter } from "./defaults";
 import { useAtBottom } from "~/hooks/use-at-bottom";
@@ -18,13 +14,10 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   renderHeader,
   renderFooter = _renderFooter,
   renderMessage,
-  unreadCount,
 }) => {
   const containerRef = useRef<HTMLDivElement>();
   const { atBottom, reset } = useAtBottom(containerRef.current);
-  const {
-    messages, isLoading, fetchMore,
-  } = useMessages();
+  const { messages, isLoading, fetchMore } = useMessages();
 
   useEffect(() => {
     if (atBottom && !isLoading) {
@@ -38,39 +31,31 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         renderHeader({})
       ) : (
         <Header data-testid="header">
-          <HeaderText>{title}{unreadCount ? ` (${unreadCount})` : ""}</HeaderText>
+          <HeaderText>
+            {title}
+            {unreadCount ? ` (${unreadCount})` : ""}
+          </HeaderText>
           <BodyText style={{ cursor: "pointer" }}>Mark all as read</BodyText>
         </Header>
       )}
       <TabBar />
-      <Body ref={containerRef as React.RefObject<HTMLDivElement>} data-testid="messages">
+      <Body
+        ref={containerRef as React.RefObject<HTMLDivElement>}
+        data-testid="messages"
+      >
         {messages?.map((message) =>
           renderMessage ? (
             renderMessage(message)
           ) : (
             <Message key={message.messageId} {...message} />
-          ),
-        )
-        }
+          )
+        )}
         {isLoading && <Loading />}
         {!isLoading && messages?.length === 0 && (
           <Empty>You have no notifications at this time</Empty>
         )}
       </Body>
-<<<<<<< HEAD
       {renderFooter({})}
-=======
-      {renderFooter ? (
-        renderFooter({})
-      ) : (
-        <Footer>
-          <div>
-            <span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span>
-            <CourierLogo />
-          </div>
-        </Footer>
-      )}
->>>>>>> mutation
     </>
   );
 };

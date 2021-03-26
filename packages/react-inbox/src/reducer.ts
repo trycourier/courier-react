@@ -1,5 +1,22 @@
+import { IMessage } from './types';
 
-export default (state, action) => {
+const makeMessage = (message): IMessage => ({
+    body: message?.content?.body,
+    created: message.created,
+    data: message?.content?.data,
+    messageId: message.messageId,
+    read: message?.read,
+    title: message?.content?.title,
+    trackingIds: message?.content?.trackingIds,
+});
+
+interface InboxState {
+  messages?: Array<IMessage>
+  isLoading?: boolean;
+  hasUnreadMessages?: boolean;
+}
+
+export default (state: InboxState = {}, action) => {
   switch (action.type) {
   case "inbox/INIT": {
     return {
@@ -28,14 +45,7 @@ export default (state, action) => {
       startCursor: action?.payload?.startCursor,
       messages: [
         ...(state.messages || []),
-        ...action?.payload?.messages?.map(({ node: message }) => ({
-          messageId: message.messageId,
-          created: message.created,
-          title: message?.content?.title,
-          body: message?.content?.body,
-          data: message?.content?.data,
-          trackingIds: message?.content?.trackingIds,
-        })),
+        ...action?.payload?.messages?.map(makeMessage),
       ],
     };
   }

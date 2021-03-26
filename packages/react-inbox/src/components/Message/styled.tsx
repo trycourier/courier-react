@@ -6,12 +6,15 @@ export const Container = styled.div(({ theme }) => ({
   display: "flex",
   position: "relative",
   padding: "10px 15px",
-  backgroundColor: '#F9FAFB',
-  alignItems: 'center',
+  backgroundColor: "#F9FAFB",
+  alignItems: "center",
   height: 90,
-  borderBottom: '1px solid rgba(203,213,224,.5)',
-  ':hover': {
-    background: '#EDE4ED'
+  borderBottom: "1px solid rgba(203,213,224,.5)",
+  "&.read": {
+    backgroundColor: "#F7F6F9",
+  },
+  "&:not(.read):hover": {
+    background: "#EDE4ED",
   },
   ...theme.message?.container,
 }));
@@ -26,23 +29,24 @@ export const ReadIndicator = styled.div(({ theme }) => ({
 }));
 
 export const Contents = styled.div(({ theme }) => ({
-  marginRight: 'auto',
+  marginRight: "auto",
   maxWidth: "58%",
   ...theme.message?.contents,
 }));
 
 export const Title = styled.div(({ theme }) => ({
   fontSize: "14px",
-   fontStyle: "normal", 
-   fontWeight: "600", 
-   lineHeight: "19.1px", 
-   letterSpacing: "0em", 
-   textAlign: "left",
-   display: "-webkit-box",
-   overflow: "hidden", 
-   textOverflow: "ellipsis",
-   WebkitLineClamp: "1",
-   WebkitBoxOrient: "vertical",
+  fontStyle: "normal",
+  fontWeight: "600",
+  lineHeight: "19.1px",
+  letterSpacing: "0em",
+  textAlign: "left",
+  display: "-webkit-box",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  WebkitLineClamp: "1",
+  WebkitBoxOrient: "vertical",
+  color: "#24324B",
   ...theme.message?.title,
 }));
 
@@ -50,14 +54,14 @@ export const Body = styled.div(({ theme }) => ({
   color: "#666666",
   marginTop: "1px",
   wordBreak: "break-word",
-  fontSize: "12px", 
-  fontStyle: "normal", 
-  fontWeight: "400", 
-  lineHeight: "16px", 
-  letterSpacing: "0em", 
+  fontSize: "12px",
+  fontStyle: "normal",
+  fontWeight: "400",
+  lineHeight: "16px",
+  letterSpacing: "0em",
   textAlign: "left",
   display: "-webkit-box",
-  overflow: "hidden", 
+  overflow: "hidden",
   textOverflow: "ellipsis",
   WebkitLineClamp: "2",
   WebkitBoxOrient: "vertical",
@@ -87,8 +91,10 @@ const iconStyles = ({ theme }) => ({
 
 export const UnreadMarker = styled.div`
   height: 36px;
-  background-color: #9D3789;
+  background-color: #9d3789;
   width: 5px;
+  position: absolute;
+  left: 0;
 `;
 
 export const Icon = styled.img(iconStyles);

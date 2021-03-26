@@ -10,6 +10,7 @@ const StyledTippy = styled(Tippy)`
   .tippy-arrow {
     color: #344563 !important;
   }
+
   .tippy-content {
     font-family: "Nunito", sans-serif;
     background-color: #344563;
@@ -17,6 +18,7 @@ const StyledTippy = styled(Tippy)`
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
     color: #24324b;
     border-radius: 4px !important;
+
     > div {
       height: 100%;
       display: flex;
@@ -27,9 +29,9 @@ const StyledTippy = styled(Tippy)`
   }
 `;
 
-let tippyProps: TippyProps = {
-  trigger: "click",
+const tippyProps: TippyProps = {
   placement: "bottom",
+  trigger: "click",
   interactive: true,
   interactiveDebounce: 75,
   offset: [0, -8],
