@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { OptionsIconContainer, Container } from "./styled";
 import OptionsIcon from "./options.svg";
 import styled from "styled-components";
