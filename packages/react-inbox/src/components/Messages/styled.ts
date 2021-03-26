@@ -10,29 +10,6 @@ export const Body = styled.div(({ theme }) => ({
   ...theme.body,
 }));
 
-export const Footer = styled.div(({ theme }) => ({
-  "borderBottomLeftRadius": 24,
-  "borderBottomRightRadius": 24,
-  "height": 45,
-  "fontSize": "10px",
-  "fontStyle": "normal",
-  "fontWeight": "700",
-  "lineHeight": "14px",
-  "letterSpacing": "0em",
-  "textAlign": "left",
-  "color": "#B9C0CD",
-  "display": "flex",
-  "alignItems": "flex-end",
-  "justifyContent": "flex-end",
-  "> div": {
-    margin: "auto 20px auto auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  ...theme.footer,
-}));
-
 export const Header = styled.div(({ theme }) => ({
   padding: "18px 20px 12px 20px",
   userSelect: "none",

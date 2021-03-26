@@ -26,13 +26,16 @@ export default (state, action) => {
     return {
       ...state,
       startCursor: action?.payload?.startCursor,
-      messages: (state.messages || []).concat(action?.payload?.messages?.map(({ node: message }) => ({
-        messageId: message.messageId,
-        created: message.created,
-        title: message?.content?.title,
-        body: message?.content?.body,
-        data: message?.content?.data,
-      }))),
+      messages: [
+        ...(state.messages || []),
+        ...action?.payload?.messages?.map(({ node: message }) => ({
+          messageId: message.messageId,
+          created: message.created,
+          title: message?.content?.title,
+          body: message?.content?.body,
+          data: message?.content?.data,
+        })),
+      ],
     };
   }
 

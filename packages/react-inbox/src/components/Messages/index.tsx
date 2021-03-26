@@ -6,17 +6,17 @@ import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
 import {
-  Body, Footer, Header, HeaderText, BodyText, Empty,
+  Body, Header, HeaderText, BodyText, Empty,
 } from "./styled";
 import Loading from "./loading";
-import CourierLogo from "./courier_logo_text.svg";
-import { useAtBottom } from "~/hooks/user-at-bottom";
+import { renderFooter as _renderFooter } from "./defaults";
+import { useAtBottom } from "~/hooks/use-at-bottom";
 import useMessages from "~/hooks/use-messages";
 
 const Messages: React.FunctionComponent<InboxProps> = ({
   title = "Inbox",
   renderHeader,
-  renderFooter,
+  renderFooter = _renderFooter,
   renderMessage,
   unreadCount,
 }) => {
@@ -57,10 +57,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
           <Empty>You have no notifications at this time</Empty>
         )}
       </Body>
-      {renderFooter ? renderFooter({}) : (
-        <Footer>
-          <div><span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span><CourierLogo /></div>
-        </Footer>)}
+      {renderFooter({})}
     </>
   );
 };
