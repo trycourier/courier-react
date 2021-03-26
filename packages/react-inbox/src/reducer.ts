@@ -46,7 +46,7 @@ export default (state, action) => {
             body: action.payload.body,
             data: action.payload.data,
           },
-          ...state.messages,
+          ...state.messages || [],
         ]
       };
     }

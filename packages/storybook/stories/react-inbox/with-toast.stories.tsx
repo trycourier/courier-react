@@ -10,8 +10,8 @@ export default {
   args: {},
 };
 
-const clientKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-const userId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const clientKey = "YjAzNzA0NGMtYTQ5Yi00YzYzLTk1ZjUtNzg1Yzk5NjA0ZTQy";
+const userId = "f9e9603f-9179-4c56-b3d2-2ee4b890e08b";
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;
