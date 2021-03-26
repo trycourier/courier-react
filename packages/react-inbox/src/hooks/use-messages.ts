@@ -6,27 +6,32 @@ import { useCourier } from "@trycourier/react-provider";
 import useInbox from "./use-inbox";
 
 export const GET_MESSAGES = `
-query ($after: String){
-  unread: messages(params: { isRead: false }, after: $after) {
-    totalCount
-    pageInfo {
-      startCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        id
-        messageId
-        created
-        content {
-          title
-          body
-          data
+  query ($after: String){
+    unread: messages(params: { isRead: false }, after: $after) {
+      totalCount
+      pageInfo {
+        startCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          messageId
+          created
+          content {
+            title
+            body
+            data
+            trackingIds {
+              clickTrackingId
+              readTrackingId
+              deliverTrackingId
+            }
+          }
         }
       }
     }
   }
-}
 `;
 
 
@@ -34,6 +39,7 @@ const useMessages = () => {
   const [startCursor, setStartCursor] = useState(null);
   const [after, setAfter] = useState(null);
   const inbox = useInbox();
+
   const setLoading = useCallback(inbox.setLoading, []);
   const addMessages = useCallback(inbox.addMessages, []);
   const { transport } = useCourier();

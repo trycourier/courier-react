@@ -6,19 +6,14 @@ import {
   getIcon,
   TimeAgo,
   Title,
-  UnreadMarker
+  UnreadMarker,
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
+import useTrackEvent from "~/hooks/use-track-event";
+
 import distanceInWords from "date-fns/formatDistanceStrict";
-import OptionsDropdown from '../OptionsDropdown';
-import Actions from '../Actions';
-const options = [{
-  label: 'Mark as read',
-  onClick: () => {}
-},{
-  label: 'Delete',
-  onClick: () => {}
-}]
+import OptionsDropdown from "../OptionsDropdown";
+import Actions from "../Actions";
 
 interface MessageProps {
   unread?: number;
@@ -30,6 +25,11 @@ interface MessageProps {
   data?: {
     clickAction: string;
   };
+  trackingIds?: {
+    clickTrackingId: string;
+    readTrackingId: string;
+    deliveredTrackingId: string;
+  };
 }
 
 const Message: React.FunctionComponent<MessageProps> = ({
@@ -39,8 +39,11 @@ const Message: React.FunctionComponent<MessageProps> = ({
   icon,
   data,
   unread,
+  trackingIds,
+  messageId,
 }) => {
   const { config } = useInbox();
+  const [_, trackEvent] = useTrackEvent();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
 
   const timeAgo = useMemo(() => {
@@ -49,13 +52,38 @@ const Message: React.FunctionComponent<MessageProps> = ({
       roundingMethod: "floor",
     });
   }, [created]);
+
   const actions = useMemo(() => {
-    return [{href: data?.clickAction, label: 'View Details'}]
-  }, [data])
+    return [{ href: data?.clickAction, label: "View Details" }];
+  }, [data]);
+
+  const options = useMemo(
+    () => [
+      {
+        label: "Mark as read",
+        onClick: () => {
+          if (!trackingIds?.readTrackingId) {
+            return;
+          }
+
+          trackEvent({
+            trackingId: trackingIds?.readTrackingId,
+          });
+        },
+      },
+      {
+        label: "Delete",
+        onClick: () => {},
+      },
+    ],
+    [trackingIds]
+  );
+
   return (
     <Container data-testid="inbox-message">
       {unread && <UnreadMarker />}
       {renderedIcon}
+      {messageId}
       <Contents>
         <Title>{title}</Title>
         <Body>{body}</Body>

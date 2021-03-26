@@ -10,8 +10,8 @@ export default {
   args: {},
 };
 
-const clientKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-const userId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const clientKey = process.env.CLIENT_KEY;
+const userId = process.env.USER_ID;
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;

@@ -34,6 +34,7 @@ export default (state, action) => {
           title: message?.content?.title,
           body: message?.content?.body,
           data: message?.content?.data,
+          trackingIds: message?.content?.trackingIds,
         })),
       ],
     };

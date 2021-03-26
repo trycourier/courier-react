@@ -57,7 +57,20 @@ const Messages: React.FunctionComponent<InboxProps> = ({
           <Empty>You have no notifications at this time</Empty>
         )}
       </Body>
+<<<<<<< HEAD
       {renderFooter({})}
+=======
+      {renderFooter ? (
+        renderFooter({})
+      ) : (
+        <Footer>
+          <div>
+            <span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span>
+            <CourierLogo />
+          </div>
+        </Footer>
+      )}
+>>>>>>> mutation
     </>
   );
 };
