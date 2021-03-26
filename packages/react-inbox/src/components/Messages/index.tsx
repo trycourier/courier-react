@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, {
+  useEffect, useRef,
+} from "react";
 import Message from "../Message";
 
 import { InboxProps } from "../../types";
@@ -18,7 +20,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   renderMessage,
   unreadCount,
 }) => {
-  const containerRef = useRef();
+  const containerRef = useRef<HTMLDivElement>();
   const { atBottom, reset } = useAtBottom(containerRef.current);
   const {
     messages, isLoading, fetchMore,
@@ -41,7 +43,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         </Header>
       )}
       <TabBar />
-      <Body ref={containerRef} data-testid="messages">
+      <Body ref={containerRef as React.RefObject<HTMLDivElement>} data-testid="messages">
         {messages?.map((message) =>
           renderMessage ? (
             renderMessage(message)
