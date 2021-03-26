@@ -3,34 +3,11 @@ import styled from "styled-components";
 export const Body = styled.div(({ theme }) => ({
   background: "#FFFFFF",
   overflow: "scroll",
-  display: 'flex',
-  maxHeight: '365px',
-  flexDirection: 'column',
-  borderTop: '1px solid rgba(203,213,224,.5)',
+  display: "flex",
+  maxHeight: "365px",
+  flexDirection: "column",
+  borderTop: "1px solid rgba(203,213,224,.5)",
   ...theme.body,
-}));
-
-export const Footer = styled.div(({ theme }) => ({
-  borderBottomLeftRadius: 24,
-  borderBottomRightRadius: 24,
-  height: 45,
-  fontSize: "10px",
-  fontStyle: "normal",
-  fontWeight: "700",
-  lineHeight: "14px",
-  letterSpacing: "0em",
-  textAlign: "left",
-  color: '#B9C0CD',
-  display: 'flex',
-  alignItems: 'flex-end',
-  justifyContent: 'flex-end',
-  '> div': {
-    margin: 'auto 20px auto auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ...theme.footer,
 }));
 
 export const Header = styled.div(({ theme }) => ({
@@ -38,8 +15,8 @@ export const Header = styled.div(({ theme }) => ({
   userSelect: "none",
   borderTopLeftRadius: 24,
   borderTopRightRadius: 24,
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: "flex",
+  justifyContent: "space-between",
   ...theme.header,
 }));
 
@@ -49,7 +26,7 @@ export const HeaderText = styled.div`
   font-weight: 700;
   line-height: 25px;
   letter-spacing: 0em;
-`
+`;
 
 export const BodyText = styled.div`
   font-size: 14px;
@@ -58,7 +35,7 @@ export const BodyText = styled.div`
   line-height: 19px;
   letter-spacing: 0em;
   color: #9D3789;
-`
+`;
 
 export const Empty = styled.div`
   font-size: 18px;

@@ -15,6 +15,7 @@ const userId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;
+
 if (typeof window !== "undefined") {
   courierTransport = new CourierTransport({
     wsUrl: process.env.WS_URL,
