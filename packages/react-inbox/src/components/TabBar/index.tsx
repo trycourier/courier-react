@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import classNames from "classnames";
 import { Container, Tab } from "./styled";
 import useInbox from "~/hooks/use-inbox";

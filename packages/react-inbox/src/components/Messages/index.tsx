@@ -3,7 +3,7 @@ import Message from "../Message";
 
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
-import { Body, Header, HeaderText, BodyText, Empty } from "./styled";
+import { Body, Header, HeaderText, Empty } from "./styled";
 import Loading from "./loading";
 import { renderFooter as _renderFooter } from "./defaults";
 import { useAtBottom } from "~/hooks/use-at-bottom";

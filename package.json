@@ -80,8 +80,5 @@
     "packages": [
       "packages/*"
     ]
-  },
-  "dependencies": {
-    "@welldone-software/why-did-you-render": "^6.1.1"
   }
 }

@@ -1,11 +1,19 @@
+import { useEffect } from 'react';
 import {useCourier} from '@trycourier/react-provider';
 import useTrackEvent from "~/hooks/use-track-event";
 import useMessages from "~/hooks/use-messages";
 
 export default () => {
   const { fetch: fetchMessages } = useMessages();
-  const { dispatch, inbox } = useCourier();
+  const { dispatch, inbox, transport } = useCourier();
   const [_, trackEvent] = useTrackEvent();
+
+  const newMessage = (payload) => {
+    dispatch({
+      type: "inbox/NEW_MESSAGE",
+      payload,
+    });
+  };
 
   const setLoading = (isLoading: boolean) => {
     dispatch({
@@ -15,6 +23,15 @@ export default () => {
       },
     });
   }
+
+  useEffect(() => {
+    transport?.listen({
+      id: "inbox-listener",
+      listener: (courierEvent) => {
+        newMessage(courierEvent?.data);
+      },
+    });
+  }, [transport]);
 
   return {
     ...inbox,
@@ -122,11 +139,6 @@ export default () => {
       });
     },
 
-    newMessage: (payload) => {
-      dispatch({
-        type: "inbox/NEW_MESSAGE",
-        payload,
-      });
-    },
+    newMessage
   };
 };

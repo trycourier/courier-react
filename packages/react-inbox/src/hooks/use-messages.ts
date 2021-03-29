@@ -1,8 +1,4 @@
-import {
-   useEffect, useState,
-} from "react";
 import { useClient } from "urql";
-import { useCourier } from "@trycourier/react-provider";
 
 export const GET_MESSAGES = `
   query ($after: String, $isRead: Boolean){
@@ -35,8 +31,6 @@ export const GET_MESSAGES = `
 
 const useMessages = () => {
   const client = useClient();
-  
-  const { transport } = useCourier();
 
   const fetch =  async (variables) => {
     const results = await client.query(GET_MESSAGES, variables).toPromise();
@@ -50,15 +44,6 @@ const useMessages = () => {
       startCursor,
     };
   }
-
-  useEffect(() => {
-    transport?.listen({
-      id: "inbox-listener",
-      listener: (courierEvent) => {
-        //inbox.newMessage(courierEvent?.data);
-      },
-    });
-  }, [transport]);
   
   return {
     fetch,

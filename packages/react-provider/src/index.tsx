@@ -88,7 +88,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   return (
     <CourierContext.Provider
       value={{
-        ...state,
+        ...(state as any),
         dispatch,
       }}
     >
