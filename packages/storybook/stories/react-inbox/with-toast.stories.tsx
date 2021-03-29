@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import { Inbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
 import { CourierProvider, CourierTransport } from "@trycourier/react-provider";

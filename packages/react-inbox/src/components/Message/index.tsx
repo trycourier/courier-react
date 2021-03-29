@@ -48,6 +48,10 @@ const Message: React.FunctionComponent<MessageProps> = ({
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
 
   const timeAgo = useMemo(() => {
+    if (!created) {
+      return;
+    }
+
     return distanceInWords(new Date(created).getTime(), Date.now(), {
       addSuffix: true,
       roundingMethod: "floor",
@@ -91,8 +95,6 @@ const Message: React.FunctionComponent<MessageProps> = ({
       ].filter(Boolean),
     [read, messageId, trackingIds]
   );
-
-  console.log("read", read);
 
   return (
     <Container

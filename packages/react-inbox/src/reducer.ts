@@ -14,6 +14,13 @@ interface InboxState {
   messages?: Array<IMessage>
   isLoading?: boolean;
   hasUnreadMessages?: boolean;
+  currentTab?: {
+    id: string;
+    label: string;
+    filter?: {
+      isRead: boolean;
+    }
+  };
 }
 
 export default (state: InboxState = {}, action) => {
@@ -21,21 +28,51 @@ export default (state: InboxState = {}, action) => {
   case "inbox/INIT": {
     return {
       ...state,
-      config: action.payload.config,
+      config: action.payload,
+      currentTab: action.payload?.tabs?.[0],
     };
   }
 
-  case "inbox/SET_LOADING": {
+  case "inbox/SET_CURRENT_TAB": {
     return {
       ...state,
-      isLoading: action.payload.isLoading,
+      messages: state.currentTab !== action.payload ? [] : state.messages,
+      currentTab: action.payload,
     };
   }
 
-  case "inbox/SET_HAS_UNREAD_MESSAGES": {
+  case "inbox/SET_UNREAD_MESSAGE_COUNT": {
     return {
       ...state,
-      hasUnreadMessages: action.payload.hasUnreadMessages,
+      unreadMessageCount: action.payload.unreadMessageCount,
+    };
+  }
+
+  case "inbox/FETCH_MESSAGES/PENDING": {
+    return {
+      ...state,
+      isLoading: true
+    };
+  }
+
+  case "inbox/FETCH_MESSAGES/DONE": {
+    const newMessages = action?.payload?.messages?.map(makeMessage);
+
+    return {
+      ...state,
+      isLoading: false,
+      startCursor: action?.payload?.startCursor,
+      messages: action?.payload?.appendMessages ? [
+        ...(state.messages ??[]),
+        ...newMessages
+      ] : newMessages
+    };
+  }
+
+  case "inbox/FETCH_MESSAGES/ERROR": {
+    return {
+      ...state,
+      isLoading: false
     };
   }
 

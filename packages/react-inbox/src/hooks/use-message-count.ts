@@ -19,22 +19,22 @@ const useMessageCount = () => {
   const [results] = useQuery({
     query: GET_MESSAGE_COUNT,
     variables: {
-      isRead: true,
+      isRead: false,
     },
   });
 
   useEffect(() => {
-    inbox.setHasUnreadMessages(Boolean(results?.data?.messageCount));
+    inbox.setHasUnreadMessages(results?.data?.messageCount);
   }, [results]);
 
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
       listener: () => {
-        inbox.setHasUnreadMessages(true);
+        inbox.setHasUnreadMessages(results?.data?.messageCount + 1);
       },
     });
-  }, [transport]);
+  }, [transport, results]);
 
   return results?.data?.messageCount;
 };

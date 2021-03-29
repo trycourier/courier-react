@@ -1,36 +1,78 @@
 import {useCourier} from '@trycourier/react-provider';
 import useTrackEvent from "~/hooks/use-track-event";
+import useMessages from "~/hooks/use-messages";
 
 export default () => {
+  const { fetch: fetchMessages } = useMessages();
   const { dispatch, inbox } = useCourier();
   const [_, trackEvent] = useTrackEvent();
 
+  const setLoading = (isLoading: boolean) => {
+    dispatch({
+      type: "inbox/SET_LOADING",
+      payload: {
+        isLoading,
+      },
+    });
+  }
 
   return {
     ...inbox,
+
+    setLoading,
     init: (payload) => {
       dispatch({
         type: "inbox/INIT",
+        payload: {
+          ...payload,
+          tabs: payload.tabs ?? [{
+            id: "unread",
+            label: "Unread",
+            filter: {
+              isRead: false
+            }
+          }, {
+            id: "all",
+            label: "All Messages",
+            filter: {}
+          }]
+        }
+      });
+    },
+
+    setCurrentTab: (newTab: string) => {
+      dispatch({
+        type: "inbox/SET_CURRENT_TAB",
+        payload: newTab
+      });
+    },
+
+    fetchMessages: async (params: {
+      params?: {
+        after?: string;
+        isRead?: boolean;
+      }
+    }) => {
+      dispatch({
+        type: "inbox/FETCH_MESSAGES",
+        payload: () => fetchMessages(params)
+      });
+    },
+
+    setHasUnreadMessages: (unreadMessageCount: number) => {
+      dispatch({
+        type: "inbox/SET_UNREAD_MESSAGE_COUNT",
+        payload: {
+          unreadMessageCount,
+        },
+      });
+    },
+
+    setMessages: (payload) => {
+      dispatch({
+        type: "inbox/SET_MESSAGES",
         payload,
-      });
-    },
-
-    setLoading: (isLoading: boolean) => {
-      dispatch({
-        type: "inbox/SET_LOADING",
-        payload: {
-          isLoading,
-        },
-      });
-    },
-
-    setHasUnreadMessages: (hasUnreadMessages: boolean) => {
-      dispatch({
-        type: "inbox/SET_HAS_UNREAD_MESSAGES",
-        payload: {
-          hasUnreadMessages,
-        },
-      });
+      })
     },
 
     addMessages: (payload) => {
@@ -39,7 +81,7 @@ export default () => {
         payload,
       })
     },
-    
+
     setUnreadMessages: (payload) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGES",

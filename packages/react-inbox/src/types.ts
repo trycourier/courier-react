@@ -4,8 +4,17 @@ import { TippyProps } from "@tippyjs/react";
 
 type InboxThemeOptions = "root" | "body" | "footer" | "header"
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
+
+export interface ITab {
+  filters: {
+    isRead?: boolean;
+  },
+  label: string;
+  id: string;
+}
 export interface InboxProps {
   className?: string;
+  tabs?: Array<ITab>;
   defaultIcon?: false | string;
   placement?: TippyProps["placement"];
   renderFooter?: React.FunctionComponent;
