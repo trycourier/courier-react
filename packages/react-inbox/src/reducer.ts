@@ -1,13 +1,13 @@
-import { IMessage } from './types';
+import { IMessage } from "./types";
 
 const makeMessage = (message): IMessage => ({
-    body: message?.content?.body,
-    created: message.created,
-    data: message?.content?.data,
-    messageId: message.messageId,
-    read: message?.read,
-    title: message?.content?.title,
-    trackingIds: message?.content?.trackingIds,
+  body: message?.content?.body,
+  created: message.created,
+  data: message?.content?.data,
+  messageId: message.messageId,
+  read: message?.read,
+  title: message?.content?.title,
+  trackingIds: message?.content?.trackingIds,
 });
 
 interface InboxState {
@@ -51,7 +51,7 @@ export default (state: InboxState = {}, action) => {
   case "inbox/FETCH_MESSAGES/PENDING": {
     return {
       ...state,
-      isLoading: true
+      isLoading: true,
     };
   }
 
@@ -64,8 +64,27 @@ export default (state: InboxState = {}, action) => {
       startCursor: action?.payload?.startCursor,
       messages: action?.payload?.appendMessages ? [
         ...(state.messages ??[]),
-        ...newMessages
-      ] : newMessages
+        ...newMessages,
+      ] : newMessages,
+    };
+  }
+
+  case "inbox/MARK_MESSAGE_UNREAD": {
+    const unreadMessageCount = (state.unreadMessageCount ?? 1) + 1;
+
+    return {
+      ...state,
+      messages: state.messages?.map(message => {
+        if (message.messageId === action.payload.messageId) {
+          return {
+            ...message,
+            read: false,
+          };
+        }
+
+        return message;
+      }),
+      unreadMessageCount,
     };
   }
 
@@ -86,20 +105,20 @@ export default (state: InboxState = {}, action) => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
-            read: true
-          }
+            read: true,
+          };
         }
 
         return message;
       }),
-      unreadMessageCount
-    }
+      unreadMessageCount,
+    };
   }
 
   case "inbox/FETCH_MESSAGES/ERROR": {
     return {
       ...state,
-      isLoading: false
+      isLoading: false,
     };
   }
 

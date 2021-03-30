@@ -1,5 +1,9 @@
 import React, { useMemo } from "react";
 import classNames from "classnames";
+
+import distanceInWords from "date-fns/formatDistanceStrict";
+import OptionsDropdown from "../OptionsDropdown";
+import Actions from "../Actions";
 import {
   Body,
   Container,
@@ -10,10 +14,6 @@ import {
   UnreadMarker,
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
-
-import distanceInWords from "date-fns/formatDistanceStrict";
-import OptionsDropdown from "../OptionsDropdown";
-import Actions from "../Actions";
 
 interface MessageProps {
   unread?: number;
@@ -44,7 +44,9 @@ const Message: React.FunctionComponent<MessageProps> = ({
   messageId,
   trackingIds,
 }) => {
-  const { config, markMessageRead, markMessageUnread } = useInbox();
+  const {
+    config, markMessageRead, markMessageUnread,
+  } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
 
   const timeAgo = useMemo(() => {
@@ -58,44 +60,44 @@ const Message: React.FunctionComponent<MessageProps> = ({
     });
   }, [created]);
 
-  const actions = useMemo(() => {
-    return [{ href: data?.clickAction, label: "View Details" }];
-  }, [data]);
+  const actions = useMemo(() => [{
+    href: data?.clickAction,
+    label: "View Details",
+  }], [data]);
 
   const options = useMemo(
     () =>
       [
         !read &&
           trackingIds?.readTrackingId && {
-            label: "Mark as Read",
-            onClick: () => {
-              if (!trackingIds?.readTrackingId) {
-                return;
-              }
+          label: "Mark as Read",
+          onClick: () => {
+            if (!trackingIds?.readTrackingId) {
+              return;
+            }
 
-              markMessageRead(messageId, trackingIds?.readTrackingId);
-            },
+            markMessageRead(messageId, trackingIds?.readTrackingId);
           },
+        },
 
         read &&
           trackingIds?.unreadTrackingId && {
-            label: "Mark as Unread",
-            onClick: () => {
-              if (!trackingIds?.readTrackingId) {
-                return;
-              }
+          label: "Mark as Unread",
+          onClick: () => {
+            if (!trackingIds?.readTrackingId) {
+              return;
+            }
 
-              markMessageUnread(messageId, trackingIds?.unreadTrackingId);
-            },
+            markMessageUnread(messageId, trackingIds?.unreadTrackingId);
           },
+        },
         /*{
         label: "Delete",
         onClick: () => {},
       },*/
       ].filter(Boolean),
-    [read, messageId, trackingIds]
+    [read, trackingIds?.readTrackingId, trackingIds?.unreadTrackingId, markMessageRead, messageId, markMessageUnread],
   );
-
   return (
     <Container
       data-testid="inbox-message"

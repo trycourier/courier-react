@@ -3,15 +3,15 @@ import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 
-import Messages from "../Messages";
-import Bell from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
+import Messages from "../Messages";
+import { InboxProps } from "../../types";
+import Bell from "./Bell";
 
 import LazyTippy from "./LazyTippy";
 import useInbox from "~/hooks/use-inbox";
 import useMessageCount from "~/hooks/use-message-count";
 
-import { InboxProps } from "../../types";
 import reducer from "~/reducer";
 
 const GlobalStyle = createGlobalStyle`
@@ -34,20 +34,20 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const StyledTippy = styled(LazyTippy)(({ theme }) => ({
-  fontFamily: `"Nunito", sans-serif`,
-  background: "#FFFFFF !important",
-  backgroundColor: "#FFFFFF !important",
-  boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-  color: "black !important",
-  minWidth: 483,
-  maxHeight: 545,
-  borderRadius: "20px !important",
+  "fontFamily": `"Nunito", sans-serif`,
+  "background": "#FFFFFF !important",
+  "backgroundColor": "#FFFFFF !important",
+  "boxShadow": "0px 12px 32px rgba(86, 43, 85, 0.3)",
+  "color": "black !important",
+  "minWidth": 483,
+  "maxHeight": 545,
+  "borderRadius": "20px !important",
 
   ".tippy-content": {
-    padding: 0,
-    maxHeight: 545,
-    display: "flex",
-    flexDirection: "column",
+    "padding": 0,
+    "maxHeight": 545,
+    "display": "flex",
+    "flexDirection": "column",
     "> div": {
       flex: 1,
       maxHeight: 545,

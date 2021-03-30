@@ -3,7 +3,9 @@ import Message from "../Message";
 
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
-import { Body, Header, HeaderText, Empty } from "./styled";
+import {
+  Body, Header, HeaderText, Empty,
+} from "./styled";
 import Loading from "./loading";
 import { renderFooter as _renderFooter } from "./defaults";
 import { useAtBottom } from "~/hooks/use-at-bottom";
@@ -25,6 +27,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   } = useInbox();
 
   const ref = useRef<HTMLDivElement>(null);
+
   useAtBottom(
     ref,
     () => {
@@ -37,7 +40,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         after: startCursor,
       });
     },
-    [isLoading, startCursor, currentTab]
+    [isLoading, startCursor, currentTab],
   );
 
   useEffect(() => {
@@ -64,7 +67,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
             renderMessage(message)
           ) : (
             <Message key={message.messageId} {...message} />
-          )
+          ),
         )}
         {isLoading && <Loading />}
         {!isLoading && messages?.length === 0 && (

@@ -4,7 +4,9 @@ import { Action, Container } from "./styled";
 function Actions({ actions }) {
   return (
     <Container>
-      {actions.map(({ label, href, onClick, openInNewTab = true }) => (
+      {actions.map(({
+        label, href, onClick, openInNewTab = true,
+      }) => (
         <Action
           key="label"
           target={openInNewTab ? "_blank" : ""}

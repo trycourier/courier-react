@@ -1,11 +1,13 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
+import { useActions } from "@trycourier/react-provider";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
-import { Message, Title, Body } from "./styled";
+import {
+  Message, Title, Body,
+} from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
-import { useActions } from "@trycourier/react-provider";
 
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
@@ -19,14 +21,15 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   const { handleOnClick } = useActions();
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps.toastId),
-    [toastProps.toastId]
+    [toastProps.toastId],
   );
   const handleOnClickDetails = useCallback((event) => {
-    handleOnClick(data)
+    handleOnClick(data);
+
     if (onClick) {
       onClick(event);
     }
-  }, [])
+  }, [data, handleOnClick, onClick]);
   const [, { config }] = useToast();
   const Icon = getIcon(icon ?? config?.defaultIcon);
 
