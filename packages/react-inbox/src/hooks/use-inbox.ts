@@ -14,16 +14,7 @@ export default () => {
       payload,
     });
   };
-
-  const setLoading = (isLoading: boolean) => {
-    dispatch({
-      type: "inbox/SET_LOADING",
-      payload: {
-        isLoading,
-      },
-    });
-  }
-
+ 
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
@@ -36,7 +27,6 @@ export default () => {
   return {
     ...inbox,
 
-    setLoading,
     init: (payload) => {
       dispatch({
         type: "inbox/INIT",
@@ -76,7 +66,7 @@ export default () => {
       });
     },
 
-    setHasUnreadMessages: (unreadMessageCount: number) => {
+    setUnreadMessageCount: (unreadMessageCount: number) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
         payload: {
@@ -84,35 +74,7 @@ export default () => {
         },
       });
     },
-
-    setMessages: (payload) => {
-      dispatch({
-        type: "inbox/SET_MESSAGES",
-        payload,
-      })
-    },
-
-    addMessages: (payload) => {
-      dispatch({
-        type: "inbox/ADD_MESSAGES",
-        payload,
-      })
-    },
-
-    setUnreadMessages: (payload) => {
-      dispatch({
-        type: "inbox/SET_UNREAD_MESSAGES",
-        payload
-      });
-    },
-
-    setAllMessages: (payload) => {
-      dispatch({
-        type: "inbox/SET_ALL_MESSAGES",
-        payload
-      });
-    },
-
+ 
     markMessageRead: async (messageId: string, trackingId: string) => {
       await trackEvent({
         trackingId
@@ -138,7 +100,5 @@ export default () => {
         }
       });
     },
-
-    newMessage
   };
 };

@@ -31,14 +31,22 @@ const Option = styled.button`
   }
 `;
 
-function Options({ options }) {
+function Options({ options, onClose }) {
   return (
     <Container>
-      {options.map(({ label, onClick }) => (
-        <Option key={label} onClick={onClick}>
-          {label}
-        </Option>
-      ))}
+      {options.map(({ label, onClick }) => {
+        const handleOnClick = (event: React.MouseEvent) => {
+          event.preventDefault();
+          onClick();
+          onClose();
+        };
+
+        return (
+          <Option key={label} onClick={handleOnClick}>
+            {label}
+          </Option>
+        );
+      })}
     </Container>
   );
 }

@@ -69,21 +69,33 @@ export default (state: InboxState = {}, action) => {
     };
   }
 
+  case "inbox/MARK_MESSAGE_READ": {
+    if (state.currentTab?.filter?.isRead === false) {
+      return {
+        ...state,
+        messages: state.messages?.filter(message => message.messageId !== action.payload.messageId)
+      };
+    }
+
+    return {
+      ...state,
+      messages: state.messages?.map(message => {
+        if (message.messageId === action.payload.messageId) {
+          return {
+            ...message,
+            read: true
+          }
+        }
+
+        return message;
+      })
+    }
+  }
+
   case "inbox/FETCH_MESSAGES/ERROR": {
     return {
       ...state,
       isLoading: false
-    };
-  }
-
-  case "inbox/ADD_MESSAGES": {
-    return {
-      ...state,
-      startCursor: action?.payload?.startCursor,
-      messages: [
-        ...(state.messages || []),
-        ...action?.payload?.messages?.map(makeMessage),
-      ],
     };
   }
 

@@ -24,14 +24,14 @@ const useMessageCount = () => {
   });
 
   useEffect(() => {
-    inbox.setHasUnreadMessages(results?.data?.messageCount);
+    inbox.setUnreadMessageCount(results?.data?.messageCount);
   }, [results]);
 
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
       listener: () => {
-        inbox.setHasUnreadMessages(results?.data?.messageCount + 1);
+        inbox.setUnreadMessageCount(results?.data?.messageCount + 1);
       },
     });
   }, [transport, results]);

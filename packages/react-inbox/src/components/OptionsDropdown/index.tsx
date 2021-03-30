@@ -1,5 +1,5 @@
-import React from "react";
-import { OptionsIconContainer, Container } from "./styled";
+import React, { useState } from "react";
+import { OptionsIconButton, Container } from "./styled";
 import OptionsIcon from "./options.svg";
 import styled from "styled-components";
 import Tippy, { TippyProps } from "@tippyjs/react";
@@ -10,7 +10,6 @@ const StyledTippy = styled(Tippy)`
   .tippy-arrow {
     color: #344563 !important;
   }
-
   .tippy-content {
     font-family: "Nunito", sans-serif;
     background-color: #344563;
@@ -18,7 +17,6 @@ const StyledTippy = styled(Tippy)`
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
     color: #24324b;
     border-radius: 4px !important;
-
     > div {
       height: 100%;
       display: flex;
@@ -31,19 +29,29 @@ const StyledTippy = styled(Tippy)`
 
 const tippyProps: TippyProps = {
   placement: "bottom",
-  trigger: "click",
   interactive: true,
   interactiveDebounce: 75,
   offset: [0, -8],
 };
 
 function OptionsDropdown({ options }) {
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleShowOptions = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setShowOptions(!showOptions);
+  };
+
   return (
     <Container>
-      <StyledTippy {...tippyProps} content={<Options options={options} />}>
-        <OptionsIconContainer>
+      <StyledTippy
+        {...tippyProps}
+        visible={showOptions}
+        content={<Options options={options} onClose={handleShowOptions} />}
+      >
+        <OptionsIconButton onClick={handleShowOptions}>
           <OptionsIcon />
-        </OptionsIconContainer>
+        </OptionsIconButton>
       </StyledTippy>
     </Container>
   );
