@@ -14,8 +14,8 @@ const MessageSkeleton: React.FunctionComponent = () => {
       <Contents style={{ width: "100%" }}>
         <Skeleton count={2} />
       </Contents>
-      <div style={{ width: "100px", marginLeft: 12 }}>
-        <Skeleton count={1} height={20} style={{ marginTop: -4 }} />
+      <div style={{ width: "100px", marginLeft: 12, marginTop: -6 }}>
+        <Skeleton count={1} height={20} />
       </div>
     </Container>
   );
@@ -24,6 +24,9 @@ const MessageSkeleton: React.FunctionComponent = () => {
 const Loading: React.FunctionComponent = () => {
   return (
     <>
+      <MessageSkeleton />
+      <MessageSkeleton />
+      <MessageSkeleton />
       <MessageSkeleton />
       <MessageSkeleton />
     </>

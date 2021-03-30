@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import useHoverDirty from "react-use/lib/useHoverDirty";
 import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
@@ -68,6 +69,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
+  const hoverRef = useRef(null);
+  const isHovered = useHoverDirty(hoverRef);
+
   useMessageCount();
   const inbox = useInbox();
 
@@ -85,6 +89,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     inbox.init(props);
   }, [props]);
 
+  const handleBellOnMouseEnter = (event: React.MouseEvent) => {
+    event.preventDefault();
+    inbox.fetchMessages();
+  };
+
   if (!courierContext?.inbox) {
     return null;
   }
@@ -101,8 +110,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           </span>
         ) : (
           <Bell
-            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
             className={props.className}
+            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
+            onMouseEnter={handleBellOnMouseEnter}
           />
         )}
       </StyledTippy>
