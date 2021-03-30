@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import {useCourier} from '@trycourier/react-provider';
-import useTrackEvent from "~/hooks/use-track-event";
+import {useCourier, useTrackEvent} from '@trycourier/react-provider';
 import useMessages from "~/hooks/use-messages";
 
 export default () => {

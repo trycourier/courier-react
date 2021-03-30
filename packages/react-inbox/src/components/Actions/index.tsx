@@ -10,7 +10,7 @@ function Actions({ actions }) {
           target={openInNewTab ? "_blank" : ""}
           as={href ? "a" : "div"}
           href={href}
-          onClick={href ? undefined : onClick}
+          onClick={onClick}
         >
           {label}
         </Action>

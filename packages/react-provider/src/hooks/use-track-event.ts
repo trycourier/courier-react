@@ -1,6 +1,6 @@
 import { useMutation } from 'urql';
 
-export const TRACK_EVENT = `
+const TRACK_EVENT = `
   mutation TrackEvent($trackingId: String!) {
     trackEvent(trackingId: $trackingId) {
       id
