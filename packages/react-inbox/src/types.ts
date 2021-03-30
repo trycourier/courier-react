@@ -4,13 +4,18 @@ import { TippyProps } from "@tippyjs/react";
 
 type InboxThemeOptions = "root" | "body" | "footer" | "header"
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
-export interface IInboxConfig {
-  defaultIcon?: false | string;
-}
 
+export interface ITab {
+  filters: {
+    isRead?: boolean;
+  },
+  label: string;
+  id: string;
+}
 export interface InboxProps {
   className?: string;
-  config?: IInboxConfig;
+  tabs?: Array<ITab>;
+  defaultIcon?: false | string;
   placement?: TippyProps["placement"];
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
@@ -21,10 +26,29 @@ export interface InboxProps {
   theme?: ThemeObject;
   title?: string;
   trigger?: TippyProps["trigger"];
-  unreadCount?: string;
 }
 
 type ThemeObject = {
   //https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/withStyles/withStyles.d.ts#L21
   [key in InboxThemeOptions | MessageThemeOptions | string]?: CSSProperties | ThemeObject;
+}
+
+
+export interface IMessage {
+  unread?: number;
+  messageId: string;
+  created: number;
+  title: string;
+  body: string;
+  icon?: string;
+  read: boolean;
+  data?: {
+    clickAction: string;
+  };
+  trackingIds?: {
+    clickTrackingId: string;
+    deliveredTrackingId: string;
+    readTrackingId: string;
+    unreadTrackingId: string;
+  };
 }

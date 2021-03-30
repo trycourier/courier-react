@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import { Inbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
 import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
@@ -10,8 +11,8 @@ export default {
   args: {},
 };
 
-const clientKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-const userId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const clientKey = process.env.CLIENT_KEY;
+const userId = process.env.USER_ID;
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;

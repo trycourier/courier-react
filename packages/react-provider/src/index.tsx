@@ -1,25 +1,25 @@
-import React, {
-  useReducer, useEffect, useMemo,
-} from "react";
+import React, { useEffect, useMemo } from "react";
+import createReducer from "react-use/lib/factory/createReducer";
 import { Provider } from "urql";
 import * as types from "./types";
 
 import useGraphQlClient from "./hooks/use-graphql-client";
 import { CourierTransport } from "./transports/courier";
 import * as TransportTypes from "./transports/types";
-import reducer, {
-  IAction,
-  registerReducer as _registerReducer,
-} from "./reducer";
+import reducer, { registerReducer as _registerReducer } from "./reducer";
+
+import middleware from "./middleware";
 
 export * from "./transports";
 export * from "./hooks";
+
+const useReducer = createReducer(...middleware);
 
 export const registerReducer = _registerReducer;
 export type ICourierMessage = TransportTypes.ICourierMessage;
 export type ICourierContext = types.ICourierContext;
 export const CourierContext = React.createContext<ICourierContext | undefined>(
-  undefined,
+  undefined
 );
 
 const GraphQLProvider: React.FunctionComponent = ({ children }) => {
@@ -51,9 +51,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     });
   }, [transport, clientKey, wsUrl]);
 
-  const [state, dispatch] = useReducer<
-    React.Reducer<ICourierContext, IAction>
-  >(reducer, {
+  const [state, dispatch] = useReducer(reducer, {
     apiUrl,
     clientKey,
     transport,
@@ -90,7 +88,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   return (
     <CourierContext.Provider
       value={{
-        ...state,
+        ...(state as any),
         dispatch,
       }}
     >

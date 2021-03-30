@@ -21,6 +21,7 @@
     "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
     "@trycourier/react-provider": "^0.1.10-alpha.13",
+    "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "react-loading-skeleton": "^2.2.0",
     "rimraf": "^3.0.2",

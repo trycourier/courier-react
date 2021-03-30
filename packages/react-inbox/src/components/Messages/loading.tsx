@@ -15,7 +15,7 @@ const MessageSkeleton: React.FunctionComponent = () => {
         <Skeleton count={2} />
       </Contents>
       <div style={{ width: "100px", marginLeft: 12 }}>
-        <Skeleton count={1} height={20} style={{ marginTop: 8 }} />
+        <Skeleton count={1} height={20} style={{ marginTop: -4 }} />
       </div>
     </Container>
   );

@@ -20,9 +20,11 @@ export const Tab = styled.div`
   font-weight: 400;
   text-align: center;
   cursor: pointer;
+  border-bottom: 2px solid transparent;
+
   &.active {
     color: #9D3789;
-    font-weight: 700;
+    font-weight: 600;
     border-bottom: 2px solid #9D3789;
   }
 `;

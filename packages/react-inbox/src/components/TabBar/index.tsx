@@ -1,14 +1,31 @@
-import React, { useState } from 'react'
-import { Container, Tab } from './styled';
+import React from "react";
+import classNames from "classnames";
+import { Container, Tab } from "./styled";
+import useInbox from "~/hooks/use-inbox";
 
-function TabBar({ style = {} }) {
-  const [activeTab, setActiveTab] = useState(0);
+const TabBar: React.FunctionComponent = () => {
+  const { currentTab, setCurrentTab, config } = useInbox();
+
+  const handleOnChange = (newTab) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    setCurrentTab(newTab);
+  };
+
   return (
-    <Container style={style}>
-      <Tab  className={activeTab === 0 ? 'active' : ''} onClick={() => setActiveTab(0)}>Unread</Tab>
-      <Tab className={activeTab === 1 ? 'active' : ''}  onClick={() => setActiveTab(1)}>All notifications</Tab>
+    <Container>
+      {config?.tabs?.map((tab) => (
+        <Tab
+          key={tab.id}
+          className={classNames({
+            active: currentTab?.id === tab.id,
+          })}
+          onClick={handleOnChange(tab)}
+        >
+          {tab.label}
+        </Tab>
+      ))}
     </Container>
-  )
-}
+  );
+};
 
-export default TabBar
+export default TabBar;

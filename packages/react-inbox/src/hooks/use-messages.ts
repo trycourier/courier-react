@@ -1,78 +1,52 @@
-import {
-  useCallback, useEffect, useState,
-} from "react";
-import { useQuery } from "urql";
-import { useCourier } from "@trycourier/react-provider";
-import useInbox from "./use-inbox";
+import { useClient } from "urql";
 
 export const GET_MESSAGES = `
-query ($after: String){
-  unread: messages(params: { isRead: false }, after: $after) {
-    totalCount
-    pageInfo {
-      startCursor
-      hasNextPage
-    }
-    edges {
-      node {
+  query ($after: String, $isRead: Boolean){
+    messages(params: { isRead: $isRead }, after: $after) {
+      totalCount
+      pageInfo {
+        startCursor
+        hasNextPage
+      }
+      nodes {
         id
         messageId
         created
+        read
         content {
           title
           body
           data
+          trackingIds {
+            clickTrackingId
+            readTrackingId
+            deliverTrackingId
+          }
         }
       }
     }
   }
-}
 `;
 
 
 const useMessages = () => {
-  const [startCursor, setStartCursor] = useState(null);
-  const [after, setAfter] = useState(null);
-  const inbox = useInbox();
-  const setLoading = useCallback(inbox.setLoading, []);
-  const addMessages = useCallback(inbox.addMessages, []);
-  const { transport } = useCourier();
-  const [results] = useQuery({
-    query: GET_MESSAGES,
-    variables: {
-      after,
-    },
-  });
+  const client = useClient();
 
-  const fetchMore = useCallback(() => {
-    if (startCursor) {
-      setAfter(startCursor);
-    }
-  }, [startCursor]);
+  const fetch =  async (variables) => {
+    const results = await client.query(GET_MESSAGES, variables).toPromise();
 
-  useEffect(() => {
-    setLoading(results?.fetching);
-    const messages = results?.data?.unread?.edges;
-    const startCursor = results?.data?.unread?.pageInfo?.startCursor;
-
-    if (results?.data?.unread && !results?.fetching) {
-      addMessages({ messages });
-      setStartCursor(startCursor);
-    }
-  }, [results, setLoading, addMessages]);
-
-  useEffect(() => {
-    transport?.listen({
-      id: "inbox-listener",
-      listener: (courierEvent) => {
-        inbox.newMessage(courierEvent?.data);
-      },
-    });
-  }, [transport]);
+    const messages = results?.data?.messages?.nodes;
+    const startCursor = results?.data?.messages?.pageInfo?.startCursor;
+  
+    return {
+      appendMessages: Boolean(variables?.after),
+      messages,
+      startCursor,
+    };
+  }
+  
   return {
-    messages: inbox.messages,
-    isLoading: inbox.isLoading,
-    fetchMore,
+    fetch,
   };
 };
 

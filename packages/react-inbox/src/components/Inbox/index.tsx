@@ -46,12 +46,12 @@ const StyledTippy = styled(LazyTippy)(({ theme }) => ({
   ".tippy-content": {
     padding: 0,
     maxHeight: 545,
-    display: 'flex',
-    flexDirection: 'column',
-    '> div': {
+    display: "flex",
+    flexDirection: "column",
+    "> div": {
       flex: 1,
       maxHeight: 545,
-    }
+    },
   },
 
   ".tippy-arrow": {
@@ -82,9 +82,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    inbox.init({
-      config: props.config,
-    });
+    inbox.init(props);
   }, [props]);
 
   if (!courierContext?.inbox) {
@@ -98,12 +96,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {props.renderIcon ? (
           <span>
             {props.renderIcon({
-              hasUnreadMessages: inbox.hasUnreadMessages,
+              hasUnreadMessages: Boolean(inbox.unreadMessageCount),
             })}
           </span>
         ) : (
           <Bell
-            hasUnreadMessages={inbox.hasUnreadMessages}
+            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
             className={props.className}
           />
         )}

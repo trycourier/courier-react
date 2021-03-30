@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ const Container = styled.div`
   border-radius: 4px !important;
 `;
 
-const Option = styled.div`
+const Option = styled.button`
   height: 25px;
   font-size: 12px;
   font-style: normal;
@@ -22,23 +22,33 @@ const Option = styled.div`
   display: flex;
   padding-left: 10px;
   align-items: center;
+  background: transparent;
+  border: none;
+  outline: none;
+
   :hover {
-    background-color: #5C6A82;
+    background-color: #5c6a82;
   }
-`
+`;
 
-
-function Options({ options, close }) {
+function Options({ options, onClose }) {
   return (
     <Container>
-      {
-        options.map(({ label, onClick = () => {} }) => <Option key={label} onClick={() => {
+      {options.map(({ label, onClick }) => {
+        const handleOnClick = (event: React.MouseEvent) => {
+          event.preventDefault();
           onClick();
-          close()
-        }}>{label}</Option>)
-      }
+          onClose();
+        };
+
+        return (
+          <Option key={label} onClick={handleOnClick}>
+            {label}
+          </Option>
+        );
+      })}
     </Container>
-  )
+  );
 }
 
-export default Options
+export default Options;

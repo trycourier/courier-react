@@ -8,6 +8,7 @@ export default () => {
   const client = useMemo(() => {
     return createClient({
       url: `${apiUrl ?? process.env.API_URL ?? `https://api.courier.com`}/client/q`,
+      requestPolicy: "network-only",
       fetchOptions: () => {
         const headers = {
           "x-courier-client-key": clientKey,

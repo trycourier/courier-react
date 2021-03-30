@@ -1,41 +1,105 @@
+import { IMessage } from './types';
 
-export default (state, action) => {
+const makeMessage = (message): IMessage => ({
+    body: message?.content?.body,
+    created: message.created,
+    data: message?.content?.data,
+    messageId: message.messageId,
+    read: message?.read,
+    title: message?.content?.title,
+    trackingIds: message?.content?.trackingIds,
+});
+
+interface InboxState {
+  messages?: Array<IMessage>
+  isLoading?: boolean;
+  unreadMessageCount?: number;
+  currentTab?: {
+    id: string;
+    label: string;
+    filter?: {
+      isRead: boolean;
+    }
+  };
+}
+
+export default (state: InboxState = {}, action) => {
   switch (action.type) {
   case "inbox/INIT": {
     return {
       ...state,
-      config: action.payload.config,
+      config: action.payload,
+      currentTab: action.payload?.tabs?.[0],
     };
   }
 
-  case "inbox/SET_LOADING": {
+  case "inbox/SET_CURRENT_TAB": {
     return {
       ...state,
-      isLoading: action.payload.isLoading,
+      messages: state.currentTab !== action.payload ? [] : state.messages,
+      currentTab: action.payload,
     };
   }
 
-  case "inbox/SET_HAS_UNREAD_MESSAGES": {
+  case "inbox/SET_UNREAD_MESSAGE_COUNT": {
     return {
       ...state,
-      hasUnreadMessages: action.payload.hasUnreadMessages,
+      unreadMessageCount: action.payload.unreadMessageCount,
     };
   }
 
-  case "inbox/ADD_MESSAGES": {
+  case "inbox/FETCH_MESSAGES/PENDING": {
     return {
       ...state,
+      isLoading: true
+    };
+  }
+
+  case "inbox/FETCH_MESSAGES/DONE": {
+    const newMessages = action?.payload?.messages?.map(makeMessage);
+
+    return {
+      ...state,
+      isLoading: false,
       startCursor: action?.payload?.startCursor,
-      messages: [
-        ...(state.messages || []),
-        ...action?.payload?.messages?.map(({ node: message }) => ({
-          messageId: message.messageId,
-          created: message.created,
-          title: message?.content?.title,
-          body: message?.content?.body,
-          data: message?.content?.data,
-        })),
-      ],
+      messages: action?.payload?.appendMessages ? [
+        ...(state.messages ??[]),
+        ...newMessages
+      ] : newMessages
+    };
+  }
+
+  case "inbox/MARK_MESSAGE_READ": {
+    const unreadMessageCount = (state.unreadMessageCount ?? 1) - 1;
+
+    if (state.currentTab?.filter?.isRead === false) {
+      return {
+        ...state,
+        messages: state.messages?.filter(message => message.messageId !== action.payload.messageId),
+        unreadMessageCount,
+      };
+    }
+
+    return {
+      ...state,
+      messages: state.messages?.map(message => {
+        if (message.messageId === action.payload.messageId) {
+          return {
+            ...message,
+            read: true
+          }
+        }
+
+        return message;
+      }),
+      unreadMessageCount
+    }
+  }
+
+  case "inbox/FETCH_MESSAGES/ERROR": {
+    return {
+      ...state,
+      isLoading: false
     };
   }
 
