@@ -85,6 +85,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     inbox.init(props);
   }, [props]);
 
+  const handleBellOnMouseEnter = (event: React.MouseEvent) => {
+    event.preventDefault();
+    inbox.fetchMessages();
+  };
+
   if (!courierContext?.inbox) {
     return null;
   }
@@ -101,8 +106,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           </span>
         ) : (
           <Bell
-            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
             className={props.className}
+            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
+            onMouseEnter={handleBellOnMouseEnter}
           />
         )}
       </StyledTippy>

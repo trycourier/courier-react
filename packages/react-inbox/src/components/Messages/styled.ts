@@ -4,7 +4,7 @@ export const Body = styled.div(({ theme }) => ({
   background: "#FFFFFF",
   overflow: "scroll",
   display: "flex",
-  maxHeight: "365px",
+  height: 365,
   flexDirection: "column",
   borderTop: "1px solid rgba(203,213,224,.5)",
   ...theme.body,
