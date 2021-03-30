@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from "react";
-import useHoverDirty from "react-use/lib/useHoverDirty";
+import React, { useEffect } from "react";
 import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
@@ -68,9 +67,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
   }
-
-  const hoverRef = useRef(null);
-  const isHovered = useHoverDirty(hoverRef);
 
   useMessageCount();
   const inbox = useInbox();
