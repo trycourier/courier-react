@@ -65,30 +65,21 @@ const Message: React.FunctionComponent<MessageProps> = ({
     href: data?.clickAction,
     label: "View Details",
   }], [data]);
-
+  const showMarkAsRead = !read && readTrackingId;
+  const showMarkAsUnread = read && unreadTrackingId;
   const options = useMemo(
     () =>
       [
-        !read &&
-          readTrackingId && {
+        showMarkAsRead && {
           label: "Mark as Read",
           onClick: () => {
-            if (!readTrackingId) {
-              return;
-            }
-
             markMessageRead(messageId, readTrackingId);
           },
         },
 
-        read &&
-          unreadTrackingId && {
+        showMarkAsUnread && {
           label: "Mark as Unread",
           onClick: () => {
-            if (!unreadTrackingId) {
-              return;
-            }
-
             markMessageUnread(messageId, unreadTrackingId);
           },
         },
@@ -97,7 +88,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
         onClick: () => {},
       },*/
       ].filter(Boolean),
-    [markMessageRead, markMessageUnread, messageId, read, readTrackingId, unreadTrackingId],
+    [markMessageRead, markMessageUnread, messageId, readTrackingId, showMarkAsRead, showMarkAsUnread, unreadTrackingId],
   );
   return (
     <Container
