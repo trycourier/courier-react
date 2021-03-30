@@ -103,9 +103,7 @@ export default (state: InboxState = {}, action) => {
     };
   }
 
-  case "inbox/NEW_MESSAGE": {
-    console.log("action", action);
-    
+  case "inbox/NEW_MESSAGE": {    
     return {
       ...state,
       messages: [
