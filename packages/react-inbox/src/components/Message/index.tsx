@@ -42,8 +42,9 @@ const Message: React.FunctionComponent<MessageProps> = ({
   data,
   read,
   messageId,
-  trackingIds,
+  trackingIds = {},
 }) => {
+  const { readTrackingId, unreadTrackingId } = trackingIds;
   const {
     config, markMessageRead, markMessageUnread,
   } = useInbox();
@@ -69,26 +70,26 @@ const Message: React.FunctionComponent<MessageProps> = ({
     () =>
       [
         !read &&
-          trackingIds?.readTrackingId && {
+          readTrackingId && {
           label: "Mark as Read",
           onClick: () => {
-            if (!trackingIds?.readTrackingId) {
+            if (!readTrackingId) {
               return;
             }
 
-            markMessageRead(messageId, trackingIds?.readTrackingId);
+            markMessageRead(messageId, readTrackingId);
           },
         },
 
         read &&
-          trackingIds?.unreadTrackingId && {
+          unreadTrackingId && {
           label: "Mark as Unread",
           onClick: () => {
-            if (!trackingIds?.readTrackingId) {
+            if (!unreadTrackingId) {
               return;
             }
 
-            markMessageUnread(messageId, trackingIds?.unreadTrackingId);
+            markMessageUnread(messageId, unreadTrackingId);
           },
         },
         /*{
@@ -96,7 +97,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
         onClick: () => {},
       },*/
       ].filter(Boolean),
-    [read, trackingIds?.readTrackingId, trackingIds?.unreadTrackingId, markMessageRead, messageId, markMessageUnread],
+    [markMessageRead, markMessageUnread, messageId, read, readTrackingId, unreadTrackingId],
   );
   return (
     <Container
