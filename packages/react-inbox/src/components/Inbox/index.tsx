@@ -87,7 +87,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
-    inbox.fetchMessages();
+    inbox.fetchMessages(inbox.currentTab?.filter);
   };
 
   if (!courierContext?.inbox) {

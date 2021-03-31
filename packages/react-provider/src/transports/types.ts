@@ -4,9 +4,9 @@ export interface ICourierMessage {
   title?: string;
   data?: {
     clickAction?: string;
-    clickedUrl?: string;
-    readUrl?: string;
-    deliveredUrl?: string;
+    clickTrackingId?: string;
+    readTrackingId?: string;
+    deliverTrackingId?: string;
   }
 }
 
