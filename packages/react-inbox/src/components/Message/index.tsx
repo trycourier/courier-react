@@ -45,7 +45,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
   messageId,
   trackingIds = {},
 }) => {
-  const { readTrackingId, unreadTrackingId } = trackingIds;
+  const { readTrackingId, unreadTrackingId } = trackingIds || {};
   const {
     config, markMessageRead, markMessageUnread,
   } = useInbox();

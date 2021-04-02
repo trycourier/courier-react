@@ -43,7 +43,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   useEffect(() => {
     fetchMessages(currentTab?.filter);
   }, [currentTab]);
-
+  console.log("messages", messages);
   return (
     <>
       {renderHeader ? (
@@ -59,7 +59,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
       )}
       <TabBar />
       <Body ref={ref as React.RefObject<HTMLDivElement>} data-testid="messages">
-        {messages?.map((message) =>
+        {messages.map((message) =>
           renderMessage ? (
             renderMessage(message)
           ) : (
@@ -67,7 +67,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
           )
         )}
         {isLoading && <Loading />}
-        {!isLoading && messages?.length === 0 && (
+        {!isLoading && messages.length === 0 && (
           <Empty>You have no notifications at this time</Empty>
         )}
       </Body>

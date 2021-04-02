@@ -11,7 +11,7 @@ const makeMessage = (message): IMessage => ({
 });
 
 interface InboxState {
-  messages?: Array<IMessage>
+  messages: Array<IMessage>
   isLoading?: boolean;
   unreadMessageCount?: number;
   currentTab?: {
@@ -23,13 +23,14 @@ interface InboxState {
   };
 }
 
-export default (state: InboxState = {}, action) => {
+export default (state: InboxState = { messages: [] }, action) => {
   switch (action.type) {
   case "inbox/INIT": {
     return {
       ...state,
       config: action.payload,
       currentTab: action.payload?.tabs?.[0],
+      messages: [],
     };
   }
 
@@ -56,7 +57,7 @@ export default (state: InboxState = {}, action) => {
   }
 
   case "inbox/FETCH_MESSAGES/DONE": {
-    const newMessages = action?.payload?.messages?.map(makeMessage);
+    const newMessages = action?.payload?.messages.map(makeMessage);
 
     return {
       ...state,
@@ -74,7 +75,7 @@ export default (state: InboxState = {}, action) => {
 
     return {
       ...state,
-      messages: state.messages?.map(message => {
+      messages: state.messages.map(message => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
@@ -89,19 +90,19 @@ export default (state: InboxState = {}, action) => {
   }
 
   case "inbox/MARK_MESSAGE_READ": {
-    const unreadMessageCount = (state.unreadMessageCount ?? 1) - 1;
+    const unreadMessageCount = action.payload.unreadMessageCount;
 
     if (state.currentTab?.filter?.isRead === false) {
       return {
         ...state,
-        messages: state.messages?.filter(message => message.messageId !== action.payload.messageId),
+        messages: state.messages.filter(message => message.messageId !== action.payload.messageId),
         unreadMessageCount,
       };
     }
 
     return {
       ...state,
-      messages: state.messages?.map(message => {
+      messages: state.messages.map(message => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,

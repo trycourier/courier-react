@@ -1,12 +1,10 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
-import { useActions } from "@trycourier/react-provider";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
-import {
-  Message, Title, Body,
-} from "./styled";
+import { Message, Title, Body } from "./styled";
 import { getIcon } from "./helpers";
+import { useTrackEvent } from "@trycourier/react-provider";
 import { useToast } from "~/hooks";
 
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
@@ -18,19 +16,24 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   ...props
 }) => {
   const { toastProps } = props as { toastProps: any };
-  const { handleOnClick } = useActions();
+  const [, { config }] = useToast();
+  const [_, trackEvent] = useTrackEvent();
+
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps.toastId),
-    [toastProps.toastId],
+    [toastProps.toastId]
   );
-  const handleOnClickDetails = useCallback((event) => {
-    handleOnClick(data);
 
+  const handleOnClickDetails = useCallback((event) => {
     if (onClick) {
       onClick(event);
     }
-  }, [data, handleOnClick, onClick]);
-  const [, { config }] = useToast();
+
+    trackEvent({
+      trackingId: data?.clickTrackingId,
+    });
+  }, []);
+
   const Icon = getIcon(icon ?? config?.defaultIcon);
 
   return (

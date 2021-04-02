@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import {useCourier, useTrackEvent} from '@trycourier/react-provider';
+import {useCourier} from '@trycourier/react-provider';
+import useTrackEvent from './use-track-event'
 import useMessages from "~/hooks/use-messages";
 
 export default () => {
@@ -75,6 +76,8 @@ export default () => {
     },
  
     markMessageRead: async (messageId: string, trackingId: string) => {
+      const unreadMessageCount = (inbox.unreadMessageCount ?? 1) + 1;
+
       await trackEvent({
         trackingId
       });
@@ -82,7 +85,8 @@ export default () => {
       dispatch({
         type: "inbox/MARK_MESSAGE_READ",
         payload: {
-          messageId
+          messageId,
+          unreadMessageCount
         }
       });
     },

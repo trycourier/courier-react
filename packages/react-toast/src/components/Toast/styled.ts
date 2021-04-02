@@ -21,7 +21,7 @@ export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
     ...theme?.body
   },
   [".Toastify__progress-bar"]: {
-    background: "#9121c2",
+    background: "#9D3789",
     height: 3,
     top: 0,
     ...theme?.progressBar
