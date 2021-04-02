@@ -1,12 +1,14 @@
 import React from "react";
-import { Container, Button } from "./styled";
 import { useToast } from "../../hooks";
+import { Container, Button } from "./styled";
 
 const Actions: React.FunctionComponent<{
   onClickDetails?: (event: React.MouseEvent) => void;
   onClickDismiss?: (event: React.MouseEvent) => void;
   href?: string;
-}> = ({ onClickDetails, onClickDismiss, href }) => {
+}> = ({
+  onClickDetails, onClickDismiss, href,
+}) => {
   const [
     ,
     {
@@ -19,7 +21,7 @@ const Actions: React.FunctionComponent<{
       {onClickDetails && (
         <Button
           href={href}
-          color="#9D3789"
+          color="#9121c2"
           onClick={onClickDetails}
           data-testid="message-action-details"
         >

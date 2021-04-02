@@ -14,6 +14,7 @@ import {
   UnreadMarker,
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
+import { MESSAGE_LABELS } from "~/constants";
 
 interface MessageProps {
   unread?: number;
@@ -71,22 +72,18 @@ const Message: React.FunctionComponent<MessageProps> = ({
     () =>
       [
         showMarkAsRead && {
-          label: "Mark as Read",
+          label: MESSAGE_LABELS.MARK_AS_READ,
           onClick: () => {
             markMessageRead(messageId, readTrackingId);
           },
         },
 
         showMarkAsUnread && {
-          label: "Mark as Unread",
+          label: MESSAGE_LABELS.MARK_AS_UNREAD,
           onClick: () => {
             markMessageUnread(messageId, unreadTrackingId);
           },
         },
-        /*{
-        label: "Delete",
-        onClick: () => {},
-      },*/
       ].filter(Boolean),
     [markMessageRead, markMessageUnread, messageId, readTrackingId, showMarkAsRead, showMarkAsUnread, unreadTrackingId],
   );

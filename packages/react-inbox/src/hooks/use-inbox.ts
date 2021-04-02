@@ -1,14 +1,11 @@
-import { useEffect } from "react";
-import { useCourier } from "@trycourier/react-provider";
-import useTrackEvent from "~/hooks/use-track-event";
+import { useEffect } from 'react';
+import {useCourier, useTrackEvent} from '@trycourier/react-provider';
 import useMessages from "~/hooks/use-messages";
 
 export default () => {
   const { fetch: fetchMessages } = useMessages();
-  const {
-    dispatch, inbox, transport,
-  } = useCourier();
-  const [, trackEvent] = useTrackEvent();
+  const { dispatch, inbox, transport } = useCourier();
+  const [_, trackEvent] = useTrackEvent();
 
   const newMessage = (payload) => {
     dispatch({
@@ -16,7 +13,7 @@ export default () => {
       payload,
     });
   };
-
+ 
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
@@ -38,21 +35,21 @@ export default () => {
             id: "unread",
             label: "Unread",
             filter: {
-              isRead: false,
-            },
+              isRead: false
+            }
           }, {
             id: "all",
             label: "All Messages",
-            filter: {},
-          }],
-        },
+            filter: {}
+          }]
+        }
       });
     },
 
     setCurrentTab: (newTab: string) => {
       dispatch({
         type: "inbox/SET_CURRENT_TAB",
-        payload: newTab,
+        payload: newTab
       });
     },
 
@@ -64,7 +61,7 @@ export default () => {
     }) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => fetchMessages(params),
+        payload: () => fetchMessages(params)
       });
     },
 
@@ -76,30 +73,30 @@ export default () => {
         },
       });
     },
-
+ 
     markMessageRead: async (messageId: string, trackingId: string) => {
       await trackEvent({
-        trackingId,
+        trackingId
       });
 
       dispatch({
         type: "inbox/MARK_MESSAGE_READ",
         payload: {
-          messageId,
-        },
+          messageId
+        }
       });
     },
 
     markMessageUnread: async (messageId: string, trackingId: string) => {
       await trackEvent({
-        trackingId,
+        trackingId
       });
 
       dispatch({
         type: "inbox/MARK_MESSAGE_UNREAD",
         payload: {
-          messageId,
-        },
+          messageId
+        }
       });
     },
   };

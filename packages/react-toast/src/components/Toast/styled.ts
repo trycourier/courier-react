@@ -4,7 +4,9 @@ import { ToastContainer } from "react-toastify";
 export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
   ["&.Toastify__toast-container"]: {
     fontFamily: `"Nunito", sans-serif`,
-    ...theme?.root
+    marginTop:150,
+    marginRight: 50,
+    ...theme?.root,
   },
   [".Toastify__toast"]: {
     "width": 320,
@@ -19,7 +21,7 @@ export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
     ...theme?.body
   },
   [".Toastify__progress-bar"]: {
-    background: "rgb(157, 55, 137)",
+    background: "#9121c2",
     height: 3,
     top: 0,
     ...theme?.progressBar

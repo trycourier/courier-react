@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import Tippy, { TippyProps } from "@tippyjs/react";
 import { OptionsIconButton, Container } from "./styled";
 import OptionsIcon from "./options.svg";
+import styled from "styled-components";
+import Tippy, { TippyProps } from "@tippyjs/react";
 import Options from "./Options";
 
 const StyledTippy = styled(Tippy)`
