@@ -123,7 +123,7 @@ export default (state: InboxState = { messages: [] }, action) => {
     };
   }
 
-  case "inbox/NEW_MESSAGE": {
+  case "inbox/NEW_MESSAGE": {    
     return {
       ...state,
       messages: [
@@ -133,6 +133,7 @@ export default (state: InboxState = { messages: [] }, action) => {
           title: action.payload.title,
           body: action.payload.body,
           data: action.payload.data,
+          trackingIds: action.payload.data.trackingIds,
         },
         ...state.messages || [],
       ],

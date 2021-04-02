@@ -1,9 +1,8 @@
-import { ICourierContext, useCourier } from "@trycourier/react-provider";
+import { ICourierContext, useCourier, useTrackEvent } from "@trycourier/react-provider";
 import { UseToast, ToastCaller } from "./types";
 import { IToastConfig } from '../types';
 
 import { useEffect } from "react";
-import { COURIER_CLIENT_HEADER } from "../constants";
 
 export const useToast: UseToast = () => {
   const {toast, toastConfig, clientKey} = useCourier<{
@@ -11,10 +10,15 @@ export const useToast: UseToast = () => {
     toastConfig?: IToastConfig
   }>();
 
-  return [toast, { config: toastConfig ?? {}, clientKey }];
+  return [toast, { 
+      config: toastConfig ?? {}, 
+      clientKey 
+  }];
 };
 
 export const useListenForTransportEvent = (clientKey: string, transport: ICourierContext["transport"], handleToast) => {
+  const [_, trackEvent] = useTrackEvent();
+
   useEffect(() => {
     if (!transport) {
       return;
@@ -25,12 +29,9 @@ export const useListenForTransportEvent = (clientKey: string, transport: ICourie
       listener: (courierEvent) => {
         const courierData = courierEvent?.data?.data;
 
-        if (clientKey && courierData?.deliveredUrl) {
-          fetch(`${courierData?.deliveredUrl}`, {
-            method: "POST",
-            headers: {
-              [COURIER_CLIENT_HEADER]: clientKey,
-            },
+        if (clientKey && courierData?.deliverTrackingId) {
+          trackEvent({
+            trackingId: courierData?.deliverTrackingId
           });
         }
 

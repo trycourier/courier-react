@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import classNames from "classnames";
-
 import distanceInWords from "date-fns/formatDistanceStrict";
+import { useTrackEvent } from "@trycourier/react-provider";
 import OptionsDropdown from "../OptionsDropdown";
 import Actions from "../Actions";
 import {
@@ -50,6 +50,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
     config, markMessageRead, markMessageUnread,
   } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
+  const [_, trackEvent] = useTrackEvent();
 
   const timeAgo = useMemo(() => {
     if (!created) {
@@ -62,12 +63,22 @@ const Message: React.FunctionComponent<MessageProps> = ({
     });
   }, [created]);
 
-  const actions = useMemo(() => [{
-    href: data?.clickAction,
-    label: "View Details",
-  }], [data]);
   const showMarkAsRead = !read && readTrackingId;
   const showMarkAsUnread = read && unreadTrackingId;
+  const actions = useMemo(() => [
+    {
+      href: data?.clickAction,
+      label: "View Details",
+      onClick: () => {
+        if (trackingIds?.clickTrackingId) {
+          trackEvent({
+            trackingId: trackingIds?.clickTrackingId,
+          });
+        }
+      },
+    },
+  ], [data]);
+
   const options = useMemo(
     () =>
       [
