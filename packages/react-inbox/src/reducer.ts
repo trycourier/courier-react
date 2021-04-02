@@ -71,7 +71,7 @@ export default (state: InboxState = { messages: [] }, action) => {
   }
 
   case "inbox/MARK_MESSAGE_UNREAD": {
-    const unreadMessageCount = (state.unreadMessageCount ?? 1) + 1;
+    const unreadMessageCount = (state.unreadMessageCount ?? 0) + 1;
 
     return {
       ...state,
@@ -123,7 +123,7 @@ export default (state: InboxState = { messages: [] }, action) => {
     };
   }
 
-  case "inbox/NEW_MESSAGE": {    
+  case "inbox/NEW_MESSAGE": {
     return {
       ...state,
       messages: [

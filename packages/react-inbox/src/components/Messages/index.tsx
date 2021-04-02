@@ -43,7 +43,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   useEffect(() => {
     fetchMessages(currentTab?.filter);
   }, [currentTab]);
-  console.log("messages", messages);
+
   return (
     <>
       {renderHeader ? (
