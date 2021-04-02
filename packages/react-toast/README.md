@@ -235,7 +235,7 @@ Custom progress bar, with an on hover:
 //App.js
 const theme = {
   progressBar: {
-    background: "rgb(157, 55, 137)",
+    background: "#9121c2",
     height: 3,
     bottom: 0,
   },

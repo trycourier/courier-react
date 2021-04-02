@@ -6,13 +6,13 @@ import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
 
 export default {
   title: "Inbox/With Toast",
-  component: Inbox,
   argTypes: {},
   args: {},
 };
 
-const clientKey = process.env.CLIENT_KEY;
-const userId = process.env.USER_ID;
+
+const clientKey = process.env.CLIENT_KEY || "";
+const userId = process.env.USER_ID || "";
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;

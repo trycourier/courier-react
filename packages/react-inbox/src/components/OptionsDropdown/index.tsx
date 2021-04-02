@@ -38,7 +38,7 @@ function OptionsDropdown({ options }) {
   const [showOptions, setShowOptions] = useState(false);
 
   const handleShowOptions = (event: React.MouseEvent) => {
-    event.preventDefault();
+    event?.preventDefault();
     setShowOptions(!showOptions);
   };
 

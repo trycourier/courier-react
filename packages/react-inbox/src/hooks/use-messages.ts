@@ -19,8 +19,9 @@ export const GET_MESSAGES = `
           data
           trackingIds {
             clickTrackingId
-            readTrackingId
             deliverTrackingId
+            readTrackingId
+            unreadTrackingId
           }
         }
       }

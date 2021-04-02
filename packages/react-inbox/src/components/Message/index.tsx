@@ -2,7 +2,8 @@ import React, { useMemo } from "react";
 import classNames from "classnames";
 import distanceInWords from "date-fns/formatDistanceStrict";
 import { useTrackEvent } from "@trycourier/react-provider";
-
+import OptionsDropdown from "../OptionsDropdown";
+import Actions from "../Actions";
 import {
   Body,
   Container,
@@ -13,9 +14,7 @@ import {
   UnreadMarker,
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
-
-import OptionsDropdown from "../OptionsDropdown";
-import Actions from "../Actions";
+import { MESSAGE_LABELS } from "~/constants";
 
 interface MessageProps {
   unread?: number;
@@ -44,9 +43,12 @@ const Message: React.FunctionComponent<MessageProps> = ({
   data,
   read,
   messageId,
-  trackingIds,
+  trackingIds = {},
 }) => {
-  const { config, markMessageRead, markMessageUnread } = useInbox();
+  const { readTrackingId, unreadTrackingId } = trackingIds || {};
+  const {
+    config, markMessageRead, markMessageUnread,
+  } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
   const [_, trackEvent] = useTrackEvent();
 
@@ -61,56 +63,41 @@ const Message: React.FunctionComponent<MessageProps> = ({
     });
   }, [created]);
 
-  const actions = useMemo(() => {
-    return [
-      {
-        href: data?.clickAction,
-        label: "View Details",
-        onClick: () => {
-          if (trackingIds?.clickTrackingId) {
-            trackEvent({
-              trackingId: trackingIds?.clickTrackingId,
-            });
-          }
-        },
+  const showMarkAsRead = !read && readTrackingId;
+  const showMarkAsUnread = read && unreadTrackingId;
+  const actions = useMemo(() => [
+    {
+      href: data?.clickAction,
+      label: "View Details",
+      onClick: () => {
+        if (trackingIds?.clickTrackingId) {
+          trackEvent({
+            trackingId: trackingIds?.clickTrackingId,
+          });
+        }
       },
-    ];
-  }, [data]);
+    },
+  ], [data]);
 
   const options = useMemo(
     () =>
       [
-        !read &&
-          trackingIds?.readTrackingId && {
-            label: "Mark as Read",
-            onClick: () => {
-              if (!trackingIds?.readTrackingId) {
-                return;
-              }
-
-              markMessageRead(messageId, trackingIds?.readTrackingId);
-            },
+        showMarkAsRead && {
+          label: MESSAGE_LABELS.MARK_AS_READ,
+          onClick: () => {
+            markMessageRead(messageId, readTrackingId);
           },
+        },
 
-        read &&
-          trackingIds?.unreadTrackingId && {
-            label: "Mark as Unread",
-            onClick: () => {
-              if (!trackingIds?.readTrackingId) {
-                return;
-              }
-
-              markMessageUnread(messageId, trackingIds?.unreadTrackingId);
-            },
+        showMarkAsUnread && {
+          label: MESSAGE_LABELS.MARK_AS_UNREAD,
+          onClick: () => {
+            markMessageUnread(messageId, unreadTrackingId);
           },
-        /*{
-        label: "Delete",
-        onClick: () => {},
-      },*/
+        },
       ].filter(Boolean),
-    [read, messageId, trackingIds]
+    [markMessageRead, markMessageUnread, messageId, readTrackingId, showMarkAsRead, showMarkAsUnread, unreadTrackingId],
   );
-
   return (
     <Container
       data-testid="inbox-message"

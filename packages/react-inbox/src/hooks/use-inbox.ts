@@ -53,7 +53,7 @@ export default () => {
       });
     },
 
-    fetchMessages: async (params: {
+    fetchMessages: (params: {
       params?: {
         after?: string;
         isRead?: boolean;
@@ -75,6 +75,8 @@ export default () => {
     },
  
     markMessageRead: async (messageId: string, trackingId: string) => {
+      const unreadMessageCount = (inbox.unreadMessageCount ?? 1) + 1;
+
       await trackEvent({
         trackingId
       });
@@ -82,7 +84,8 @@ export default () => {
       dispatch({
         type: "inbox/MARK_MESSAGE_READ",
         payload: {
-          messageId
+          messageId,
+          unreadMessageCount
         }
       });
     },
