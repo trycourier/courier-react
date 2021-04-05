@@ -6,7 +6,7 @@ export default () => {
   const { fetch: fetchMessages } = useMessages();
   const {
     dispatch, inbox, transport,
-  } = useCourier(context => ());
+  } = useCourier();
 
   const [_, trackEvent] = useTrackEvent();
 

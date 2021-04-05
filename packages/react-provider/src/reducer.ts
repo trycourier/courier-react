@@ -17,7 +17,6 @@ const rootReducer = (state, action) => {
 
   if (scope !== "root" && reducers[scope]) {
     const newState = reducers[scope](state?.[scope], action);
-    localStorage.setItem(`${state.clientKey}/${state.userId}/${scope}`, JSON.stringify(newState));
 
     return {
       ...state,

@@ -68,8 +68,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
+  const { clientKey, userId } = courierContext;
   useMessageCount();
   const inbox = useInbox();
+  const { init: initInbox } = inbox;
 
   const tippyProps: TippyProps = {
     trigger: props.trigger ?? "click",
@@ -82,31 +84,40 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    const { clientKey, userId, inbox } = courierContext;
-
-    if (!inbox && clientKey && userId) {
+    if (clientKey && userId) {
       const localStorageState = localStorage.getItem(
         `${clientKey}/${userId}/inbox`
       );
 
       if (localStorageState) {
         try {
-          inbox.init({
+          initInbox({
             ...JSON.parse(localStorageState),
             config: props,
           });
-        } catch {
+          return;
+        } catch (ex) {
+          console.log("error", ex);
           // do nothing
         }
       }
-
-      return;
     }
 
-    inbox.init({
+    initInbox({
       config: props,
     });
-  }, [props]);
+  }, [props, clientKey, userId]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      `${clientKey}/${userId}/inbox`,
+      JSON.stringify({
+        messages: inbox.messages,
+        config: inbox.config,
+        unreadMessageCount: inbox.unreadMessageCount,
+      })
+    );
+  }, [clientKey, userId]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();

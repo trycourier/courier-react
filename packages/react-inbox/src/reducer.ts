@@ -23,9 +23,11 @@ interface InboxState {
   };
 }
 
-export default (state: InboxState, action) => {
-  state.messages = state?.messages ?? [];
+const initialState: InboxState = {
+  messages: [],
+}
 
+export default (state: InboxState = initialState, action) => {
   switch (action.type) {
   case "inbox/INIT": {
     return {
