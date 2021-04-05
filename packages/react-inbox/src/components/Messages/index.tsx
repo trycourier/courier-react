@@ -26,7 +26,6 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   } = useInbox();
 
   const ref = useRef<HTMLDivElement>(null);
-
   useAtBottom(
     ref,
     () => {
@@ -39,7 +38,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         after: startCursor,
       });
     },
-    [isLoading, startCursor, currentTab],
+    [isLoading, startCursor, currentTab]
   );
 
   useEffect(() => {
