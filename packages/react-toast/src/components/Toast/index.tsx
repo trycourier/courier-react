@@ -2,11 +2,12 @@ import React, { useCallback, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 import { toast } from "react-toastify";
 
-import { useCourier, useActions } from "@trycourier/react-provider";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 
 import toastCss from "react-toastify/dist/ReactToastify.css";
 import { getTransition } from "../../lib";
 import { ToastStyled } from "./styled";
+import reducer from "~/reducer";
 import { ICourierToastMessage } from "~/components/Toast/types";
 import { IToastConfig } from "~/types";
 import { useListenForTransportEvent } from "~/hooks";
@@ -23,8 +24,7 @@ export const Toast: React.FunctionComponent<{
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, transport } = courierContext;
-  const courierActions = useActions();
+  const { clientKey, transport, dispatch } = courierContext;
 
   const handleToast = useCallback(
     (message: ICourierToastMessage | string) => {
@@ -44,15 +44,18 @@ export const Toast: React.FunctionComponent<{
   );
 
   useEffect(() => {
-    if (!courierActions) {
-      return;
-    }
+    registerReducer("toast", reducer);
+  }, []);
 
-    courierActions.initToast({
-      toast: handleToast,
-      config,
+  useEffect(() => {
+    dispatch({
+      type: "toast/INIT",
+      payload: {
+        config,
+        toast: handleToast,
+      },
     });
-  }, [config, handleToast]);
+  }, [config, dispatch, handleToast]);
 
   useListenForTransportEvent(clientKey, transport, handleToast);
 
