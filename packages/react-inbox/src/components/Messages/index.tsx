@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from "react";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
-import CourierLogo from "~/assets/courier_logo_text.svg";
 import {
   Body, Header, HeaderText, Empty, Footer,
 } from "./styled";
 import Loading from "./loading";
-import EndOfTheRoad from "./EndOfTheRoad";
+import PaginationEnd from "./PaginationEnd";
+import CourierLogo from "~/assets/courier_logo_text.svg";
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 
@@ -26,6 +26,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   } = useInbox();
 
   const ref = useRef<HTMLDivElement>(null);
+
   useAtBottom(
     ref,
     () => {
@@ -38,7 +39,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         after: startCursor,
       });
     },
-    [isLoading, startCursor, currentTab]
+    [isLoading, startCursor, currentTab],
   );
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         {!isLoading && messages.length === 0 && (
           <Empty>You have no notifications at this time</Empty>
         )}
-        {!isLoading && messages.length && !startCursor && (<EndOfTheRoad />) }
+        {!isLoading && messages.length && !startCursor && (<PaginationEnd title="End Of The Road" />) }
       </Body>
       <Footer>
         <div><span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span><CourierLogo /></div>

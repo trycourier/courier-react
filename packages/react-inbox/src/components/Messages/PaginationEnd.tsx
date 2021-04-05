@@ -1,8 +1,8 @@
 import React from "react";
-import EndPagination from "~/assets/pagination_end.svg";
 import { Line } from "./styled";
+import PaginationEndIcon from "~/assets/pagination_end.svg";
 
-function EndOfTheRoad() {
+function PaginationEnd({ title = "" }) {
   return (
     <div style={{
       display: "flex",
@@ -11,10 +11,10 @@ function EndOfTheRoad() {
       flex: "1 0",
     }}>
       <Line />
-      <EndPagination /> End Of The Road
+      <PaginationEndIcon /> {title}
       <Line />
     </div>
   );
 }
 
-export default EndOfTheRoad;
+export default PaginationEnd;
