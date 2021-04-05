@@ -33,15 +33,18 @@ export default {
 };
 
 
-export function CustomIcon({ position, hideProgressBar, transition }) {
+export function CustomIcon({
+  position, hideProgressBar, transition,
+}) {
   function ExampleComponent() {
     const [toast] = useToast();
     const notification = {
       title: "Warning",
       body: "We’ve noticed an elevated number of errors from your Notifications.",
-    }
+    };
     return <Button onClick={() => toast(notification)}>Show Toast</Button>;
   }
+
   const config = {
     position,
     hideProgressBar,
@@ -58,15 +61,18 @@ export function CustomIcon({ position, hideProgressBar, transition }) {
 }
 
 
-export function CustomTheme({ position, hideProgressBar, transition }) {
+export function CustomTheme({
+  position, hideProgressBar, transition,
+}) {
   function ExampleComponent() {
     const [toast] = useToast();
     const notification = {
       title: "Warning",
       body: "We’ve noticed an elevated number of errors from your Notifications.",
-    }
+    };
     return <Button onClick={() => toast(notification)}>Show Toast</Button>;
   }
+
   const config = {
     position,
     hideProgressBar,
@@ -74,9 +80,9 @@ export function CustomTheme({ position, hideProgressBar, transition }) {
     defaultIcon: WarningIcon,
     theme: {
       toast: {
-        'backgroundColor': 'black'
-      }
-    }
+        "backgroundColor": "black",
+      },
+    },
   };
   return (
     <ToastProvider
