@@ -16,7 +16,7 @@ const rootReducer = (state, action) => {
   const [scope] = action.type.split("/");
 
   if (scope !== "root" && reducers[scope]) {
-    if (!state?.[scope]) {
+    if (!state?.[scope] && state.userId && state.clientKey) {
       const localStorageState = localStorage.getItem(`${state.clientKey}/${state.userId}/${scope}`);
 
       if (localStorageState) {
