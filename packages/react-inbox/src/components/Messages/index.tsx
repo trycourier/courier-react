@@ -3,7 +3,8 @@ import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
 import {
-  Body, Header, HeaderText, Empty, Footer,
+  Body, Header, HeaderText,
+  Empty, Footer, FooterContent
 } from "./styled";
 import Loading from "./loading";
 import PaginationEnd from "./PaginationEnd";
@@ -75,7 +76,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         {!isLoading && messages.length && !startCursor && (<PaginationEnd title="End Of The Road" />) }
       </Body>
       <Footer>
-        <div><span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span><CourierLogo /></div>
+        <FooterContent><span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span><CourierLogo /></FooterContent>
       </Footer>
     </>
   );

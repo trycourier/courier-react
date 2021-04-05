@@ -63,14 +63,15 @@ export const Footer = styled.div(({ theme }) => ({
   "display": "flex",
   "alignItems": "flex-end",
   "justifyContent": "flex-end",
-  "> div": {
-    margin: "auto 20px auto auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   ...theme.footer,
 }));
+
+export const FooterContent = styled.div`
+  margin: auto 20px auto auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const Line = styled.div`
   background-color: rgb(165, 116, 164);
