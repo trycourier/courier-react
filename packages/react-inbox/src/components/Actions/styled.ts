@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   flex-shrink: 0;
 `;
 
-export const Action = styled.div<{ href: string, target: string }>(() => ({
+export const Action = styled.div<{ href: string; target: string }>(() => ({
   cursor: "pointer",
   border: "none",
   fontSize: 12,

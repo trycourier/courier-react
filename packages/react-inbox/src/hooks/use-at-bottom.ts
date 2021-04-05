@@ -1,6 +1,4 @@
-import {
-  useCallback, useEffect, useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useAtBottom(ref, cb, deps) {
   const [atBottom, setAtBottom] = useState(false);
@@ -8,16 +6,18 @@ export function useAtBottom(ref, cb, deps) {
   const containerElement = ref?.current;
 
   const handleScroll = useCallback(() => {
-    if (containerElement?.scrollTop + containerElement?.clientHeight + 50 >= containerElement?.scrollHeight) {
-      cb()
+    if (
+      containerElement?.scrollTop + containerElement?.clientHeight + 50 >=
+      containerElement?.scrollHeight
+    ) {
+      cb();
     }
   }, [
     ...deps,
-    containerElement?.clientHeight, 
-    containerElement?.scrollHeight, 
-    containerElement?.scrollTop
+    containerElement?.clientHeight,
+    containerElement?.scrollHeight,
+    containerElement?.scrollTop,
   ]);
-
 
   useEffect(() => {
     containerElement?.addEventListener("scroll", handleScroll);

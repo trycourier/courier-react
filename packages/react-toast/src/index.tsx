@@ -12,9 +12,7 @@ export const ToastProvider: React.FunctionComponent<
   ICourierContext & {
     config?: IToastConfig;
   }
-> = ({
-  children, transport, clientKey, config:_config,
-}) => {
+> = ({ children, transport, clientKey, config: _config }) => {
   const config = mergeConfig(defaultConfig, _config);
   return (
     <ThemeProvider theme={config.theme ?? {}}>
@@ -25,4 +23,3 @@ export const ToastProvider: React.FunctionComponent<
     </ThemeProvider>
   );
 };
-

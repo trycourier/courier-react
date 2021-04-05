@@ -1,9 +1,7 @@
-import {
-  CSSProperties, MouseEventHandler,
-} from "react";
+import { CSSProperties, MouseEventHandler } from "react";
 import { ToastPosition } from "react-toastify";
 
-type ThemeKey = CSSProperties | {[key: string]: CSSProperties};
+type ThemeKey = CSSProperties | { [key: string]: CSSProperties };
 
 export type Theme = Partial<{
   root: ThemeKey;
@@ -12,7 +10,8 @@ export type Theme = Partial<{
   sidebar: Partial<{
     dismiss: ThemeKey;
     details: ThemeKey;
-  }> & ThemeKey;
+  }> &
+    ThemeKey;
   title: ThemeKey;
   content: ThemeKey;
   icon: ThemeKey;

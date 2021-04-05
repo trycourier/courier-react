@@ -10,7 +10,6 @@ export default {
   args: {},
 };
 
-
 const clientKey = process.env.CLIENT_KEY || "";
 const userId = process.env.USER_ID || "";
 const channel = "TEST_EVENT";

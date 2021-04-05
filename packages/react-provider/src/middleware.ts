@@ -1,10 +1,8 @@
-
-const asyncMiddleware = store => next => async action => {
-  if (typeof action.payload !== 'function') {
+const asyncMiddleware = (store) => (next) => async (action) => {
+  if (typeof action.payload !== "function") {
     next(action);
     return;
   }
-  
 
   store.dispatch({
     type: `${action.type}/PENDING`,
@@ -15,17 +13,14 @@ const asyncMiddleware = store => next => async action => {
 
     store.dispatch({
       type: `${action.type}/DONE`,
-      payload: result
+      payload: result,
     });
-
   } catch (ex) {
     store.dispatch({
       type: `${action.type}/ERROR`,
-      ex
+      ex,
     });
   }
-}
+};
 
-export default [
-  asyncMiddleware
-]
+export default [asyncMiddleware];

@@ -31,19 +31,16 @@ export const Toast: React.FunctionComponent<{
       message =
         typeof message === "string"
           ? ({
-            body: message,
-            icon: undefined,
-          } as ICourierToastMessage)
+              body: message,
+              icon: undefined,
+            } as ICourierToastMessage)
           : message;
 
-      toast(
-        <Body {...message} icon={message.icon ?? config?.defaultIcon} />,
-        {
-          role: config?.role ?? "status",
-        },
-      );
+      toast(<Body {...message} icon={message.icon ?? config?.defaultIcon} />, {
+        role: config?.role ?? "status",
+      });
     },
-    [config],
+    [config]
   );
 
   useEffect(() => {

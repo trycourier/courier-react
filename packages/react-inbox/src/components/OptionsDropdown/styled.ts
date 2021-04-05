@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const OptionsIconButton = styled.button`
   outline: none;
@@ -11,6 +11,4 @@ export const OptionsIconButton = styled.button`
   cursor: pointer;
 `;
 
-export const Container = styled.div`
-  
-`;
+export const Container = styled.div``;

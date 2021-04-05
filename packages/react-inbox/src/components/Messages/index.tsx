@@ -3,8 +3,12 @@ import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
 import {
-  Body, Header, HeaderText,
-  Empty, Footer, FooterContent
+  Body,
+  Header,
+  HeaderText,
+  Empty,
+  Footer,
+  FooterContent,
 } from "./styled";
 import Loading from "./loading";
 import PaginationEnd from "./PaginationEnd";
@@ -40,7 +44,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         after: startCursor,
       });
     },
-    [isLoading, startCursor, currentTab],
+    [isLoading, startCursor, currentTab]
   );
 
   useEffect(() => {
@@ -67,16 +71,21 @@ const Messages: React.FunctionComponent<InboxProps> = ({
             renderMessage(message)
           ) : (
             <Message key={message.messageId} {...message} />
-          ),
+          )
         )}
         {isLoading && <Loading />}
         {!isLoading && messages.length === 0 && (
           <Empty>You have no notifications at this time</Empty>
         )}
-        {!isLoading && messages.length && !startCursor && (<PaginationEnd title="End Of The Road" />) }
+        {!isLoading && messages.length && !startCursor && (
+          <PaginationEnd title="End Of The Road" />
+        )}
       </Body>
       <Footer>
-        <FooterContent><span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span><CourierLogo /></FooterContent>
+        <FooterContent>
+          <span style={{ marginTop: 2 }}>Powered by&nbsp;&nbsp;</span>
+          <CourierLogo />
+        </FooterContent>
       </Footer>
     </>
   );

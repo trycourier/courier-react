@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const Icon = styled.img(({ theme }) => ({
   flexShrink: "0",
   marginLeft: 12,
@@ -34,10 +33,8 @@ export const Body = styled.div(({ theme }) => ({
   ...theme?.body,
 }));
 
-
 export const Title = styled.div(({ theme }) => ({
   fontWeight: 600,
   color: "#344563",
   ...theme?.title,
 }));
-

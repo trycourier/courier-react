@@ -9,9 +9,9 @@ export class Transport {
   /** Callback for emitted events  */
   protected listeners: Array<{
     id: string;
-    listener: (courierEvent: ICourierEvent) => void
+    listener: (courierEvent: ICourierEvent) => void;
   }>;
-  
+
   protected interceptor?: Interceptor;
   /** Wrapper method for emitted events  */
   protected emit = (courierEvent: ICourierEvent): void => {
@@ -27,14 +27,14 @@ export class Transport {
 
   /** Setter method for a listener */
   listen = (listener: {
-    id: string,
-    listener: (courierEvent: ICourierEvent) => void
+    id: string;
+    listener: (courierEvent: ICourierEvent) => void;
   }): void => {
     let didReplaceListener = false;
-    this.listeners = this.listeners.map(l => {
+    this.listeners = this.listeners.map((l) => {
       if (l.id === listener.id) {
         didReplaceListener = true;
-        return listener
+        return listener;
       }
 
       return l;
@@ -51,4 +51,3 @@ export class Transport {
     this.interceptor = cb;
   };
 }
-

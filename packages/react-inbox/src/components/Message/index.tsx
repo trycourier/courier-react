@@ -46,9 +46,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const {
-    config, markMessageRead, markMessageUnread,
-  } = useInbox();
+  const { config, markMessageRead, markMessageUnread } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
   const [_, trackEvent] = useTrackEvent();
 
@@ -65,19 +63,22 @@ const Message: React.FunctionComponent<MessageProps> = ({
 
   const showMarkAsRead = !read && readTrackingId;
   const showMarkAsUnread = read && unreadTrackingId;
-  const actions = useMemo(() => [
-    {
-      href: data?.clickAction,
-      label: "View Details",
-      onClick: () => {
-        if (trackingIds?.clickTrackingId) {
-          trackEvent({
-            trackingId: trackingIds?.clickTrackingId,
-          });
-        }
+  const actions = useMemo(
+    () => [
+      {
+        href: data?.clickAction,
+        label: "View Details",
+        onClick: () => {
+          if (trackingIds?.clickTrackingId) {
+            trackEvent({
+              trackingId: trackingIds?.clickTrackingId,
+            });
+          }
+        },
       },
-    },
-  ], [data]);
+    ],
+    [data]
+  );
 
   const options = useMemo(
     () =>
@@ -96,7 +97,15 @@ const Message: React.FunctionComponent<MessageProps> = ({
           },
         },
       ].filter(Boolean),
-    [markMessageRead, markMessageUnread, messageId, readTrackingId, showMarkAsRead, showMarkAsUnread, unreadTrackingId],
+    [
+      markMessageRead,
+      markMessageUnread,
+      messageId,
+      readTrackingId,
+      showMarkAsRead,
+      showMarkAsUnread,
+      unreadTrackingId,
+    ]
   );
   return (
     <Container
