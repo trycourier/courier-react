@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import CourierSvg from "~/assets/courier-icon.svg";
+import CourierSvg from "../../assets/courier_icon.svg";
 
 export const Container = styled.div(({ theme }) => ({
   "display": "flex",

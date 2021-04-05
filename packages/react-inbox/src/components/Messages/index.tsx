@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from "react";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
+import CourierLogo from "../../assets/courier_logo_text.svg";
 import {
   Body, Header, HeaderText, Empty, Footer,
 } from "./styled";
 import Loading from "./loading";
 import EndOfTheRoad from "./EndOfTheRoad";
-import CourierLogo from "~/assets/courier_logo_text.svg";
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 
