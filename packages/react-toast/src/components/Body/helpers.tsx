@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import CourierIcon from "../../assets/courier_icon.svg";
+import CourierIcon from "~/assets/courier_icon.svg";
 import { Icon } from "./styled";
 
 export function getIcon(icon) {

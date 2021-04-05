@@ -12,9 +12,10 @@ module.exports = {
       },
     ],
     ["babel-plugin-react-remove-properties", { properties: ["data-testid"] }],
-    process.env.NODE_ENV !== "test" && [
+    [
       "babel-plugin-root-import",
       {
+        root: __dirname,
         rootPathSuffix: "./src",
         rootPathPrefix: "~/",
       },

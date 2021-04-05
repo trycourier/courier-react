@@ -1,5 +1,5 @@
 import React from "react";
-import EndPagination from "../../assets/pagination_end.svg";
+import EndPagination from "~/assets/pagination_end.svg";
 import { Line } from "./styled";
 
 function EndOfTheRoad() {

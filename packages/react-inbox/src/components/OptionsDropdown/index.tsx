@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Tippy, { TippyProps } from "@tippyjs/react";
-import OptionsIcon from "../../assets/options.svg";
+import OptionsIcon from "~/assets/options.svg";
 import { OptionsIconButton, Container } from "./styled";
 import Options from "./Options";
 

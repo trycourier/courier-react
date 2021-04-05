@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
-import CourierLogo from "../../assets/courier_logo_text.svg";
+import CourierLogo from "~/assets/courier_logo_text.svg";
 import {
   Body, Header, HeaderText, Empty, Footer,
 } from "./styled";
