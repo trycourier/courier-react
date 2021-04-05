@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 
 import { useCourier, useActions } from "@trycourier/react-provider";
 
+import toastCss from "react-toastify/dist/ReactToastify.css";
 import { getTransition } from "../../lib";
 import { ToastStyled } from "./styled";
-import toastCss from "react-toastify/dist/ReactToastify.css";
 import { ICourierToastMessage } from "~/components/Toast/types";
 import { IToastConfig } from "~/types";
 import { useListenForTransportEvent } from "~/hooks";
@@ -31,19 +31,19 @@ export const Toast: React.FunctionComponent<{
       message =
         typeof message === "string"
           ? ({
-              body: message,
-              icon: undefined,
-            } as ICourierToastMessage)
+            body: message,
+            icon: undefined,
+          } as ICourierToastMessage)
           : message;
 
       toast(
         <Body {...message} icon={message.icon ?? config?.defaultIcon} />,
         {
           role: config?.role ?? "status",
-        }
+        },
       );
     },
-    [config]
+    [config],
   );
 
   useEffect(() => {

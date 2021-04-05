@@ -46,5 +46,42 @@ export const Empty = styled.div`
   text-align: center;
   color: #73819B;
   margin: auto;
-  height: 100%;
+`;
+
+
+export const Footer = styled.div(({ theme }) => ({
+  "borderBottomLeftRadius": 24,
+  "borderBottomRightRadius": 24,
+  "height": 45,
+  "fontSize": "10px",
+  "fontStyle": "normal",
+  "fontWeight": "700",
+  "lineHeight": "14px",
+  "letterSpacing": "0em",
+  "textAlign": "left",
+  "color": "#B9C0CD",
+  "display": "flex",
+  "alignItems": "flex-end",
+  "justifyContent": "flex-end",
+  ...theme.footer,
+}));
+
+export const FooterContent = styled.div`
+  margin: auto 20px auto auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Line = styled.div`
+  background-color: rgb(165, 116, 164);
+  height: 4px;
+  flex: 1;
+  opacity: 0.18;
+  :first-child {
+    margin-right: 15px;
+  }
+  :last-child {
+    margin-left: 15px;
+  }
 `;
