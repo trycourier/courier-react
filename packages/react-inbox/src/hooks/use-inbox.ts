@@ -1,18 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useCourier, useTrackEvent } from "@trycourier/react-provider";
 import useMessages from "~/hooks/use-messages";
 
 export default () => {
   const { fetch: fetchMessages } = useMessages();
-  const { dispatch, inbox, transport } = useCourier();
+  const {
+    dispatch, inbox, transport,
+  } = useCourier(context => ());
+
   const [_, trackEvent] = useTrackEvent();
 
-  const newMessage = (payload) => {
+  const newMessage = useCallback((payload) => {
     dispatch({
       type: "inbox/NEW_MESSAGE",
       payload,
     });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     transport?.listen({
@@ -21,31 +24,33 @@ export default () => {
         newMessage(courierEvent?.data);
       },
     });
-  }, [transport]);
+  }, [newMessage, transport]);
 
   return {
     ...inbox,
 
     init: (payload) => {
+      payload = {
+        ...payload,
+        config: {
+          ...payload.config,
+          tabs: payload.config.tabs ?? [{
+            id: "unread",
+            label: "Unread",
+            filter: {
+              isRead: false,
+            },
+          }, {
+            id: "all",
+            label: "All Messages",
+            filter: {},
+          }]
+        }
+      };
+
       dispatch({
         type: "inbox/INIT",
-        payload: {
-          ...payload,
-          tabs: payload.tabs ?? [
-            {
-              id: "unread",
-              label: "Unread",
-              filter: {
-                isRead: false,
-              },
-            },
-            {
-              id: "all",
-              label: "All Messages",
-              filter: {},
-            },
-          ],
-        },
+        payload,
       });
     },
 
@@ -60,7 +65,7 @@ export default () => {
       params?: {
         after?: string;
         isRead?: boolean;
-      };
+      }
     }) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",

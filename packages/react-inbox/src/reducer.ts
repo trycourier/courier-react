@@ -24,13 +24,13 @@ interface InboxState {
 }
 
 export default (state: InboxState, action) => {
-  state.messages = state.messages ?? [];
+  state.messages = state?.messages ?? [];
 
   switch (action.type) {
   case "inbox/INIT": {
     return {
       ...state,
-      config: action.payload,
+      ...action.payload,
       currentTab: action.payload?.tabs?.[0],
     };
   }

@@ -82,7 +82,30 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    inbox.init(props);
+    const { clientKey, userId, inbox } = courierContext;
+
+    if (!inbox && clientKey && userId) {
+      const localStorageState = localStorage.getItem(
+        `${clientKey}/${userId}/inbox`
+      );
+
+      if (localStorageState) {
+        try {
+          inbox.init({
+            ...JSON.parse(localStorageState),
+            config: props,
+          });
+        } catch {
+          // do nothing
+        }
+      }
+
+      return;
+    }
+
+    inbox.init({
+      config: props,
+    });
   }, [props]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {

@@ -16,18 +16,6 @@ const rootReducer = (state, action) => {
   const [scope] = action.type.split("/");
 
   if (scope !== "root" && reducers[scope]) {
-    if (!state?.[scope] && state.userId && state.clientKey) {
-      const localStorageState = localStorage.getItem(`${state.clientKey}/${state.userId}/${scope}`);
-
-      if (localStorageState) {
-        try {
-          state[scope] = JSON.parse(localStorageState);
-        } catch {
-          //do nothing
-        }
-      }
-    }
-
     const newState = reducers[scope](state?.[scope], action);
     localStorage.setItem(`${state.clientKey}/${state.userId}/${scope}`, JSON.stringify(newState));
 
