@@ -1,15 +1,15 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import CourierSvg from "../../assets/courier-icon.svg";
+import CourierSvg from "../../assets/courier_icon.svg";
 
 export const Container = styled.div(({ theme }) => ({
-  display: "flex",
-  position: "relative",
-  padding: "10px 15px",
-  backgroundColor: "#F9FAFB",
-  alignItems: "center",
-  height: 90,
-  borderBottom: "1px solid rgba(203,213,224,.5)",
+  "display": "flex",
+  "position": "relative",
+  "padding": "10px 15px",
+  "backgroundColor": "#F9FAFB",
+  "alignItems": "center",
+  "height": 90,
+  "borderBottom": "1px solid rgba(203,213,224,.5)",
   "&.read": {
     backgroundColor: "#F7F6F9",
   },
@@ -100,16 +100,14 @@ export const UnreadMarker = styled.div`
 export const Icon = styled.img(iconStyles);
 const CourierIcon = styled(CourierSvg)(iconStyles);
 
-export const getIcon = (icon?: false | string) => {
-  return useMemo(() => {
-    if (icon === false) {
-      return;
-    }
+export const getIcon = (icon?: false | string) => useMemo(() => {
+  if (icon === false) {
+    return;
+  }
 
-    if (typeof icon === "string") {
-      return <Icon src={icon} />;
-    }
+  if (typeof icon === "string") {
+    return <Icon src={icon} />;
+  }
 
-    return <CourierIcon />;
-  }, [icon]);
-};
+  return <CourierIcon />;
+}, [icon]);
