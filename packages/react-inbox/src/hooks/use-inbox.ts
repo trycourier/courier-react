@@ -4,18 +4,19 @@ import useMessages from "~/hooks/use-messages";
 
 export default () => {
   const { fetch: fetchMessages } = useMessages();
-  const {
-    dispatch, inbox, transport,
-  } = useCourier();
+  const { dispatch, inbox, transport } = useCourier();
 
   const [_, trackEvent] = useTrackEvent();
 
-  const newMessage = useCallback((payload) => {
-    dispatch({
-      type: "inbox/NEW_MESSAGE",
-      payload,
-    });
-  }, [dispatch]);
+  const newMessage = useCallback(
+    (payload) => {
+      dispatch({
+        type: "inbox/NEW_MESSAGE",
+        payload,
+      });
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     transport?.listen({
@@ -34,18 +35,21 @@ export default () => {
         ...payload,
         config: {
           ...payload.config,
-          tabs: payload.config.tabs ?? [{
-            id: "unread",
-            label: "Unread",
-            filter: {
-              isRead: false,
+          tabs: payload.config.tabs ?? [
+            {
+              id: "unread",
+              label: "Unread",
+              filter: {
+                isRead: false,
+              },
             },
-          }, {
-            id: "all",
-            label: "All Messages",
-            filter: {},
-          }]
-        }
+            {
+              id: "all",
+              label: "All Messages",
+              filter: {},
+            },
+          ],
+        },
       };
 
       dispatch({
@@ -65,7 +69,7 @@ export default () => {
       params?: {
         after?: string;
         isRead?: boolean;
-      }
+      };
     }) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
@@ -83,8 +87,6 @@ export default () => {
     },
 
     markMessageRead: async (messageId: string, trackingId: string) => {
-      const unreadMessageCount = (inbox.unreadMessageCount ?? 1) + 1;
-
       await trackEvent({
         trackingId,
       });
@@ -93,7 +95,6 @@ export default () => {
         type: "inbox/MARK_MESSAGE_READ",
         payload: {
           messageId,
-          unreadMessageCount,
         },
       });
     },

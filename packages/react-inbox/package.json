@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox",
-  "version": "0.1.10-alpha.16",
+  "version": "0.1.10-alpha.17",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
-    "@trycourier/react-provider": "^0.1.10-alpha.16",
+    "@trycourier/react-provider": "^0.1.10-alpha.17",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "react-loading-skeleton": "^2.2.0",
