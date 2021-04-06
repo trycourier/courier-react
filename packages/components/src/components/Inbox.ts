@@ -1,1 +1,1 @@
-export {Inbox as default} from '@trycourier/react-inbox';
+export { Inbox as default } from "@trycourier/react-inbox";

@@ -1,4 +1,4 @@
-import { useMutation } from 'urql';
+import { useMutation } from "urql";
 
 const TRACK_EVENT = `
   mutation TrackEvent($trackingId: String!) {
@@ -7,7 +7,6 @@ const TRACK_EVENT = `
     }
   }
 `;
-
 
 const useTrackEvent = () => {
   return useMutation(TRACK_EVENT);

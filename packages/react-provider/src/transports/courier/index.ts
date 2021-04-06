@@ -10,7 +10,7 @@ export class CourierTransport extends Transport {
   protected clientKey: string;
   protected userSignature?: string;
   protected interceptor?: Interceptor;
-  
+
   constructor(options: ITransportOptions) {
     super();
 
@@ -19,14 +19,19 @@ export class CourierTransport extends Transport {
     }
     this.clientKey = options.clientKey;
     this.userSignature = options.userSignature;
-    this.ws = new WS({ url: options.wsUrl ?? COURIER_WS_URL ?? "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production" });
+    this.ws = new WS({
+      url:
+        options.wsUrl ??
+        COURIER_WS_URL ??
+        "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production",
+    });
     this.ws.connect(options.clientKey);
   }
 
   send(message: any): void {
     this.ws.send({
       ...message,
-      data :{
+      data: {
         ...message.data,
         clientKey: this.clientKey,
       },
@@ -42,7 +47,7 @@ export class CourierTransport extends Transport {
       if (!data) {
         return;
       }
-      
+
       this.emit({ data });
     });
   }

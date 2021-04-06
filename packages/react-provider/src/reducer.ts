@@ -1,4 +1,3 @@
-
 export interface IAction {
   type: "root/INIT";
   payload: any;
@@ -24,28 +23,26 @@ const rootReducer = (state, action) => {
   }
 
   switch (action.type) {
-  case "root/INIT": {
-    return {
-      ...state,
-      apiUrl: action.payload.apiUrl,
-      clientKey: action.payload.clientKey,
-      transport: action.payload.transport,
-      userId: action.payload.userId,
-      userSignature: action.payload.userSignature,
-    };
-  }
+    case "root/INIT": {
+      return {
+        ...state,
+        apiUrl: action.payload.apiUrl,
+        clientKey: action.payload.clientKey,
+        transport: action.payload.transport,
+        userId: action.payload.userId,
+        userSignature: action.payload.userSignature,
+      };
+    }
 
-  case "INIT_TOAST": {
-    return {
-      ...state,
-      toastConfig: action.payload.config,
-      toast: action.payload.toast,
-    };
-  }
+    case "INIT_TOAST": {
+      return {
+        ...state,
+        toastConfig: action.payload.config,
+        toast: action.payload.toast,
+      };
+    }
   }
   return state;
 };
-
-
 
 export default rootReducer;

@@ -29,23 +29,22 @@ export const GET_MESSAGES = `
   }
 `;
 
-
 const useMessages = () => {
   const client = useClient();
 
-  const fetch =  async (variables) => {
+  const fetch = async (variables) => {
     const results = await client.query(GET_MESSAGES, variables).toPromise();
 
     const messages = results?.data?.messages?.nodes;
     const startCursor = results?.data?.messages?.pageInfo?.startCursor;
-  
+
     return {
       appendMessages: Boolean(variables?.after),
       messages,
       startCursor,
     };
-  }
-  
+  };
+
   return {
     fetch,
   };

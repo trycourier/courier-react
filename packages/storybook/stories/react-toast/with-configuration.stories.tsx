@@ -32,14 +32,14 @@ export default {
   },
 };
 
-
 export function CustomIcon({ position, hideProgressBar, transition }) {
   function ExampleComponent() {
     const [toast] = useToast();
     const notification = {
       title: "Warning",
-      body: "We’ve noticed an elevated number of errors from your Notifications.",
-    }
+      body:
+        "We’ve noticed an elevated number of errors from your Notifications.",
+    };
     return <Button onClick={() => toast(notification)}>Show Toast</Button>;
   }
   const config = {
@@ -49,22 +49,20 @@ export function CustomIcon({ position, hideProgressBar, transition }) {
     defaultIcon: WarningIcon,
   };
   return (
-    <ToastProvider
-      clientKey="client-key"
-      config={config}>
+    <ToastProvider clientKey="client-key" config={config}>
       <ExampleComponent />
     </ToastProvider>
   );
 }
-
 
 export function CustomTheme({ position, hideProgressBar, transition }) {
   function ExampleComponent() {
     const [toast] = useToast();
     const notification = {
       title: "Warning",
-      body: "We’ve noticed an elevated number of errors from your Notifications.",
-    }
+      body:
+        "We’ve noticed an elevated number of errors from your Notifications.",
+    };
     return <Button onClick={() => toast(notification)}>Show Toast</Button>;
   }
   const config = {
@@ -74,17 +72,13 @@ export function CustomTheme({ position, hideProgressBar, transition }) {
     defaultIcon: WarningIcon,
     theme: {
       toast: {
-        'backgroundColor': 'black'
-      }
-    }
+        backgroundColor: "black",
+      },
+    },
   };
   return (
-    <ToastProvider
-      clientKey="client-key"
-      config={config}>
+    <ToastProvider clientKey="client-key" config={config}>
       <ExampleComponent />
     </ToastProvider>
   );
 }
-
-

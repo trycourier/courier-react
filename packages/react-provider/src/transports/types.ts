@@ -7,14 +7,16 @@ export interface ICourierMessage {
     clickTrackingId?: string;
     readTrackingId?: string;
     deliverTrackingId?: string;
-  }
+  };
 }
 
 export interface ICourierEvent {
-  type?: "message",
-  data?: ICourierMessage,
+  type?: "message";
+  data?: ICourierMessage;
 }
 
 export type ICourierEventCallback = (params: ICourierEvent) => void;
 
-export type Interceptor = (message?: ICourierMessage) => ICourierMessage | undefined;
+export type Interceptor = (
+  message?: ICourierMessage
+) => ICourierMessage | undefined;

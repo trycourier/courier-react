@@ -2,13 +2,13 @@
 import { CSSProperties } from "react";
 import { TippyProps } from "@tippyjs/react";
 
-type InboxThemeOptions = "root" | "body" | "footer" | "header"
+type InboxThemeOptions = "root" | "body" | "footer" | "header";
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
 
 export interface ITab {
   filters: {
     isRead?: boolean;
-  },
+  };
   label: string;
   id: string;
 }
@@ -30,9 +30,10 @@ export interface InboxProps {
 
 type ThemeObject = {
   //https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/withStyles/withStyles.d.ts#L21
-  [key in InboxThemeOptions | MessageThemeOptions | string]?: CSSProperties | ThemeObject;
-}
-
+  [key in InboxThemeOptions | MessageThemeOptions | string]?:
+    | CSSProperties
+    | ThemeObject;
+};
 
 export interface IMessage {
   unread?: number;

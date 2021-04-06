@@ -21,7 +21,7 @@ export const Header = styled.div(({ theme }) => ({
 }));
 
 export const HeaderText = styled.div`
-  color: #24324B;
+  color: #24324b;
   font-size: 18px;
   font-weight: 700;
   line-height: 25px;
@@ -34,7 +34,7 @@ export const BodyText = styled.div`
   font-weight: 400;
   line-height: 19px;
   letter-spacing: 0em;
-  color: #9D3789;
+  color: #9d3789;
 `;
 
 export const Empty = styled.div`
@@ -44,25 +44,24 @@ export const Empty = styled.div`
   line-height: 25px;
   letter-spacing: 0em;
   text-align: center;
-  color: #73819B;
+  color: #73819b;
   margin: auto;
 `;
 
-
 export const Footer = styled.div(({ theme }) => ({
-  "borderBottomLeftRadius": 24,
-  "borderBottomRightRadius": 24,
-  "height": 45,
-  "fontSize": "10px",
-  "fontStyle": "normal",
-  "fontWeight": "700",
-  "lineHeight": "14px",
-  "letterSpacing": "0em",
-  "textAlign": "left",
-  "color": "#B9C0CD",
-  "display": "flex",
-  "alignItems": "flex-end",
-  "justifyContent": "flex-end",
+  borderBottomLeftRadius: 24,
+  borderBottomRightRadius: 24,
+  height: 45,
+  fontSize: "10px",
+  fontStyle: "normal",
+  fontWeight: "700",
+  lineHeight: "14px",
+  letterSpacing: "0em",
+  textAlign: "left",
+  color: "#B9C0CD",
+  display: "flex",
+  alignItems: "flex-end",
+  justifyContent: "flex-end",
   ...theme.footer,
 }));
 

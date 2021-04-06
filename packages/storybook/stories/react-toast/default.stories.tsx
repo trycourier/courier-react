@@ -63,7 +63,7 @@ export function WithClickAction({ bodyText }) {
       data: {
         clickAction: "https://app.courier.com",
         clickedUrl: "https://example.com/e/clicked",
-        readUrl: "https://example.com/e/read"
+        readUrl: "https://example.com/e/read",
       },
       options: {
         hideProgressBar: false,
@@ -72,11 +72,9 @@ export function WithClickAction({ bodyText }) {
     const [toast] = useToast();
     return <Button onClick={() => toast(notification)}>Show Toast</Button>;
   }
-  
+
   return (
-    <ToastProvider
-      clientKey="client-key"
-    >
+    <ToastProvider clientKey="client-key">
       <DefaultComponent body={bodyText} />
     </ToastProvider>
   );

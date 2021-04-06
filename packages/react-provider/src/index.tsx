@@ -20,7 +20,7 @@ export const registerReducer = _registerReducer;
 export type ICourierMessage = TransportTypes.ICourierMessage;
 export type ICourierContext = types.ICourierContext;
 export const CourierContext = React.createContext<ICourierContext | undefined>(
-  undefined,
+  undefined
 );
 
 const GraphQLProvider: React.FunctionComponent = ({ children }) => {

@@ -11,7 +11,7 @@ export class WS {
     this.connected = false;
     this.url = url;
   }
-  
+
   connect(clientKey: string): void {
     const url = `${this.url}/?clientKey=${clientKey}`;
 
@@ -33,12 +33,12 @@ export class WS {
     }
   }
 
-  onConnectionOpen(): void{
+  onConnectionOpen(): void {
     this.connected = true;
   }
 
   waitForOpen(): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (this.connected) {
         resolve(true);
       } else {
@@ -47,7 +47,12 @@ export class WS {
     });
   }
 
-  async subscribe(channel: string, event: string, clientKey: string, callback: ICourierEventCallback): Promise<void>{
+  async subscribe(
+    channel: string,
+    event: string,
+    clientKey: string,
+    callback: ICourierEventCallback
+  ): Promise<void> {
     await this.waitForOpen();
     this.send({
       action: "subscribe",
@@ -60,7 +65,7 @@ export class WS {
     this.messageCallback = callback;
   }
 
-  send(message: {[key: string]: any}): void{
+  send(message: { [key: string]: any }): void {
     this.connection?.send(JSON.stringify(message));
   }
 
@@ -83,7 +88,7 @@ export class WS {
     if (!this.connection) {
       return;
     }
-    
+
     this.connection.onopen = this.onConnectionOpen.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
   }
