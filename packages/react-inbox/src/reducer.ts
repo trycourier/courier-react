@@ -33,7 +33,7 @@ export default (state: InboxState = initialState, action) => {
       return {
         ...state,
         ...action.payload,
-        currentTab: action.payload?.tabs?.[0],
+        currentTab: action.payload?.config?.tabs?.[0],
       };
     }
 
