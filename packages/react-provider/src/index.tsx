@@ -61,19 +61,6 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   });
 
   useEffect(() => {
-    if (!transport || !userId) {
-      return;
-    }
-
-    const courierTransport = transport as CourierTransport;
-    courierTransport.subscribe(userId);
-
-    return () => {
-      courierTransport.unsubscribe(userId);
-    };
-  }, [transport, userId]);
-
-  useEffect(() => {
     dispatch({
       type: "root/INIT",
       payload: {
@@ -85,6 +72,19 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       },
     });
   }, [apiUrl, clientKey, transport, userId, userSignature]);
+
+  useEffect(() => {
+    if (!transport || !userId) {
+      return;
+    }
+
+    const courierTransport = transport as CourierTransport;
+    courierTransport.subscribe(userId);
+
+    return () => {
+      courierTransport.unsubscribe(userId);
+    };
+  }, [transport, userId]);
 
   return (
     <CourierContext.Provider

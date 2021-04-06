@@ -31,7 +31,12 @@ export function NoIcon({ bodyText }) {
   }
 
   return (
-    <ToastProvider clientKey="client-key">
+    <ToastProvider
+      clientKey="client-key"
+      config={{
+        defaultIcon: false,
+      }}
+    >
       <DefaultComponent body={bodyText} />
     </ToastProvider>
   );

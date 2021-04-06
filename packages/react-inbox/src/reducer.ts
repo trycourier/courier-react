@@ -23,16 +23,19 @@ interface InboxState {
   };
 }
 
-export default (state: InboxState = { messages: [] }, action) => {
+const initialState: InboxState = {
+  messages: [],
+};
+
+export default (state: InboxState = initialState, action) => {
   switch (action.type) {
-    case "inbox/INIT": {
-      return {
-        ...state,
-        config: action.payload,
-        currentTab: action.payload?.tabs?.[0],
-        messages: [],
-      };
-    }
+  case "inbox/INIT": {
+    return {
+      ...state,
+      ...action.payload,
+      currentTab: action.payload?.tabs?.[0],
+    };
+  }
 
     case "inbox/SET_CURRENT_TAB": {
       return {
