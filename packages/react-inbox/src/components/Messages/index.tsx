@@ -77,7 +77,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
         {!isLoading && messages.length === 0 && (
           <Empty>You have no notifications at this time</Empty>
         )}
-        {!isLoading && messages.length > 0 && !startCursor && (
+        {!isLoading && messages.length > 5 && !startCursor && (
           <PaginationEnd title="End Of The Road" />
         )}
       </Body>

@@ -117,7 +117,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         unreadMessageCount: inbox.unreadMessageCount,
       })
     );
-  }, [clientKey, userId]);
+  }, [
+    clientKey,
+    userId,
+    inbox.messages,
+    inbox.config,
+    inbox.unreadMessageCount,
+  ]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();

@@ -25,7 +25,7 @@ interface InboxState {
 
 const initialState: InboxState = {
   messages: [],
-}
+};
 
 export default (state: InboxState = initialState, action) => {
   switch (action.type) {
