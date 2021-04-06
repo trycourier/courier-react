@@ -29,13 +29,13 @@ const initialState: InboxState = {
 
 export default (state: InboxState = initialState, action) => {
   switch (action.type) {
-  case "inbox/INIT": {
-    return {
-      ...state,
-      ...action.payload,
-      currentTab: action.payload?.tabs?.[0],
-    };
-  }
+    case "inbox/INIT": {
+      return {
+        ...state,
+        ...action.payload,
+        currentTab: action.payload?.tabs?.[0],
+      };
+    }
 
     case "inbox/SET_CURRENT_TAB": {
       return {
@@ -92,7 +92,10 @@ export default (state: InboxState = initialState, action) => {
     }
 
     case "inbox/MARK_MESSAGE_READ": {
-      const unreadMessageCount = action.payload.unreadMessageCount;
+      const unreadMessageCount = Math.max(
+        (state.unreadMessageCount ?? 0) - 1,
+        0
+      );
 
       if (state.currentTab?.filter?.isRead === false) {
         return {
