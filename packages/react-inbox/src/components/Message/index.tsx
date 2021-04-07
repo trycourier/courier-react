@@ -48,7 +48,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
   const { config, markMessageRead, markMessageUnread } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
-  const [trackEvent] = useTrackEvent();
+  const { trackEvent } = useTrackEvent();
 
   const timeAgo = useMemo(() => {
     if (!created) {

@@ -6,7 +6,7 @@ export default () => {
   const { fetch: fetchMessages } = useMessages();
   const { dispatch, inbox, transport } = useCourier();
 
-  const [trackEvent, batchTrackEvent] = useTrackEvent();
+  const { trackEvent, batchTrackEvent } = useTrackEvent();
 
   const newMessage = useCallback(
     (payload) => {

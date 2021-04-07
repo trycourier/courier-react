@@ -29,7 +29,7 @@ export const useListenForTransportEvent = (
   transport: ICourierContext["transport"],
   handleToast
 ) => {
-  const [trackEvent] = useTrackEvent();
+  const { trackEvent } = useTrackEvent();
 
   useEffect(() => {
     if (!transport) {

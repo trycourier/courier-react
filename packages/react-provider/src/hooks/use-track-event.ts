@@ -19,7 +19,7 @@ const BATCH_TRACK_EVENT = `
 const useTrackEvent = () => {
   const [, trackEvent] = useMutation(TRACK_EVENT);
   const [, batchTrackEvent] = useMutation(BATCH_TRACK_EVENT);
-  return [trackEvent, batchTrackEvent];
+  return { trackEvent, batchTrackEvent };
 };
 
 export default useTrackEvent;
