@@ -25,7 +25,7 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
 
 const GraphQLProvider: React.FunctionComponent = ({ children }) => {
   const client = useGraphQlClient();
-  return <Provider value={client}>{ children}</Provider>;
+  return <Provider value={client}>{children}</Provider>;
 };
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({

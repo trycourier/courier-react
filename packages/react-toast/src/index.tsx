@@ -16,7 +16,7 @@ export const ToastProvider: React.FunctionComponent<
   const config = mergeConfig(defaultConfig, _config);
   return (
     <ThemeProvider theme={config.theme ?? {}}>
-      <CourierProvider clientKey={clientKey} transport={transport}>
+      <CourierProvider clientKey={ clientKey} transport={transport}>
         <Toast config={config} />
         {children}
       </CourierProvider>
