@@ -8,7 +8,7 @@ export const Action = styled.div<{ href: string; target: string }>(() => ({
   cursor: "pointer",
   border: "none",
   fontSize: 12,
-  color: "#9E3789",
+  color: "#9121C2",
   padding: "8px 15px",
   flexShrink: 0,
   maxHeight: 32,

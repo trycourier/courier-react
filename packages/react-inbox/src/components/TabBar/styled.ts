@@ -26,8 +26,8 @@ export const Tab = styled.div`
   border-bottom: 2px solid transparent;
 
   &.active {
-    color: #9d3789;
+    color: #9121c2;
     font-weight: 600;
-    border-bottom: 2px solid #9d3789;
+    border-bottom: 2px solid #9121c2;
   }
 `;
