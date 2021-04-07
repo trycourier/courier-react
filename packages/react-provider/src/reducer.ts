@@ -25,20 +25,20 @@ const rootReducer = (state, action) => {
   }
 
   switch (action.type) {
-  case "root/INIT": {
-    return {
-      ...state,
-      apiUrl: action.payload.apiUrl,
-      clientKey: action.payload.clientKey,
-      transport: action.payload.transport,
-      userId: action.payload.userId,
-      userSignature: action.payload.userSignature,
-    };
-  }
+    case "root/INIT": {
+      return {
+        ...state,
+        apiUrl: action.payload.apiUrl,
+        clientKey: action.payload.clientKey,
+        transport: action.payload.transport,
+        userId: action.payload.userId,
+        userSignature: action.payload.userSignature,
+      };
+    }
 
-  default: {
-    return state;
-  }
+    default: {
+      return state;
+    }
   }
 };
 
