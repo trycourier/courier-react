@@ -7,6 +7,7 @@ export const Body = styled.div(({ theme }) => ({
   height: 365,
   flexDirection: "column",
   borderTop: "1px solid rgba(203,213,224,.5)",
+  scrollSnapType: "y mandatory",
   ...theme.body,
 }));
 

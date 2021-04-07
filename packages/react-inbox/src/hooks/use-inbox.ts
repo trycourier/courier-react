@@ -6,7 +6,7 @@ export default () => {
   const { fetch: fetchMessages } = useMessages();
   const { dispatch, inbox, transport } = useCourier();
 
-  const [_, trackEvent] = useTrackEvent();
+  const [trackEvent, batchTrackEvent] = useTrackEvent();
 
   const newMessage = useCallback(
     (payload) => {
@@ -109,6 +109,17 @@ export default () => {
         payload: {
           messageId,
         },
+      });
+    },
+    markAllAsRead: async () => {
+      const messageIds = inbox.messages.map(({ messageId }) => messageId);
+      await batchTrackEvent({
+        eventType: "read",
+        messageIds,
+      });
+
+      dispatch({
+        type: "inbox/MARK_ALL_AS_READ",
       });
     },
   };

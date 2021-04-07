@@ -8,8 +8,18 @@ const TRACK_EVENT = `
   }
 `;
 
+const BATCH_TRACK_EVENT = `
+  mutation BatchTrackEvent($eventType: String!, $messageIds: [String]!) {
+    batchTrackEvent(eventType: $eventType, messageIds: $messageIds) {
+      ids
+    }
+  }
+`;
+
 const useTrackEvent = () => {
-  return useMutation(TRACK_EVENT);
+  const [, trackEvent] = useMutation(TRACK_EVENT);
+  const [, batchTrackEvent] = useMutation(BATCH_TRACK_EVENT);
+  return [trackEvent, batchTrackEvent];
 };
 
 export default useTrackEvent;
