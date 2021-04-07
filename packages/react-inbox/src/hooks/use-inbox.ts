@@ -87,39 +87,37 @@ export default () => {
     },
 
     markMessageRead: async (messageId: string, trackingId: string) => {
-      await trackEvent({
-        trackingId,
-      });
-
       dispatch({
         type: "inbox/MARK_MESSAGE_READ",
         payload: {
           messageId,
         },
       });
-    },
-
-    markMessageUnread: async (messageId: string, trackingId: string) => {
       await trackEvent({
         trackingId,
       });
+    },
 
+    markMessageUnread: async (messageId: string, trackingId: string) => {
       dispatch({
         type: "inbox/MARK_MESSAGE_UNREAD",
         payload: {
           messageId,
         },
       });
+      await trackEvent({
+        trackingId,
+      });
     },
     markAllAsRead: async () => {
       const messageIds = inbox.messages.map(({ messageId }) => messageId);
-      await batchTrackEvent({
-        eventType: "read",
-        messageIds,
-      });
 
       dispatch({
         type: "inbox/MARK_ALL_AS_READ",
+      });
+      await batchTrackEvent({
+        eventType: "read",
+        messageIds,
       });
     },
   };
