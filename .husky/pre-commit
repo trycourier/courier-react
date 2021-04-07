@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-prettier --write packages --loglevel silent
+npx pretty-quick --staged

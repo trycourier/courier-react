@@ -23,7 +23,8 @@
     "types": "lerna run types",
     "type-check": "lerna run type-check --parallel --stream",
     "type-coverage:detail": "type-coverage --strict --detail",
-    "type-coverage": "type-coverage --strict --at-least 92"
+    "type-coverage": "type-coverage --strict --at-least 92",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -71,6 +72,7 @@
     "jest": "^26.6.3",
     "jest-styled-components": "^7.0.3",
     "lerna": "^4.0.0",
+    "pretty-quick": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "rimraf": "^3.0.2",
@@ -82,5 +84,10 @@
     "packages": [
       "packages/*"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
