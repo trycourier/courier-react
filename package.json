@@ -8,7 +8,7 @@
     "lerna": "lerna",
     "lerna:version": "lerna version --no-push --no-git-tag-version",
     "lerna:publish": "lerna publish from-package --yes --no-verify-access",
-    "postinstall": "lerna bootstrap && yarn build",
+    "postinstall": "lerna bootstrap && yarn build && husky install",
     "build": "lerna run build --stream && yarn types",
     "build:components": "lerna run build:components --stream",
     "analyze:components": "yarn run build && ANALYZE=true lerna run build:components --scope @trycourier/components --stream",
@@ -23,8 +23,7 @@
     "types": "lerna run types",
     "type-check": "lerna run type-check --parallel --stream",
     "type-coverage:detail": "type-coverage --strict --detail",
-    "type-coverage": "type-coverage --strict --at-least 92",
-    "prepare": "husky install"
+    "type-coverage": "type-coverage --strict --at-least 92"
   },
   "repository": {
     "type": "git",
@@ -84,10 +83,5 @@
     "packages": [
       "packages/*"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   }
 }
