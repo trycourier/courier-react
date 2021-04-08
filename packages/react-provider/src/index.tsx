@@ -74,7 +74,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   }, [apiUrl, clientKey, transport, userId, userSignature]);
 
   useEffect(() => {
-    if(transport && userId) {
+    if (transport && userId) {
       (transport as CourierTransport).subscribe(userId);
     }
     return () => {
