@@ -78,7 +78,8 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       (transport as CourierTransport).subscribe(userId);
     }
     return () => {
-      courierTransport.unsubscribe(userId);
+      // Should we be checking if unsubscribe is needed? 
+      transport?.unsubscribe(userId);
     };
   }, [transport, userId]);
 
