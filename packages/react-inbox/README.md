@@ -106,6 +106,6 @@ function MyComponent() {
 
 ### [Inbox Config](#config)
 
-| Key         | Type             | Description                               |
-| ----------- | ---------------- | ----------------------------------------- |
-| defaultIcon | `string | false` | Default Icon to use if no Icon is present |
+| Key         | Type    | Description |
+| ----------- | ------- | ----------- | ----------------------------------------- |
+| defaultIcon | `string | false`      | Default Icon to use if no Icon is present |

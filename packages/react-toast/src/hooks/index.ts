@@ -1,25 +1,27 @@
 import {
-  ICourierContext, useCourier, useTrackEvent,
+  ICourierContext,
+  useCourier,
+  useTrackEvent,
 } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
 
-
 export const useToast: UseToast = () => {
-  const {
-    toast, clientKey,
-  } = useCourier<{
+  const { toast, clientKey } = useCourier<{
     toast: {
-      toast: ToastCaller,
-      config?: IToastConfig
-    }
+      toast: ToastCaller;
+      config?: IToastConfig;
+    };
   }>();
 
-  return [toast?.toast, {
-    config: toast?.config ?? {},
-    clientKey,
-  }];
+  return [
+    toast?.toast,
+    {
+      config: toast?.config ?? {},
+      clientKey,
+    },
+  ];
 };
 
 export const useListenForTransportEvent = (
@@ -27,7 +29,7 @@ export const useListenForTransportEvent = (
   transport: ICourierContext["transport"],
   handleToast
 ) => {
-  const [_, trackEvent] = useTrackEvent();
+  const { trackEvent } = useTrackEvent();
 
   useEffect(() => {
     if (!transport) {

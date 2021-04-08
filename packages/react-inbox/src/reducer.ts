@@ -146,6 +146,29 @@ export default (state: InboxState = initialState, action) => {
         ],
       };
     }
+
+    case "inbox/MARK_ALL_AS_READ": {
+      const unreadMessageCount = 0;
+
+      if (state.currentTab?.filter?.isRead === false) {
+        return {
+          ...state,
+          messages: [],
+          unreadMessageCount,
+        };
+      }
+
+      return {
+        ...state,
+        messages: state.messages.map((message) => {
+          return {
+            ...message,
+            read: true,
+          };
+        }),
+        unreadMessageCount,
+      };
+    }
   }
 
   return state;

@@ -8,7 +8,7 @@ export const Container = styled.div(({ theme }) => ({
   padding: "10px 15px",
   backgroundColor: "#F9FAFB",
   alignItems: "center",
-  height: 90,
+  maxHeight: 90,
   borderBottom: "1px solid rgba(203,213,224,.5)",
   "&.read": {
     backgroundColor: "#F7F6F9",
@@ -16,6 +16,7 @@ export const Container = styled.div(({ theme }) => ({
   "&:not(.read):hover": {
     background: "#EDE4ED",
   },
+  scrollSnapAlign: "start",
   ...theme.message?.container,
 }));
 

@@ -1,5 +1,4 @@
 {
-  "disableLanguages": ["html", "ejs", "javascript", "css"],
   "trailingComma": "es5",
   "tabWidth": 2,
   "arrowParens": "always"

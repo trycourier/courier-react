@@ -4,11 +4,12 @@ import { InboxProps } from "../../types";
 import TabBar from "../TabBar";
 import {
   Body,
-  Header,
-  HeaderText,
+  BodyText,
   Empty,
   Footer,
   FooterContent,
+  Header,
+  HeaderText,
 } from "./styled";
 import Loading from "./loading";
 import PaginationEnd from "./PaginationEnd";
@@ -28,6 +29,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
     messages,
     startCursor,
     unreadMessageCount,
+    markAllAsRead,
   } = useInbox();
 
   const ref = useRef<HTMLDivElement>(null);
@@ -61,7 +63,9 @@ const Messages: React.FunctionComponent<InboxProps> = ({
             {title}
             {unreadMessageCount ? ` (${unreadMessageCount})` : ""}
           </HeaderText>
-          {/*<BodyText style={{ cursor: "pointer" }}>Mark all as read</BodyText>*/}
+          <BodyText onClick={markAllAsRead} style={{ cursor: "pointer" }}>
+            Mark all as read
+          </BodyText>
         </Header>
       )}
       <TabBar />
