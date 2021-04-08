@@ -23,7 +23,7 @@ export const StyledButton = styled.button(({ theme }) => ({
     height: 20,
     width: 20,
     ":hover g": {
-      fill: "#9d3789",
+      fill: "#9121C2",
       transition: "all 0.05s ease-in-out",
     },
   },

@@ -92,7 +92,7 @@ const iconStyles = ({ theme }) => ({
 
 export const UnreadMarker = styled.div`
   height: 36px;
-  background-color: #9d3789;
+  background-color: #9121c2;
   width: 5px;
   position: absolute;
   left: 0;

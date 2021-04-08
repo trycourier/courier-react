@@ -35,7 +35,7 @@ export const BodyText = styled.div`
   font-weight: 400;
   line-height: 19px;
   letter-spacing: 0em;
-  color: #9d3789;
+  color: #9121c2;
 `;
 
 export const Empty = styled.div`

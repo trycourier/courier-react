@@ -19,7 +19,7 @@ const Actions: React.FunctionComponent<{
       {onClickDetails && (
         <Button
           href={href}
-          color="#9D3789"
+          color="#9121C2"
           onClick={onClickDetails}
           data-testid="message-action-details"
         >
