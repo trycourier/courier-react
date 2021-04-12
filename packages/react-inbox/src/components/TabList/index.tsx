@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Container, Tab } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 
-const TabBar: React.FunctionComponent = () => {
+const TabList: React.FunctionComponent = () => {
   const { currentTab, setCurrentTab, config } = useInbox();
 
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
@@ -28,4 +28,4 @@ const TabBar: React.FunctionComponent = () => {
   );
 };
 
-export default TabBar;
+export default TabList;

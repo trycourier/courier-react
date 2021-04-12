@@ -106,6 +106,36 @@ function MyComponent() {
 
 ### [Inbox Config](#config)
 
-| Key         | Type    | Description |
-| ----------- | ------- | ----------- | ----------------------------------------- |
-| defaultIcon | `string | false`      | Default Icon to use if no Icon is present |
+| Key         | Type             | Description                               |
+| ----------- | ---------------- | ----------------------------------------- |
+| defaultIcon | `string | false` | Default Icon to use if no Icon is present |
+
+### [Theme](#theme)
+
+```
+interface ITheme {
+  footer?: React.CSSProperties;
+  header?: React.CSSProperties;
+  icon?: React.CSSProperties;
+  root?: React.CSSProperties;
+  messageList?: {
+    container?: React.CSSProperties;
+    message?: {
+      actions?: {
+        container?: React.CSSProperties;
+        details?: React.CSSProperties;
+        dismiss?: React.CSSProperties;
+      }
+      body?: React.CSSProperties;
+      container?: React.CSSProperties;
+      icon?: React.CSSProperties;
+      title?: React.CSSProperties;
+      unreadIndicator?: React.CSSProperties;
+    }
+  };
+  tabList?: {
+    container?: React.CSSProperties;
+    tab?: React.CSSProperties;
+  }
+}
+```

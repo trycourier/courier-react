@@ -10,5 +10,3 @@ export const OptionsIconButton = styled.button`
   padding: 0 12px;
   cursor: pointer;
 `;
-
-export const Container = styled.div``;

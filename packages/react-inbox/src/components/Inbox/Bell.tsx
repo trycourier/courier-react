@@ -1,34 +1,39 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
+import deepExtend from "deep-extend";
 
-export const StyledButton = styled.button(({ theme }) => ({
-  border: "none",
-  background: "transparent",
-  padding: 0,
-  outline: "none",
-  position: "relative",
+export const StyledButton = styled.button(({ theme }) =>
+  deepExtend(
+    {
+      border: "none",
+      background: "transparent",
+      padding: 0,
+      outline: "none",
+      position: "relative",
 
-  ".unread-badge": {
-    position: "absolute",
-    top: -1,
-    right: -1,
-    borderRadius: "100%",
-    padding: 5,
-    background: "#de5063",
-    animation: "badge-pulse 10s infinite",
-  },
+      ".unread-badge": {
+        position: "absolute",
+        top: -1,
+        right: -1,
+        borderRadius: "100%",
+        padding: 5,
+        background: "#de5063",
+        animation: "badge-pulse 10s infinite",
+      },
 
-  svg: {
-    cursor: "pointer",
-    height: 20,
-    width: 20,
-    ":hover g": {
-      fill: "#9121C2",
-      transition: "all 0.05s ease-in-out",
+      svg: {
+        cursor: "pointer",
+        height: 20,
+        width: 20,
+        ":hover g": {
+          fill: theme?.brand?.primaryColor ?? "#9121C2",
+          transition: "all 0.05s ease-in-out",
+        },
+      },
     },
-  },
-  ...theme.icon,
-}));
+    theme.icon
+  )
+);
 
 const Bell: React.ForwardRefExoticComponent<{
   className?: string;
