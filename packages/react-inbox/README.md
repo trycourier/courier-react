@@ -117,7 +117,6 @@ interface ITheme {
   footer?: React.CSSProperties;
   header?: React.CSSProperties;
   icon?: React.CSSProperties;
-  root?: React.CSSProperties;
   messageList?: {
     container?: React.CSSProperties;
     message?: {
@@ -136,6 +135,7 @@ interface ITheme {
   tabList?: {
     container?: React.CSSProperties;
     tab?: React.CSSProperties;
-  }
+  };
+  root?: React.CSSProperties;
 }
 ```

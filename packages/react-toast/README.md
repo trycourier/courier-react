@@ -173,8 +173,6 @@ You can optionally provide custom styling to each component of the `Toast` when 
 
 ```
 interface ITheme {
-  footer?: React.CSSProperties;
-  header?: React.CSSProperties;
   icon?: React.CSSProperties;
   root?: React.CSSProperties;
   message?: {
@@ -189,7 +187,6 @@ interface ITheme {
     title?: React.CSSProperties;
   };
 };
-
 ```
 
 The style configuration objects should be defined with Style Objects. Style Objects can accept CSS Pseudo selectors for more advanced styling. See [here](https://styled-components.com/docs/advanced#style-objects) for more info or check below for advanced usage examples.
