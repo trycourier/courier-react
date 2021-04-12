@@ -7,4 +7,5 @@ export interface ICourierContext {
   userId?: string;
   userSignature?: string;
   wsUrl?: string;
+  brandId?: string;
 }

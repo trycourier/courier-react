@@ -36,6 +36,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   userId,
   userSignature,
   wsUrl,
+  brandId,
 }) => {
   transport = useMemo(() => {
     if (transport) {
@@ -58,6 +59,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     transport,
     userId,
     userSignature,
+    brandId,
   });
 
   useEffect(() => {
@@ -69,9 +71,10 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         transport,
         userId,
         userSignature,
+        brandId,
       },
     });
-  }, [apiUrl, clientKey, transport, userId, userSignature]);
+  }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
 
   useEffect(() => {
     if (!transport || !userId) {

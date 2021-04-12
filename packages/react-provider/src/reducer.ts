@@ -33,6 +33,7 @@ const rootReducer = (state, action) => {
         transport: action.payload.transport,
         userId: action.payload.userId,
         userSignature: action.payload.userSignature,
+        brandId: action.payload.brandId,
       };
     }
 
