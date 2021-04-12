@@ -105,7 +105,7 @@ export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
       height: "36px",
-      backgroundColor: "#9121c2",
+      backgroundColor: theme?.brand?.primaryColor ?? "#9121c2",
       width: "5px",
       position: "absolute",
       left: "0",
