@@ -1,159 +1,64 @@
 import React, { useEffect } from "react";
-import { TippyProps } from "@tippyjs/react";
-import tippyCss from "tippy.js/dist/tippy.css";
-import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
-
 import Messages from "../Messages";
 import Bell from "./Bell";
-import { useCourier, registerReducer } from "@trycourier/react-provider";
-
-import LazyTippy from "./LazyTippy";
-import useInbox from "~/hooks/use-inbox";
-import useMessageCount from "~/hooks/use-message-count";
-
 import { InboxProps } from "../../types";
-import reducer from "~/reducer";
-
-const GlobalStyle = createGlobalStyle`
-  ${tippyCss}
-
-  @keyframes badge-pulse {
-    0% {
-      -moz-box-shadow: 0 0 0 0 rgba(222, 80, 99, 0.3);
-      box-shadow: 0 0 0 0 rgba(222, 80, 99, 0.3);
-    }
-    10% {
-        -moz-box-shadow: 0 0 0 10px rgba(222, 80, 99, 0);
-        box-shadow: 0 0 0 10px rgba(222, 80, 99, 0);
-    }
-    100% {
-        -moz-box-shadow: 0 0 0 0 rgba(222, 80, 99, 0);
-        box-shadow: 0 0 0 0 rgba(222, 80, 99, 0);
-    }
-  }
-`;
-
-const StyledTippy = styled(LazyTippy)(({ theme }) => ({
-  fontFamily: `"Nunito", sans-serif`,
-  background: "#FFFFFF !important",
-  backgroundColor: "#FFFFFF !important",
-  boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-  color: "black !important",
-  minWidth: 483,
-  maxHeight: 545,
-  borderRadius: "20px !important",
-
-  ".tippy-content": {
-    padding: 0,
-    maxHeight: 545,
-    display: "flex",
-    flexDirection: "column",
-    "> div": {
-      flex: 1,
-      maxHeight: 545,
-    },
-  },
-
-  ".tippy-arrow": {
-    color: "#f9fafb",
-  },
-
-  ...theme.root,
-}));
+import { ThemeProvider } from "styled-components";
+import { GlobalStyle, StyledTippy } from "./styled";
+import { getTippyProps, handleBellOnMouseEnter } from "./helpers";
+import useInbox from "~/hooks/use-inbox";
+import { useCourier } from "@trycourier/react-provider";
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
+  const { theme = {}, className, trigger, placement, title, tabs } = props;
+  const tippyProps = getTippyProps({ trigger, placement });
   const courierContext = useCourier();
-
-  if (!courierContext) {
-    throw new Error("Missing Courier Provider");
-  }
-
-  const { clientKey, userId } = courierContext;
-  useMessageCount();
-  const inbox = useInbox();
-  const { init: initInbox } = inbox;
-
-  const tippyProps: TippyProps = {
-    trigger: props.trigger ?? "click",
-    placement: props.placement ?? "right",
-    interactive: true,
-  };
-
+  const { unreadMessageCount, init: initialize } = useInbox();
   useEffect(() => {
-    registerReducer("inbox", reducer);
-  }, []);
-
-  useEffect(() => {
-    if (clientKey && userId) {
-      const localStorageState = localStorage.getItem(
-        `${clientKey}/${userId}/inbox`
-      );
-
-      if (localStorageState) {
-        try {
-          initInbox({
-            ...JSON.parse(localStorageState),
-            config: props,
-          });
-          return;
-        } catch (ex) {
-          console.log("error", ex);
-          // do nothing
-        }
-      }
+    const { clientKey, userId } = courierContext;
+    if (!courierContext) {
+      throw new Error("Missing Courier Provider");
+    } else if (courierContext?.inbox && clientKey && userId) {
+      debugger;
+      initialize({ clientKey, userId, title, tabs });
     }
-
-    initInbox({
-      config: props,
-    });
-  }, [props, clientKey, userId]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      `${clientKey}/${userId}/inbox`,
-      JSON.stringify({
-        messages: inbox.messages,
-        config: inbox.config,
-        unreadMessageCount: inbox.unreadMessageCount,
-      })
-    );
-  }, [
-    clientKey,
-    userId,
-    inbox.messages,
-    inbox.config,
-    inbox.unreadMessageCount,
-  ]);
-
-  const handleBellOnMouseEnter = (event: React.MouseEvent) => {
-    event.preventDefault();
-    inbox.fetchMessages(inbox.currentTab?.filter);
-  };
-
-  if (!courierContext?.inbox) {
-    return null;
-  }
-
+  }, []);
   return (
-    <ThemeProvider theme={props.theme ?? {}}>
+    <ThemeProvider theme={theme}>
       <GlobalStyle />
       <StyledTippy {...tippyProps} content={<Messages {...props} />}>
         {props.renderIcon ? (
           <span>
             {props.renderIcon({
-              hasUnreadMessages: Boolean(inbox.unreadMessageCount),
+              hasUnreadMessages: Boolean(unreadMessageCount),
             })}
           </span>
         ) : (
           <Bell
-            className={props.className}
-            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
+            className={className}
+            hasUnreadMessages={Boolean(unreadMessageCount)}
             onMouseEnter={handleBellOnMouseEnter}
           />
         )}
       </StyledTippy>
     </ThemeProvider>
   );
+};
+
+Inbox.defaultProps = {
+  tabs: [
+    {
+      id: "unread",
+      label: "Unread",
+      filter: {
+        isRead: false,
+      },
+    },
+    {
+      id: "all",
+      label: "All Messages",
+      filter: {},
+    },
+  ],
 };
 
 export default Inbox;

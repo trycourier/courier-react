@@ -6,7 +6,7 @@ type InboxThemeOptions = "root" | "body" | "footer" | "header";
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
 
 export interface ITab {
-  filters: {
+  filter: {
     isRead?: boolean;
   };
   label: string;

@@ -1,8 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "urql";
-
 import { useCourier } from "@trycourier/react-provider";
-import useInbox from "./use-inbox";
 
 export const GET_MESSAGE_COUNT = `
   query MessageCount($isRead: Boolean!) {
@@ -13,7 +11,7 @@ export const GET_MESSAGE_COUNT = `
 `;
 
 const useMessageCount = () => {
-  const inbox = useInbox();
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const { transport } = useCourier();
 
   const [results] = useQuery({
@@ -24,19 +22,15 @@ const useMessageCount = () => {
   });
 
   useEffect(() => {
-    inbox.setUnreadMessageCount(results?.data?.messageCount);
-  }, [results]);
-
-  useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
       listener: () => {
-        inbox.setUnreadMessageCount(results?.data?.messageCount + 1);
+        setUnreadMessageCount(results?.data?.messageCount + 1);
       },
     });
   }, [transport, results]);
 
-  return results?.data?.messageCount;
+  return unreadMessageCount;
 };
 
 export default useMessageCount;
