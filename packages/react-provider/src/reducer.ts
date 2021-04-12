@@ -36,6 +36,12 @@ const rootReducer = (state, action) => {
         brandId: action.payload.brandId,
       };
     }
+    case "root/GET_BRAND": {
+      return {
+        ...state,
+        brand: action.payload.brand,
+      };
+    }
 
     default: {
       return state;

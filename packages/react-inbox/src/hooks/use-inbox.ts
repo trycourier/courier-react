@@ -9,9 +9,8 @@ import { DEFAULT_TABS } from "~/constants";
 
 export default () => {
   const { fetch: fetchMessages } = useMessages();
-  const { dispatch, inbox, transport, brandId } = useCourier();
+  const { dispatch, inbox, transport } = useCourier();
   const { trackEvent, batchTrackEvent } = useTrackEvent();
-  const brand = useBrand(brandId);
   const {
     messages,
     config,
@@ -34,13 +33,12 @@ export default () => {
   }, [transport]);
 
   return {
-    messages,
+    messages: messages || [],
     config,
     currentTab,
     isLoading,
     startCursor,
     unreadMessageCount,
-    // brand,
     init: (payload) => {
       payload = {
         ...payload,
