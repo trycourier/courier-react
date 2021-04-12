@@ -60,3 +60,21 @@ export function Default() {
     </>
   );
 }
+
+export function WithTheme() {
+  return (
+    <>
+      <CourierProvider
+        clientKey={clientKey}
+        userId={userId}
+        transport={courierTransport}
+        brand={{
+          primaryColor: "red",
+        }}
+      >
+        <Toast />
+        <Inbox title="Inbox" />
+      </CourierProvider>
+    </>
+  );
+}

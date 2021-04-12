@@ -11,7 +11,7 @@
 5. [Using Transport](#using-transport)
 6. [Using Hook](#using-hook)
 7. [Options](#options)
-8. [Themeing](#themeing)
+8. [Theming](#theming)
 9. [Advanced Usage](#advanced-usage)
 
 ## [Overview](#overview)
@@ -167,23 +167,30 @@ All `ToastProvider` configurations are optional.
 | theme | [StyleObject](https://github.com/trycourier/courier-react/blob/main/src/providers/types.ts#L16) | Customize the styles of the toast component with a StyleObject. See below for details. |
 | transition | boolean | Set the transition effect for the toast coming into the window and going out |
 
-### [Custom Styling](#themeing)
+### [Custom Styling](#theming)
 
-You can optionally provide custom styling to each component of the `Toast` when it is shown. Pass a `theme` object to the `ToastProvider` to use your own custom styling. The components available for styling are: `root`, `toast`, `body`, `title`, `content`, `icon`, `progressBar`, and `sidebar`.
+You can optionally provide custom styling to each component of the `Toast` when it is shown. Pass a `theme` object to the `ToastProvider` to use your own custom styling.
 
-You can use this table and chart to match the style key to the placement on the component
-| Key | Color Code | Description |
-|-------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| root | N/A | The entire exported component which includes multiple toasts. Use this key for things like global fonts, or controlling the position of multiple toasts at a time |
-| toast | green | The toast component which will be rendered in front of other Dom elements |
-| body | blue | The container for the main area of the toast including the title and message text(content) |
-| title | yellow | The text inside the body element above the message content |
-| content | orange | The text inside the body element which will be pertaining to the details of the message |
-| icon | red | The image pertaining to the toast |
-| progressBar | N/A | The bar that moves across the toast to indicate when it will go away unless interacted by with the user. |
-| sidebar | brown | The side of the toast which will contain the actions for the user |
+```
+interface ITheme {
+  footer?: React.CSSProperties;
+  header?: React.CSSProperties;
+  icon?: React.CSSProperties;
+  root?: React.CSSProperties;
+  message?: {
+    actions: {
+      container?: React.CSSProperties;
+      details?: React.CSSProperties;
+      dismiss?: React.CSSProperties;
+    };
+    body?: React.CSSProperties;
+    container?: React.CSSProperties;
+    icon?: React.CSSProperties;
+    title?: React.CSSProperties;
+  };
+};
 
-<img src="https://user-images.githubusercontent.com/16184018/109500964-cae3e180-7a4b-11eb-80ad-1fc18324938b.png" />
+```
 
 The style configuration objects should be defined with Style Objects. Style Objects can accept CSS Pseudo selectors for more advanced styling. See [here](https://styled-components.com/docs/advanced#style-objects) for more info or check below for advanced usage examples.
 
@@ -239,14 +246,6 @@ const theme = {
     height: 3,
     bottom: 0,
   },
-  sidebar: {
-    ":hover": {
-      backgroundColor: "black",
-      "*": {
-        color: "white",
-      },
-    },
-  },
 };
 
 function App() {
@@ -295,9 +294,11 @@ const theme = {
       color: "black",
     },
   },
-  title: {
-    color: "red !important",
-    fontSize: 14,
+  message: {
+    title: {
+      color: "red !important",
+      fontSize: 14,
+    },
   },
 };
 

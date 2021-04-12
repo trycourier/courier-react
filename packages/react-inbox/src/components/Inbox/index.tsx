@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import deepExtend from "deep-extend";
 
 import Messages from "../Messages";
 import Bell from "./Bell";
@@ -33,33 +34,36 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const StyledTippy = styled(LazyTippy)(({ theme }) => ({
-  fontFamily: `"Nunito", sans-serif`,
-  background: "#FFFFFF !important",
-  backgroundColor: "#FFFFFF !important",
-  boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-  color: "black !important",
-  minWidth: 483,
-  maxHeight: 545,
-  borderRadius: "20px !important",
-
-  ".tippy-content": {
-    padding: 0,
-    maxHeight: 545,
-    display: "flex",
-    flexDirection: "column",
-    "> div": {
-      flex: 1,
+const StyledTippy = styled(LazyTippy)(({ theme }) =>
+  deepExtend(
+    {
+      fontFamily: `"Nunito", sans-serif`,
+      background: "#FFFFFF !important",
+      backgroundColor: "#FFFFFF !important",
+      boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
+      color: "black !important",
+      minWidth: 483,
       maxHeight: 545,
+      borderRadius: "20px !important",
+
+      ".tippy-content": {
+        padding: 0,
+        maxHeight: 545,
+        display: "flex",
+        flexDirection: "column",
+        "> div": {
+          flex: 1,
+          maxHeight: 545,
+        },
+      },
+
+      ".tippy-arrow": {
+        color: "#f9fafb",
+      },
     },
-  },
-
-  ".tippy-arrow": {
-    color: "#f9fafb",
-  },
-
-  ...theme.root,
-}));
+    theme.root
+  )
+);
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const courierContext = useCourier();
@@ -68,7 +72,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, userId } = courierContext;
+  const { clientKey, userId, brand } = courierContext;
   useMessageCount();
   const inbox = useInbox();
   const { init: initInbox } = inbox;
@@ -135,7 +139,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }
 
   return (
-    <ThemeProvider theme={props.theme ?? {}}>
+    <ThemeProvider
+      theme={{
+        ...props.theme,
+        brand,
+      }}
+    >
       <GlobalStyle />
       <StyledTippy {...tippyProps} content={<Messages {...props} />}>
         {props.renderIcon ? (

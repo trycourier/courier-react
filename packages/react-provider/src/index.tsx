@@ -30,6 +30,7 @@ const GraphQLProvider: React.FunctionComponent = ({ children }) => {
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
+  brand,
   children,
   clientKey,
   transport,
@@ -54,6 +55,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
 
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
+    brand,
     clientKey,
     transport,
     userId,
@@ -65,13 +67,14 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       type: "root/INIT",
       payload: {
         apiUrl,
+        brand,
         clientKey,
         transport,
         userId,
         userSignature,
       },
     });
-  }, [apiUrl, clientKey, transport, userId, userSignature]);
+  }, [apiUrl, brand, clientKey, transport, userId, userSignature]);
 
   useEffect(() => {
     if (!transport || !userId) {

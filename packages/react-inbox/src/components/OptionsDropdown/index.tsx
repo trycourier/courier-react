@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Tippy, { TippyProps } from "@tippyjs/react";
 import OptionsIcon from "~/assets/options.svg";
-import { OptionsIconButton, Container } from "./styled";
+import { OptionsIconButton } from "./styled";
 import Options from "./Options";
 
 const StyledTippy = styled(Tippy)`
@@ -43,17 +43,15 @@ function OptionsDropdown({ options }) {
   };
 
   return (
-    <Container>
-      <StyledTippy
-        {...tippyProps}
-        visible={showOptions}
-        content={<Options options={options} onClose={handleShowOptions} />}
-      >
-        <OptionsIconButton onClick={handleShowOptions}>
-          <OptionsIcon />
-        </OptionsIconButton>
-      </StyledTippy>
-    </Container>
+    <StyledTippy
+      {...tippyProps}
+      visible={showOptions}
+      content={<Options options={options} onClose={handleShowOptions} />}
+    >
+      <OptionsIconButton onClick={handleShowOptions}>
+        <OptionsIcon />
+      </OptionsIconButton>
+    </StyledTippy>
   );
 }
 

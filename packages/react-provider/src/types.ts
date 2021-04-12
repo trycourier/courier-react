@@ -7,4 +7,11 @@ export interface ICourierContext {
   userId?: string;
   userSignature?: string;
   wsUrl?: string;
+  brand?: {
+    primaryColor?: string;
+    icons?: {
+      message?: string;
+      bell?: string;
+    };
+  };
 }
