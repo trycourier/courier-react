@@ -1,54 +1,52 @@
-import { useEffect, useCallback } from "react";
-import { useCourier, useTrackEvent } from "@trycourier/react-provider";
+import { useEffect } from "react";
+import {
+  useCourier,
+  useTrackEvent,
+  useBrand,
+} from "@trycourier/react-provider";
 import useMessages from "~/hooks/use-messages";
+import { DEFAULT_TABS } from "~/constants";
 
 export default () => {
   const { fetch: fetchMessages } = useMessages();
-  const { dispatch, inbox, transport } = useCourier();
-
+  const { dispatch, inbox, transport, brandId } = useCourier();
   const { trackEvent, batchTrackEvent } = useTrackEvent();
-
-  const newMessage = useCallback(
-    (payload) => {
-      dispatch({
-        type: "inbox/NEW_MESSAGE",
-        payload,
-      });
-    },
-    [dispatch]
-  );
+  const brand = useBrand(brandId);
+  const {
+    messages,
+    config,
+    currentTab,
+    isLoading,
+    startCursor,
+    unreadMessageCount,
+  } = inbox || {};
 
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
       listener: (courierEvent) => {
-        newMessage(courierEvent?.data);
+        dispatch({
+          type: "inbox/NEW_MESSAGE",
+          payload: courierEvent?.data,
+        });
       },
     });
-  }, [newMessage, transport]);
+  }, [transport]);
 
   return {
-    ...inbox,
-
+    messages,
+    config,
+    currentTab,
+    isLoading,
+    startCursor,
+    unreadMessageCount,
+    // brand,
     init: (payload) => {
       payload = {
         ...payload,
         config: {
           ...payload.config,
-          tabs: payload.config.tabs ?? [
-            {
-              id: "unread",
-              label: "Unread",
-              filter: {
-                isRead: false,
-              },
-            },
-            {
-              id: "all",
-              label: "All Messages",
-              filter: {},
-            },
-          ],
+          tabs: payload.config.tabs ?? DEFAULT_TABS,
         },
       };
 

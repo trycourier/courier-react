@@ -52,6 +52,7 @@ export function Default() {
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}
+        brandId="S0E8PFMXC44SSFG6J8A7EF4QXRNX"
       >
         <Toast />
         <Inbox title="Inbox" />
