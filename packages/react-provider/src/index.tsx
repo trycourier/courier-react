@@ -81,10 +81,12 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
           userSignature,
         },
       });
-      dispatch({
-        type: "root/GET_BRAND",
-        payload: () => getBrand(client, brandId),
-      });
+      if (brandId) {
+        dispatch({
+          type: "root/GET_BRAND",
+          payload: () => getBrand(client, brandId),
+        });
+      }
     }
   }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
 

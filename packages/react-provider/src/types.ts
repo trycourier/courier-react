@@ -2,6 +2,10 @@ import { Transport } from "./transports";
 
 interface Brand {
   primaryColor?: string;
+  icons?: {
+    message?: string;
+    bell?: string;
+  };
 }
 export interface ICourierContext {
   apiUrl?: string;
@@ -11,13 +15,6 @@ export interface ICourierContext {
   userId?: string;
   userSignature?: string;
   wsUrl?: string;
-  brand?: Brand;
   brandId?: string;
-  brand?: {
-    primaryColor?: string;
-    icons?: {
-      message?: string;
-      bell?: string;
-    };
-  };
+  brand?: Brand;
 }

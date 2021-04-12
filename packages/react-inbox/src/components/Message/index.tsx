@@ -87,14 +87,14 @@ const Message: React.FunctionComponent<MessageProps> = ({
         showMarkAsRead && {
           label: MESSAGE_LABELS.MARK_AS_READ,
           onClick: () => {
-            markMessageRead(messageId, readTrackingId);
+            markMessageRead(messageId, readTrackingId || "");
           },
         },
 
         showMarkAsUnread && {
           label: MESSAGE_LABELS.MARK_AS_UNREAD,
           onClick: () => {
-            markMessageUnread(messageId, unreadTrackingId);
+            markMessageUnread(messageId, unreadTrackingId || "");
           },
         },
       ].filter(Boolean),

@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-import {
-  useCourier,
-  useTrackEvent,
-  useBrand,
-} from "@trycourier/react-provider";
+import { useCourier, useTrackEvent } from "@trycourier/react-provider";
 import useMessages from "~/hooks/use-messages";
 import { DEFAULT_TABS } from "~/constants";
 
