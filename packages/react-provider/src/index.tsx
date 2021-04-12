@@ -102,7 +102,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       courierTransport.unsubscribe(userId);
     };
   }, [transport, userId]);
-
+  console.log("state", state);
   return (
     <CourierContext.Provider
       value={{

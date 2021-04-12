@@ -36,10 +36,10 @@ const rootReducer = (state, action) => {
         brandId: action.payload.brandId,
       };
     }
-    case "root/GET_BRAND": {
+    case "root/GET_BRAND/DONE": {
       return {
         ...state,
-        brand: action.payload.brand,
+        brand: action.payload,
       };
     }
 

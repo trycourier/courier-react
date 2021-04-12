@@ -52,7 +52,7 @@ export function Default() {
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}
-        brandId={process.env.BRAND_ID}
+        brandId={process.env.BRAND_ID || ""}
       >
         <Toast />
         <Inbox title="Inbox" />
