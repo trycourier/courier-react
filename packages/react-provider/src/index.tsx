@@ -34,14 +34,14 @@ const GraphQLProvider: React.FunctionComponent<{ client: Client }> = ({
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
+  brand,
+  brandId,
   children,
   clientKey,
   transport,
   userId,
   userSignature,
   wsUrl,
-  brand,
-  brandId,
 }) => {
   const client = useGraphQlClient({ clientKey, userId, userSignature, apiUrl });
   transport = useMemo(() => {
@@ -60,12 +60,12 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   }, [transport, clientKey, wsUrl]);
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
+    brand,
+    brandId,
     clientKey,
     transport,
     userId,
     userSignature,
-    brandId,
-    brand,
   });
 
   useEffect(() => {
@@ -74,11 +74,11 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         type: "root/INIT",
         payload: {
           apiUrl,
+          brandId,
           clientKey,
           transport,
           userId,
           userSignature,
-          brandId,
         },
       });
       dispatch({

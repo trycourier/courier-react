@@ -13,4 +13,11 @@ export interface ICourierContext {
   wsUrl?: string;
   brand?: Brand;
   brandId?: string;
+  brand?: {
+    primaryColor?: string;
+    icons?: {
+      message?: string;
+      bell?: string;
+    };
+  };
 }

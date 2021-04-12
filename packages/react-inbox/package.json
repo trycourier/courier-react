@@ -23,6 +23,7 @@
     "@trycourier/react-provider": "^0.1.10-alpha.17",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
+    "deep-extend": "^0.6.0",
     "react-loading-skeleton": "^2.2.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.2.1",
