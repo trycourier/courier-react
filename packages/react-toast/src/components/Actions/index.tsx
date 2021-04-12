@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button } from "./styled";
+import { Container, Details, Dismiss } from "./styled";
 import { useToast } from "../../hooks";
 
 const Actions: React.FunctionComponent<{
@@ -17,18 +17,17 @@ const Actions: React.FunctionComponent<{
   return (
     <Container theme={theme?.sidebar} data-testid="message-actions">
       {onClickDetails && (
-        <Button
+        <Details
           href={href}
-          color="#9121C2"
           onClick={onClickDetails}
           data-testid="message-action-details"
         >
           Details
-        </Button>
+        </Details>
       )}
-      <Button onClick={onClickDismiss} data-testid="message-action-dismiss">
+      <Dismiss onClick={onClickDismiss} data-testid="message-action-dismiss">
         Dismiss
-      </Button>
+      </Dismiss>
     </Container>
   );
 };

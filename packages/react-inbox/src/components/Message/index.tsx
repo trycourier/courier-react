@@ -11,7 +11,7 @@ import {
   getIcon,
   TimeAgo,
   Title,
-  UnreadMarker,
+  UnreadIndicator,
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 import { MESSAGE_LABELS } from "~/constants";
@@ -115,7 +115,7 @@ const Message: React.FunctionComponent<MessageProps> = ({
         read,
       })}
     >
-      {!read && <UnreadMarker />}
+      {!read && <UnreadIndicator />}
       {renderedIcon}
       <Contents>
         <Title>{title}</Title>
