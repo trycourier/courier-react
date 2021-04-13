@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 import { createClient } from "urql";
-import useCourier from "./use-courier";
 
-export default () => {
-  const { clientKey, userId, userSignature, apiUrl } = useCourier();
-
+export default ({ clientKey, userId, userSignature, apiUrl }) => {
   const client = useMemo(() => {
     return createClient({
       url: `${

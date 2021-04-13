@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import { Provider } from "urql";
+import { Client } from "@urql/core";
 import * as types from "./types";
 
 import useGraphQlClient from "./hooks/use-graphql-client";
@@ -10,6 +11,7 @@ import * as TransportTypes from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 
 import middleware from "./middleware";
+import { getBrand } from "./actions/brand";
 
 export * from "./transports";
 export * from "./hooks";
@@ -23,14 +25,17 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
-const GraphQLProvider: React.FunctionComponent = ({ children }) => {
-  const client = useGraphQlClient();
+const GraphQLProvider: React.FunctionComponent<{ client: Client }> = ({
+  children,
+  client,
+}) => {
   return <Provider value={client}>{children}</Provider>;
 };
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
   brand,
+  brandId,
   children,
   clientKey,
   transport,
@@ -38,6 +43,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   userSignature,
   wsUrl,
 }) => {
+  const client = useGraphQlClient({ clientKey, userId, userSignature, apiUrl });
   transport = useMemo(() => {
     if (transport) {
       return transport;
@@ -52,10 +58,10 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       wsUrl,
     });
   }, [transport, clientKey, wsUrl]);
-
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
     brand,
+    brandId,
     clientKey,
     transport,
     userId,
@@ -63,18 +69,26 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   });
 
   useEffect(() => {
-    dispatch({
-      type: "root/INIT",
-      payload: {
-        apiUrl,
-        brand,
-        clientKey,
-        transport,
-        userId,
-        userSignature,
-      },
-    });
-  }, [apiUrl, brand, clientKey, transport, userId, userSignature]);
+    if (clientKey && userId) {
+      dispatch({
+        type: "root/INIT",
+        payload: {
+          apiUrl,
+          brandId,
+          clientKey,
+          transport,
+          userId,
+          userSignature,
+        },
+      });
+      if (brandId) {
+        dispatch({
+          type: "root/GET_BRAND",
+          payload: () => getBrand(client, brandId),
+        });
+      }
+    }
+  }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
 
   useEffect(() => {
     if (!transport || !userId) {
@@ -88,7 +102,6 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       courierTransport.unsubscribe(userId);
     };
   }, [transport, userId]);
-
   return (
     <CourierContext.Provider
       value={{
@@ -96,7 +109,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         dispatch,
       }}
     >
-      <GraphQLProvider>{children}</GraphQLProvider>
+      <GraphQLProvider client={client}>{children}</GraphQLProvider>
     </CourierContext.Provider>
   );
 };

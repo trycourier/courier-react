@@ -75,8 +75,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const { clientKey, userId, brand } = courierContext;
   useMessageCount();
   const inbox = useInbox();
-  const { init: initInbox } = inbox;
-
   const tippyProps: TippyProps = {
     trigger: props.trigger ?? "click",
     placement: props.placement ?? "right",
@@ -95,21 +93,19 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       if (localStorageState) {
         try {
-          initInbox({
-            ...JSON.parse(localStorageState),
-            config: props,
-          });
-          return;
+          const { messages, unreadMessageCount } = JSON.parse(
+            localStorageState
+          );
+          inbox.init({ messages, unreadMessageCount, config: props });
         } catch (ex) {
           console.log("error", ex);
-          // do nothing
         }
+      } else {
+        inbox.init({
+          config: props,
+        });
       }
     }
-
-    initInbox({
-      config: props,
-    });
   }, [props, clientKey, userId]);
 
   useEffect(() => {
@@ -117,7 +113,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       `${clientKey}/${userId}/inbox`,
       JSON.stringify({
         messages: inbox.messages,
-        config: inbox.config,
         unreadMessageCount: inbox.unreadMessageCount,
       })
     );

@@ -12,7 +12,7 @@ function renderInboxComponent(props?: Partial<InboxProps>) {
   };
 
   return render(
-    <CourierProvider>
+    <CourierProvider clientKey="1232132123" userId="12312312">
       <Inbox {...defaultProps} {...props} />
     </CourierProvider>
   );
