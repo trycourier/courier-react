@@ -66,7 +66,9 @@ export class WS {
   }
 
   send(message: { [key: string]: any }): void {
-    this.connection?.send(JSON.stringify(message));
+    if (this.connected) {
+      this.connection?.send(JSON.stringify(message));
+    }
   }
 
   unsubscribe(channel: string, event: string, clientKey: string): void {
@@ -89,7 +91,6 @@ export class WS {
       return;
     }
 
-    this.connection.onopen = this.onConnectionOpen.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
   }
 }
