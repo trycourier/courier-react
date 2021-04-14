@@ -99,16 +99,20 @@ Now the toast component is in the dom but it will stay hidden until invoked by s
 ### Using the Courier Transport
 
 ```js
-import { ToastProvider, CourierTransport } from "@trycourier/react-toast";
-const courierTransport = new CourierTransport({
-  //You got this from the Courier Integrations page
-  clientKey: "CLIENT_KEY",
-});
+import { CourierTransport } from "@trycourier/react-provider";
+import { ToastProvider } from "@trycourier/react-toast";
 function MyComponent() {
   useEffect(() => {
-    courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
-    // It is good practice to unsubscribe on component unmount
-    return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
+    let courierTransport;
+    if (typeof window !== "undefined") {
+      courierTransport = new CourierTransport({
+        //You got this from the Courier Integrations page
+        clientKey: "CLIENT_KEY",
+      });
+      courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
+      // It is good practice to unsubscribe on component unmount
+      return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
+    }
   }, []);
   return (
     <ToastProvider transport={courierTransport}>
