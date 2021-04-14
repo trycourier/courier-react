@@ -1,6 +1,9 @@
-import { useClient } from "urql";
+export interface IGetMessagesParams {
+  after?: string;
+  isRead?: boolean;
+}
 
-export const GET_MESSAGES = `
+export const QUERY_MESSAGES = `
   query ($after: String, $isRead: Boolean){
     messages(params: { isRead: $isRead }, after: $after) {
       totalCount
@@ -29,25 +32,18 @@ export const GET_MESSAGES = `
   }
 `;
 
-const useMessages = () => {
-  const client = useClient();
+export const getMessages = async (
+  client,
+  { isRead, after }: IGetMessagesParams
+) => {
+  const results = await client.query(QUERY_MESSAGES, { isRead, after });
 
-  const fetch = async (variables) => {
-    const results = await client.query(GET_MESSAGES, variables).toPromise();
-
-    const messages = results?.data?.messages?.nodes;
-    const startCursor = results?.data?.messages?.pageInfo?.startCursor;
-
-    return {
-      appendMessages: Boolean(variables?.after),
-      messages,
-      startCursor,
-    };
-  };
+  const messages = results?.data?.messages?.nodes;
+  const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
   return {
-    fetch,
+    appendMessages: Boolean(after),
+    messages,
+    startCursor,
   };
 };
-
-export default useMessages;

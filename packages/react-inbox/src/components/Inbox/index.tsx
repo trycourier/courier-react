@@ -3,17 +3,14 @@ import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import deepExtend from "deep-extend";
-
 import Messages from "../Messages";
 import Bell from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
-
 import LazyTippy from "./LazyTippy";
 import useInbox from "~/hooks/use-inbox";
-import useMessageCount from "~/hooks/use-message-count";
-
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
+import useInboxActions from "~/hooks/use-actions";
 
 const GlobalStyle = createGlobalStyle`
   ${tippyCss}
@@ -73,8 +70,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }
 
   const { clientKey, userId, brand } = courierContext;
-  useMessageCount();
   const inbox = useInbox();
+  const { fetchMessages, init } = useInboxActions();
   const tippyProps: TippyProps = {
     trigger: props.trigger ?? "click",
     placement: props.placement ?? "right",
@@ -96,12 +93,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           const { messages, unreadMessageCount } = JSON.parse(
             localStorageState
           );
-          inbox.init({ messages, unreadMessageCount, config: props });
+          init({ messages, unreadMessageCount, config: props });
         } catch (ex) {
           console.log("error", ex);
         }
       } else {
-        inbox.init({
+        init({
           config: props,
         });
       }
@@ -126,7 +123,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
-    inbox.fetchMessages(inbox.currentTab?.filter);
+    fetchMessages(inbox.currentTab?.filter);
   };
 
   if (!courierContext?.inbox) {

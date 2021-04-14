@@ -2,9 +2,11 @@ import React from "react";
 import classNames from "classnames";
 import { Container, Tab } from "./styled";
 import useInbox from "~/hooks/use-inbox";
+import useInboxActions from "~/hooks/use-actions";
 
 const TabList: React.FunctionComponent = () => {
-  const { currentTab, setCurrentTab, config } = useInbox();
+  const { setCurrentTab } = useInboxActions();
+  const { currentTab, config } = useInbox();
 
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
     event.preventDefault();

@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 export function useCloseOnClickOut(
   element: Element | null,
   enabled: boolean,
-  close?: Function
+  close?: () => void
 ) {
   const handleClick = useCallback(
     (e: MouseEvent) => {

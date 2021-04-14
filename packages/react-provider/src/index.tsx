@@ -1,18 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
-import { Provider } from "urql";
-import { Client } from "@urql/core";
+import Client from "./graph-ql";
 import * as types from "./types";
-
-import useGraphQlClient from "./hooks/use-graphql-client";
-
 import { CourierTransport } from "./transports/courier";
 import * as TransportTypes from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
-
 import middleware from "./middleware";
 import { getBrand } from "./actions/brand";
-
 export * from "./transports";
 export * from "./hooks";
 
@@ -25,43 +19,34 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
-const GraphQLProvider: React.FunctionComponent<{ client: Client }> = ({
-  children,
-  client,
-}) => {
-  return <Provider value={client}>{children}</Provider>;
-};
-
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
   brand,
   brandId,
   children,
   clientKey,
-  transport,
+  transport: _transport,
   userId,
   userSignature,
   wsUrl,
 }) => {
-  const client = useGraphQlClient({ clientKey, userId, userSignature, apiUrl });
-  transport = useMemo(() => {
-    if (transport) {
-      return transport;
+  const graphQLClient = useMemo(() => {
+    return new Client({ clientKey, userId, userSignature, apiUrl });
+  }, [clientKey, userId, userSignature, apiUrl]);
+  const courierTransport = useMemo(() => {
+    if (clientKey) {
+      return new CourierTransport({
+        clientKey,
+        wsUrl,
+      });
     }
-
-    if (!clientKey) {
-      return;
-    }
-
-    return new CourierTransport({
-      clientKey,
-      wsUrl,
-    });
-  }, [transport, clientKey, wsUrl]);
+  }, [clientKey, wsUrl]);
+  const transport = courierTransport || _transport;
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
     brand,
     brandId,
+    graphQLClient,
     clientKey,
     transport,
     userId,
@@ -75,20 +60,24 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         payload: {
           apiUrl,
           brandId,
+          graphQLClient,
           clientKey,
           transport,
           userId,
           userSignature,
         },
       });
-      if (brandId) {
-        dispatch({
-          type: "root/GET_BRAND",
-          payload: () => getBrand(client, brandId),
-        });
-      }
     }
   }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
+
+  useEffect(() => {
+    if (brandId) {
+      dispatch({
+        type: "root/GET_BRAND",
+        payload: (state) => getBrand(state.graphQLClient, brandId),
+      });
+    }
+  }, [brandId]);
 
   useEffect(() => {
     if (!transport || !userId) {
@@ -109,7 +98,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         dispatch,
       }}
     >
-      <GraphQLProvider client={client}>{children}</GraphQLProvider>
+      {children}
     </CourierContext.Provider>
   );
 };

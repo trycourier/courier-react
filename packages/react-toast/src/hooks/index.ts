@@ -1,7 +1,7 @@
 import {
   ICourierContext,
+  useCourierActions,
   useCourier,
-  useTrackEvent,
 } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import { IToastConfig } from "../types";
@@ -29,7 +29,7 @@ export const useListenForTransportEvent = (
   transport: ICourierContext["transport"],
   handleToast
 ) => {
-  const { trackEvent } = useTrackEvent();
+  const { createTrackEvent } = useCourierActions();
 
   useEffect(() => {
     if (!transport) {
@@ -42,7 +42,7 @@ export const useListenForTransportEvent = (
         const courierData = courierEvent?.data?.data;
 
         if (clientKey && courierData?.deliverTrackingId) {
-          trackEvent({
+          createTrackEvent({
             trackingId: courierData?.deliverTrackingId,
           });
         }
@@ -50,5 +50,5 @@ export const useListenForTransportEvent = (
         handleToast(courierEvent?.data);
       },
     });
-  }, [trackEvent, clientKey, handleToast, transport]);
+  }, [createTrackEvent, clientKey, handleToast, transport]);
 };

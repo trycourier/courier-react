@@ -1,6 +1,7 @@
+import { updateTrackEvent, updateTrackEventBatch } from "~/actions/track-event";
 import useCourier from "./use-courier";
 
-export default () => {
+const useCourierActions = () => {
   const { dispatch } = useCourier();
 
   return {
@@ -16,5 +17,20 @@ export default () => {
         payload,
       });
     },
+    createTrackEvent: (trackingId) => {
+      dispatch({
+        type: "CREATE_TRACKING_EVENT",
+        payload: (state) => updateTrackEvent(state.graphQLClient, trackingId),
+      });
+    },
+    createBatchTrackEvent: (messageIds, eventType) => {
+      dispatch({
+        type: "CREATE_TRACKING_EVENT_BATCH",
+        payload: (state) =>
+          updateTrackEventBatch(state.graphQLClient, messageIds, eventType),
+      });
+    },
   };
 };
+
+export default useCourierActions;
