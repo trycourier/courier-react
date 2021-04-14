@@ -69,19 +69,20 @@ To let your inbox listen for new messages, you will need to add a `transport`. U
 ### Using the Courier Transport
 
 ```js
-import {
-  CourierProvider,
-  CourierTransport,
-  Inbox,
-} from "@trycourier/react-inbox";
+import { CourierTransport } from "@trycourier/react-provider";
+import { CourierProvider, Inbox } from "@trycourier/react-inbox";
 
 const courierTransport = new CourierTransport();
 
 function MyComponent() {
   useEffect(() => {
-    courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
-    // It is good practice to unsubscribe on component unmount
-    return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
+    let courierTransport;
+    if (typeof window !== "undefined") {
+      courierTransport = new CourierTransport();
+      courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
+      // It is good practice to unsubscribe on component unmount
+      return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
+    }
   }, []);
 
   return (
