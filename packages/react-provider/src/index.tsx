@@ -7,6 +7,7 @@ import * as TransportTypes from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import middleware from "./middleware";
 import { getBrand } from "./actions/brand";
+import useCourierActions from "./hooks/use-courier-actions";
 export * from "./transports";
 export * from "./hooks";
 
@@ -91,10 +92,12 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       courierTransport.unsubscribe(userId);
     };
   }, [transport, userId]);
+  const actions = useCourierActions(dispatch);
   return (
     <CourierContext.Provider
       value={{
         ...(state as any),
+        ...actions,
         dispatch,
       }}
     >

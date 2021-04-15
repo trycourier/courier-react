@@ -1,10 +1,14 @@
-import { useCourier, useCourierActions } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { getMessages, IGetMessagesParams } from "~/actions/messages";
 import { DEFAULT_TABS } from "~/constants";
 
 const useInboxActions = () => {
-  const { dispatch, inbox } = useCourier();
-  const { createTrackEvent, createBatchTrackEvent } = useCourierActions();
+  const {
+    inbox,
+    dispatch,
+    createTrackEvent,
+    createBatchTrackEvent,
+  } = useCourier();
   return {
     init: (payload) => {
       payload = {

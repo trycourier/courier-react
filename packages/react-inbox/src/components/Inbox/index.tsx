@@ -10,7 +10,6 @@ import LazyTippy from "./LazyTippy";
 import useInbox from "~/hooks/use-inbox";
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
-import useInboxActions from "~/hooks/use-actions";
 
 const GlobalStyle = createGlobalStyle`
   ${tippyCss}
@@ -70,8 +69,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }
 
   const { clientKey, userId, brand } = courierContext;
-  const inbox = useInbox();
-  const { fetchMessages, init } = useInboxActions();
+  const {
+    fetchMessages,
+    init,
+    messages,
+    config,
+    unreadMessageCount,
+    currentTab,
+  } = useInbox();
   const tippyProps: TippyProps = {
     trigger: props.trigger ?? "click",
     placement: props.placement ?? "right",
@@ -109,21 +114,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     localStorage.setItem(
       `${clientKey}/${userId}/inbox`,
       JSON.stringify({
-        messages: inbox.messages,
-        unreadMessageCount: inbox.unreadMessageCount,
+        messages: messages,
+        unreadMessageCount: unreadMessageCount,
       })
     );
-  }, [
-    clientKey,
-    userId,
-    inbox.messages,
-    inbox.config,
-    inbox.unreadMessageCount,
-  ]);
+  }, [clientKey, userId, messages, config, unreadMessageCount]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
-    fetchMessages(inbox.currentTab?.filter);
+    fetchMessages(currentTab?.filter);
   };
 
   if (!courierContext?.inbox) {
@@ -142,13 +141,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {props.renderIcon ? (
           <span>
             {props.renderIcon({
-              hasUnreadMessages: Boolean(inbox.unreadMessageCount),
+              hasUnreadMessages: Boolean(unreadMessageCount),
             })}
           </span>
         ) : (
           <Bell
             className={props.className}
-            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
+            hasUnreadMessages={Boolean(unreadMessageCount)}
             onMouseEnter={handleBellOnMouseEnter}
           />
         )}

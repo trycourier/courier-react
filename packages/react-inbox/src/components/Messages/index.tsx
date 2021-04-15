@@ -9,22 +9,21 @@ import CourierLogo from "~/assets/courier_logo_text.svg";
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 import Header from "./Header";
-import useInboxActions from "~/hooks/use-actions";
 
 const Messages: React.FunctionComponent<InboxProps> = ({
   title = "Inbox",
   renderHeader,
   renderMessage,
 }) => {
-  const { fetchMessages, markAllAsRead } = useInboxActions();
   const {
+    fetchMessages,
+    markAllAsRead,
     currentTab,
     isLoading,
     messages,
     startCursor,
     unreadMessageCount,
   } = useInbox();
-
   const ref = useRef<HTMLDivElement>(null);
 
   useAtBottom(

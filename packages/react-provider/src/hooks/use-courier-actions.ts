@@ -1,9 +1,6 @@
 import { updateTrackEvent, updateTrackEventBatch } from "~/actions/track-event";
-import useCourier from "./use-courier";
 
-const useCourierActions = () => {
-  const { dispatch } = useCourier();
-
+const useCourierActions = (dispatch) => {
   return {
     initToast: (payload) => {
       dispatch({

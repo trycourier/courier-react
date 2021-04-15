@@ -14,7 +14,6 @@ import {
 import useInbox from "~/hooks/use-inbox";
 import { IMessageProps } from "./types";
 import { getActions, getOptions, getTimeAgo } from "./helpers";
-import useInboxActions from "~/hooks/use-actions";
 import { useCourier } from "@trycourier/react-provider";
 
 const Message: React.FunctionComponent<IMessageProps> = ({
@@ -29,8 +28,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
   const { createTrackEvent } = useCourier();
-  const { markMessageRead, markMessageUnread } = useInboxActions();
-  const { config } = useInbox();
+  const { markMessageRead, markMessageUnread, config } = useInbox();
   const renderedIcon = getIcon(icon ?? config?.defaultIcon);
   const timeAgo = getTimeAgo(created);
   const showMarkAsRead = !read && readTrackingId;
