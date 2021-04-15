@@ -76,6 +76,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     config,
     unreadMessageCount,
     currentTab,
+    getUnreadMessageCount,
   } = useInbox();
   const tippyProps: TippyProps = {
     trigger: props.trigger ?? "click",
@@ -85,6 +86,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useEffect(() => {
     registerReducer("inbox", reducer);
+    getUnreadMessageCount();
   }, []);
 
   useEffect(() => {

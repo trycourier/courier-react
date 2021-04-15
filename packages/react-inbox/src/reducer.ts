@@ -46,7 +46,7 @@ export default (state: InboxState = initialState, action) => {
       };
     }
 
-    case "inbox/SET_UNREAD_MESSAGE_COUNT": {
+    case "inbox/SET_UNREAD_MESSAGE_COUNT/DONE": {
       return {
         ...state,
         unreadMessageCount: action.payload,
