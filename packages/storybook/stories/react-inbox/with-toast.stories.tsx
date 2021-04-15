@@ -51,7 +51,6 @@ export function Default() {
     <>
       <CourierProvider
         apiUrl={API_URL}
-        // wsUrl={WS_URL}
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}
