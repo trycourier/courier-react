@@ -107,7 +107,6 @@ function MyComponent() {
 | renderIcon    | `FunctionComponent` | Override Indicator Icon Component         |
 | renderHeader  | `FunctionComponent` | Override Header Component                 |
 | renderMessage | `FunctionComponent` | Override Message Component                |
-| renderFooter  | `FunctionComponent` | Override Footer Component                 |
 
 ### [Inbox Config](#config)
 
