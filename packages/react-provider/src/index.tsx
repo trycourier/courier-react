@@ -21,14 +21,14 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
 );
 
 export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
-  apiUrl = "",
+  apiUrl,
   brand,
   brandId,
   children,
   clientKey,
   transport: _transport,
   userId,
-  userSignature = "",
+  userSignature,
   wsUrl,
 }) => {
   const graphQLClient = useMemo(() => {
