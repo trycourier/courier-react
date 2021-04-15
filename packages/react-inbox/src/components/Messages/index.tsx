@@ -24,20 +24,6 @@ const Messages: React.FunctionComponent<InboxProps> = ({
     startCursor,
     unreadMessageCount,
   } = useInbox();
-  console.log(
-    `    currentTab,
-  isLoading,
-  messages,
-  startCursor,
-  unreadMessageCount`,
-    {
-      currentTab,
-      isLoading,
-      messages,
-      startCursor,
-      unreadMessageCount,
-    }
-  );
 
   const ref = useRef<HTMLDivElement>(null);
 

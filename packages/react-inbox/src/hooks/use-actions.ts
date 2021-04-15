@@ -31,9 +31,7 @@ const useInboxActions = () => {
     fetchMessages: (params: IGetMessagesParams) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: ({ graphQLClient }) => {
-          getMessages(graphQLClient, params);
-        },
+        payload: ({ graphQLClient }) => getMessages(graphQLClient, params),
       });
     },
 
