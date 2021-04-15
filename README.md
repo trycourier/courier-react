@@ -12,19 +12,19 @@ CRC is a monorepo using [Lerna](https://www.lerna.com) and contains many package
 
 ### Public Packages:
 
-[react-provider](https://github.com/trycourier/courier-react/tree/main/packages/react-provider)
+[react-provider](https://github.com/trycourier/courier-react/pacakges/react-provider)
 
 This package exports a component called `CourierProvider` which creates a [context](https://reactjs.org/docs/context.html) object that is required for the following packages.
 
 ---
 
-[react-toast](https://github.com/trycourier/courier-react/tree/main/packages/react-toast)
+[react-toast](https://github.com/trycourier/courier-react/pacakges/react-toast)
 
 `CourierToast` is a non modal, component used to display brief, optional-expiring windows of information to a user. This can be integrated with a `push` provider or can be triggered manually.
 
 ---
 
-[react-inbox](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox)
+[react-inbox](https://github.com/trycourier/courier-react/pacakges/react-inbox)
 
 `CourierInbox` is a component used to display a history of `read` and `unread` messages to a user.
 
