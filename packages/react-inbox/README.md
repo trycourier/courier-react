@@ -17,12 +17,15 @@ Courier React Inbox is a react component that you can add to your application sh
 
 Upcoming Features:
 
-- Mark as `read`/`unread`
-- View all `unread`
+- Browser Web Push
+- Presence
 
 ### How does @trycourier/react-inbox work?
 
-The react inbox requires a backend to pull messages. This is all done magically through the `CourierProvider` and requires an account at [Courier](https://www.courier.com).
+The react inbox requires a backend to pull messages. This is all done magically through the `CourierProvider` and requires an account at [Courier](https://www.courier.com). To set up Courier Inbox you will need to install Courier from the integrations page. [Courier Push integration](https://app.courier.com/integrations/courier)
+After installing the integration you will be provided with a Client Key
+
+<img src="https://user-images.githubusercontent.com/16184018/109491559-8f8ee600-7a3e-11eb-9aa4-742639274fde.png" />
 
 As of right now, we will fetch all messages sent to any `push` channel and display them in the `inbox`.
 
@@ -53,36 +56,37 @@ import { CourierProvider } from "@trycourier/react-provider";
 
 function App() {
   return (
-    <CourierProvider clientKey="my-client-key">
+    <CourierProvider userId="user-id" clientKey="my-client-key">
       <Inbox />
     </CourierProvider>
   );
 }
 ```
 
-> You can access your client key [here](https://app.courier.com/integrations/courier)
-
 ## [Using Transport](#using-transport)
 
-To let your inbox listen for new messages, you will need to add a `transport`. Using the courier `transport` will automatically handle the listening, and invocation through web sockets
+To let your inbox listen for new messages, you will need to add a `transport`. Using the courier `transport` will automatically handle the listening, and invocation through web sockets.
+
+In order to display messages for a specific user you will also need to supply the recipientId as the userId to the CourierProvider. All messages sent through Courier have a recipientId and you can see that in the [Data](https://app.courier.com/data/messages) tab or from the request you are sending.
+
+> Check out this for more information on [recipients](https://help.courier.com/en/articles/4397413-how-to-send-a-notification#3-the-recipient-id)
 
 ### Using the Courier Transport
 
 ```js
-import { CourierTransport } from "@trycourier/react-provider";
-import { CourierProvider, Inbox } from "@trycourier/react-inbox";
+import {
+  CourierProvider,
+  CourierTransport,
+  Inbox,
+} from "@trycourier/react-inbox";
 
 const courierTransport = new CourierTransport();
 
 function MyComponent() {
   useEffect(() => {
-    let courierTransport;
-    if (typeof window !== "undefined") {
-      courierTransport = new CourierTransport();
-      courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
-      // It is good practice to unsubscribe on component unmount
-      return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
-    }
+    courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
+    // It is good practice to unsubscribe on component unmount
+    return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
   }, []);
 
   return (
