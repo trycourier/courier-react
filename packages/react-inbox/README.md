@@ -22,7 +22,7 @@ Upcoming Features:
 
 ### How does @trycourier/react-inbox work?
 
-The react inbox requires a backend to pull messages. This is all done magically through the `CourierProvider` and requires an account at [Courier](https://www.courier.com). To set up Courier Inbox you will need to install Courier from the integrations page. [Courier Push integration](https://app.courier.com/integrations/courier)
+The react inbox requires a backend to pull messages. This is all done through the `CourierProvider` and requires an account at [Courier](https://www.courier.com). To set up Courier Inbox you will need to install Courier from the integrations page. [Courier Push integration](https://app.courier.com/integrations/courier)
 After installing the integration you will be provided with a Client Key
 
 <img src="https://user-images.githubusercontent.com/16184018/109491559-8f8ee600-7a3e-11eb-9aa4-742639274fde.png" />
@@ -56,7 +56,7 @@ import { CourierProvider } from "@trycourier/react-provider";
 
 function App() {
   return (
-    <CourierProvider userId="user-id" clientKey="my-client-key">
+    <CourierProvider userId={yourUserId} clientKey={yourClientKey}>
       <Inbox />
     </CourierProvider>
   );
