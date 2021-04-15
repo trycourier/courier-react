@@ -1,4 +1,5 @@
 import { useCourier } from "@trycourier/react-provider";
+import { getUnreadMessageCount } from "~/actions/message-count";
 import { getMessages, IGetMessagesParams } from "~/actions/messages";
 import { DEFAULT_TABS } from "~/constants";
 
@@ -36,6 +37,14 @@ const useInboxActions = () => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         payload: (_, getState) => getMessages(getState().graphQLClient, params),
+      });
+    },
+
+    getUnreadMessageCount: (params) => {
+      dispatch({
+        type: "inbox/SET_UNREAD_MESSAGE_COUNT",
+        payload: (_, getState) =>
+          getUnreadMessageCount(getState().graphQLClient, params),
       });
     },
 
