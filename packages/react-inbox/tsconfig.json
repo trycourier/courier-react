@@ -12,12 +12,8 @@
     "**/*.spec.ts",
     "**/*.story.ts",
     "**/dist/**",
-    "**/__tests__/**"
+    "**/__tests__/**",
+    "**/__mocks__/**"
   ],
-  "include": [
-    "../types/@types/*/index.d.ts",
-    "**/*.ts",
-    "src/index.tsx",
-    "src/components/Message/styled.tsx"
-  ]
+  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
 }
