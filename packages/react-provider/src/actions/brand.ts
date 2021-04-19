@@ -11,11 +11,9 @@ query GetBrand($brandId: String!) {
 `;
 
 export const getBrand = async (client, brandId) => {
-  const results = await client
-    .query(GET_BRAND, {
-      brandId,
-    })
-    .toPromise();
+  const results = await client.query(GET_BRAND, {
+    brandId,
+  });
   const primaryColor = results?.data?.brand?.settings?.colors?.primary;
   return {
     primaryColor,

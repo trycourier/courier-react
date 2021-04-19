@@ -10,6 +10,7 @@ export default {
   args: {},
 };
 
+const API_URL = process.env.API_URL || "";
 const clientKey = process.env.CLIENT_KEY || "";
 const userId = process.env.USER_ID || "";
 const channel = "TEST_EVENT";
@@ -49,6 +50,7 @@ export function Default() {
   return (
     <>
       <CourierProvider
+        apiUrl={API_URL}
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}

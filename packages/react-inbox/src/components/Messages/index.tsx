@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from "react";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabList from "../TabList";
-import { MessageList, MarkAllAsRead, Empty, Footer, Header } from "./styled";
+import { MessageList, Empty, Footer } from "./styled";
 import Loading from "./loading";
 import PaginationEnd from "./PaginationEnd";
 import CourierLogo from "~/assets/courier_logo_text.svg";
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
+import Header from "./Header";
 
 const Messages: React.FunctionComponent<InboxProps> = ({
   title = "Inbox",
@@ -15,15 +16,14 @@ const Messages: React.FunctionComponent<InboxProps> = ({
   renderMessage,
 }) => {
   const {
-    currentTab,
     fetchMessages,
+    markAllAsRead,
+    currentTab,
     isLoading,
     messages,
     startCursor,
     unreadMessageCount,
-    markAllAsRead,
   } = useInbox();
-
   const ref = useRef<HTMLDivElement>(null);
 
   useAtBottom(
@@ -50,24 +50,16 @@ const Messages: React.FunctionComponent<InboxProps> = ({
       {renderHeader ? (
         renderHeader({})
       ) : (
-        <Header data-testid="header">
-          {title}
-          {unreadMessageCount ? ` (${unreadMessageCount})` : ""}
-          {currentTab?.filter?.isRead === false && messages.length > 0 && (
-            <MarkAllAsRead
-              onClick={markAllAsRead}
-              style={{ cursor: "pointer" }}
-            >
-              Mark all as read
-            </MarkAllAsRead>
-          )}
-        </Header>
+        <Header
+          currentTab={currentTab}
+          title={title}
+          unreadMessageCount={unreadMessageCount}
+          markAllAsRead={markAllAsRead}
+          messages={messages}
+        />
       )}
       <TabList />
-      <MessageList
-        ref={ref as React.RefObject<HTMLDivElement>}
-        data-testid="messages"
-      >
+      <MessageList ref={ref} data-testid="messages">
         {messages.map((message) =>
           renderMessage ? (
             renderMessage(message)

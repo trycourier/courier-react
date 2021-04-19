@@ -1,9 +1,9 @@
-import { useMemo } from "react";
-import { createClient } from "urql";
+import { Client, createClient } from "urql";
 
-export default ({ clientKey, userId, userSignature, apiUrl }) => {
-  const client = useMemo(() => {
-    return createClient({
+export class GraphQLClient {
+  client: Client;
+  constructor({ clientKey, userId, userSignature, apiUrl }) {
+    this.client = createClient({
       url: `${
         apiUrl ?? process.env.API_URL ?? `https://api.courier.com`
       }/client/q`,
@@ -23,7 +23,15 @@ export default ({ clientKey, userId, userSignature, apiUrl }) => {
         };
       },
     });
-  }, [apiUrl, clientKey, userId, userSignature]);
+  }
 
-  return client;
-};
+  query(queryString, variables) {
+    return this.client.query(queryString, variables).toPromise();
+  }
+
+  mutate(mutateString, variables) {
+    return this.client.mutation(mutateString, variables).toPromise();
+  }
+}
+
+export default GraphQLClient;
