@@ -3,7 +3,8 @@ import {
   useCourier,
   useTrackEvent,
 } from "@trycourier/react-provider";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { ICourierToastMessage } from "~/components/Toast/types";
 import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
 
@@ -14,9 +15,14 @@ export const useToast: UseToast = () => {
       config?: IToastConfig;
     };
   }>();
-
+  const toastCaller = useCallback(
+    (message: ICourierToastMessage) => {
+      toast?.toast(message);
+    },
+    [toast]
+  );
   return [
-    toast?.toast,
+    toastCaller,
     {
       config: toast?.config ?? {},
       clientKey,
