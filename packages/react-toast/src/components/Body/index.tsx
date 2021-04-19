@@ -4,8 +4,8 @@ import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
 import { Message, Title, Body } from "./styled";
 import { getIcon } from "./helpers";
-import { useTrackEvent } from "@trycourier/react-provider";
 import { useToast } from "~/hooks";
+import { useCourier } from "@trycourier/react-provider";
 
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
@@ -17,7 +17,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 }) => {
   const { toastProps } = props as { toastProps: any };
   const [, { config }] = useToast();
-  const { trackEvent } = useTrackEvent();
+  const { createTrackEvent } = useCourier();
 
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps.toastId),
@@ -29,7 +29,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
       onClick(event);
     }
 
-    trackEvent({
+    createTrackEvent({
       trackingId: data?.clickTrackingId,
     });
   }, []);

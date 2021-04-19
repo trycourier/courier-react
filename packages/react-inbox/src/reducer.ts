@@ -13,7 +13,7 @@ const makeMessage = (message): IMessage => ({
 interface InboxState {
   messages: Array<IMessage>;
   isLoading?: boolean;
-  unreadMessageCount?: number;
+  unreadMessageCount: number;
   currentTab?: {
     id: string;
     label: string;
@@ -25,6 +25,7 @@ interface InboxState {
 
 const initialState: InboxState = {
   messages: [],
+  unreadMessageCount: 0,
 };
 
 export default (state: InboxState = initialState, action) => {
@@ -45,10 +46,10 @@ export default (state: InboxState = initialState, action) => {
       };
     }
 
-    case "inbox/SET_UNREAD_MESSAGE_COUNT": {
+    case "inbox/SET_UNREAD_MESSAGE_COUNT/DONE": {
       return {
         ...state,
-        unreadMessageCount: action.payload.unreadMessageCount,
+        unreadMessageCount: action.payload,
       };
     }
 
@@ -133,6 +134,7 @@ export default (state: InboxState = initialState, action) => {
     case "inbox/NEW_MESSAGE": {
       return {
         ...state,
+        unreadMessageCount: state.unreadMessageCount + 1,
         messages: [
           {
             created: new Date().getTime(),

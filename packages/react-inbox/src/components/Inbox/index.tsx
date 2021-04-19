@@ -3,15 +3,11 @@ import { TippyProps } from "@tippyjs/react";
 import tippyCss from "tippy.js/dist/tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import deepExtend from "deep-extend";
-
 import Messages from "../Messages";
 import Bell from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
-
 import LazyTippy from "./LazyTippy";
 import useInbox from "~/hooks/use-inbox";
-import useMessageCount from "~/hooks/use-message-count";
-
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
 
@@ -73,8 +69,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }
 
   const { clientKey, userId, brand } = courierContext;
-  useMessageCount();
-  const inbox = useInbox();
+  const {
+    fetchMessages,
+    init,
+    messages,
+    config,
+    unreadMessageCount,
+    currentTab,
+    getUnreadMessageCount,
+  } = useInbox();
   const tippyProps: TippyProps = {
     trigger: props.trigger ?? "click",
     placement: props.placement ?? "right",
@@ -83,6 +86,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useEffect(() => {
     registerReducer("inbox", reducer);
+    getUnreadMessageCount();
   }, []);
 
   useEffect(() => {
@@ -96,12 +100,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           const { messages, unreadMessageCount } = JSON.parse(
             localStorageState
           );
-          inbox.init({ messages, unreadMessageCount, config: props });
+          init({ messages, unreadMessageCount, config: props });
         } catch (ex) {
           console.log("error", ex);
         }
       } else {
-        inbox.init({
+        init({
           config: props,
         });
       }
@@ -112,21 +116,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     localStorage.setItem(
       `${clientKey}/${userId}/inbox`,
       JSON.stringify({
-        messages: inbox.messages,
-        unreadMessageCount: inbox.unreadMessageCount,
+        messages: messages,
+        unreadMessageCount: unreadMessageCount,
       })
     );
-  }, [
-    clientKey,
-    userId,
-    inbox.messages,
-    inbox.config,
-    inbox.unreadMessageCount,
-  ]);
+  }, [clientKey, userId, messages, config, unreadMessageCount]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
-    inbox.fetchMessages(inbox.currentTab?.filter);
+    fetchMessages(currentTab?.filter);
   };
 
   if (!courierContext?.inbox) {
@@ -145,13 +143,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {props.renderIcon ? (
           <span>
             {props.renderIcon({
-              hasUnreadMessages: Boolean(inbox.unreadMessageCount),
+              hasUnreadMessages: Boolean(unreadMessageCount),
             })}
           </span>
         ) : (
           <Bell
             className={props.className}
-            hasUnreadMessages={Boolean(inbox.unreadMessageCount)}
+            hasUnreadMessages={Boolean(unreadMessageCount)}
             onMouseEnter={handleBellOnMouseEnter}
           />
         )}
