@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { ToastProvider, useToast } from "@trycourier/react-toast";
 
@@ -14,6 +14,9 @@ export default {
 export function Default({ bodyText }) {
   function DefaultComponent({ body }) {
     const [toast] = useToast();
+    useEffect(() => {
+      toast(body);
+    }, [toast]);
     return <Button onClick={() => toast(body)}>Show Toast</Button>;
   }
 

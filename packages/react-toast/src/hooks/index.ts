@@ -5,14 +5,14 @@ import { UseToast, ToastCaller } from "./types";
 
 export const useToast: UseToast = () => {
   const { toast, clientKey } = useCourier<{
-    toast: {
+    toast?: {
       toast: ToastCaller;
       config?: IToastConfig;
     };
   }>();
-
+  const toastCaller = toast?.toast ? toast.toast : () => {};
   return [
-    toast?.toast,
+    toastCaller,
     {
       config: toast?.config ?? {},
       clientKey,
