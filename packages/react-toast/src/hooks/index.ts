@@ -1,22 +1,16 @@
 import { ICourierContext, useCourier } from "@trycourier/react-provider";
-import { useCallback, useEffect } from "react";
-import { ICourierToastMessage } from "~/components/Toast/types";
+import { useEffect } from "react";
 import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
 
 export const useToast: UseToast = () => {
   const { toast, clientKey } = useCourier<{
-    toast: {
+    toast?: {
       toast: ToastCaller;
       config?: IToastConfig;
     };
   }>();
-  const toastCaller = useCallback(
-    (message: ICourierToastMessage) => {
-      toast?.toast(message);
-    },
-    [toast]
-  );
+  const toastCaller = toast?.toast ? toast.toast : () => {};
   return [
     toastCaller,
     {

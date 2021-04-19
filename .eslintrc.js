@@ -30,6 +30,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/no-unused-vars": 2,
+    "@typescript-eslint/no-empty-function": 0,
     "no-empty-pattern": 0,
     "no-self-assign": 0,
     "react/display-name": 0,
