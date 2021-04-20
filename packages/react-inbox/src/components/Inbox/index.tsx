@@ -97,10 +97,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       if (localStorageState) {
         try {
-          const { messages, unreadMessageCount, brand } = JSON.parse(
+          const { messages, unreadMessageCount } = JSON.parse(
             localStorageState
           );
-          init({ brand, messages, unreadMessageCount, config: props });
+          init({ messages, unreadMessageCount, config: props });
         } catch (ex) {
           console.log("error", ex);
         }
@@ -116,12 +116,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     localStorage.setItem(
       `${clientKey}/${userId}/inbox`,
       JSON.stringify({
-        brand,
         messages,
         unreadMessageCount: unreadMessageCount,
       })
     );
-  }, [brand, clientKey, userId, messages, config, unreadMessageCount]);
+  }, [clientKey, userId, messages, config, unreadMessageCount]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
