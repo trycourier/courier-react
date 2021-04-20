@@ -96,7 +96,9 @@ const iconStyles = ({ theme }) =>
       width: 25,
       marginRight: 18,
       flexShrink: "0",
-      backgroundColor: "rgb(249, 249, 249)",
+      path: {
+        fill: theme?.brand?.colors?.primary ?? "#9121c2",
+      },
     },
     theme.message?.icon
   );
@@ -105,7 +107,7 @@ export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
       height: "36px",
-      backgroundColor: theme?.brand?.primaryColor ?? "#9121c2",
+      backgroundColor: theme?.brand?.colors?.secondary ?? "#9121c2",
       width: "5px",
       position: "absolute",
       left: "0",

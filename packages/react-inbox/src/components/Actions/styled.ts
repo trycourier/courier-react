@@ -11,7 +11,7 @@ export const Action = styled.a<{ href: string; target: string }>(({ theme }) =>
       cursor: "pointer",
       border: "none",
       fontSize: 12,
-      color: theme?.brand?.primaryColor ?? "#9121C2",
+      color: theme?.brand?.colors?.primary ?? "#9121C2",
       padding: "8px 15px",
       flexShrink: 0,
       maxHeight: 32,

@@ -3,8 +3,6 @@ import styled from "styled-components";
 export const Container = styled.div`
   padding: 18px 20px 12px;
   user-select: none;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
   display: flex;
   color: rgb(36, 50, 75);
   -webkit-box-pack: justify;
@@ -14,11 +12,10 @@ export const Container = styled.div`
   line-height: 25px;
 `;
 
-export const MarkAllAsRead = styled.div`
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 19px;
-  letter-spacing: 0em;
-  color: #9d3789;
-`;
+export const MarkAllAsRead = styled.div(({ theme }) => ({
+  fontSize: 14,
+  fontStyle: "normal",
+  fontWeight: 400,
+  letterSpacing: "0em",
+  color: theme?.brand?.colors?.primary ?? "#9121c2",
+}));

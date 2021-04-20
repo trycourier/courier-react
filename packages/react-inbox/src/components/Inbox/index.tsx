@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TippyProps } from "@tippyjs/react";
-import tippyCss from "tippy.js/dist/tippy.css";
+import tippyCss from "./tippy.css";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import deepExtend from "deep-extend";
 import Messages from "../Messages";
@@ -37,10 +37,10 @@ const StyledTippy = styled(LazyTippy)(({ theme }) =>
       background: "#FFFFFF !important",
       backgroundColor: "#FFFFFF !important",
       boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-      color: "black !important",
       minWidth: 483,
       maxHeight: 545,
-      borderRadius: "20px !important",
+      borderRadius: "20px",
+      overflow: "hidden",
 
       ".tippy-content": {
         padding: 0,
@@ -97,10 +97,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       if (localStorageState) {
         try {
-          const { messages, unreadMessageCount } = JSON.parse(
+          const { messages, unreadMessageCount, brand } = JSON.parse(
             localStorageState
           );
-          init({ messages, unreadMessageCount, config: props });
+          init({ brand, messages, unreadMessageCount, config: props });
         } catch (ex) {
           console.log("error", ex);
         }
@@ -116,11 +116,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     localStorage.setItem(
       `${clientKey}/${userId}/inbox`,
       JSON.stringify({
-        messages: messages,
+        brand,
+        messages,
         unreadMessageCount: unreadMessageCount,
       })
     );
-  }, [clientKey, userId, messages, config, unreadMessageCount]);
+  }, [brand, clientKey, userId, messages, config, unreadMessageCount]);
 
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
