@@ -61,10 +61,6 @@ export default (state: InboxState = initialState, action) => {
 
     case "inbox/FETCH_MESSAGES/DONE": {
       const newMessages = action?.payload?.messages.map(makeMessage);
-      console.log(
-        "messages",
-        JSON.stringify(action?.payload?.messages, null, 2)
-      );
       return {
         ...state,
         isLoading: false,
