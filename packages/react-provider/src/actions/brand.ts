@@ -30,7 +30,7 @@ query GetBrand($brandId: String!) {
 `;
 
 const GET_DEFAULT_BRAND = `
-query GetDefaultBrand {
+query GetDefaultBrand() {
   defaultBrand {
     ${brandProps}
   }

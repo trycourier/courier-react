@@ -45,6 +45,7 @@ export default (state: InboxState = initialState, action) => {
         currentTab: action.payload,
       };
     }
+
     case "inbox/SET_UNREAD_MESSAGE_COUNT/DONE": {
       return {
         ...state,
@@ -61,6 +62,7 @@ export default (state: InboxState = initialState, action) => {
 
     case "inbox/FETCH_MESSAGES/DONE": {
       const newMessages = action?.payload?.messages.map(makeMessage);
+
       return {
         ...state,
         isLoading: false,
