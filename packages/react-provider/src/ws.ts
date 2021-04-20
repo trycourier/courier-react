@@ -5,6 +5,7 @@ export class WS {
   protected connected;
   protected messageCallback;
   private url: string;
+
   constructor({ url }) {
     this.messageCallback = null;
     this.connection = undefined;
@@ -14,27 +15,23 @@ export class WS {
 
   connect(clientKey: string): void {
     const url = `${this.url}/?clientKey=${clientKey}`;
-
-    if (typeof WebSocket) {
-      this.connection = new WebSocket(url);
-      this.initiateListener();
-    }
+    this.connection = new WebSocket(url);
+    this.connection.onopen = () => {
+      this.connected = true;
+    };
+    this.connection.onmessage = this.onMessage.bind(this);
   }
 
   onMessage({ data }: { data: string }): void {
     try {
       data = JSON.parse(data);
     } catch {
-      //
+      console.error("Error Parsing Message");
     }
 
     if (data && this.messageCallback) {
       this.messageCallback({ data });
     }
-  }
-
-  onConnectionOpen(): void {
-    this.connected = true;
   }
 
   waitForOpen(): Promise<any> {
@@ -66,9 +63,12 @@ export class WS {
   }
 
   send(message: { [key: string]: any }): void {
-    if (this.connected) {
-      this.connection?.send(JSON.stringify(message));
+    if (!this.connected || !this.connection) {
+      console.error("WS Not Connected");
+      return;
     }
+
+    this.connection.send(JSON.stringify(message));
   }
 
   unsubscribe(channel: string, event: string, clientKey: string): void {
@@ -84,13 +84,5 @@ export class WS {
 
   close(): void {
     this.connection?.close();
-  }
-
-  initiateListener(): void {
-    if (!this.connection) {
-      return;
-    }
-
-    this.connection.onmessage = this.onMessage.bind(this);
   }
 }
