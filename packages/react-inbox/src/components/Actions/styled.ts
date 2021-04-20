@@ -11,14 +11,18 @@ export const Action = styled.a<{ href: string; target: string }>(({ theme }) =>
       cursor: "pointer",
       border: "none",
       fontSize: 12,
-      color: theme?.brand?.colors?.primary ?? "#9121C2",
+      color: theme?.brand?.inapp?.colors?.invertButtons
+        ? "white"
+        : theme?.brand?.colors?.primary ?? "#9121C2",
+      backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
+        ? theme?.brand?.colors?.primary
+        : "white",
       padding: "8px 15px",
       flexShrink: 0,
       maxHeight: 32,
       outline: "none",
       marginLeft: 6,
       maxWidth: 100,
-      background: "#FFFFFF",
       boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
       textDecoration: "none",
       "&:active": {
@@ -26,6 +30,9 @@ export const Action = styled.a<{ href: string; target: string }>(({ theme }) =>
       },
 
       "&:hover": {
+        color: theme?.brand?.inapp?.colors?.invertButtons
+          ? theme?.brand?.colors?.primary ?? "#9121C2"
+          : "white",
         background: "rgb(0 0 0 / 10%)",
       },
 

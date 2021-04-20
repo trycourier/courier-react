@@ -54,7 +54,9 @@ const StyledTippy = styled(LazyTippy)(({ theme }) =>
       },
 
       ".tippy-arrow": {
-        color: "#f9fafb",
+        color: theme?.brand?.inapp?.invertHeader
+          ? theme?.brand?.colors?.primary
+          : "#f9fafb",
       },
     },
     theme.root
