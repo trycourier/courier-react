@@ -132,6 +132,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   if (!courierContext?.inbox) {
     return null;
   }
+
   return (
     <ThemeProvider
       theme={{
