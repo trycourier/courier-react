@@ -34,10 +34,10 @@ const getButtonStyles = (theme, styles) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: theme?.brand?.primaryColor ?? "#9121C2",
+      color: theme?.brand?.colors?.primary ?? "#9121C2",
       textDecoration: "none",
       ":visited": {
-        color: theme?.brand?.primaryColor ?? "#9121C2",
+        color: theme?.brand?.colors?.primary ?? "#9121C2",
       },
       "&:hover": {
         background: "rgb(0 0 0 / 10%)",

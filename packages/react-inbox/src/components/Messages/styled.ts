@@ -58,8 +58,6 @@ export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
       alignItems: "center",
-      borderBottomLeftRadius: 24,
-      borderBottomRightRadius: 24,
       color: "#B9C0CD",
       display: "flex",
       fontSize: "10px",
