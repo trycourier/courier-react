@@ -19,7 +19,6 @@ const useInboxActions = () => {
           tabs: payload.config.tabs ?? DEFAULT_TABS,
         },
       };
-
       dispatch({
         type: "inbox/INIT",
         payload,

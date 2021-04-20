@@ -1,5 +1,4 @@
 import { Transport } from "./transports";
-
 interface Brand {
   inapp: {
     borderRadius?: string;
@@ -31,4 +30,5 @@ export interface ICourierContext {
   userId?: string;
   userSignature?: string;
   wsUrl?: string;
+  middleware?: any;
 }
