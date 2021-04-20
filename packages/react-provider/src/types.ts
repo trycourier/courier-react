@@ -22,12 +22,13 @@ interface Brand {
 }
 export interface ICourierContext {
   apiUrl?: string;
+  brand?: Brand;
+  brandId?: string;
   clientKey?: string;
   dispatch?: (mergeContext: any) => void;
+  graphQLClient?: any;
   transport?: Transport;
   userId?: string;
   userSignature?: string;
   wsUrl?: string;
-  brandId?: string;
-  brand?: Brand;
 }

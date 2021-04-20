@@ -11,7 +11,7 @@ import useCourierActions from "./hooks/use-courier-actions";
 export * from "./transports";
 export * from "./hooks";
 
-const useReducer = createReducer(...middleware);
+const useReducer = createReducer<any, ICourierContext>(...middleware);
 
 export const registerReducer = _registerReducer;
 export type ICourierMessage = TransportTypes.ICourierMessage;
