@@ -24,6 +24,7 @@ export interface InboxProps {
     hasUnreadMessages: boolean;
   }>;
   renderMessage?: React.FunctionComponent;
+  tabs?: Array<ITab>;
   theme?: ThemeObject;
   title?: string;
   trigger?: TippyProps["trigger"];
