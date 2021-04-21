@@ -20,7 +20,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
     markAllAsRead,
     currentTab,
     isLoading,
-    messages,
+    messages = [],
     startCursor,
     unreadMessageCount,
   } = useInbox();
