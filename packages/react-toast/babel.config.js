@@ -5,12 +5,6 @@ module.exports = {
     "@babel/transform-runtime",
     "babel-plugin-styled-components",
     "transform-class-properties",
-    // [
-    //   "babel-plugin-inline-import",
-    //   {
-    //     extensions: [".css"],
-    //   },
-    // ],
     ["babel-plugin-react-remove-properties", { properties: ["data-testid"] }],
     [
       "babel-plugin-root-import",

@@ -60,7 +60,7 @@ describe("<Inbox />", () => {
     }
   });
 
-  it.only("should render custom icon", async () => {
+  it("should render custom icon", async () => {
     const { container } = renderInboxComponent({
       renderIcon: () => <div id="test-123">Hello World</div>,
     });
