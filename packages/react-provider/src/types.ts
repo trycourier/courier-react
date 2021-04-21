@@ -1,22 +1,19 @@
 import { Transport } from "./transports";
 
 export interface Brand {
-    borderRadius?: string;
-    disableMessageIcon?: boolean;
-    placement?: "top" | "bottom" | "left" | "right";
-    colors?: {
-      invertHeader?: boolean;
-      invertButtons?: boolean;
-    };
-    icons?: {
-      bell?: string;
-      message?: string;
-    };
-  };
+  borderRadius?: string;
+  disableMessageIcon?: boolean;
+  placement?: "top" | "bottom" | "left" | "right";
   colors?: {
+    invertHeader?: boolean;
+    invertButtons?: boolean;
     primary?: string;
     secondary?: string;
     tertiary?: string;
+  };
+  icons?: {
+    bell?: string;
+    message?: string;
   };
 }
 export interface ICourierContext {
