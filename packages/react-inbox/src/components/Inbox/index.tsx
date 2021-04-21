@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { TippyProps } from "@tippyjs/react";
-import tippyCss from "./tippy.css";
-import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import TippyStyle from "./TippyStyle";
+import styled, { ThemeProvider } from "styled-components";
 import deepExtend from "deep-extend";
 import Messages from "../Messages";
 import Bell from "./Bell";
@@ -10,25 +10,6 @@ import LazyTippy from "./LazyTippy";
 import useInbox from "~/hooks/use-inbox";
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
-
-const GlobalStyle = createGlobalStyle`
-  ${tippyCss}
-
-  @keyframes badge-pulse {
-    0% {
-      -moz-box-shadow: 0 0 0 0 rgba(222, 80, 99, 0.3);
-      box-shadow: 0 0 0 0 rgba(222, 80, 99, 0.3);
-    }
-    10% {
-        -moz-box-shadow: 0 0 0 10px rgba(222, 80, 99, 0);
-        box-shadow: 0 0 0 10px rgba(222, 80, 99, 0);
-    }
-    100% {
-        -moz-box-shadow: 0 0 0 0 rgba(222, 80, 99, 0);
-        box-shadow: 0 0 0 0 rgba(222, 80, 99, 0);
-    }
-  }
-`;
 
 const StyledTippy = styled(LazyTippy)(({ theme }) =>
   deepExtend(
@@ -140,7 +121,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         brand: props.brand ?? brand,
       }}
     >
-      <GlobalStyle />
+      <TippyStyle />
       <StyledTippy {...tippyProps} content={<Messages {...props} />}>
         {props.renderIcon ? (
           <span>

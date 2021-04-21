@@ -5,6 +5,7 @@ import { Inbox, CourierProvider } from "../src";
 import { InboxProps } from "../src/types";
 
 import fetchMock from "fetch-mock";
+import { act } from "react-dom/test-utils";
 
 function renderInboxComponent(props?: Partial<InboxProps>) {
   const defaultProps: InboxProps = {
@@ -59,13 +60,14 @@ describe("<Inbox />", () => {
     }
   });
 
-  it("should render custom icon", () => {
+  it.only("should render custom icon", async () => {
     const { container } = renderInboxComponent({
       renderIcon: () => <div id="test-123">Hello World</div>,
     });
 
     const test123 = container.querySelector("#test-123");
     expect(test123).toBeVisible();
+    await act(() => Promise.resolve());
   });
 
   it("should render bell icon", () => {
