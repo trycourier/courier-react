@@ -1,6 +1,6 @@
 import { Transport } from "./transports";
-interface Brand {
-  inapp: {
+
+export interface Brand {
     borderRadius?: string;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";

@@ -10,6 +10,7 @@ import { getBrand } from "./actions/brand";
 import useCourierActions from "./hooks/use-courier-actions";
 export * from "./transports";
 export * from "./hooks";
+export * from "./types";
 
 export const registerReducer = _registerReducer;
 export type ICourierMessage = TransportTypes.ICourierMessage;
@@ -80,11 +81,16 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
 
   useEffect(() => {
+    if (brand) {
+      // if we pass in brand, don't fetch it
+      return;
+    }
+
     dispatch({
       type: "root/GET_BRAND",
       payload: () => getBrand(graphQLClient, brandId),
     });
-  }, [brandId]);
+  }, [brand, brandId]);
 
   useEffect(() => {
     if (!state.brand) {

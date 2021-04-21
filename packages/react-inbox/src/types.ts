@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react";
 import { TippyProps } from "@tippyjs/react";
+import { Brand } from "@trycourier/react-provider";
 
 type InboxThemeOptions = "root" | "body" | "footer" | "header";
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
@@ -13,8 +14,8 @@ export interface ITab {
   id: string;
 }
 export interface InboxProps {
+  brand?: Brand;
   className?: string;
-  tabs?: Array<ITab>;
   defaultIcon?: false | string;
   placement?: TippyProps["placement"];
   renderFooter?: React.FunctionComponent;
@@ -23,6 +24,7 @@ export interface InboxProps {
     hasUnreadMessages: boolean;
   }>;
   renderMessage?: React.FunctionComponent;
+  tabs?: Array<ITab>;
   theme?: ThemeObject;
   title?: string;
   trigger?: TippyProps["trigger"];
