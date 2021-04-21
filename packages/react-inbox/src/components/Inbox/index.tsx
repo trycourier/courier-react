@@ -137,7 +137,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     <ThemeProvider
       theme={{
         ...props.theme,
-        brand,
+        brand: props.brand ?? brand,
       }}
     >
       <GlobalStyle />

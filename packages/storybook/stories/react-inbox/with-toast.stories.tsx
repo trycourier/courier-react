@@ -54,7 +54,6 @@ export function Default() {
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}
-        brandId={process.env.BRAND_ID || ""}
       >
         <Toast />
         <Inbox title="Inbox" />
@@ -72,7 +71,9 @@ export function WithTheme() {
         userId={userId}
         transport={courierTransport}
         brand={{
-          primaryColor: "red",
+          colors: {
+            primary: "red",
+          },
         }}
       >
         <Toast />
