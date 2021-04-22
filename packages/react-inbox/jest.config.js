@@ -33,4 +33,5 @@ module.exports = {
     "\\.(scss|sass|css)$": "identity-obj-proxy",
     "~(.*)$": "<rootDir>/src/$1",
   },
+  testPathIgnorePatterns: ["/node_modules/", "helpers"],
 };
