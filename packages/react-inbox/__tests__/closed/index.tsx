@@ -1,12 +1,13 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { renderInboxComponent } from "../helpers";
 import { Inbox } from "../../src";
 import fetchMock from "fetch-mock";
 import MESSAGES from "../../__mocks__/api/messages";
+import * as fetchMessages from "../../src/actions/messages";
 
-describe("Testing Inbox methods before opened", () => {
+describe("Test Bell Initial Render", () => {
   beforeEach(() => {
     fetchMock.post("https://api.courier.com/client/q", MESSAGES);
   });
@@ -15,8 +16,8 @@ describe("Testing Inbox methods before opened", () => {
     fetchMock.reset();
   });
   it("should render bell icon", async () => {
-    const { container } = renderInboxComponent();
-    const bellSvg = container.querySelector("[data-testid=bell-svg]");
+    renderInboxComponent();
+    const bellSvg = screen.getByTestId("bell-svg");
     expect(bellSvg).toBeVisible();
     await act(() => Promise.resolve());
   });
@@ -36,5 +37,18 @@ describe("Testing Inbox methods before opened", () => {
     const test123 = container.querySelector("#test-123");
     expect(test123).toBeVisible();
     await act(() => Promise.resolve());
+  });
+});
+
+describe("Test Messages Being Fetched", () => {
+  let fetchMessagesSpy;
+  beforeEach(() => {
+    fetchMessagesSpy = jest.spyOn(fetchMessages, "getMessages");
+  });
+  it("should test messages are fetched on hover", () => {
+    renderInboxComponent();
+    const bellSvg = screen.getByTestId("bell-svg");
+    fireEvent.mouseOver(bellSvg, { bubbles: true });
+    expect(fetchMessagesSpy).toBeCalledTimes(1);
   });
 });
