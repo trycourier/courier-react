@@ -70,11 +70,7 @@ export function WithTheme() {
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}
-        brand={{
-          colors: {
-            primary: "red",
-          },
-        }}
+        brand={{}}
       >
         <Toast />
         <Inbox title="Inbox" />
