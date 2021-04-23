@@ -1,6 +1,8 @@
 import React from "react";
+import { MESSAGES } from "../__mocks__/api/messages";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { Toast, ToastProvider, useToast } from "../src";
+import fetchMock from "fetch-mock";
 
 jest.mock("styled-components", () => {
   const styled = jest.requireActual("styled-components");
@@ -9,6 +11,12 @@ jest.mock("styled-components", () => {
 });
 
 describe("<Toast />", () => {
+  beforeEach(() => {
+    fetchMock.post("https://api.courier.com/client/q", MESSAGES);
+  });
+  afterEach(() => {
+    fetchMock.reset();
+  });
   it("should throw an error if missing CourierContext", () => {
     expect(() => {
       render(<Toast />);
@@ -32,6 +40,12 @@ function Component({ onClick }) {
 }
 
 describe("<ToastProvider />", () => {
+  beforeEach(() => {
+    fetchMock.post("https://api.courier.com/client/q", MESSAGES);
+  });
+  afterEach(() => {
+    fetchMock.reset();
+  });
   it("should render toast component on click", async () => {
     const onClick = jest.fn();
 

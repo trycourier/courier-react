@@ -2,7 +2,7 @@ import { renderInboxComponent } from "../helpers";
 import { fireEvent, waitFor, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import fetchMock from "fetch-mock";
-import MESSAGES from "../../__mocks__/api/messages";
+import { MESSAGES } from "../../__mocks__/api/messages";
 
 describe("Should test inbox component after opened", () => {
   beforeEach(() => {

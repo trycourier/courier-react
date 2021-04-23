@@ -109,11 +109,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     event.preventDefault();
     fetchMessages(currentTab?.filter);
   };
-
   if (!courierContext?.inbox) {
     return null;
   }
-
+  console.log("unreadMessageCount", unreadMessageCount);
   return (
     <ThemeProvider
       theme={{

@@ -64,7 +64,7 @@ export class WS {
 
   send(message: { [key: string]: any }): void {
     if (!this.connected || !this.connection) {
-      console.error("WS Not Connected");
+      console.warn("WS Not Connected");
       return;
     }
 

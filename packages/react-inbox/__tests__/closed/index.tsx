@@ -1,32 +1,32 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { MESSAGES, MESSAGE_COUNT } from "../../__mocks__/api/messages";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { renderInboxComponent } from "../helpers";
-import { Inbox } from "../../src";
 import fetchMock from "fetch-mock";
-import MESSAGES from "../../__mocks__/api/messages";
+import { Inbox } from "../../src";
+
 import * as fetchMessages from "../../src/actions/messages";
+import { DEFAULT_BRAND } from "../../__mocks__/api/brand";
 
 describe("Test Bell Initial Render", () => {
   beforeEach(() => {
     fetchMock.post("https://api.courier.com/client/q", MESSAGES);
   });
-
   afterEach(() => {
     fetchMock.reset();
   });
+
   it("should render bell icon", async () => {
-    renderInboxComponent();
-    const bellSvg = screen.getByTestId("bell-svg");
+    const { getByTestId } = renderInboxComponent();
+    const bellSvg = getByTestId("bell-svg");
     expect(bellSvg).toBeVisible();
-    await act(() => Promise.resolve());
   });
   it("should throw an error without CourierProvider", async () => {
     try {
       render(<Inbox />);
     } catch (ex) {
       expect(String(ex)).toBe("Error: Missing Courier Provider");
-      await act(() => Promise.resolve());
     }
   });
   it("should render custom icon", async () => {
@@ -44,11 +44,65 @@ describe("Test Messages Being Fetched", () => {
   let fetchMessagesSpy;
   beforeEach(() => {
     fetchMessagesSpy = jest.spyOn(fetchMessages, "getMessages");
+    fetchMock.post("https://api.courier.com/client/q", MESSAGES);
   });
-  it("should test messages are fetched on hover", () => {
-    renderInboxComponent();
-    const bellSvg = screen.getByTestId("bell-svg");
-    fireEvent.mouseOver(bellSvg, { bubbles: true });
+  afterEach(() => {
+    fetchMessagesSpy.mockRestore();
+    fetchMock.reset();
+  });
+  it("should test messages are fetched on hover", async () => {
+    let getByTestId;
+    act(() => {
+      const screen = renderInboxComponent();
+      getByTestId = screen.getByTestId;
+    });
+
+    const bellSvg = getByTestId("bell-svg");
+    act(() => {
+      fireEvent.mouseOver(bellSvg, { bubbles: true });
+    });
     expect(fetchMessagesSpy).toBeCalledTimes(1);
+    await act(() => Promise.resolve());
+  });
+});
+
+describe("Test Bell State", () => {
+  beforeEach(() => {
+    fetchMock
+      .post("https://api.courier.com/client/q", MESSAGES, {
+        overwriteRoutes: false,
+        matchPartialBody: true,
+        body: {
+          operationName: "GetMessages",
+        },
+      })
+      .post("https://api.courier.com/client/q", MESSAGE_COUNT, {
+        overwriteRoutes: false,
+        matchPartialBody: true,
+        body: {
+          operationName: "MessageCount",
+        },
+      })
+      .post("https://api.courier.com/client/q", DEFAULT_BRAND, {
+        overwriteRoutes: false,
+        matchPartialBody: true,
+        body: {
+          operationName: "GetDefaultBrand",
+        },
+      });
+  });
+  afterEach(() => {
+    fetchMock.reset();
+  });
+  it("should have a pulse when there are new messages", async () => {
+    const screen = renderInboxComponent();
+    const getByTestId = screen.getByTestId;
+    const bellSvg = getByTestId("bell-svg");
+    act(() => {
+      fireEvent.mouseOver(bellSvg, { bubbles: true });
+    });
+    await waitFor(() => {
+      return expect(getByTestId("unread-badge")).toBeInTheDocument();
+    });
   });
 });
