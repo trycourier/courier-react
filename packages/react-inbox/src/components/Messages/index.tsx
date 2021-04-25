@@ -60,7 +60,7 @@ const Messages: React.FunctionComponent<InboxProps> = ({
       )}
       <TabList />
       <MessageList ref={ref} data-testid="messages">
-        {messages.map((message) =>
+        {messages?.map((message) =>
           renderMessage ? (
             renderMessage(message)
           ) : (
@@ -68,10 +68,10 @@ const Messages: React.FunctionComponent<InboxProps> = ({
           )
         )}
         {isLoading && <Loading />}
-        {!isLoading && messages.length === 0 && (
+        {!isLoading && messages?.length === 0 && (
           <Empty>You have no notifications at this time</Empty>
         )}
-        {!isLoading && messages.length > 5 && !startCursor && (
+        {!isLoading && messages?.length > 5 && !startCursor && (
           <PaginationEnd title="End Of The Road" />
         )}
       </MessageList>

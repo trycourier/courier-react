@@ -9,7 +9,9 @@ const useInboxActions = () => {
     dispatch,
     createTrackEvent,
     createBatchTrackEvent,
+    graphQLClient,
   } = useCourier();
+
   return {
     init: (payload) => {
       payload = {
@@ -36,15 +38,14 @@ const useInboxActions = () => {
     fetchMessages: (params: IGetMessagesParams) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: (_, getState) => getMessages(getState().graphQLClient, params),
+        payload: () => getMessages(graphQLClient, params),
       });
     },
 
     getUnreadMessageCount: (params) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
-        payload: (_, getState) =>
-          getUnreadMessageCount(getState().graphQLClient, params),
+        payload: () => getUnreadMessageCount(graphQLClient, params),
       });
     },
 
