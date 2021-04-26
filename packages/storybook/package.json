@@ -10,6 +10,7 @@
     "url": "https://github.com/trycourier/courier-react"
   },
   "scripts": {
+    "export:storybook": "build-storybook -c .storybook -o .out",
     "storybook": "start-storybook -p 6320"
   },
   "license": "MIT",
@@ -23,6 +24,8 @@
     "@trycourier/react-inbox": "^0.1.10-alpha.25",
     "@trycourier/react-provider": "^0.1.10-alpha.25",
     "@trycourier/react-toast": "^0.1.10-alpha.25",
+    "github-markdown-css": "^4.0.0",
+    "react-markdown": "^6.0.1",
     "storybook": "^6.1.21",
     "styled-components": "^5.2.1",
     "styled-normalize": "^8.0.7"
