@@ -4,7 +4,7 @@ export interface IGetMessagesParams {
 }
 
 export const QUERY_MESSAGES = `
-  query GetMessages($after: String, $isRead: Boolean){
+  query ($after: String, $isRead: Boolean){
     messages(params: { isRead: $isRead }, after: $after) {
       totalCount
       pageInfo {
@@ -40,6 +40,7 @@ export const getMessages = async (
 
   const messages = results?.data?.messages?.nodes;
   const startCursor = results?.data?.messages?.pageInfo?.startCursor;
+
   return {
     appendMessages: Boolean(after),
     messages,

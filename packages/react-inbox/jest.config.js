@@ -12,7 +12,7 @@ module.exports = {
   // Jest transformations -- this adds support for TypeScript
   // using ts-jest
   transform: {
-    "\\.(ts|tsx)$": "ts-jest",
+    "\\.(ts|tsx|js|jsx)$": "ts-jest",
   },
 
   // Runs special logic, such as cleaning up components
@@ -33,5 +33,4 @@ module.exports = {
     "\\.(scss|sass|css)$": "identity-obj-proxy",
     "~(.*)$": "<rootDir>/src/$1",
   },
-  testPathIgnorePatterns: ["/node_modules/", "helpers"],
 };

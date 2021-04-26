@@ -10,6 +10,7 @@ const asyncMiddleware = (store) => (next) => async (action) => {
 
   try {
     const result = await action.payload(store.dispatch, store.getState);
+
     store.dispatch({
       type: `${action.type}/DONE`,
       payload: result,
