@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/components",
-  "version": "0.1.10-alpha.23",
+  "version": "0.1.10-alpha.24",
   "private": true,
   "description": "Beautiful, easy React toast notifications",
   "author": "Courier <support@courier.com>",
@@ -17,9 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "@trycourier/courier": "^1.3.0",
-    "@trycourier/react-inbox": "^0.1.10-alpha.23",
-    "@trycourier/react-provider": "^0.1.10-alpha.23",
-    "@trycourier/react-toast": "^0.1.10-alpha.23",
+    "@trycourier/react-inbox": "^0.1.10-alpha.24",
+    "@trycourier/react-provider": "^0.1.10-alpha.24",
+    "@trycourier/react-toast": "^0.1.10-alpha.24",
     "babel-loader": "^8.0.6",
     "camel-case": "^4.1.2",
     "html-webpack-plugin": "^3.2.0",
