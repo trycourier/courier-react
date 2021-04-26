@@ -64,21 +64,31 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   });
 
   useEffect(() => {
-    if (clientKey && userId) {
-      dispatch({
-        type: "root/INIT",
-        payload: {
-          apiUrl,
-          brandId,
-          graphQLClient,
-          clientKey,
-          transport,
-          userId,
-          userSignature,
-        },
-      });
+    if (!clientKey || !userId) {
+      return;
     }
-  }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
+
+    dispatch({
+      type: "root/INIT",
+      payload: {
+        apiUrl,
+        brandId,
+        graphQLClient,
+        clientKey,
+        transport,
+        userId,
+        userSignature,
+      },
+    });
+  }, [
+    apiUrl,
+    graphQLClient,
+    clientKey,
+    transport,
+    userId,
+    userSignature,
+    brandId,
+  ]);
 
   useEffect(() => {
     if (brand) {

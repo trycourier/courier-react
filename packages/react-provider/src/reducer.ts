@@ -29,11 +29,12 @@ const rootReducer = (state, action) => {
       return {
         ...state,
         apiUrl: action.payload.apiUrl,
+        brandId: action.payload.brandId,
         clientKey: action.payload.clientKey,
+        graphQLClient: action.payload.graphQLClient,
         transport: action.payload.transport,
         userId: action.payload.userId,
         userSignature: action.payload.userSignature,
-        brandId: action.payload.brandId,
       };
     }
     case "root/GET_BRAND/DONE": {

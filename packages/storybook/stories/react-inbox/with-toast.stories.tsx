@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Inbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
@@ -12,7 +12,7 @@ export default {
 
 const API_URL = process.env.API_URL || "";
 const clientKey = process.env.CLIENT_KEY || "";
-const userId = process.env.USER_ID || "";
+const USER_ID = process.env.USER_ID || "";
 const channel = "TEST_EVENT";
 
 let courierTransport: CourierTransport;
@@ -26,11 +26,52 @@ if (typeof window !== "undefined") {
 
 export function Default() {
   useEffect(() => {
+    courierTransport?.subscribe(USER_ID, channel);
+
+    return () => {
+      courierTransport?.unsubscribe(USER_ID, channel);
+    };
+  }, []);
+
+  const handleNotify = () => {
+    courierTransport.send({
+      action: "notify",
+      data: {
+        channel: USER_ID,
+        event: channel,
+        message: {
+          title: "Success!",
+          body: "We sent a toast with a websocket",
+        },
+      },
+    });
+  };
+
+  return (
+    <>
+      <CourierProvider apiUrl={API_URL} clientKey={clientKey} userId={USER_ID}>
+        <Toast />
+        <Inbox title="Inbox" />
+      </CourierProvider>
+      <button onClick={handleNotify}>Test</button>
+    </>
+  );
+}
+
+export function AsyncUserId() {
+  const [userId, setUserId] = useState("");
+  useEffect(() => {
     courierTransport?.subscribe(userId, channel);
 
     return () => {
       courierTransport?.unsubscribe(userId, channel);
     };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUserId(USER_ID);
+    }, 3000);
   }, []);
 
   const handleNotify = () => {
@@ -49,12 +90,7 @@ export function Default() {
 
   return (
     <>
-      <CourierProvider
-        apiUrl={API_URL}
-        clientKey={clientKey}
-        userId={userId}
-        transport={courierTransport}
-      >
+      <CourierProvider apiUrl={API_URL} clientKey={clientKey} userId={userId}>
         <Toast />
         <Inbox title="Inbox" />
       </CourierProvider>
@@ -70,11 +106,7 @@ export function WithTheme() {
         clientKey={clientKey}
         userId={userId}
         transport={courierTransport}
-        brand={{
-          colors: {
-            primary: "red",
-          },
-        }}
+        brand={{}}
       >
         <Toast />
         <Inbox title="Inbox" />

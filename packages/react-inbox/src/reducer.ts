@@ -61,14 +61,14 @@ export default (state: InboxState = initialState, action) => {
     }
 
     case "inbox/FETCH_MESSAGES/DONE": {
-      const newMessages = action?.payload?.messages.map(makeMessage);
+      const newMessages = action?.payload?.messages?.map(makeMessage);
 
       return {
         ...state,
         isLoading: false,
         startCursor: action?.payload?.startCursor,
         messages: action?.payload?.appendMessages
-          ? [...(state.messages ?? []), ...newMessages]
+          ? [...(state?.messages ?? []), ...newMessages]
           : newMessages,
       };
     }

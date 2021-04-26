@@ -2,15 +2,22 @@
 [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg?label=Stability)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
 [![codecov](https://codecov.io/gh/trycourier/courier-react/branch/main/graph/badge.svg?token=NVTDWY9UH4)](https://codecov.io/gh/trycourier/courier-react)
 
-# Courier React Components (CRC)
+## What is `courier-react`?
 
-CRC is a monorepo using [Lerna](https://www.lerna.com) and contains many packages that are installed separately while depending on each other.
+This repository, also called **In-App**, is a set of features and components that can work inside our customers websites. Courier is a powerful application but integrating all of the features into your frontend manually can be overwhelming and time consuming. This is where In-App steps up and can superpower your application by providing Realtime Messaging (Toast), an Inbox, Notification Preferences, and many more coming soon!
+
+## Table of Contents
+
+1. [Contributing](https://github.com/trycourier/courier-react/tree/main/CONTRIBUTING.md)
+1. [Packages](#packages)
+
+### Packages:
+
+[components](https://github.com/trycourier/courier-react/tree/main/packages/components)
+
+This package imports the other react components and bundles them up using `webpack` and `preact` to create a bundle that can be used to render all of our components in a frontend that does NOT use React.
 
 ---
-
----
-
-### Public Packages:
 
 [react-provider](https://github.com/trycourier/courier-react/tree/main/packages/react-provider)
 
@@ -20,44 +27,26 @@ This package exports a component called `CourierProvider` which creates a [conte
 
 [react-toast](https://github.com/trycourier/courier-react/tree/main/packages/react-toast)
 
-`CourierToast` is a non modal, component used to display brief, optional-expiring windows of information to a user. This can be integrated with a `push` provider or can be triggered manually.
+`Toast` is a non modal, component used to display brief, optional-expiring windows of information to a user. This can be integrated with a `push` provider or can be triggered manually.
 
 ---
 
 [react-inbox](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox)
 
-`CourierInbox` is a component used to display a history of `read` and `unread` messages to a user.
+`Inbox` is a component used to display a history of `read` and `unread` messages to a user. If we send a message to a user when they are not logged in, or if they didn't interact with the message before it disappeared, we also have an Inbox to show the history of messages received.
+
+---
+
+[types](https://github.com/trycourier/courier-react/tree/main/packages/types)
+
+Utility package to share common Typescript types and interfaces shared between packages
+
+---
+
+[storybook](https://github.com/trycourier/courier-react/tree/main/packages/storybook)
+
+Our development environment. This package depends on all the other packages and imports them into a storybook instance. This allows us to develop in an isolated environment.
 
 ---
 
 ---
-
-### Development
-
-All commands in a monorepo are run in the `root` of the project. You should never have to navigate into any of the sub-packages to do any development.
-
-### Commands
-
-- `yarn`
-
-  There is a postinstall task that will bootstrap the `lerna` project and `symlink` each package to eachother if they have dependencies to other packages in this repo.
-
-- `yarn start`
-
-  This will initiate a `storybook` instance inside `packages/storybook`. THis is where all development for these packages should be done.
-
-- `yarn publish`
-
-  This will publish the packages to `npm` and version them together. This should only be run via `github actions`.
-
-- `yarn typecheck`
-
-  Run typechecking on each package
-
-- `yarn build`
-
-  Run `babel` and transpile each package to a consumable js `dist` folder.
-
-- `yarn clean`
-
-  Cleans all `node_modules` from each package and deletes the root `node_modules`. Sometimes useful if packages have gotten out of date.
