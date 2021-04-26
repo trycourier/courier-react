@@ -51,7 +51,9 @@ const Bell: React.ForwardRefExoticComponent<{
         onMouseEnter={onMouseEnter}
         ref={ref}
       >
-        {hasUnreadMessages && <div className="unread-badge" />}
+        {hasUnreadMessages && (
+          <div data-testid="unread-badge" className="unread-badge" />
+        )}
         <svg
           width="22"
           height="26"
