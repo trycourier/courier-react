@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import readme from "@trycourier/react-toast/README.md";
 
 export default {
-  title: "Toast",
+  title: "Toast/Es",
 };
 
 export const GettingStarted = () => {
