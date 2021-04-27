@@ -30,3 +30,11 @@ addDecorator((storyFn) =>
     </Styled>
   ))
 );
+
+export const parameters = {
+  options: {
+    storySort: {
+      order: ["Introduction", "Getting Started"],
+    },
+  },
+};

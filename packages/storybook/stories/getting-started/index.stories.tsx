@@ -1,10 +1,10 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import introduction from "./introduction.md";
-import gettingStarted from "./getting-started.md";
-import reactIntegration from "./react-integration.md";
-import testingTheIntegration from "./testing-the-integration.md";
-import troubleshooting from "./troubleshooting.md";
+import introduction from "./docs/introduction.md";
+import gettingStarted from "./docs/getting-started.md";
+import reactIntegration from "./docs/react-integration.md";
+import testingTheIntegration from "./docs/testing-the-integration.md";
+import troubleshooting from "./docs/troubleshooting.md";
 
 export default {
   title: "Introduction",

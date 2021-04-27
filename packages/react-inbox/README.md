@@ -11,9 +11,9 @@
 
 ## [Overview](#overview)
 
-## What is Courier React Inbox?
+## What is Inbox?
 
-Courier React Inbox is a react component that you can add to your application show your users a list of recent messages they have received over a `push` channel.
+Inbox is a react component that you can add to your application show your users a list of recent messages they have received over a `push` channel.
 
 Upcoming Features:
 
