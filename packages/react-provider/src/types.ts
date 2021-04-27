@@ -1,4 +1,5 @@
 import { Transport } from "./transports";
+import { Interceptor } from "./transports/types";
 
 export interface Brand {
   inapp?: {
@@ -32,4 +33,5 @@ export interface ICourierContext {
   userSignature?: string;
   wsUrl?: string;
   middleware?: any;
+  onMessage?: Interceptor;
 }
