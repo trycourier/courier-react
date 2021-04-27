@@ -53,17 +53,19 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   const { clientKey, userId, brand } = courierContext;
   const {
-    fetchMessages,
-    init,
-    messages,
     config,
-    unreadMessageCount,
     currentTab,
+    fetchMessages,
     getUnreadMessageCount,
+    init,
+    isOpen,
+    messages,
+    toggleInbox,
+    unreadMessageCount,
   } = useInbox();
 
   const tippyProps: TippyProps = {
-    trigger: props.trigger ?? "click",
+    visible: isOpen,
     placement: props.placement ?? "right",
     interactive: true,
   };
@@ -109,6 +111,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     );
   }, [clientKey, userId, messages, config, unreadMessageCount]);
 
+  const handleIconOnClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    toggleInbox();
+  };
+
   const handleBellOnMouseEnter = (event: React.MouseEvent) => {
     event.preventDefault();
     fetchMessages(currentTab?.filter);
@@ -125,19 +132,26 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     >
       <TippyStyle />
       <StyledTippy {...tippyProps} content={<Messages {...props} />}>
-        {props.renderIcon ? (
-          <span>
-            {props.renderIcon({
-              hasUnreadMessages: Boolean(unreadMessageCount),
-            })}
-          </span>
-        ) : (
-          <Bell
-            className={props.className}
-            hasUnreadMessages={Boolean(unreadMessageCount)}
-            onMouseEnter={handleBellOnMouseEnter}
-          />
-        )}
+        <span
+          tabIndex={0}
+          role="button"
+          aria-pressed="false"
+          onClick={handleIconOnClick}
+        >
+          {props.renderIcon ? (
+            <span>
+              {props.renderIcon({
+                hasUnreadMessages: Boolean(unreadMessageCount),
+              })}
+            </span>
+          ) : (
+            <Bell
+              className={props.className}
+              hasUnreadMessages={Boolean(unreadMessageCount)}
+              onMouseEnter={handleBellOnMouseEnter}
+            />
+          )}
+        </span>
       </StyledTippy>
     </ThemeProvider>
   );

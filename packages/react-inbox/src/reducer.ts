@@ -11,8 +11,9 @@ const makeMessage = (message): IMessage => ({
 });
 
 interface InboxState {
-  messages: Array<IMessage>;
   isLoading?: boolean;
+  isOpen?: boolean;
+  messages: Array<IMessage>;
   unreadMessageCount: number;
   currentTab?: {
     id: string;
@@ -24,6 +25,7 @@ interface InboxState {
 }
 
 const initialState: InboxState = {
+  isOpen: false,
   messages: [],
   unreadMessageCount: 0,
 };
@@ -35,6 +37,13 @@ export default (state: InboxState = initialState, action) => {
         ...state,
         ...action.payload,
         currentTab: action.payload?.config?.tabs?.[0],
+      };
+    }
+
+    case "inbox/TOGGLE_INBOX": {
+      return {
+        ...state,
+        isOpen: action.payload?.isOpen ?? !state.isOpen,
       };
     }
 
