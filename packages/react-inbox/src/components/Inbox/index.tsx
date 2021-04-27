@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { TippyProps } from "@tippyjs/react";
 import TippyStyle from "./TippyStyle";
 import styled, { ThemeProvider } from "styled-components";
@@ -7,7 +7,7 @@ import Messages from "../Messages";
 import Bell from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
 import LazyTippy from "./LazyTippy";
-import useInbox from "~/hooks/use-inbox";
+import { useInbox, useClickOutside } from "~/hooks";
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
 
@@ -45,6 +45,7 @@ const StyledTippy = styled(LazyTippy)(({ theme }) =>
 );
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
+  const ref = useRef(null);
   const courierContext = useCourier();
 
   if (!courierContext) {
@@ -120,9 +121,21 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     event.preventDefault();
     fetchMessages(currentTab?.filter);
   };
+
+  const handleClickOutside = useCallback(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    toggleInbox(false);
+  }, [isOpen]);
+
+  useClickOutside(ref, handleClickOutside);
+
   if (!courierContext?.inbox) {
     return null;
   }
+
   return (
     <ThemeProvider
       theme={{
@@ -131,7 +144,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       }}
     >
       <TippyStyle />
-      <StyledTippy {...tippyProps} content={<Messages {...props} />}>
+      <StyledTippy {...tippyProps} content={<Messages ref={ref} {...props} />}>
         <span
           tabIndex={0}
           role="button"
