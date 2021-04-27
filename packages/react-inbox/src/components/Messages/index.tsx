@@ -10,79 +10,77 @@ import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 import Header from "./Header";
 
-const Messages: React.ForwardRefExoticComponent<
-  InboxProps & {
-    ref: React.ForwardedRef<HTMLDivElement>;
-  }
-> = React.forwardRef(
-  ({ title = "Inbox", renderHeader, renderMessage }, ref) => {
-    const {
-      fetchMessages,
-      markAllAsRead,
-      currentTab,
-      isLoading,
-      messages = [],
-      startCursor,
-      unreadMessageCount,
-    } = useInbox();
-    const divRef = useRef<HTMLDivElement>(null);
+const Messages: React.FunctionComponent<InboxProps> = ({
+  title = "Inbox",
+  renderHeader,
+  renderMessage,
+}) => {
+  const {
+    fetchMessages,
+    markAllAsRead,
+    currentTab,
+    isLoading,
+    messages = [],
+    startCursor,
+    unreadMessageCount,
+  } = useInbox();
+  const ref = useRef<HTMLDivElement>(null);
 
-    useAtBottom(
-      divRef,
-      () => {
-        if (isLoading || !startCursor) {
-          return;
-        }
+  useAtBottom(
+    ref,
+    () => {
+      if (isLoading || !startCursor) {
+        return;
+      }
 
-        fetchMessages({
-          ...currentTab?.filter,
-          after: startCursor,
-        });
-      },
-      [isLoading, startCursor, currentTab]
-    );
+      fetchMessages({
+        ...currentTab?.filter,
+        after: startCursor,
+      });
+    },
+    [isLoading, startCursor, currentTab]
+  );
 
-    useEffect(() => {
-      fetchMessages(currentTab?.filter);
-    }, [currentTab]);
+  useEffect(() => {
+    fetchMessages(currentTab?.filter);
+  }, [currentTab]);
 
-    return (
-      <div ref={ref}>
-        {renderHeader ? (
-          renderHeader({})
-        ) : (
-          <Header
-            currentTab={currentTab}
-            title={title}
-            unreadMessageCount={unreadMessageCount}
-            markAllAsRead={markAllAsRead}
-            messages={messages}
-          />
+  return (
+    <>
+      {renderHeader ? (
+        renderHeader({})
+      ) : (
+        <Header
+          currentTab={currentTab}
+          title={title}
+          unreadMessageCount={unreadMessageCount}
+          markAllAsRead={markAllAsRead}
+          messages={messages}
+        />
+      )}
+      <TabList />
+      <MessageList ref={ref} data-testid="messages">
+        {messages?.map((message) =>
+          renderMessage ? (
+            renderMessage(message)
+          ) : (
+            <Message key={message.messageId} {...message} />
+          )
         )}
-        <TabList />
-        <MessageList ref={divRef} data-testid="messages">
-          {messages?.map((message) =>
-            renderMessage ? (
-              renderMessage(message)
-            ) : (
-              <Message key={message.messageId} {...message} />
-            )
-          )}
-          {isLoading && <Loading />}
-          {!isLoading && messages?.length === 0 && (
-            <Empty>You have no notifications at this time</Empty>
-          )}
-          {!isLoading && messages?.length > 5 && !startCursor && (
-            <PaginationEnd title="End Of The Road" />
-          )}
-        </MessageList>
-        <Footer>
-          Powered by&nbsp;&nbsp;
-          <CourierLogo />
-        </Footer>
-      </div>
-    );
-  }
-);
+        {isLoading && <Loading />}
+        {!isLoading && messages?.length === 0 && (
+          <Empty>You have no notifications at this time</Empty>
+        )}
+        {!isLoading && messages?.length > 5 && !startCursor && (
+          <PaginationEnd title="End Of The Road" />
+        )}
+      </MessageList>
+      <Footer>
+        Powered by&nbsp;&nbsp;
+        <CourierLogo />
+      </Footer>
+    </>
+  );
+};
 
 export default Messages;
