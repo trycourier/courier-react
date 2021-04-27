@@ -79,6 +79,10 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     const courierTransport = transport as CourierTransport;
     courierTransport.subscribe(userId);
 
+    if (onMessage) {
+      courierTransport.intercept(onMessage);
+    }
+
     return () => {
       courierTransport.unsubscribe(userId);
     };

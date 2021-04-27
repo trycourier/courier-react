@@ -49,7 +49,12 @@ export function Default() {
 
   return (
     <>
-      <CourierProvider apiUrl={API_URL} clientKey={clientKey} userId={USER_ID}>
+      <CourierProvider
+        apiUrl={API_URL}
+        clientKey={clientKey}
+        wsUrl={process.env.WS_URL}
+        userId={USER_ID}
+      >
         <Toast />
         <Inbox title="Inbox" />
       </CourierProvider>
@@ -99,18 +104,22 @@ export function AsyncUserId() {
   );
 }
 
-export function WithTheme() {
+export function OnMessage() {
+  const handleOnMessage = (message) => {
+    console.log(message);
+    return message;
+  };
+
   return (
-    <>
-      <CourierProvider
-        clientKey={clientKey}
-        userId={userId}
-        transport={courierTransport}
-        brand={{}}
-      >
-        <Toast />
-        <Inbox title="Inbox" />
-      </CourierProvider>
-    </>
+    <CourierProvider
+      apiUrl={API_URL}
+      wsUrl={process.env.WS_URL}
+      clientKey={clientKey}
+      userId={USER_ID}
+      onMessage={handleOnMessage}
+    >
+      <Toast />
+      <Inbox title="Inbox" />
+    </CourierProvider>
   );
 }
