@@ -28,7 +28,7 @@ const Messages: React.ForwardRefExoticComponent<
     const messageListRef = useRef<HTMLDivElement>(null);
 
     useAtBottom(
-      divRef,
+      messageListRef,
       () => {
         if (isLoading || !startCursor) {
           return;
