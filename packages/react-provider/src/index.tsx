@@ -26,6 +26,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   children,
   clientKey,
   middleware: _middleware = [],
+  onMessage,
   transport: _transport,
   userId,
   userSignature,
@@ -40,16 +41,18 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     return new Client({ clientKey, userId, userSignature, apiUrl });
   }, [clientKey, userId, userSignature, apiUrl]);
 
-  const courierTransport = useMemo(() => {
+  const transport = useMemo(() => {
+    if (_transport) {
+      return _transport;
+    }
+
     if (clientKey && !_transport) {
       return new CourierTransport({
         clientKey,
         wsUrl,
       });
     }
-  }, [clientKey, wsUrl]);
-
-  const transport = courierTransport || _transport;
+  }, [_transport, clientKey, wsUrl]);
 
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
@@ -62,6 +65,28 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     userSignature,
     middleware,
   });
+
+  useEffect(() => {
+    if (_transport) {
+      // this means the transport was passed in and we shouldn't subscribe
+      return;
+    }
+
+    if (!transport || !userId) {
+      return;
+    }
+
+    const courierTransport = transport as CourierTransport;
+    courierTransport.subscribe(userId);
+
+    if (onMessage) {
+      courierTransport.intercept(onMessage);
+    }
+
+    return () => {
+      courierTransport.unsubscribe(userId);
+    };
+  }, [transport, userId]);
 
   useEffect(() => {
     if (!clientKey || !userId) {
@@ -137,18 +162,6 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
     }
   }, [clientKey, userId]);
 
-  useEffect(() => {
-    if (!transport || !userId) {
-      return;
-    }
-
-    const courierTransport = transport as CourierTransport;
-    courierTransport.subscribe(userId);
-
-    return () => {
-      courierTransport.unsubscribe(userId);
-    };
-  }, [transport, userId]);
   const actions = useCourierActions(dispatch);
 
   return (
