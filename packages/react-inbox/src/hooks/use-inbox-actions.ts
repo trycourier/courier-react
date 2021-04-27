@@ -28,6 +28,13 @@ const useInboxActions = () => {
       });
     },
 
+    toggleInbox: (isOpen?: boolean) => {
+      dispatch({
+        type: "inbox/TOGGLE_INBOX",
+        payload: isOpen,
+      });
+    },
+
     setCurrentTab: (newTab: string) => {
       dispatch({
         type: "inbox/SET_CURRENT_TAB",

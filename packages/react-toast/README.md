@@ -1,7 +1,5 @@
 # Courier React Toast
 
-<img src="https://user-images.githubusercontent.com/16184018/109372638-6ebc6a00-785f-11eb-876a-e33260566c80.gif">
-
 # Table of Contents
 
 1. [Overview](#overview)
@@ -16,9 +14,9 @@
 
 ## [Overview](#overview)
 
-## What is Courier React Toast?
+## What is Toast?
 
-Courier React Toast aims to be the easiest way to create in-app notifications. With a simple integration and straight forward API we make it easy for anyone to integrate fast.
+Toast aims to be the easiest way to create in-app notifications. With a simple integration and straight forward API we make it easy for anyone to integrate fast.
 
 ### What is a `toast`?
 
@@ -38,8 +36,6 @@ A channel/event combination is simply a stream on which a particular client is l
 If you do not need a push provider such as Courier you can skip ahead to instructions on how to use the standalone toast <a href="#using-hook">interface<a>
 
 Below is a step by step setup to use `@trycourier/react-toast` using Courier as a Push Provider.
-
-<hr>
 
 ## [Courier Integration](#courier-integration)
 
@@ -67,76 +63,6 @@ Now that you have a notification ready to be sent lets setup the client to liste
 yarn add @trycourier/react-toast
 ```
 
-<hr>
-
-## [Toast Provider](#toast-provider)
-
-In order for the `Toast` component to be placed in the dom you will need to use the `ToastProvider`. This will handle context and give us access to the `show` function.
-
-> The component you want to listen to toasts from must be a child of the `ToastProvider`.
-> Check [here](https://reactjs.org/docs/context.html#contextprovider) for more information on this concept.
-
-```js
-//App.js
-import { ToastProvider } from "@trycourier/react-toast";
-
-function App() {
-  return (
-    <ToastProvider>
-      <App />
-    </ToastProvider>
-  );
-}
-```
-
-## [Using Transport](#using-transport)
-
-Now the toast component is in the dom but it will stay hidden until invoked by something. There are two ways to show the component.
-
-1. Using the courier `transport` which automatically handles the listening, and invocation through web sockets
-2. Using the <a href="#using-toast">`useToast` hook</a>
-
-### Using the Courier Transport
-
-```js
-import { CourierTransport } from "@trycourier/react-provider";
-import { ToastProvider } from "@trycourier/react-toast";
-function MyComponent() {
-  useEffect(() => {
-    let courierTransport;
-    if (typeof window !== "undefined") {
-      courierTransport = new CourierTransport({
-        //You got this from the Courier Integrations page
-        clientKey: "CLIENT_KEY",
-      });
-      courierTransport.subscribe("YOUR_CHANNEL", "YOUR_EVENT");
-      // It is good practice to unsubscribe on component unmount
-      return () => courierTransport.unsubscribe("YOUR_CHANNEL", "YOUR_EVENT");
-    }
-  }, []);
-  return (
-    <ToastProvider transport={courierTransport}>
-      <MyApp />
-    </ToastProvider>
-  );
-}
-```
-
-That is it! Now are ready to send your notification and see the result on the client
-You can use the Send tab for a quick test or a library of your choice, for simplicity sake we will use the cURL command provided for us from Courier.
-
-```bash
-curl --request POST \
---url https://api.courier.com/send \
---header 'Authorization: Bearer ******************' \
---data-urlencode event=NEW_SUBSCRIBER \
---data-urlencode recipient=MY_RECIPIENT \
---data-urlencode 'data={}' \
---data-urlencode 'profile={"courier":{"channel":"YOUR_CHANNEL"'
-```
-
-<hr>
-
 ## [Using Hook](#using-hook)
 
 If you do not want to use Courier Push to trigger a toast notification then you can always invoke the toast locally with the `useToast` hook. Below is an example creating a notification from the client rather than creating it from a transport. Do not forget to wrap this component with a `ToastProvider` somewhere up the component hierarchy chain.
@@ -154,13 +80,11 @@ function MyComponent() {
 }
 ```
 
-<hr>
-
-## [Provider Config Options](#options)
+## [Toast Config Options](#options)
 
 A configuration object is passed to the `ToastProvider` as the `config` prop to set options such as styles, positioning, and transitions for the `Toast` component. See below for a list of available options.
 
-All `ToastProvider` configurations are optional.
+All `Toast` configurations are optional.
 | Name | Type | Description |
 |-----------------|-------------|----------------------------------------------------------------------------------------|
 | autoClose | false/number | Length of time until we close the toast. Defaults: 5000 |
@@ -221,12 +145,13 @@ const theme = {
   },
 };
 
-function App() {
-  const config = { theme };
+function ThemedToast() {
   return (
-    <ToastProvider config={config}>
-      <App />
-    </ToastProvider>
+    <Toast
+      config={{
+        theme,
+      }}
+    />
   );
 }
 ```
@@ -249,12 +174,14 @@ const theme = {
   },
 };
 
-function App() {
+function ThemedToast() {
   const config = { theme };
   return (
-    <ToastProvider config={config}>
-      <App />
-    </ToastProvider>
+    <Toast
+      config={{
+        theme,
+      }}
+    />
   );
 }
 ```
@@ -273,12 +200,13 @@ const theme = {
   },
 };
 
-function App() {
-  const config = { theme };
+function ThemedToast() {
   return (
-    <ToastProvider config={config}>
-      <App />
-    </ToastProvider>
+    <Toast
+      config={{
+        theme,
+      }}
+    />
   );
 }
 ```
@@ -305,12 +233,8 @@ const theme = {
 
 const defaultIcon = `https://user-images.githubusercontent.com/16184018/109723772-674cd780-7b63-11eb-98d8-92f3c075ccbe.png`;
 
-function App() {
+function ConfiguredToast() {
   const config = { theme, defaultIcon };
-  return (
-    <ToastProvider config={config}>
-      <App />
-    </ToastProvider>
-  );
+  return <Toast config={config} />;
 }
 ```
