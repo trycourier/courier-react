@@ -1,18 +1,19 @@
-# Courier React Toast
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-# Table of Contents
+- [What is Toast?](#what-is-toast)
+  - [What is a `toast`?](#what-is-a-toast)
+  - [How does @trycourier/react-toast work?](#how-does-trycourierreact-toast-work)
+- [Client Install](#client-install)
+- [Courier Integration](#courier-integration)
+- [Client Setup](#client-setup)
+  - [Props](#props)
+  - [Theme](#theme)
+- [Using Hook](#using-hook)
 
-1. [Overview](#overview)
-2. [Courier Integration](#courier-integration)
-3. [Client Install](#client-install)
-4. [Toast Provider](#toast-provider)
-5. [Using Transport](#using-transport)
-6. [Using Hook](#using-hook)
-7. [Options](#options)
-8. [Theming](#theming)
-9. [Advanced Usage](#advanced-usage)
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## [Overview](#overview)
+<a name="1overviewmd"></a>
 
 ## What is Toast?
 
@@ -37,25 +38,7 @@ If you do not need a push provider such as Courier you can skip ahead to instruc
 
 Below is a step by step setup to use `@trycourier/react-toast` using Courier as a Push Provider.
 
-## [Courier Integration](#courier-integration)
-
-We will need to install the [Courier Push Provider](https://app.courier.com/integrations/courier) to trigger a toast from an API request.
-Make sure to copy the Client Key from the integration page after installing.
-
-<img src="https://user-images.githubusercontent.com/16184018/109491559-8f8ee600-7a3e-11eb-9aa4-742639274fde.png" />
-
-Next, create your notification on the Courier Push Designer
-
-<img src="https://user-images.githubusercontent.com/16184018/109492317-a41fae00-7a3f-11eb-9368-fd424699d640.png" />
-
-Once your notification is created, you also have the option to map an EVENT_ID to a specific notification. This will allow you to use the Courier Designer for test sending.
-To do this access the settings pane near the top left corner next to the "Notifications" label. Navigate to "Events" and select an event or create a new one to send the toast on.
-
-<img src="https://user-images.githubusercontent.com/16184018/109494158-5d7f8300-7a42-11eb-96e8-078023daa14d.png">
-
-## Client Setup
-
-Now that you have a notification ready to be sent lets setup the client to listen for the notification and invoke it when triggered.
+<a name="2installationmd"></a>
 
 ## [Client Install](#client-install)
 
@@ -63,41 +46,55 @@ Now that you have a notification ready to be sent lets setup the client to liste
 yarn add @trycourier/react-toast
 ```
 
-## [Using Hook](#using-hook)
+## [Courier Integration](#courier-integration)
 
-If you do not want to use Courier Push to trigger a toast notification then you can always invoke the toast locally with the `useToast` hook. Below is an example creating a notification from the client rather than creating it from a transport. Do not forget to wrap this component with a `ToastProvider` somewhere up the component hierarchy chain.
+We will need to install the [Courier Push Provider](https://app.courier.com/integrations/courier) to trigger a toast from an API request.
+Make sure to copy the Client Key from the integration page after installing.
 
-```js
-import { useToast } from "@trycourier/react-toast";
+![image](https://user-images.githubusercontent.com/16184018/109491559-8f8ee600-7a3e-11eb-9aa4-742639274fde.png)
 
-function MyComponent() {
-  //We can access this because the parent is a `ToastProvider`
-  const [show] = useToast();
+Next, create your notification on the Courier Push Designer
 
-  return (
-    <button onClick={() => show("You just made a notification 🎉")}></button>
-  );
+![image](https://user-images.githubusercontent.com/16184018/109492317-a41fae00-7a3f-11eb-9368-fd424699d640.png)
+
+Once your notification is created, you also have the option to map an EVENT_ID to a specific notification. This will allow you to use the Courier Designer for test sending.
+To do this access the settings pane near the top left corner next to the "Notifications" label. Navigate to "Events" and select an event or create a new one to send the toast on.
+
+![image](https://user-images.githubusercontent.com/16184018/109494158-5d7f8300-7a42-11eb-96e8-078023daa14d.png)
+
+## Client Setup
+
+Now that you have a notification ready to be sent lets setup the client to listen for the notification and invoke it when triggered.
+
+<a name="3propsmd"></a>
+
+### [Props](#props)
+
+```
+interface ToastProps {
+  // Number in ms for Toast to auto close
+  // Set as `false` to disable auto close
+
+  autoClose?: false | number;
+
+  // Default icon if no icon is present in message
+  defaultIcon?: string | false;
+
+  // Hide the progress bar
+  hideProgressBar?: boolean;
+  onClick?: MouseEventHandler<Element>;
+
+  // Toast positioning when triggered
+  position?: "top-left" | "top-right" | "top-center" | "bottom-left" | "bottom-right" | "bottom-center";
+  role?: "alert" | "status";
+  theme?: Theme;
+
+  // Animation when the Toast is displayed
+  transition?: "bounce" | "slide" | "zoom" | "flip";
 }
 ```
 
-## [Toast Config Options](#options)
-
-A configuration object is passed to the `ToastProvider` as the `config` prop to set options such as styles, positioning, and transitions for the `Toast` component. See below for a list of available options.
-
-All `Toast` configurations are optional.
-| Name | Type | Description |
-|-----------------|-------------|----------------------------------------------------------------------------------------|
-| autoClose | false/number | Length of time until we close the toast. Defaults: 5000 |
-| defaultIcon | string/false | Set the default icon being used in the toast without having to pass it from the data parameters. Pass `false` to disable. |
-| hideProgressBar | boolean | Optionally show or hide the progress bar |
-| position | string | The location of where the toast component will show |
-| role | string | The alert role can be used to tell the user an element has been dynamically updated. Default: "status" |
-| theme | [StyleObject](https://github.com/trycourier/courier-react/blob/main/src/providers/types.ts#L16) | Customize the styles of the toast component with a StyleObject. See below for details. |
-| transition | boolean | Set the transition effect for the toast coming into the window and going out |
-
-### [Custom Styling](#theming)
-
-You can optionally provide custom styling to each component of the `Toast` when it is shown. Pass a `theme` object to the `ToastProvider` to use your own custom styling.
+### [Theme](#theming)
 
 ```
 interface ITheme {
@@ -123,7 +120,7 @@ The style configuration objects should be defined with Style Objects. Style Obje
 
 An example usage of custom styling is shown below:
 
-<img src="https://user-images.githubusercontent.com/16184018/109723047-6cf5ed80-7b62-11eb-940a-4f29ddcfe80c.gif" />
+![image](https://user-images.githubusercontent.com/16184018/109723047-6cf5ed80-7b62-11eb-940a-4f29ddcfe80c.gif)
 
 ```js
 //App.js
@@ -146,95 +143,35 @@ const theme = {
 };
 
 function ThemedToast() {
-  return (
-    <Toast
-      config={{
-        theme,
-      }}
-    />
-  );
+  return <Toast theme={theme} />;
 }
 ```
 
-### [Advanced Usage](#advanced-usage)
+<a name="4hooksmd"></a>
 
-#### Advanced Themeing:
+## [Using Hook](#using-hook)
 
-Custom progress bar, with an on hover:
-
-<img src="https://user-images.githubusercontent.com/16184018/109722086-0f14d600-7b61-11eb-8115-457c6425b175.gif" />
+If you do not want to use Courier Push to trigger a toast notification then you can always invoke the toast locally with the `useToast` hook. Below is an example creating a notification from the client rather than creating it from a transport. Do not forget to wrap this component with a `CourierProvider` somewhere up the component hierarchy chain.
 
 ```js
-//App.js
-const theme = {
-  progressBar: {
-    background: "#9121c2",
-    height: 3,
-    bottom: 0,
-  },
-};
+import { CourierProvider } from "@trycourier/react-provider";
+import { Toast, useToast } from "@trycourier/react-toast";
 
-function ThemedToast() {
-  const config = { theme };
+const MyComponent: React.FunctionComponent = () => {
+  //We can access this because the parent is a `CourierProvider`
+  const [show] = useToast();
+
   return (
-    <Toast
-      config={{
-        theme,
-      }}
-    />
+    <button onClick={() => show("You just made a notification 🎉")}></button>
   );
-}
-```
-
-Applying a font to the root component (All toasts)
-
-<img src="https://user-images.githubusercontent.com/16184018/109724944-408fa080-7b65-11eb-8286-c305d7725c27.gif" />
-
-```js
-//App.js
-const theme = {
-  root: {
-    "*": {
-      fontFamily: "Courier",
-    },
-  },
 };
 
-function ThemedToast() {
+const App: React.FunctionComponent = () => {
   return (
-    <Toast
-      config={{
-        theme,
-      }}
-    />
+    <CourierProvider userId={USER_ID} clientKey={CLIENT_KEY}>
+      <Toast />
+      <MyComponent />
+    </CourierProvider>
   );
-}
-```
-
-Using a default icon and overriding all text color
-
-<img src="https://user-images.githubusercontent.com/16184018/109723980-b2ff8100-7b63-11eb-9942-fca94dd31f74.gif" />
-
-```js
-//App.js
-const theme = {
-  root: {
-    "*": {
-      color: "black",
-    },
-  },
-  message: {
-    title: {
-      color: "red !important",
-      fontSize: 14,
-    },
-  },
 };
-
-const defaultIcon = `https://user-images.githubusercontent.com/16184018/109723772-674cd780-7b63-11eb-98d8-92f3c075ccbe.png`;
-
-function ConfiguredToast() {
-  const config = { theme, defaultIcon };
-  return <Toast config={config} />;
-}
 ```

@@ -17,11 +17,13 @@
     "clean": "rimraf dist",
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
+    "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "rimraf typings && tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "MIT",
   "dependencies": {
     "@trycourier/react-provider": "^0.1.10-alpha.25",
+    "concat-md": "^0.3.5",
     "deep-extend": "^0.6.0",
     "react-toastify": "^6.2.0",
     "rimraf": "^3.0.2",

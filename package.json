@@ -17,6 +17,7 @@
     "lerna": "lerna",
     "postinstall": "lerna bootstrap && yarn build && husky install",
     "prettier": "prettier --write \"packages/**/*{js,json,ts,tsx}\"",
+    "readme": "lerna run readme --stream --parallel",
     "start:components": "lerna run build:watch --stream --parallel & yarn types & lerna run start:components --stream",
     "start": "lerna run build:watch --stream --parallel & yarn types & lerna run storybook --stream",
     "test": "NODE_ENV=test jest",
