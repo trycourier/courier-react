@@ -21,7 +21,7 @@ export interface InboxProps {
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{
-    hasUnreadMessages: boolean;
+    unreadMessageCount?: number;
   }>;
   renderMessage?: React.FunctionComponent;
   tabs?: Array<ITab>;

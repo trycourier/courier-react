@@ -154,7 +154,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           {props.renderIcon ? (
             <span>
               {props.renderIcon({
-                hasUnreadMessages: Boolean(unreadMessageCount),
+                unreadMessageCount,
               })}
             </span>
           ) : (

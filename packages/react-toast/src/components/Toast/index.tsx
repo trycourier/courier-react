@@ -15,10 +15,20 @@ import Body from "~/components/Body";
 
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
-export const Toast: React.FunctionComponent<{
-  config?: IToastConfig;
-}> = ({ config }) => {
+export const Toast: React.FunctionComponent<
+  IToastConfig & {
+    config: IToastConfig;
+  }
+> = (props) => {
   const courierContext = useCourier();
+
+  if (props.config) {
+    console.warn(
+      "Config as a props is DEPRECATED and WILL be removed in a future version"
+    );
+  }
+
+  const config = props.config ?? props;
 
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
