@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`${toastCss}`;
 
 export const Toast: React.FunctionComponent<
   IToastConfig & {
-    config: IToastConfig;
+    config?: IToastConfig;
   }
 > = (props) => {
   const courierContext = useCourier();
