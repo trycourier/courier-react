@@ -21,6 +21,8 @@ export const ToastBody: React.FunctionComponent<ICourierToastMessage> = (
           className="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
           style={{
             animation: "none",
+
+            // will want to tweak these after we get them inside studio
             //animationDuration: "5000ms",
             //animationPlayState: "running",
             //animationIterationCount: "infinite",
