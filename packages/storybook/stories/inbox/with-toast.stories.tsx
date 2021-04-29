@@ -56,7 +56,14 @@ export function Default() {
         userId={USER_ID}
       >
         <Toast />
-        <Inbox title="Inbox" />
+        <Inbox
+          title="Inbox"
+          brand={{
+            inapp: {
+              disableMessageIcon: true,
+            },
+          }}
+        />
       </CourierProvider>
       <button onClick={handleNotify}>Test</button>
     </>

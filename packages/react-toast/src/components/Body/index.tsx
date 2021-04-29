@@ -17,7 +17,9 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 }) => {
   const { toastProps } = props as { toastProps: any };
   const [, { config }] = useToast();
-  const { createTrackEvent } = useCourier();
+  const { createTrackEvent, brand: courierBrand } = useCourier();
+
+  const brand = config?.brand ?? courierBrand;
 
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps?.toastId),
@@ -34,7 +36,15 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
     });
   }, []);
 
-  const Icon = getIcon(icon ?? config?.defaultIcon);
+  const Icon = getIcon(
+    /* priority:
+      1. from message
+      2. from props.defaultIcon
+      3. from props.brand.inapp.icons.message
+      4. from remote brand.inapp.icons.message
+    */
+    icon ?? config?.defaultIcon ?? brand?.inapp?.icons?.message
+  );
 
   return (
     <>

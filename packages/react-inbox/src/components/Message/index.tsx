@@ -27,9 +27,25 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const { createTrackEvent } = useCourier();
-  const { markMessageRead, markMessageUnread, config } = useInbox();
-  const renderedIcon = getIcon(icon ?? config?.defaultIcon);
+  const { createTrackEvent, brand: courierBrand } = useCourier();
+  const {
+    brand: inboxBrand,
+    defaultIcon,
+    markMessageRead,
+    markMessageUnread,
+  } = useInbox();
+
+  const brand = inboxBrand ?? courierBrand;
+
+  const renderedIcon = getIcon(
+    /* priority:
+      1. from message
+      2. from props.defaultIcon
+      3. from props.brand.inapp.icons.message
+      4. from remote brand.inapp.icons.message
+    */
+    icon ?? defaultIcon ?? !brand?.inapp?.disableMessageIcon
+  );
   const timeAgo = getTimeAgo(created);
   const showMarkAsRead = !read && readTrackingId;
   const showMarkAsUnread = read && unreadTrackingId;

@@ -16,10 +16,7 @@ const useInboxActions = () => {
     init: (payload) => {
       payload = {
         ...payload,
-        config: {
-          ...payload.config,
-          tabs: payload.config.tabs ?? DEFAULT_TABS,
-        },
+        tabs: payload.tabs ?? DEFAULT_TABS,
       };
 
       dispatch({

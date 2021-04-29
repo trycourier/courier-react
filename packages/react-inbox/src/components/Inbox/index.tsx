@@ -11,6 +11,21 @@ import { useInbox, useClickOutside } from "~/hooks";
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
 
+const UnreadIndicator = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      position: "absolute",
+      top: -8,
+      right: 0,
+      borderRadius: "100%",
+      padding: 5,
+      background: theme?.brand?.colors?.secondary ?? "#de5063",
+      animation: "badge-pulse 10s infinite",
+    },
+    theme.unreadIndicator
+  )
+);
+
 const StyledTippy = styled(LazyTippy)(({ theme }) =>
   deepExtend(
     {
@@ -52,9 +67,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, userId, brand } = courierContext;
+  const { clientKey, userId, brand: remoteBrand } = courierContext;
   const {
-    config,
     currentTab,
     fetchMessages,
     getUnreadMessageCount,
@@ -65,9 +79,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     unreadMessageCount,
   } = useInbox();
 
+  const brand = props.brand ?? remoteBrand;
+
   const tippyProps: TippyProps = {
     visible: isOpen,
-    placement: props.placement ?? "right",
+    placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
   };
 
@@ -90,14 +106,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           const { messages, unreadMessageCount } = JSON.parse(
             localStorageState
           );
-          init({ messages, unreadMessageCount, config: props });
+          init({ messages, unreadMessageCount, ...props });
         } catch (ex) {
           console.log("error", ex);
         }
       } else {
-        init({
-          config: props,
-        });
+        init(props);
       }
     }
   }, [props, clientKey, userId]);
@@ -110,25 +124,35 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         unreadMessageCount: unreadMessageCount,
       })
     );
-  }, [clientKey, userId, messages, config, unreadMessageCount]);
+  }, [clientKey, userId, messages, unreadMessageCount]);
 
-  const handleIconOnClick = (event: React.MouseEvent) => {
+  const handleIconOnClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     toggleInbox();
-  };
+  }, []);
 
-  const handleBellOnMouseEnter = (event: React.MouseEvent) => {
-    event.preventDefault();
-    fetchMessages(currentTab?.filter);
-  };
+  const handleBellOnMouseEnter = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      if (isOpen) {
+        return;
+      }
 
-  const handleClickOutside = useCallback(() => {
-    if (!isOpen) {
-      return;
-    }
+      fetchMessages(currentTab?.filter);
+    },
+    [isOpen]
+  );
 
-    toggleInbox(false);
-  }, [isOpen]);
+  const handleClickOutside = useCallback(
+    (event) => {
+      if (!isOpen || event.target.closest(".inbox-bell")) {
+        return;
+      }
+
+      toggleInbox(false);
+    },
+    [isOpen]
+  );
 
   useClickOutside(ref, handleClickOutside);
 
@@ -140,16 +164,22 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     <ThemeProvider
       theme={{
         ...props.theme,
-        brand: props.brand ?? brand,
+        brand,
       }}
     >
       <TippyStyle />
       <StyledTippy {...tippyProps} content={<Messages ref={ref} {...props} />}>
         <span
-          tabIndex={0}
-          role="button"
           aria-pressed="false"
+          className={`inbox-bell ${props.className ?? ""}`}
           onClick={handleIconOnClick}
+          onMouseEnter={handleBellOnMouseEnter}
+          role="button"
+          tabIndex={0}
+          style={{
+            position: "relative",
+            outline: "none",
+          }}
         >
           {props.renderIcon ? (
             <span>
@@ -157,12 +187,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
                 unreadMessageCount,
               })}
             </span>
+          ) : brand?.inapp?.icons?.bell ? (
+            <img src={brand?.inapp?.icons?.bell} />
           ) : (
-            <Bell
-              className={props.className}
-              hasUnreadMessages={Boolean(unreadMessageCount)}
-              onMouseEnter={handleBellOnMouseEnter}
-            />
+            <Bell />
+          )}
+          {unreadMessageCount > 0 && (
+            <UnreadIndicator data-testid="unread-badge" />
           )}
         </span>
       </StyledTippy>
