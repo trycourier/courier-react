@@ -1,6 +1,11 @@
-import React, { useEffect } from "react";
-
-import { ToastProvider, useToast } from "@trycourier/react-toast";
+import React from "react";
+import {
+  ToastProvider,
+  Toast,
+  useToast,
+  ToastBody,
+} from "@trycourier/react-toast";
+import { CourierProvider } from "@trycourier/react-provider";
 
 import { Button } from "./styled";
 
@@ -12,25 +17,47 @@ export default {
 };
 
 export function Default({ bodyText }) {
-  function DefaultComponent({ body }) {
+  return (
+    <ToastProvider clientKey="client-key">
+      <ToastBody body={bodyText} title="Title" />
+    </ToastProvider>
+  );
+}
+
+export function WithCourierProvider({ bodyText }) {
+  function DefaultComponent() {
     const [toast] = useToast();
-    useEffect(() => {
-      toast(body);
-    }, [toast]);
-    return <Button onClick={() => toast(body)}>Show Toast</Button>;
+    return <Button onClick={() => toast("Hello World")}>Show Toast</Button>;
   }
 
   return (
-    <ToastProvider clientKey="client-key">
-      <DefaultComponent body={bodyText} />
-    </ToastProvider>
+    <CourierProvider clientKey="client-key" userId="user-id">
+      <Toast
+        brand={{
+          inapp: {
+            colors: {
+              invertButtons: true,
+            },
+          },
+          colors: {
+            primary: "red",
+            secondary: "green",
+          },
+        }}
+      />
+      <DefaultComponent />
+    </CourierProvider>
   );
 }
 
 export function NoIcon({ bodyText }) {
   function DefaultComponent({ body }) {
     const [toast] = useToast();
-    return <Button onClick={() => toast(body)}>Show Toast</Button>;
+    return (
+      <Button onClick={() => toast({ body, title: "Title" })}>
+        Show Toast
+      </Button>
+    );
   }
 
   return (
@@ -48,7 +75,11 @@ export function NoIcon({ bodyText }) {
 export function NoAutoClose({ bodyText }) {
   function DefaultComponent({ body }) {
     const [toast] = useToast();
-    return <Button onClick={() => toast(body)}>Show Toast</Button>;
+    return (
+      <Button onClick={() => toast({ body, title: "Title" })}>
+        Show Toast
+      </Button>
+    );
   }
 
   return (

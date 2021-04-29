@@ -4,21 +4,21 @@ import deepExtend from "deep-extend";
 export const Container = styled.div(({ theme }) =>
   deepExtend(
     {
-      width: "100%",
+      alignSelf: "center",
+      borderLeft: "1px solid #CBD5E0",
       display: "flex",
       flexDirection: "column",
-      alignSelf: "center",
+      flexShrink: 0,
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: "400",
-      lineHeight: "14px",
       letterSpacing: "0em",
+      lineHeight: "14px",
       textAlign: "center",
-      borderLeft: "1px solid #CBD5E0",
+      width: "80px",
       padding: "0",
       height: "100%",
       justifyContent: "center",
-      marginLeft: "28px",
       "> :nth-child(2)": {
         "border-top": "1px solid #CBD5E0",
       },
@@ -34,12 +34,20 @@ const getButtonStyles = (theme, styles) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: theme?.brand?.colors?.primary ?? "#9121C2",
+      color: theme?.brand?.inapp?.colors?.invertButtons
+        ? "white"
+        : theme?.brand?.colors?.primary ?? "#9121C2",
+      backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
+        ? theme?.brand?.colors?.primary
+        : "white",
       textDecoration: "none",
       ":visited": {
         color: theme?.brand?.colors?.primary ?? "#9121C2",
       },
       "&:hover": {
+        color: theme?.brand?.inapp?.colors?.invertButtons
+          ? theme?.brand?.colors?.primary ?? "#9121C2"
+          : "white",
         background: "rgb(0 0 0 / 10%)",
       },
     },

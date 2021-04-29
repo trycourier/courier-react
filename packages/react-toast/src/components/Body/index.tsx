@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
-import { Message, Title, Body } from "./styled";
+import { Container, Message, Title, Body } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier } from "@trycourier/react-provider";
@@ -20,8 +20,8 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   const { createTrackEvent } = useCourier();
 
   const handleOnClickDismiss = useCallback(
-    () => toast.dismiss(toastProps.toastId),
-    [toastProps.toastId]
+    () => toast.dismiss(toastProps?.toastId),
+    [toastProps?.toastId]
   );
 
   const handleOnClickDetails = useCallback((event) => {
@@ -38,11 +38,13 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
   return (
     <>
-      {Icon && <Icon data-testid="message-icon" />}
-      <Message data-testid="message">
-        <Title data-testid="message-title">{title}</Title>
-        <Body data-testid="message-body">{body}</Body>
-      </Message>
+      <Container>
+        {Icon && <Icon data-testid="message-icon" />}
+        <Message data-testid="message">
+          <Title data-testid="message-title">{title}</Title>
+          <Body data-testid="message-body">{body}</Body>
+        </Message>
+      </Container>
       <Actions
         href={data?.clickAction}
         onClickDetails={handleOnClickDetails}
