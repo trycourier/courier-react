@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 
-export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
+export const toastStyles = ({ theme }) => ({
   ["&.Toastify__toast-container"]: {
     fontFamily: `"Nunito", sans-serif`,
     ...theme?.root,
@@ -16,6 +16,7 @@ export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
   [".Toastify__toast-body"]: {
     margin: 0,
     display: "flex",
+    justifyContent: "space-between",
     ...theme?.body,
   },
   [".Toastify__progress-bar"]: {
@@ -24,4 +25,6 @@ export const ToastStyled = styled(ToastContainer)(({ theme }) => ({
     top: 0,
     ...theme?.progressBar,
   },
-}));
+});
+
+export const ToastStyled = styled(ToastContainer)(toastStyles);

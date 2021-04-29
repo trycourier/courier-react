@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
 import Actions from "../Actions";
-import { Message, Title, Body } from "./styled";
+import { Container, Message, Title, Body } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier } from "@trycourier/react-provider";
@@ -17,11 +17,13 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 }) => {
   const { toastProps } = props as { toastProps: any };
   const [, { config }] = useToast();
-  const { createTrackEvent } = useCourier();
+  const { createTrackEvent, brand: courierBrand } = useCourier();
+
+  const brand = config?.brand ?? courierBrand;
 
   const handleOnClickDismiss = useCallback(
-    () => toast.dismiss(toastProps.toastId),
-    [toastProps.toastId]
+    () => toast.dismiss(toastProps?.toastId),
+    [toastProps?.toastId]
   );
 
   const handleOnClickDetails = useCallback((event) => {
@@ -34,15 +36,25 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
     });
   }, []);
 
-  const Icon = getIcon(icon ?? config?.defaultIcon);
+  const Icon = getIcon(
+    /* priority:
+      1. from message
+      2. from props.defaultIcon
+      3. from props.brand.inapp.icons.message
+      4. from remote brand.inapp.icons.message
+    */
+    icon ?? config?.defaultIcon ?? brand?.inapp?.icons?.message
+  );
 
   return (
     <>
-      {Icon && <Icon data-testid="message-icon" />}
-      <Message data-testid="message">
-        <Title data-testid="message-title">{title}</Title>
-        <Body data-testid="message-body">{body}</Body>
-      </Message>
+      <Container>
+        {Icon && <Icon data-testid="message-icon" />}
+        <Message data-testid="message">
+          <Title data-testid="message-title">{title}</Title>
+          <Body data-testid="message-body">{body}</Body>
+        </Message>
+      </Container>
       <Actions
         href={data?.clickAction}
         onClickDetails={handleOnClickDetails}

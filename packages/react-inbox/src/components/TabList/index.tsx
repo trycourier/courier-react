@@ -4,7 +4,7 @@ import { Container, Tab } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 
 const TabList: React.FunctionComponent = () => {
-  const { setCurrentTab, currentTab, config } = useInbox();
+  const { setCurrentTab, currentTab, tabs } = useInbox();
 
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
     event.preventDefault();
@@ -13,7 +13,7 @@ const TabList: React.FunctionComponent = () => {
 
   return (
     <Container>
-      {config?.tabs?.map((tab) => (
+      {tabs?.map((tab) => (
         <Tab
           key={tab.id}
           className={classNames({

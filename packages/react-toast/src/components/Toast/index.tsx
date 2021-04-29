@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { toast } from "react-toastify";
 
 import { useCourier, registerReducer } from "@trycourier/react-provider";
@@ -34,7 +34,7 @@ export const Toast: React.FunctionComponent<
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, transport, dispatch } = courierContext;
+  const { clientKey, transport, dispatch, brand } = courierContext;
 
   const handleToast = useCallback(
     (message: ICourierToastMessage | string) => {
@@ -72,13 +72,20 @@ export const Toast: React.FunctionComponent<
   return (
     <>
       <GlobalStyle />
-      <ToastStyled
-        data-testid="crt-toast-container"
-        closeButton={false}
-        closeOnClick={false}
-        {...config}
-        transition={getTransition(config?.transition)}
-      />
+      <ThemeProvider
+        theme={{
+          ...props.theme,
+          brand: props.brand ?? brand,
+        }}
+      >
+        <ToastStyled
+          data-testid="crt-toast-container"
+          closeButton={false}
+          closeOnClick={false}
+          {...config}
+          transition={getTransition(config?.transition)}
+        />
+      </ThemeProvider>
     </>
   );
 };
