@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabList from "../TabList";
@@ -9,6 +9,8 @@ import CourierLogo from "~/assets/courier_logo_text.svg";
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 import Header from "./Header";
+import { InboxView } from "./Header/types";
+import { PreferenceList } from "@trycourier/react-preferences";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
@@ -26,6 +28,8 @@ const Messages: React.ForwardRefExoticComponent<
       unreadMessageCount,
     } = useInbox();
     const messageListRef = useRef<HTMLDivElement>(null);
+
+    const [view, setView] = useState<InboxView>("messages");
 
     useAtBottom(
       messageListRef,
@@ -57,25 +61,34 @@ const Messages: React.ForwardRefExoticComponent<
             unreadMessageCount={unreadMessageCount}
             markAllAsRead={markAllAsRead}
             messages={messages}
+            view={view}
+            onViewToggle={setView}
           />
         )}
-        <TabList />
-        <MessageList ref={messageListRef} data-testid="messages">
-          {messages?.map((message) =>
-            renderMessage ? (
-              renderMessage(message)
-            ) : (
-              <Message key={message.messageId} {...message} />
-            )
-          )}
-          {isLoading && <Loading />}
-          {!isLoading && messages?.length === 0 && (
-            <Empty>You have no notifications at this time</Empty>
-          )}
-          {!isLoading && messages?.length > 5 && !startCursor && (
-            <PaginationEnd title="End Of The Road" />
-          )}
-        </MessageList>
+        {view === "messages" ? (
+          <>
+            <TabList />
+            <MessageList ref={messageListRef} data-testid="messages">
+              {messages?.map((message) =>
+                renderMessage ? (
+                  renderMessage(message)
+                ) : (
+                  <Message key={message.messageId} {...message} />
+                )
+              )}
+              {isLoading && <Loading />}
+              {!isLoading && messages?.length === 0 && (
+                <Empty>You have no notifications at this time</Empty>
+              )}
+              {!isLoading && messages?.length > 5 && !startCursor && (
+                <PaginationEnd title="End Of The Road" />
+              )}
+            </MessageList>
+          </>
+        ) : (
+          <PreferenceList />
+        )}
+
         <Footer>
           Powered by&nbsp;&nbsp;
           <CourierLogo />

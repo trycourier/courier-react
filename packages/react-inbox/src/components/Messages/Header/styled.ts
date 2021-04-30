@@ -25,3 +25,37 @@ export const MarkAllAsRead = styled.div(({ theme }) => ({
     ? "white"
     : theme?.brand?.colors?.primary ?? "#9121c2",
 }));
+
+export const Heading = styled.div`
+  display: flex;
+  flex-direction: column;
+  h3,
+  h5 {
+    margin: 0;
+    svg {
+      width: 3.88px;
+      height: 7.76px;
+    }
+  }
+`;
+
+export const MessageSubHeader = styled.h5(({ theme }) => ({
+  color: theme?.brand?.inapp?.colors?.invertHeader
+    ? "white"
+    : theme?.brand?.colors?.primary ?? "#24324B",
+  fontStyle: "normal",
+  fontWeight: "normal",
+  fontSize: "16px",
+  lineHeight: "22px",
+}));
+
+export const PreferenceSubHeader = styled.h5(({ theme }) => ({
+  cursor: "pointer",
+  color: theme?.brand?.inapp?.colors?.invertHeader
+    ? "white"
+    : theme?.brand?.colors?.primary ?? "#9121c2",
+  fontStyle: "normal",
+  fontWeight: "bold",
+  fontSize: "12px",
+  lineHeight: "16px",
+}));
