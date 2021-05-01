@@ -94,3 +94,34 @@ export function CustomMiddleware() {
     </CourierProvider>
   );
 }
+
+export function MultipleInbox() {
+  return (
+    <CourierProvider
+      wsUrl={process.env.WS_URL}
+      apiUrl={API_URL}
+      clientKey={clientKey}
+      userId={userId}
+    >
+      <Toast />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Inbox />
+        <CourierProvider
+          wsUrl={process.env.WS_URL}
+          apiUrl={API_URL}
+          clientKey={clientKey}
+          userId={userId}
+        >
+          <Inbox
+            brand={{
+              colors: {
+                primary: "red",
+                secondary: "pink",
+              },
+            }}
+          />
+        </CourierProvider>
+      </div>
+    </CourierProvider>
+  );
+}

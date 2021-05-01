@@ -5,6 +5,7 @@ import useInboxActions from "./use-inbox-actions";
 const useInbox = () => {
   const { dispatch, inbox, transport } = useCourier();
   const actions = useInboxActions();
+
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",

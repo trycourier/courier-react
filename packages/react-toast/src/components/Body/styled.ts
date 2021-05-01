@@ -30,6 +30,7 @@ export const Message = styled.div(({ theme }) =>
       fontStyle: "normal",
       fontWeight: "400",
       lineHeight: "14px",
+      maxWidth: "165px",
       letterSpacing: "0em",
       textAlign: "left",
       display: "flex",
@@ -49,6 +50,7 @@ export const Title = styled.div(({ theme }) =>
     {
       fontWeight: 600,
       color: "#344563",
+      marginBottom: 2,
     },
     theme?.message?.title
   )

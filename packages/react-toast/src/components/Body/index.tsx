@@ -51,7 +51,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
       <Container>
         {Icon && <Icon data-testid="message-icon" />}
         <Message data-testid="message">
-          <Title data-testid="message-title">{title}</Title>
+          {title && <Title data-testid="message-title">{title}</Title>}
           <Body data-testid="message-body">{body}</Body>
         </Message>
       </Container>

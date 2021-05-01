@@ -24,6 +24,17 @@ export function Default({ bodyText }) {
   );
 }
 
+export function TruncatedMessage() {
+  return (
+    <ToastProvider clientKey="client-key">
+      <ToastBody
+        body="This is a really long message lalalalalala"
+        title="This is a really long title lalalalalala"
+      />
+    </ToastProvider>
+  );
+}
+
 export function WithCourierProvider({ bodyText }) {
   function DefaultComponent() {
     const [toast] = useToast();
