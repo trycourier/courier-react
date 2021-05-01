@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useCourier } from "@trycourier/react-provider";
 import useInboxActions from "./use-inbox-actions";
 
-const useInbox = (cb?: (state: any) => any) => {
+const useInbox = () => {
   const { dispatch, inbox, transport } = useCourier();
   const actions = useInboxActions();
 
@@ -17,13 +17,6 @@ const useInbox = (cb?: (state: any) => any) => {
       },
     });
   }, [transport]);
-
-  if (cb) {
-    const response = cb({ ...inbox, ...actions });
-
-    console.log("response", response);
-    return response;
-  }
 
   return { ...inbox, ...actions };
 };

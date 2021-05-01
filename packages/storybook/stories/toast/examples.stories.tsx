@@ -28,8 +28,8 @@ export function TruncatedMessage() {
   return (
     <ToastProvider clientKey="client-key">
       <ToastBody
-        body="This is a really long message that needs to be truncated"
-        title="This is a really long title that needs to be truncated"
+        body="This is a really long message lalalalalala"
+        title="This is a really long title lalalalalala"
       />
     </ToastProvider>
   );

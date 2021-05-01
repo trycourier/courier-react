@@ -78,16 +78,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     messages,
     toggleInbox,
     unreadMessageCount,
-  } = useInbox((state) => ({
-    currentTab: state.currentTab,
-    fetchMessages: state.fetchMessages,
-    getUnreadMessageCount: state.getUnreadMessageCount,
-    init: state.init,
-    isOpen: state.isOpen,
-    messages: state.messages,
-    toggleInbox: state.toggleInbox,
-    unreadMessageCount: state.unreadMessageCount,
-  }));
+  } = useInbox();
 
   const brand = props.brand ?? remoteBrand;
 
