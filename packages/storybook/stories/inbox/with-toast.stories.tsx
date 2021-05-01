@@ -48,13 +48,13 @@ export function Default() {
   };
 
   return (
-    <>
-      <CourierProvider
-        apiUrl={API_URL}
-        clientKey={clientKey}
-        wsUrl={process.env.WS_URL}
-        userId={USER_ID}
-      >
+    <CourierProvider
+      apiUrl={API_URL}
+      clientKey={clientKey}
+      wsUrl={process.env.WS_URL}
+      userId={USER_ID}
+    >
+      <div style={{ display: "flex" }}>
         <Toast />
         <Inbox
           title="Inbox"
@@ -64,9 +64,9 @@ export function Default() {
             },
           }}
         />
-      </CourierProvider>
-      <button onClick={handleNotify}>Test</button>
-    </>
+        <button onClick={handleNotify}>Test</button>
+      </div>
+    </CourierProvider>
   );
 }
 

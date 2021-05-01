@@ -15,7 +15,7 @@ const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
       position: "absolute",
-      top: -8,
+      top: -2,
       right: 0,
       borderRadius: "100%",
       padding: 5,
@@ -37,6 +37,7 @@ const StyledTippy = styled(LazyTippy)(({ theme }) =>
       maxHeight: 545,
       borderRadius: "20px",
       overflow: "hidden",
+      outline: "none",
 
       ".tippy-content": {
         padding: 0,
@@ -77,12 +78,21 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     messages,
     toggleInbox,
     unreadMessageCount,
-  } = useInbox();
+  } = useInbox((state) => ({
+    currentTab: state.currentTab,
+    fetchMessages: state.fetchMessages,
+    getUnreadMessageCount: state.getUnreadMessageCount,
+    init: state.init,
+    isOpen: state.isOpen,
+    messages: state.messages,
+    toggleInbox: state.toggleInbox,
+    unreadMessageCount: state.unreadMessageCount,
+  }));
 
   const brand = props.brand ?? remoteBrand;
 
   const tippyProps: TippyProps = {
-    visible: isOpen,
+    visible: props.isOpen ?? isOpen,
     placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
   };
@@ -169,7 +179,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     >
       <TippyStyle />
       <StyledTippy {...tippyProps} content={<Messages ref={ref} {...props} />}>
-        <span
+        <div
           aria-pressed="false"
           className={`inbox-bell ${props.className ?? ""}`}
           onClick={handleIconOnClick}
@@ -179,6 +189,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           style={{
             position: "relative",
             outline: "none",
+            display: "inline-block",
           }}
         >
           {props.renderIcon ? (
@@ -195,7 +206,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           {unreadMessageCount > 0 && (
             <UnreadIndicator data-testid="unread-badge" />
           )}
-        </span>
+        </div>
       </StyledTippy>
     </ThemeProvider>
   );
