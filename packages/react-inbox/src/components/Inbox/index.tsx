@@ -83,7 +83,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const brand = props.brand ?? remoteBrand;
 
   const tippyProps: TippyProps = {
-    visible: props.isOpen ?? isOpen,
+    visible: isOpen,
     placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
   };

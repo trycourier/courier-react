@@ -17,7 +17,6 @@ export interface InboxProps {
   brand?: Brand;
   className?: string;
   defaultIcon?: false | string;
-  isOpen?: boolean;
   placement?: TippyProps["placement"];
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
