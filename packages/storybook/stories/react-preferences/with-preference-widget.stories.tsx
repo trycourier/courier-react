@@ -12,12 +12,24 @@ export default {
 };
 
 export function Widget(): React.ReactElement {
-  const preferenceTemplateId = "D0N6ZNH5NFMA08JEXW6J6T3ZC6QA";
-  const { API_URL, CLIENT_KEY, USER_ID } = process.env;
+  const {
+    API_URL,
+    CLIENT_KEY,
+    USER_ID,
+    PREFERENCE_TEMPLATE_ID,
+  } = process.env as {
+    API_URL: string;
+    USER_ID: string;
+    PREFERENCE_TEMPLATE_ID: string;
+    CLIENT_KEY: string;
+  };
+
   return (
-    <div style={{ width: "25%" }}>
+    <div style={{ width: "45%" }}>
       <CourierProvider apiUrl={API_URL} clientKey={CLIENT_KEY} userId={USER_ID}>
-        <Preferences preferenceTemplateId={preferenceTemplateId}></Preferences>
+        <Preferences
+          preferenceTemplateId={PREFERENCE_TEMPLATE_ID}
+        ></Preferences>
       </CourierProvider>
     </div>
   );
