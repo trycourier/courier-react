@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noImplicitAny": false,
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.story.ts",
+    "**/dist/**",
+    "**/__tests__/**"
+  ],
+  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
+}

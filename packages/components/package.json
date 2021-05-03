@@ -20,6 +20,7 @@
     "@trycourier/react-inbox": "^0.1.10-alpha.27",
     "@trycourier/react-provider": "^0.1.10-alpha.27",
     "@trycourier/react-toast": "^0.1.10-alpha.27",
+    "@trycourier/react-preferences": "^0.1.10-alpha.27",
     "babel-loader": "^8.0.6",
     "camel-case": "^4.1.2",
     "html-webpack-plugin": "^3.2.0",
