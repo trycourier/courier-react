@@ -41,8 +41,8 @@ export const StyledToggle = styled.div`
   }
 
   .react-toggle-track {
-    width: 30px;
-    height: 16px;
+    width: 58px;
+    height: 27px;
     padding: 0;
     border-radius: 30px;
     background-color: #344563;
@@ -50,7 +50,7 @@ export const StyledToggle = styled.div`
   }
 
   .react-toggle--checked .react-toggle-track {
-    background-color: #9d3789;
+    background-color: #9121c2;
   }
 
   .react-toggle-track-check {
@@ -79,10 +79,10 @@ export const StyledToggle = styled.div`
   .react-toggle-thumb {
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     position: absolute;
-    top: 2px;
-    left: 3px;
-    width: 12px;
-    height: 12px;
+    top: 1px;
+    left: 1px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     background-color: #fafafa;
     box-sizing: border-box;
@@ -90,7 +90,7 @@ export const StyledToggle = styled.div`
   }
 
   .react-toggle--checked .react-toggle-thumb {
-    left: 15px;
+    left: 32px;
   }
 
   .react-toggle--focus .react-toggle-thumb {

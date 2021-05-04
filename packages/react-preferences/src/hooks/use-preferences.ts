@@ -14,6 +14,15 @@ const GET_PREFRENCE_TEMPLATE = `
     }
   }
 `;
+
+const GET_PREFRENCE_TEMPLATES = `
+  query {
+    preferenceTemplates {
+      nodes {
+        templateId
+      }
+    }
+  }`;
 export interface IPreferenceRule {
   itemName: string;
   itemValue: string | string[];
@@ -64,4 +73,29 @@ export const usePreferenceTemplate = (
   };
 
   return [preferenceTemplate, handleUpdates];
+};
+
+export const usePreferenceTemplates = (): string[] | undefined => {
+  const [templates, setPreferenceTemplates] = useState<string[] | undefined>(
+    undefined
+  );
+
+  const context = useContext<ICourierContext | undefined>(CourierContext);
+
+  useEffect(() => {
+    context?.graphQLClient?.query(GET_PREFRENCE_TEMPLATES)?.then(
+      (
+        response: OperationResult<{
+          preferenceTemplates: { nodes: IPreferenceTemplate[] };
+        }>
+      ) => {
+        const groupingIds = response.data?.preferenceTemplates.nodes
+          ?.map((response) => response?.templateId || "")
+          .filter((templateId) => Boolean(templateId));
+        setPreferenceTemplates(groupingIds);
+      }
+    );
+  }, []);
+
+  return templates;
 };

@@ -1,12 +1,18 @@
 import React from "react";
-import {
-  IPreferenceTemplate,
-  usePreferenceTemplate,
-} from "../hooks/use-preferences";
+import { IPreferenceTemplate, usePreferenceTemplate } from "../hooks";
 import { ChannelPreferences } from "./ChannelPreferences";
 import { SnoozePreference } from "./SnoozePreference";
 import { StatusPreference } from "./Status";
 import { Preference, PreferenceItemComponentFn } from "./types";
+import styled from "styled-components";
+
+const StyledItem = styled.div`
+  border-bottom: 1px solid #dadce0;
+  padding: 8px;
+  margin-bottom: 5px;
+  padding: 0 24px;
+  height: 5rem;
+`;
 
 const COURIER_SUPPORTED_PREFERENCES: Record<
   Preference,
@@ -50,7 +56,7 @@ export const Preferences: React.FunctionComponent<{
   };
 
   return (
-    <>
+    <StyledItem>
       <h4>{preferenceGroup?.templateName}</h4>
       {preferenceGroup.templateItems.map((item, index) => {
         const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[item.type];
@@ -67,6 +73,6 @@ export const Preferences: React.FunctionComponent<{
           />
         );
       })}
-    </>
+    </StyledItem>
   );
 };

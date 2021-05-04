@@ -1,5 +1,6 @@
 import { IMessage } from "~/types";
 
+export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
   title: string;
   unreadMessageCount?: number;
@@ -12,4 +13,6 @@ export interface IHeaderProps {
     };
   };
   messages: IMessage[];
+  view: InboxView;
+  onViewToggle: (view: InboxView) => void;
 }
