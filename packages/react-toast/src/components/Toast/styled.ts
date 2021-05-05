@@ -4,6 +4,9 @@ import { ToastContainer } from "react-toastify";
 export const toastStyles = ({ theme }) => ({
   ["&.Toastify__toast-container"]: {
     fontFamily: `"Nunito", sans-serif`,
+    "&, *": {
+      boxSizing: "border-box",
+    },
     ...theme?.root,
   },
   [".Toastify__toast"]: {

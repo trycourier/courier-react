@@ -45,9 +45,7 @@ const getButtonStyles = (theme, styles) =>
         color: theme?.brand?.colors?.primary ?? "#9121C2",
       },
       "&:hover": {
-        color: theme?.brand?.inapp?.colors?.invertButtons
-          ? theme?.brand?.colors?.primary ?? "#9121C2"
-          : "white",
+        color: theme?.brand?.colors?.primary ?? "#9121C2",
         background: "rgb(0 0 0 / 10%)",
       },
     },
