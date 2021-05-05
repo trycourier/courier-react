@@ -17,6 +17,10 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
+  "files": [
+    "dist/",
+    "typings/"
+  ],
   "license": "ISC",
   "dependencies": {
     "react-toggle": "^4.1.2"
