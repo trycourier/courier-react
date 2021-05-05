@@ -5,8 +5,10 @@ import { IToastConfig } from "./types";
 import { mergeConfig } from "./lib";
 import { defaultConfig } from "./defaults";
 import Toast from "~/components/Toast";
-export * from "~/components";
 export { useToast } from "./hooks";
+
+export { ToastBody } from "~/components";
+export { Toast };
 
 export const ToastProvider: React.FunctionComponent<
   ICourierContext & {

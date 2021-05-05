@@ -12,7 +12,7 @@
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
-    "types": "rimraf typings && tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+    "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "ISC",
   "devDependencies": {
@@ -22,6 +22,7 @@
     "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
     "@trycourier/react-provider": "^0.1.10-alpha.27",
+    "@trycourier/react-preferences": "^0.1.10-alpha.27",
     "classnames": "^2.2.6",
     "concat-md": "^0.3.5",
     "date-fns": "^2.19.0",
