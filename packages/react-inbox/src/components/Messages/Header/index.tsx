@@ -45,7 +45,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
                 {title}
                 {unreadMessageCount ? ` (${unreadMessageCount})` : ""}
               </h3>
-              <MessageSubHeader>Here is what you missed</MessageSubHeader>
+              {/*<MessageSubHeader>Here is what you missed</MessageSubHeader>*/}
             </Heading>
           </>,
           currentTab?.filter?.isRead === false && messages.length > 0 && (
@@ -72,10 +72,10 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   return (
     <Container data-testid="header">
       {heading}
-      <SettingsIconButton onClick={() => onViewToggle("settings")}>
+      {/*<SettingsIconButton onClick={() => onViewToggle("settings")}>
         <SettingsSvg />
-        {action}
-      </SettingsIconButton>
+  </SettingsIconButton>*/}
+      {action}
     </Container>
   );
 };
