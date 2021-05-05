@@ -1,5 +1,5 @@
 import React from "react";
-import { CourierProvider, CourierContext } from "@trycourier/react-provider";
+import { CourierProvider, ICourierContext } from "@trycourier/react-provider";
 import { ThemeProvider } from "styled-components";
 import { IToastConfig } from "./types";
 import { mergeConfig } from "./lib";
@@ -11,7 +11,7 @@ export { Toast };
 export { ToastBody } from "~/components";
 
 export const ToastProvider: React.FunctionComponent<
-  CourierContext & {
+  ICourierContext & {
     config?: IToastConfig;
   }
 > = ({ children, transport, clientKey, config: _config }) => {

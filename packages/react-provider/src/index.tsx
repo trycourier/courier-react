@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import Client from "./graph-ql";
-import { CourierContext as _CourierContext, Brand } from "./types";
+import { ICourierContext, Brand } from "./types";
 
 import { CourierTransport } from "./transports/courier";
-import { CourierMessage } from "./transports/types";
+import { ICourierMessage } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware from "./middleware";
 import { getBrand } from "./actions/brand";
@@ -14,14 +14,13 @@ export * from "./hooks";
 
 export const registerReducer = _registerReducer;
 
-export type { Brand, CourierMessage };
-export type CourierContext = _CourierContext;
+export type { Brand, ICourierMessage, ICourierContext };
 
-export const CourierContext = React.createContext<CourierContext | undefined>(
+export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
-export const CourierProvider: React.FunctionComponent<CourierContext> = ({
+export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   apiUrl,
   brand,
   brandId,
@@ -36,7 +35,7 @@ export const CourierProvider: React.FunctionComponent<CourierContext> = ({
 }) => {
   const middleware = [..._middleware, ...defaultMiddleware];
   const useReducer = useCallback(
-    createReducer<any, CourierContext>(...middleware),
+    createReducer<any, ICourierContext>(...middleware),
     [_middleware]
   );
   const graphQLClient = useMemo(() => {

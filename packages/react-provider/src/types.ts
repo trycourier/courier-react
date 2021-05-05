@@ -21,7 +21,7 @@ export interface Brand {
     tertiary?: string;
   };
 }
-export interface CourierContext {
+export interface ICourierContext {
   apiUrl?: string;
   brand?: Brand;
   brandId?: string;

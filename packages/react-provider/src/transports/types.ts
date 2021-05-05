@@ -1,4 +1,4 @@
-export interface CourierMessage {
+export interface ICourierMessage {
   body?: string;
   icon?: string | false;
   title?: string;
@@ -12,11 +12,11 @@ export interface CourierMessage {
 
 export interface ICourierEvent {
   type?: "message";
-  data?: CourierMessage;
+  data?: ICourierMessage;
 }
 
 export type ICourierEventCallback = (params: ICourierEvent) => void;
 
 export type Interceptor = (
-  message?: CourierMessage
-) => CourierMessage | undefined;
+  message?: ICourierMessage
+) => ICourierMessage | undefined;

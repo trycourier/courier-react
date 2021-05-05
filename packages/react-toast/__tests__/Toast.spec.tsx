@@ -17,7 +17,7 @@ describe("<Toast />", () => {
   afterEach(() => {
     fetchMock.reset();
   });
-  it("should throw an error if missing CourierContext", () => {
+  it("should throw an error if missing ICourierContext", () => {
     expect(() => {
       render(<Toast />);
     }).toThrow("Missing Courier Provider");
