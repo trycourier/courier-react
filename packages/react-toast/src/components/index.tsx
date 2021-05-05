@@ -33,6 +33,7 @@ export const ToastBody: React.FunctionComponent<
           className="Toastify__toast-container"
           style={{
             position: "relative",
+            zIndex: 1,
           }}
         >
           <div className="Toastify__toast Toastify__toast--default">
