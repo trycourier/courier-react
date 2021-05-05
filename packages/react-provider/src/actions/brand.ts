@@ -44,8 +44,9 @@ export const getBrand = async (client, brandId) => {
       })
     : await client.query(GET_DEFAULT_BRAND);
 
-  const colors = results?.data?.brand?.settings?.colors;
-  const inapp = results?.data?.brand?.settings?.inapp;
+  const brandProp = brandId ? "brand" : "defaultBrand";
+  const colors = results?.data?.[brandProp]?.settings?.colors;
+  const inapp = results?.data?.[brandProp]?.settings?.inapp;
 
   return {
     colors,
