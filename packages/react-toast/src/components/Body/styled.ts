@@ -9,8 +9,8 @@ export const iconStyles = ({ theme }) =>
       objectFit: "contain",
       alignSelf: "center",
       padding: "2px",
-      maxHeight: "35px !important",
-      maxWidth: "35px !important",
+      maxHeight: "40px !important",
+      maxWidth: "40px !important",
     },
     theme?.message?.icon
   );

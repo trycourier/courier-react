@@ -1,20 +1,21 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import Client from "./graph-ql";
-import * as types from "./types";
+import { ICourierContext, Brand } from "./types";
+
 import { CourierTransport } from "./transports/courier";
-import * as TransportTypes from "./transports/types";
+import { ICourierMessage } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware from "./middleware";
 import { getBrand } from "./actions/brand";
 import useCourierActions from "./hooks/use-courier-actions";
 export * from "./transports";
 export * from "./hooks";
-export * from "./types";
 
 export const registerReducer = _registerReducer;
-export type ICourierMessage = TransportTypes.ICourierMessage;
-export type ICourierContext = types.ICourierContext;
+
+export type { Brand, ICourierMessage, ICourierContext };
+
 export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );

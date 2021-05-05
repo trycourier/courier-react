@@ -44,7 +44,10 @@ const Message: React.FunctionComponent<IMessageProps> = ({
       3. from props.brand.inapp.icons.message
       4. from remote brand.inapp.icons.message
     */
-    icon ?? defaultIcon ?? !brand?.inapp?.disableMessageIcon
+    icon ||
+      brand?.inapp?.icons?.message ||
+      defaultIcon ||
+      !brand?.inapp?.disableMessageIcon
   );
   const timeAgo = getTimeAgo(created);
   const showMarkAsRead = !read && readTrackingId;

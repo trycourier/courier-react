@@ -3,21 +3,30 @@ import React, { useEffect } from "react";
 import { Inbox, useInbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
 import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
+import {
+  withKnobs,
+  text,
+  boolean,
+  color,
+  select,
+} from "@storybook/addon-knobs";
 
 export default {
   title: "Inbox/Examples",
+  decorators: [withKnobs],
 };
 
 const API_URL = process.env.API_URL || "";
-const clientKey = process.env.CLIENT_KEY || "";
-const userId = process.env.USER_ID || "";
+const CLIENT_KEY = process.env.CLIENT_KEY || "";
+const USER_ID = process.env.USER_ID || "";
+const WS_URL = process.env.WS_URL || "";
 
 let courierTransport: CourierTransport;
 
 if (typeof window !== "undefined") {
   courierTransport = new CourierTransport({
-    wsUrl: process.env.WS_URL,
-    clientKey,
+    wsUrl: WS_URL,
+    clientKey: CLIENT_KEY,
   });
 }
 
@@ -50,10 +59,24 @@ const middleware = () => (next) => (action) => {
           {
             messageId: 123,
             created: "2021-04-06T18:02:28.065Z",
+            read: false,
+            content: {
+              title: "Unread Message",
+              body: "This Message is Unread",
+              data: {
+                clickAction:
+                  "/designer/notifications/3W4FVA58RC4M84P4EH2FMQH39N2V",
+                triggeredBy: "f9e9603f-9179-4c56-b3d2-2ee4b890e08b",
+              },
+            },
+          },
+          {
+            messageId: 123,
+            created: "2021-04-06T18:02:28.065Z",
             read: true,
             content: {
-              title: "Template Published",
-              body: "Click here for more details!sdf",
+              title: "Read Message",
+              body: "This Message is Read",
               data: {
                 clickAction:
                   "/designer/notifications/3W4FVA58RC4M84P4EH2FMQH39N2V",
@@ -73,18 +96,51 @@ const UseInbox = () => {
   const inbox = useInbox();
 
   useEffect(() => {
-    inbox.toggleInbox();
-  }, []);
+    if (!inbox.isOpen) {
+      inbox.toggleInbox();
+    }
+  }, [inbox.isOpen]);
 
   return null;
 };
+
+export function Branded() {
+  return (
+    <CourierProvider
+      middleware={[middleware]}
+      brand={{
+        colors: {
+          primary: color("Primary", "green"),
+          secondary: color("Secondary", "orange"),
+          tertiary: color("Tertiary", "red"),
+        },
+        inapp: {
+          borderRadius: text("Border Radius", "24px"),
+          disableMessageIcon: boolean("Disable Message Icon", false),
+          placement: select("Placement", ["bottom", "left", "right"], "right"),
+          colors: {
+            invertHeader: boolean("Invert Header Colors", true),
+            invertButtons: boolean("Invert Button Colors", true),
+          },
+          icons: {
+            bell: text("Bell Icon", ""),
+            message: text("Message Icon", ""),
+          },
+        },
+      }}
+    >
+      <Inbox />
+      <UseInbox />
+    </CourierProvider>
+  );
+}
 
 export function CustomMiddleware() {
   return (
     <CourierProvider
       apiUrl={API_URL}
-      clientKey={clientKey}
-      userId={userId}
+      clientKey={CLIENT_KEY}
+      userId={USER_ID}
       transport={courierTransport}
       middleware={[middleware]}
     >
@@ -100,8 +156,8 @@ export function MultipleInbox() {
     <CourierProvider
       wsUrl={process.env.WS_URL}
       apiUrl={API_URL}
-      clientKey={clientKey}
-      userId={userId}
+      clientKey={CLIENT_KEY}
+      userId={USER_ID}
     >
       <Toast />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -109,14 +165,15 @@ export function MultipleInbox() {
         <CourierProvider
           wsUrl={process.env.WS_URL}
           apiUrl={API_URL}
-          clientKey={clientKey}
-          userId={userId}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
         >
           <Inbox
             brand={{
               colors: {
                 primary: "red",
                 secondary: "pink",
+                tertiary: "orange",
               },
             }}
           />

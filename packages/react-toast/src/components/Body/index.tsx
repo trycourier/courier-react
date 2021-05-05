@@ -43,7 +43,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
       3. from props.brand.inapp.icons.message
       4. from remote brand.inapp.icons.message
     */
-    icon ?? config?.defaultIcon ?? brand?.inapp?.icons?.message
+    icon || config?.defaultIcon || brand?.inapp?.icons?.message
   );
 
   return (
