@@ -4,10 +4,10 @@ import {
   MarkAllAsRead,
   Heading,
   PreferenceSubHeader,
-  MessageSubHeader,
+  //MessageSubHeader,
 } from "./styled";
 import { IHeaderProps } from "./types";
-import SettingsSvg from "~/assets/icon-settings.svg";
+//import SettingsSvg from "~/assets/icon-settings.svg";
 import BackSvg from "~/assets/back.svg";
 import styled from "styled-components";
 
