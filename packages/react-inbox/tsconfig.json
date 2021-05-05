@@ -8,12 +8,13 @@
     }
   },
   "exclude": [
-    "node_modules",
+    "**/__mocks__/**",
+    "**/__tests__/**",
     "**/*.spec.ts",
     "**/*.story.ts",
     "**/dist/**",
-    "**/__tests__/**",
-    "**/__mocks__/**"
+    "**/typings/**",
+    "node_modules"
   ],
   "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
 }
