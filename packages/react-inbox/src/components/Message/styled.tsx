@@ -28,6 +28,7 @@ export const Container = styled.div(({ theme }) =>
 export const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
   maxWidth: "58%",
+  marginLeft: 18,
   ...theme.message?.contents,
 }));
 
@@ -94,7 +95,6 @@ const iconStyles = ({ theme }) =>
     {
       height: 25,
       width: 25,
-      marginRight: 18,
       flexShrink: "0",
       path: {
         fill: theme?.brand?.colors?.primary ?? "#9121c2",
@@ -107,7 +107,7 @@ export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
       height: "36px",
-      backgroundColor: theme?.brand?.colors?.secondary ?? "#9121c2",
+      backgroundColor: theme?.brand?.colors?.tertiary ?? "#9121c2",
       width: "5px",
       position: "absolute",
       left: "0",

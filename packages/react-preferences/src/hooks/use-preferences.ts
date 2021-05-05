@@ -1,5 +1,5 @@
-import { CourierContext, ICourierContext } from "@trycourier/react-provider";
-import { useContext, useEffect, useState } from "react";
+import { useCourier } from "@trycourier/react-provider";
+import { useEffect, useState } from "react";
 import { OperationResult } from "urql";
 
 const GET_PREFRENCE_TEMPLATE = `
@@ -45,7 +45,7 @@ export const usePreferenceTemplate = (
     IPreferenceTemplate | undefined
   >(undefined);
 
-  const context = useContext<ICourierContext | undefined>(CourierContext);
+  const context = useCourier();
 
   useEffect(() => {
     context?.graphQLClient
@@ -80,7 +80,7 @@ export const usePreferenceTemplates = (): string[] | undefined => {
     undefined
   );
 
-  const context = useContext<ICourierContext | undefined>(CourierContext);
+  const context = useCourier();
 
   useEffect(() => {
     context?.graphQLClient?.query(GET_PREFRENCE_TEMPLATES)?.then(

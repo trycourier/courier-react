@@ -4,7 +4,7 @@ import TippyStyle from "./TippyStyle";
 import styled, { ThemeProvider } from "styled-components";
 import deepExtend from "deep-extend";
 import Messages from "../Messages";
-import Bell from "./Bell";
+import BellSvg, { Bell } from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
 import LazyTippy from "./LazyTippy";
 import { useInbox, useClickOutside } from "~/hooks";
@@ -19,14 +19,16 @@ const UnreadIndicator = styled.div(({ theme }) =>
       right: 0,
       borderRadius: "100%",
       padding: 5,
-      background: theme?.brand?.colors?.secondary ?? "#de5063",
+      background: theme?.brand?.colors?.tertiary ?? "#de5063",
       animation: "badge-pulse 10s infinite",
     },
     theme.unreadIndicator
   )
 );
 
-const StyledTippy = styled(LazyTippy)(({ theme }) =>
+const StyledTippy = styled(LazyTippy)<{
+  placement?: TippyProps["placement"];
+}>(({ theme, placement }) =>
   deepExtend(
     {
       fontFamily: `"Nunito", sans-serif`,
@@ -35,9 +37,12 @@ const StyledTippy = styled(LazyTippy)(({ theme }) =>
       boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
       minWidth: 483,
       maxHeight: 545,
-      borderRadius: "20px",
+      borderRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
       overflow: "hidden",
       outline: "none",
+      margin: ["left", "right"].includes(String(placement))
+        ? "24px 0"
+        : "0 24px",
 
       ".tippy-content": {
         padding: 0,
@@ -97,6 +102,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, [userId, clientKey]);
 
   useEffect(() => {
+    let didInit = false;
     if (clientKey && userId) {
       const localStorageState = localStorage.getItem(
         `${clientKey}/${userId}/inbox`
@@ -108,12 +114,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             localStorageState
           );
           init({ messages, unreadMessageCount, ...props });
+          didInit = true;
         } catch (ex) {
           console.log("error", ex);
         }
-      } else {
-        init(props);
       }
+    }
+
+    if (!didInit) {
+      init(props);
     }
   }, [props, clientKey, userId]);
 
@@ -170,18 +179,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     >
       <TippyStyle />
       <StyledTippy {...tippyProps} content={<Messages ref={ref} {...props} />}>
-        <div
+        <Bell
+          isOpen={isOpen}
           aria-pressed="false"
           className={`inbox-bell ${props.className ?? ""}`}
           onClick={handleIconOnClick}
           onMouseEnter={handleBellOnMouseEnter}
           role="button"
           tabIndex={0}
-          style={{
-            position: "relative",
-            outline: "none",
-            display: "inline-block",
-          }}
         >
           {props.renderIcon ? (
             <span>
@@ -192,12 +197,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           ) : brand?.inapp?.icons?.bell ? (
             <img src={brand?.inapp?.icons?.bell} />
           ) : (
-            <Bell />
+            <BellSvg />
           )}
           {unreadMessageCount > 0 && (
             <UnreadIndicator data-testid="unread-badge" />
           )}
-        </div>
+        </Bell>
       </StyledTippy>
     </ThemeProvider>
   );

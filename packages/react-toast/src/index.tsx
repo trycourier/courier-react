@@ -1,17 +1,16 @@
 import React from "react";
-import { CourierProvider, ICourierContext } from "@trycourier/react-provider";
+import { CourierProvider, CourierContext } from "@trycourier/react-provider";
 import { ThemeProvider } from "styled-components";
 import { IToastConfig } from "./types";
 import { mergeConfig } from "./lib";
 import { defaultConfig } from "./defaults";
-import Toast from "~/components/Toast";
-export { useToast } from "./hooks";
 
+export { useToast } from "./hooks";
+export { Toast } from "~/components/Toast";
 export { ToastBody } from "~/components";
-export { Toast };
 
 export const ToastProvider: React.FunctionComponent<
-  ICourierContext & {
+  CourierContext & {
     config?: IToastConfig;
   }
 > = ({ children, transport, clientKey, config: _config }) => {

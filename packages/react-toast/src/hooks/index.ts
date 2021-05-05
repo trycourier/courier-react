@@ -1,4 +1,4 @@
-import { ICourierContext, useCourier } from "@trycourier/react-provider";
+import { CourierContext, useCourier } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
@@ -22,7 +22,7 @@ export const useToast: UseToast = () => {
 
 export const useListenForTransportEvent = (
   clientKey: string,
-  transport: ICourierContext["transport"],
+  transport: CourierContext["transport"],
   handleToast
 ) => {
   const { createTrackEvent } = useCourier();
