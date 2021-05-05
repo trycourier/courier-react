@@ -11,6 +11,9 @@ export const iconStyles = ({ theme }) =>
       padding: "2px",
       maxHeight: "40px !important",
       maxWidth: "40px !important",
+      path: {
+        fill: theme?.brand?.colors?.primary ?? "#9121c2",
+      },
     },
     theme?.message?.icon
   );
