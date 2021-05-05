@@ -4,11 +4,11 @@ import { ThemeProvider } from "styled-components";
 import { IToastConfig } from "./types";
 import { mergeConfig } from "./lib";
 import { defaultConfig } from "./defaults";
-import Toast from "~/components/Toast";
+import Toast from "./components/Toast";
 
 export { useToast } from "./hooks";
 export { Toast };
-export { ToastBody } from "~/components";
+export { ToastBody } from "./components";
 
 export const ToastProvider: React.FunctionComponent<
   ICourierContext & {
