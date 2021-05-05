@@ -14,8 +14,8 @@ const GlobalStyle = createGlobalStyle`${toastCss}`;
 
 export const ToastBody: React.FunctionComponent<
   ICourierToastMessage & {
-    theme: Theme;
-    brand: Brand;
+    theme?: Theme;
+    brand?: Brand;
   }
 > = ({ theme, brand, ...props }) => {
   props.icon = props.icon ?? brand?.inapp?.icons?.message;
