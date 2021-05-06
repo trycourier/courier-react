@@ -34,9 +34,7 @@ const getButtonStyles = (theme, styles) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: theme?.brand?.inapp?.colors?.invertButtons
-        ? "white"
-        : theme?.brand?.colors?.primary ?? "#9121C2",
+      color: theme?.brand?.colors?.primary ?? "#9121C2",
       backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
         ? theme?.brand?.colors?.primary
         : "white",
