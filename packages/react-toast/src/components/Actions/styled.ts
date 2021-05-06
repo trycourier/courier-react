@@ -34,15 +34,15 @@ const getButtonStyles = (theme, styles) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: theme?.brand?.colors?.primary ?? "#9121C2",
+      color: theme?.brand?.inapp?.colors?.invertButtons
+        ? "white"
+        : theme?.brand?.colors?.primary ?? "#9121C2",
       backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
         ? theme?.brand?.colors?.primary
         : "white",
       textDecoration: "none",
       "&:hover": {
-        color: theme?.brand?.inapp?.colors?.invertButtons
-          ? theme?.brand?.colors?.primary ?? "#9121C2"
-          : "white",
+        color: theme?.brand?.colors?.primary ?? "#9121C2",
         background: "rgb(0 0 0 / 10%)",
       },
     },
