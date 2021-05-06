@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-preferences",
-  "version": "0.1.10-alpha.28",
+  "version": "0.1.10-beta.0",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {
@@ -17,6 +17,11 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
+  "files": [
+    "dist/",
+    "typings/"
+  ],
+  "private": true,
   "license": "ISC",
   "dependencies": {
     "react-toggle": "^4.1.2"
