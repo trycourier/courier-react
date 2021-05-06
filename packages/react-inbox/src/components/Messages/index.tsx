@@ -10,7 +10,7 @@ import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 import Header from "./Header";
 import { InboxView } from "./Header/types";
-import { PreferenceList } from "@trycourier/react-preferences";
+//import { PreferenceList } from "@trycourier/react-preferences";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
@@ -86,7 +86,9 @@ const Messages: React.ForwardRefExoticComponent<
             </MessageList>
           </>
         ) : (
-          <PreferenceList />
+          {
+            /*<PreferenceList />*/
+          }
         )}
 
         <Footer>

@@ -21,6 +21,7 @@
     "dist/",
     "typings/"
   ],
+  "private": true,
   "license": "ISC",
   "dependencies": {
     "react-toggle": "^4.1.2"
