@@ -41,11 +41,10 @@ const getButtonStyles = (theme, styles) =>
         ? theme?.brand?.colors?.primary
         : "white",
       textDecoration: "none",
-      ":visited": {
-        color: theme?.brand?.colors?.primary ?? "#9121C2",
-      },
       "&:hover": {
-        color: theme?.brand?.colors?.primary ?? "#9121C2",
+        color: theme?.brand?.inapp?.colors?.invertButtons
+          ? theme?.brand?.colors?.primary ?? "#9121C2"
+          : "white",
         background: "rgb(0 0 0 / 10%)",
       },
     },
