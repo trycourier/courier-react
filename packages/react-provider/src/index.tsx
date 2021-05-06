@@ -122,11 +122,15 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       return;
     }
 
+    if (!graphQLClient.canRequest) {
+      return;
+    }
+
     dispatch({
       type: "root/GET_BRAND",
       payload: () => getBrand(graphQLClient, brandId),
     });
-  }, [brand, brandId]);
+  }, [graphQLClient, brand, brandId]);
 
   useEffect(() => {
     if (!state.brand) {
