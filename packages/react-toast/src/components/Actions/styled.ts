@@ -41,9 +41,6 @@ const getButtonStyles = (theme, styles) =>
         ? theme?.brand?.colors?.primary
         : "white",
       textDecoration: "none",
-      ":visited": {
-        color: theme?.brand?.colors?.primary ?? "#9121C2",
-      },
       "&:hover": {
         color: theme?.brand?.colors?.primary ?? "#9121C2",
         background: "rgb(0 0 0 / 10%)",
