@@ -30,9 +30,7 @@ export const Action = styled.a<{ href: string; target: string }>(({ theme }) =>
       },
 
       "&:hover": {
-        color: theme?.brand?.inapp?.colors?.invertButtons
-          ? theme?.brand?.colors?.primary ?? "#9121C2"
-          : "#73819B",
+        color: "#73819B",
         background: "rgb(0 0 0 / 10%)",
       },
 
