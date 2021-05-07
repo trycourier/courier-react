@@ -125,7 +125,7 @@ export const getIcon = (icon?: false | string) => {
       return;
     }
 
-    if (typeof icon === "string") {
+    if (icon && typeof icon === "string") {
       return <Icon src={icon} />;
     }
 
