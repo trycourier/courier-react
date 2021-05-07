@@ -20,7 +20,7 @@ export const updateTrackEvent = async (client, trackingId) => {
   });
 };
 
-export const updateTrackEventBatch = async (client, messageIds, eventType) => {
+export const updateTrackEventBatch = async (client, eventType) => {
   await client.mutate(UPDATE_TRACK_EVENT_BATCH, {
     eventType,
   });
