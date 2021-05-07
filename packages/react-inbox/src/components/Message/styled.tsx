@@ -55,7 +55,7 @@ export const Title = styled.div(({ theme }) =>
 export const Body = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "#666666",
+      color: "#73819B",
       marginTop: "1px",
       wordBreak: "break-word",
       fontSize: "12px",

@@ -26,10 +26,10 @@ if (typeof window !== "undefined") {
 
 export function Default() {
   useEffect(() => {
-    courierTransport?.subscribe(USER_ID, channel);
+    courierTransport?.subscribe(USER_ID);
 
     return () => {
-      courierTransport?.unsubscribe(USER_ID, channel);
+      courierTransport?.unsubscribe(USER_ID);
     };
   }, []);
 
@@ -51,21 +51,17 @@ export function Default() {
     <CourierProvider
       apiUrl={API_URL}
       clientKey={clientKey}
-      wsUrl={process.env.WS_URL}
+      transport={courierTransport}
       userId={USER_ID}
+      brand={{
+        inapp: {
+          disableMessageIcon: true,
+        },
+      }}
     >
-      <div style={{ display: "flex" }}>
-        <Toast />
-        <Inbox
-          title="Inbox"
-          brand={{
-            inapp: {
-              disableMessageIcon: true,
-            },
-          }}
-        />
-        <button onClick={handleNotify}>Test</button>
-      </div>
+      <Toast />
+      <Inbox />
+      <button onClick={handleNotify}>Test</button>
     </CourierProvider>
   );
 }

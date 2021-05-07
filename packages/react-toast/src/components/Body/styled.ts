@@ -28,10 +28,9 @@ export const Message = styled.div(({ theme }) =>
     {
       flexShrink: 0,
       padding: 12,
-      fontFamily: "Nunito Sans, sans-serif",
       fontSize: "12px",
       fontStyle: "normal",
-      fontWeight: "400",
+      fontWeight: "normal",
       lineHeight: "14px",
       maxWidth: "165px",
       letterSpacing: "0em",
@@ -41,6 +40,7 @@ export const Message = styled.div(({ theme }) =>
       overflow: "hidden",
       overflowWrap: "break-word",
       alignSelf: "center",
+      color: "#73819B",
     },
     theme?.message?.contents
   )

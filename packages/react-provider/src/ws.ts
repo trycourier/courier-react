@@ -16,8 +16,15 @@ export class WS {
   connect(clientKey: string): void {
     const url = `${this.url}/?clientKey=${clientKey}`;
     this.connection = new WebSocket(url);
+    if (!this.connection) {
+      console.log("error creating websocket connection");
+      return;
+    }
     this.connection.onopen = () => {
       this.connected = true;
+    };
+    this.connection.onclose = () => {
+      console.log("WS connection closed");
     };
     this.connection.onmessage = this.onMessage.bind(this);
   }

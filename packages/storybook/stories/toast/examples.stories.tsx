@@ -42,9 +42,39 @@ export function Default({ bodyText }) {
   );
 }
 
+export function CustomTitleAndBody() {
+  const handleOnClick = () => {
+    console.log("click");
+  };
+  return (
+    <CourierProvider>
+      <ToastBody
+        onClick={handleOnClick}
+        body={<h3>Hello World</h3>}
+        title={<h1>Title</h1>}
+        brand={{
+          inapp: {
+            colors: {
+              invertButtons: true,
+            },
+            icons: {
+              message:
+                "https://d33wubrfki0l68.cloudfront.net/ca2747f11cc64d0e424e27b4a804b9d981b22453/9ab46/_next/static/images/logo@2x-5d5af82635bfdd3ad24e54f9eb364097.png",
+            },
+          },
+          colors: {
+            primary: "red",
+            secondary: "green",
+          },
+        }}
+      />
+    </CourierProvider>
+  );
+}
+
 export function TruncatedMessage() {
   return (
-    <CourierProvider clientKey="client-key" userId="user-id">
+    <CourierProvider>
       <ToastBody
         body="This is a really long message lalalalalala"
         title="This is a really long title lalalalalala"
@@ -60,7 +90,7 @@ export function WithCourierProvider({ bodyText }) {
   }
 
   return (
-    <CourierProvider clientKey="client-key" userId="user-id">
+    <CourierProvider>
       <Toast
         brand={{
           inapp: {
@@ -146,7 +176,7 @@ export function WithClickAction({ bodyText }) {
   }
 
   return (
-    <ToastProvider clientKey="client-key">
+    <ToastProvider>
       <DefaultComponent body={bodyText} />
     </ToastProvider>
   );

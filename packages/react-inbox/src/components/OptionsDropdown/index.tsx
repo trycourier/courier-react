@@ -11,7 +11,6 @@ const StyledTippy = styled(Tippy)`
     color: #344563 !important;
   }
   .tippy-content {
-    font-family: "Nunito", sans-serif;
     background-color: #344563;
     width: 108px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
