@@ -7,8 +7,8 @@ const UPDATE_TRACK_EVENT = `
 `;
 
 const UPDATE_TRACK_EVENT_BATCH = `
-  mutation BatchTrackEvent($eventType: String!, $messageIds: [String]!) {
-    batchTrackEvent(eventType: $eventType, messageIds: $messageIds) {
+  mutation BatchTrackEvent($eventType: String!) {
+    batchTrackEvent(eventType: $eventType) {
       ids
     }
   }
@@ -22,7 +22,6 @@ export const updateTrackEvent = async (client, trackingId) => {
 
 export const updateTrackEventBatch = async (client, messageIds, eventType) => {
   await client.mutate(UPDATE_TRACK_EVENT_BATCH, {
-    messageIds,
     eventType,
   });
 };
