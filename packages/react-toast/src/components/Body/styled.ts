@@ -5,7 +5,6 @@ export const iconStyles = ({ theme }) =>
   deepExtend(
     {
       flexShrink: "0",
-      marginLeft: 12,
       objectFit: "contain",
       alignSelf: "center",
       padding: "2px",
@@ -21,6 +20,7 @@ export const iconStyles = ({ theme }) =>
 export const Icon = styled.img(iconStyles);
 export const Container = styled.div`
   display: flex;
+  padding: 0 12px;
 `;
 
 export const Message = styled.div(({ theme }) =>

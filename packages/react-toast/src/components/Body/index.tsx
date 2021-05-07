@@ -45,7 +45,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
     */
     brand?.inapp?.disableMessageIcon
       ? false
-      : icon || config?.defaultIcon || brand?.inapp?.icons?.message
+      : (icon || config?.defaultIcon) ?? brand?.inapp?.icons?.message
   );
 
   return (
