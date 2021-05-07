@@ -21,15 +21,11 @@ const useCourierActions = (dispatch) => {
           updateTrackEvent(getState().graphQLClient, trackingId),
       });
     },
-    createBatchTrackEvent: (messageIds, eventType) => {
+    createBatchTrackEvent: (eventType) => {
       dispatch({
         type: "CREATE_TRACKING_EVENT_BATCH",
         payload: (_, getState) =>
-          updateTrackEventBatch(
-            getState().graphQLClient,
-            messageIds,
-            eventType
-          ),
+          updateTrackEventBatch(getState().graphQLClient, eventType),
       });
     },
   };

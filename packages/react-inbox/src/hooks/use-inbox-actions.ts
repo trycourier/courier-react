@@ -5,7 +5,6 @@ import { DEFAULT_TABS } from "~/constants";
 
 const useInboxActions = () => {
   const {
-    inbox,
     dispatch,
     createTrackEvent,
     createBatchTrackEvent,
@@ -73,12 +72,10 @@ const useInboxActions = () => {
       await createTrackEvent(trackingId);
     },
     markAllAsRead: async () => {
-      const messageIds = inbox.messages.map(({ messageId }) => messageId);
-
       dispatch({
         type: "inbox/MARK_ALL_AS_READ",
       });
-      await createBatchTrackEvent(messageIds, "read");
+      await createBatchTrackEvent("read");
     },
   };
 };
