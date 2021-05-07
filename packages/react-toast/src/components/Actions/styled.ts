@@ -27,32 +27,27 @@ export const Container = styled.div(({ theme }) =>
   )
 );
 
-const getButtonStyles = (theme, styles) =>
+const getButtonStyles = (theme) =>
   deepExtend(
     {
       flex: "1",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: theme?.brand?.inapp?.colors?.invertButtons
-        ? "white"
-        : theme?.brand?.colors?.primary ?? "#9121C2",
-      backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
-        ? theme?.brand?.colors?.primary
-        : "white",
+      color: "#73819B",
+      backgroundColor: "white",
       textDecoration: "none",
       "&:hover": {
-        color: theme?.brand?.colors?.primary ?? "#9121C2",
         background: "rgb(0 0 0 / 10%)",
       },
     },
-    styles
+    theme
   );
 
 export const Details = styled.a(({ theme }) =>
-  getButtonStyles(theme, theme?.message?.actions?.details)
+  getButtonStyles(theme?.message?.actions?.details)
 );
 
 export const Dismiss = styled.a(({ theme }) =>
-  getButtonStyles(theme, theme?.message?.actions?.dismiss)
+  getButtonStyles(theme?.message?.actions?.dismiss)
 );

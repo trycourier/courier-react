@@ -28,18 +28,19 @@ const UnreadIndicator = styled.div(({ theme }) =>
 
 const StyledTippy = styled(LazyTippy)<{
   placement?: TippyProps["placement"];
-}>(({ theme, placement }) =>
-  deepExtend(
+}>(({ theme, placement }) => {
+  return deepExtend(
     {
-      fontFamily: `"Nunito", sans-serif`,
+      fontFamily: `'Nunito Sans', sans-serif`,
       background: "#FFFFFF !important",
       backgroundColor: "#FFFFFF !important",
       boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
       minWidth: 483,
       maxHeight: 545,
+
       borderRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
-      overflow: "hidden",
       outline: "none",
+      overflow: "hidden",
       margin: ["left", "right"].includes(String(placement))
         ? "24px 0"
         : "0 24px",
@@ -54,16 +55,10 @@ const StyledTippy = styled(LazyTippy)<{
           maxHeight: 545,
         },
       },
-
-      ".tippy-arrow": {
-        color: theme?.brand?.inapp?.invertHeader
-          ? theme?.brand?.colors?.primary
-          : "#f9fafb",
-      },
     },
     theme.root
-  )
-);
+  );
+});
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const ref = useRef(null);
@@ -171,40 +166,45 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }
 
   return (
-    <ThemeProvider
-      theme={{
-        ...props.theme,
-        brand,
-      }}
-    >
+    <>
       <TippyStyle />
-      <StyledTippy {...tippyProps} content={<Messages ref={ref} {...props} />}>
-        <Bell
-          isOpen={isOpen}
-          aria-pressed="false"
-          className={`inbox-bell ${props.className ?? ""}`}
-          onClick={handleIconOnClick}
-          onMouseEnter={handleBellOnMouseEnter}
-          role="button"
-          tabIndex={0}
+      <ThemeProvider
+        theme={{
+          ...props.theme,
+          brand,
+        }}
+      >
+        <StyledTippy
+          {...tippyProps}
+          content={<Messages ref={ref} {...props} />}
         >
-          {props.renderIcon ? (
-            <span>
-              {props.renderIcon({
-                unreadMessageCount,
-              })}
-            </span>
-          ) : brand?.inapp?.icons?.bell ? (
-            <img src={brand?.inapp?.icons?.bell} />
-          ) : (
-            <BellSvg />
-          )}
-          {unreadMessageCount > 0 && (
-            <UnreadIndicator data-testid="unread-badge" />
-          )}
-        </Bell>
-      </StyledTippy>
-    </ThemeProvider>
+          <Bell
+            isOpen={isOpen}
+            aria-pressed="false"
+            className={`inbox-bell ${props.className ?? ""}`}
+            onClick={handleIconOnClick}
+            onMouseEnter={handleBellOnMouseEnter}
+            role="button"
+            tabIndex={0}
+          >
+            {props.renderIcon ? (
+              <span>
+                {props.renderIcon({
+                  unreadMessageCount,
+                })}
+              </span>
+            ) : brand?.inapp?.icons?.bell ? (
+              <img src={brand?.inapp?.icons?.bell} />
+            ) : (
+              <BellSvg />
+            )}
+            {unreadMessageCount > 0 && (
+              <UnreadIndicator data-testid="unread-badge" />
+            )}
+          </Bell>
+        </StyledTippy>
+      </ThemeProvider>
+    </>
   );
 };
 

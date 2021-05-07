@@ -135,22 +135,6 @@ export function Branded() {
   );
 }
 
-export function CustomMiddleware() {
-  return (
-    <CourierProvider
-      apiUrl={API_URL}
-      clientKey={CLIENT_KEY}
-      userId={USER_ID}
-      transport={courierTransport}
-      middleware={[middleware]}
-    >
-      <Toast />
-      <Inbox />
-      <UseInbox />
-    </CourierProvider>
-  );
-}
-
 export function MultipleInbox() {
   return (
     <CourierProvider

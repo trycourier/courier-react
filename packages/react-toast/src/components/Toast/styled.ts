@@ -3,8 +3,8 @@ import { ToastContainer } from "react-toastify";
 
 export const toastStyles = ({ theme }) => ({
   ["&.Toastify__toast-container"]: {
-    fontFamily: `"Nunito", sans-serif`,
     "&, *": {
+      fontFamily: `'Nunito Sans', sans-serif`,
       boxSizing: "border-box",
     },
     ...theme?.root,
@@ -23,7 +23,7 @@ export const toastStyles = ({ theme }) => ({
     ...theme?.body,
   },
   [".Toastify__progress-bar"]: {
-    background: theme?.brand?.colors?.secondary ?? "#9121C2",
+    background: theme?.brand?.colors?.primary ?? "#9121C2",
     height: 3,
     top: 0,
     ...theme?.progressBar,

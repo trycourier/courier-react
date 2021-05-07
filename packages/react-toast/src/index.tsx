@@ -19,7 +19,7 @@ export const ToastProvider: React.FunctionComponent<
   return (
     <ThemeProvider theme={config.theme ?? {}}>
       <CourierProvider clientKey={clientKey} transport={transport}>
-        <Toast config={config} />
+        <Toast {...config} />
         {children}
       </CourierProvider>
     </ThemeProvider>

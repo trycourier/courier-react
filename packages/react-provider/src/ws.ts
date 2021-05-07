@@ -16,8 +16,17 @@ export class WS {
   connect(clientKey: string): void {
     const url = `${this.url}/?clientKey=${clientKey}`;
     this.connection = new WebSocket(url);
+    if (!this.connection) {
+      console.error("error creating websocket connection");
+      return;
+    }
     this.connection.onopen = () => {
       this.connected = true;
+    };
+    this.connection.onclose = () => {
+      // i want to watch and see if we get connection closed events
+      // i think we will want to reconnect when this happens
+      console.warn("ws connection closed");
     };
     this.connection.onmessage = this.onMessage.bind(this);
   }

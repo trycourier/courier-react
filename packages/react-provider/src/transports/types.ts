@@ -1,7 +1,7 @@
 export interface ICourierMessage {
-  body?: string;
+  body?: string | React.ReactElement;
   icon?: string | false;
-  title?: string;
+  title?: string | React.ReactElement;
   data?: {
     clickAction?: string;
     clickTrackingId?: string;

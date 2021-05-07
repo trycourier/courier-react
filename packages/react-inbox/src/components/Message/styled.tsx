@@ -55,7 +55,7 @@ export const Title = styled.div(({ theme }) =>
 export const Body = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "#666666",
+      color: "#73819B",
       marginTop: "1px",
       wordBreak: "break-word",
       fontSize: "12px",
@@ -125,7 +125,7 @@ export const getIcon = (icon?: false | string) => {
       return;
     }
 
-    if (typeof icon === "string") {
+    if (icon && typeof icon === "string") {
       return <Icon src={icon} />;
     }
 

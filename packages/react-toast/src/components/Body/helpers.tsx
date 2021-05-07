@@ -8,7 +8,7 @@ export function getIcon(icon) {
     return;
   }
 
-  if (typeof icon === "string") {
+  if (icon && typeof icon === "string") {
     // eslint-disable-next-line react/display-name
     return (props) => <Icon src={icon} {...props} />;
   }

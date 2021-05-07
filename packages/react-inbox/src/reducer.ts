@@ -151,7 +151,7 @@ export default (state: InboxState = initialState, action) => {
             title: action.payload.title,
             body: action.payload.body,
             data: action.payload.data,
-            trackingIds: action.payload.data.trackingIds,
+            trackingIds: action.payload.data?.trackingIds,
           },
           ...(state.messages || []),
         ],
