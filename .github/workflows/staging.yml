@@ -1,4 +1,4 @@
-name: Stage
+name: Staging
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
           scope: "@trycourier"
           always-auth: true
       - run: yarn
-      - run: yarn lerna:publish:stage
+      - run: yarn lerna:publish:staging
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - run: yarn build:components
