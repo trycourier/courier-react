@@ -1,9 +1,12 @@
-name: Release
+name: Stage
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - master
+    tags-ignore:
+      - "*.*"
+
 jobs:
   test:
     env:
@@ -18,7 +21,7 @@ jobs:
           scope: "@trycourier"
           always-auth: true
       - run: yarn
-      - run: yarn lerna:publish
+      - run: yarn lerna:publish:stage
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - run: yarn build:components
