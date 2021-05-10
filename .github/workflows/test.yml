@@ -19,8 +19,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "12.X"
-      - name: SHA
-        run: echo yarn lerna:publish:internal $(git rev-parse --short "$GITHUB_SHA")
       - run: yarn
       - name: Test
         run: yarn test
