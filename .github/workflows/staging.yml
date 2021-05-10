@@ -21,6 +21,6 @@ jobs:
           scope: "@trycourier"
           always-auth: true
       - run: yarn
-      - run: yarn lerna:publish:staging
+      - run: yarn lerna:publish:internal
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
