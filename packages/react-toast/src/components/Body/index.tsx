@@ -36,8 +36,6 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
     });
   }, []);
 
-  console.log("brand", brand);
-
   const Icon = getIcon(
     /* priority:
       1. from message
