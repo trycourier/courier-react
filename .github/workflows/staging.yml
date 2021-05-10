@@ -1,0 +1,26 @@
+name: Staging
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - "*.*"
+
+jobs:
+  test:
+    env:
+      COURIER_WS_URL: ${{ secrets.COURIER_WS_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          registry-url: "https://registry.npmjs.org"
+          node-version: "12.x"
+          scope: "@trycourier"
+          always-auth: true
+      - run: yarn
+      - run: yarn lerna:publish:internal
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
