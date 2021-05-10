@@ -20,6 +20,8 @@ jobs:
         with:
           node-version: "12.X"
       - run: yarn
+      - name: SHA
+        run: echo $(git rev-parse --short "$GITHUB_SHA")
       - name: Test
         run: yarn test
       - uses: codecov/codecov-action@v1
