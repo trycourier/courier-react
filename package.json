@@ -13,7 +13,7 @@
     "eslint": "eslint './packages/**/*.{ts,tsx}' --fix",
     "export:storybook": "lerna run build && lerna run export:storybook",
     "lerna:publish": "lerna publish from-package --no-verify-access",
-    "lerna:publish:internal": "lerna publish --canary --dist-tag internal --no-verify-access --force-publish=* --preid internal --yes",
+    "lerna:publish:internal": "lerna publish --canary --dist-tag internal --no-verify-access --force-publish=* --preid",
     "lerna:version": "lerna version --no-push --no-git-tag-version",
     "lerna": "lerna",
     "postinstall": "lerna bootstrap && yarn build && husky install",
