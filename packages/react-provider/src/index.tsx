@@ -133,7 +133,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
   }, [graphQLClient, brand, brandId]);
 
   useEffect(() => {
-    if (!state.brand) {
+    if (!state.brand || !clientKey || !userId) {
       return;
     }
 

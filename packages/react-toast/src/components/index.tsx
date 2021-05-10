@@ -17,8 +17,8 @@ export const ToastBody: React.FunctionComponent<
     theme?: Theme;
     brand?: Brand;
   }
-> = ({ theme, brand, ...props }) => {
-  props.icon = props.icon ?? brand?.inapp?.icons?.message;
+> = ({ theme, ...props }) => {
+  props.icon = props.icon ?? props?.brand?.inapp?.icons?.message;
 
   return (
     <>
@@ -26,7 +26,7 @@ export const ToastBody: React.FunctionComponent<
       <ThemeProvider
         theme={{
           ...theme,
-          brand,
+          brand: props.brand,
         }}
       >
         <Styled

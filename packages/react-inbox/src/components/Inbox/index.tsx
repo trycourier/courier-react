@@ -122,6 +122,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, [props, clientKey, userId]);
 
   useEffect(() => {
+    if (!clientKey || !userId) {
+      return;
+    }
+
     localStorage.setItem(
       `${clientKey}/${userId}/inbox`,
       JSON.stringify({

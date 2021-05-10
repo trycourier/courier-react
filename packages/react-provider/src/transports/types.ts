@@ -1,3 +1,4 @@
+import { Brand } from "../types";
 export interface ICourierMessage {
   body?: string | React.ReactElement;
   icon?: string | false;
@@ -8,6 +9,7 @@ export interface ICourierMessage {
     readTrackingId?: string;
     deliverTrackingId?: string;
   };
+  brand?: Brand;
 }
 
 export interface ICourierEvent {
