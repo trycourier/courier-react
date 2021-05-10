@@ -20,25 +20,17 @@ export const iconStyles = ({ theme }) =>
 export const Icon = styled.img(iconStyles);
 export const Container = styled.div`
   display: flex;
-  padding: 0 12px;
+  padding-left: 12px;
+  width: 100%;
 `;
 
 export const Message = styled.div(({ theme }) =>
   deepExtend(
     {
-      flexShrink: 0,
       padding: 12,
       fontSize: "12px",
       fontStyle: "normal",
-      fontWeight: "normal",
       lineHeight: "14px",
-      maxWidth: "165px",
-      letterSpacing: "0em",
-      textAlign: "left",
-      display: "flex",
-      flexDirection: "column",
-      overflow: "hidden",
-      overflowWrap: "break-word",
       alignSelf: "center",
       color: "#73819B",
     },

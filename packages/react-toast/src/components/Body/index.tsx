@@ -19,7 +19,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   const [, { config }] = useToast();
   const { createTrackEvent, brand: courierBrand } = useCourier();
 
-  const brand = config?.brand ?? courierBrand;
+  const brand = props.brand ?? config?.brand ?? courierBrand;
 
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps?.toastId),

@@ -92,8 +92,10 @@ const Messages: React.ForwardRefExoticComponent<
         )}
 
         <Footer>
-          Powered by&nbsp;&nbsp;
-          <CourierLogo />
+          <a href="https://www.courier.com">
+            Powered by&nbsp;&nbsp;
+            <CourierLogo />
+          </a>
         </Footer>
       </div>
     );

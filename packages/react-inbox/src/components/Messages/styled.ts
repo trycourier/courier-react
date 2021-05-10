@@ -7,7 +7,8 @@ export const MessageList = styled.div(({ theme }) =>
       background: "#FFFFFF",
       overflow: "scroll",
       display: "flex",
-      height: 365,
+      maxHeight: 365,
+      minHeight: 280,
       flexDirection: "column",
       borderTop: "1px solid rgba(203,213,224,.5)",
       scrollSnapType: "y proximity",
@@ -58,7 +59,6 @@ export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
       alignItems: "center",
-      color: "#B9C0CD",
       display: "flex",
       fontSize: "10px",
       fontStyle: "normal",
@@ -66,6 +66,24 @@ export const Footer = styled.div(({ theme }) =>
       height: 45,
       justifyContent: "flex-end",
       paddingRight: 18,
+      svg: {
+        marginTop: 2,
+        marginLeft: -1,
+      },
+
+      a: {
+        display: "inherit",
+        color: "#B9C0CD",
+      },
+
+      "&:hover": {
+        a: {
+          color: "#9121c2",
+        },
+        path: {
+          fill: "#9121c2",
+        },
+      },
     },
     theme.footer
   )
