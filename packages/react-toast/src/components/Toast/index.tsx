@@ -22,7 +22,6 @@ export const Toast: React.FunctionComponent<
 > = (props) => {
   const courierContext = useCourier();
 
-  console.log("props", props);
   if (props.config) {
     console.warn(
       "Config as a props is DEPRECATED and WILL be removed in a future version"

@@ -1,30 +1,30 @@
-import { CSSProperties, MouseEventHandler } from "react";
 import { ToastPosition } from "react-toastify";
 import { Brand } from "@trycourier/react-provider";
 
-type ThemeKey = CSSProperties | { [key: string]: CSSProperties };
-
-export type Theme = Partial<{
-  root: ThemeKey;
-  toast: ThemeKey;
-  body: ThemeKey;
-  sidebar: Partial<{
-    dismiss: ThemeKey;
-    details: ThemeKey;
-  }> &
-    ThemeKey;
-  title: ThemeKey;
-  content: ThemeKey;
-  icon: ThemeKey;
-  progressBar: ThemeKey;
-}>;
+export type Theme = {
+  body?: React.CSSProperties;
+  root?: React.CSSProperties;
+  toast?: React.CSSProperties;
+  message?: {
+    actions: {
+      container?: React.CSSProperties;
+      details?: React.CSSProperties;
+      dismiss?: React.CSSProperties;
+    };
+    body?: React.CSSProperties;
+    contents?: React.CSSProperties;
+    icon?: React.CSSProperties;
+    title?: React.CSSProperties;
+  };
+  progressBar?: React.CSSProperties;
+};
 
 export interface IToastConfig {
   autoClose?: false | number;
   brand?: Brand;
   defaultIcon?: string | false;
   hideProgressBar?: boolean;
-  onClick?: MouseEventHandler<Element>;
+  onClick?: React.MouseEventHandler<Element>;
   position?: ToastPosition;
   role?: string;
   theme?: Theme;

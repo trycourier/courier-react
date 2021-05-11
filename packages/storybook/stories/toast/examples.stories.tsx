@@ -18,7 +18,7 @@ export default {
 
 export function Default({ bodyText }) {
   return (
-    <CourierProvider clientKey="client-key" userId="user-id">
+    <CourierProvider>
       <ToastBody
         body={bodyText}
         title="Title"
@@ -127,7 +127,6 @@ export function NoIcon({ bodyText }) {
 
   return (
     <ToastProvider
-      clientKey="client-key"
       config={{
         defaultIcon: false,
       }}
