@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import overviewMd from "@trycourier/react-toast/docs/1.overview.md";
 import installationMd from "@trycourier/react-toast/docs/2.installation.md";
@@ -10,14 +10,7 @@ import { CourierProvider } from "@trycourier/react-provider";
 
 import { Toast, useToast, ToastBody } from "@trycourier/react-toast";
 
-import {
-  withKnobs,
-  text,
-  boolean,
-  number,
-  color,
-  select,
-} from "@storybook/addon-knobs";
+import { withKnobs, boolean, number, select } from "@storybook/addon-knobs";
 
 export default {
   title: "Toast",
