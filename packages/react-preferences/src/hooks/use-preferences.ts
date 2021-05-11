@@ -1,100 +1,80 @@
-import { useCourier } from "@trycourier/react-provider";
+import { ICourierContext, useCourier } from "@trycourier/react-provider";
 import { useEffect, useState } from "react";
 import { OperationResult } from "urql";
 
-const GET_PREFRENCE_TEMPLATE = `
-  query($id: String!) {
-    preferenceTemplate(id: $id) {
-      templateName
-      templateItems {
-        itemName
-        type
+const RECIPIENT_PREFRENCES = `
+  query {
+    recipientPreferences {
+      nodes {
+        templateId
+        templateName
+        templateItems {
+          itemName
+          type
+        }
+        value {
+          status
+          snooze {
+            start
+          }
+          channel_preferences
+        }
       }
-      templateName
     }
   }
 `;
 
-const GET_PREFRENCE_TEMPLATES = `
-  query {
-    preferenceTemplates {
-      nodes {
-        templateId
-      }
-    }
-  }`;
 export interface IPreferenceRule {
   itemName: string;
   itemValue: string | string[];
   type: "snooze" | "channel_preferences" | "status";
 }
 
-export interface IPreferenceTemplate {
-  templateName: string;
-  templateId?: string;
-  templateItems: IPreferenceRule[];
-}
+export type ChannelClassification = "direct_message" | "email" | "push";
 
-export const usePreferenceTemplate = (
-  templateId: string
-): [
-  IPreferenceTemplate | undefined,
-  (preferenceGrouping: IPreferenceTemplate) => Promise<void>
-] => {
-  const [preferenceTemplate, setPreferenceTemplate] = useState<
-    IPreferenceTemplate | undefined
-  >(undefined);
+export type PreferenceStatus = "OPTED_OUT" | "OPTED_IN" | undefined;
 
-  const context = useCourier();
-
-  useEffect(() => {
-    context?.graphQLClient
-      ?.query(GET_PREFRENCE_TEMPLATE, {
-        id: templateId,
-      })
-      ?.then(
-        (
-          response: OperationResult<
-            { preferenceTemplate: IPreferenceTemplate },
-            { id: string }
-          >
-        ) => {
-          const template = response.data
-            ?.preferenceTemplate as IPreferenceTemplate;
-          setPreferenceTemplate(template);
-        }
-      );
-  }, [templateId]);
-
-  const handleUpdates = async (preferenceGrouping: IPreferenceTemplate) => {
-    // Update local state
-    setPreferenceTemplate(preferenceGrouping);
-    // Perform mutation to persist updates
-  };
-
-  return [preferenceTemplate, handleUpdates];
+export type SnoozePreference = {
+  start?: string;
+  until: string;
 };
 
-export const usePreferenceTemplates = (): string[] | undefined => {
-  const [templates, setPreferenceTemplates] = useState<string[] | undefined>(
-    undefined
-  );
+export interface IPreference {
+  status: PreferenceStatus;
+  snooze: SnoozePreference;
+  channel_preferences?: Array<ChannelClassification>;
+}
 
-  const context = useCourier();
+export interface IPreferenceTemplate {
+  templateName: string;
+  templateId: string;
+  templateItems: IPreferenceRule[];
+  value: IPreference;
+}
+
+export const usePreferenceTemplates = (): IPreferenceTemplate[] | undefined => {
+  const [templates, setPreferenceTemplates] = useState<
+    IPreferenceTemplate[] | undefined
+  >(undefined);
+
+  const context = useCourier<ICourierContext>();
+
+  const retriveRecipientPreferences = async (): Promise<void> => {
+    try {
+      const response: OperationResult<{
+        recipientPreferences: { nodes: IPreferenceTemplate[] };
+      }> = await context?.graphQLClient?.query(RECIPIENT_PREFRENCES);
+      return setPreferenceTemplates(response.data?.recipientPreferences.nodes);
+    } catch (error) {
+      console.error(
+        "Couldn't find any preferences associated with this user. Check if recipient profile extsts in Courier"
+      );
+      return;
+    }
+  };
 
   useEffect(() => {
-    context?.graphQLClient?.query(GET_PREFRENCE_TEMPLATES)?.then(
-      (
-        response: OperationResult<{
-          preferenceTemplates: { nodes: IPreferenceTemplate[] };
-        }>
-      ) => {
-        const groupingIds = response.data?.preferenceTemplates.nodes
-          ?.map((response) => response?.templateId || "")
-          .filter((templateId) => Boolean(templateId));
-        setPreferenceTemplates(groupingIds);
-      }
-    );
+    retriveRecipientPreferences();
   }, []);
 
   return templates;

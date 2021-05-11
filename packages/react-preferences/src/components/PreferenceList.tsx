@@ -15,17 +15,16 @@ export const StyledList = styled.div`
 `;
 
 export const PreferenceList: React.FunctionComponent = () => {
-  const preferenceGroups = usePreferenceTemplates();
-
+  const preferenceTemplates = usePreferenceTemplates();
   return (
     <StyledList>
-      {!preferenceGroups?.length ? (
+      {!preferenceTemplates?.length ? (
         <></>
       ) : (
-        preferenceGroups.map((groupId) => (
+        preferenceTemplates.map((template) => (
           <Preferences
-            key={groupId}
-            preferenceTemplateId={groupId}
+            key={template.templateId}
+            preferenceTemplate={template}
           ></Preferences>
         ))
       )}

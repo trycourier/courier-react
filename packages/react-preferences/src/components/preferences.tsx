@@ -1,10 +1,11 @@
 import React from "react";
-import { IPreferenceTemplate, usePreferenceTemplate } from "../hooks";
+import styled from "styled-components";
+import { useRecipientPreference } from "~/hooks/use-recipient-preferences";
+import { IPreferenceTemplate } from "../hooks";
 import { ChannelPreferences } from "./ChannelPreferences";
 import { SnoozePreference } from "./SnoozePreference";
 import { StatusPreference } from "./Status";
 import { Preference, PreferenceItemComponentFn } from "./types";
-import styled from "styled-components";
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;
@@ -12,6 +13,13 @@ const StyledItem = styled.div`
   margin-bottom: 5px;
   padding: 0 24px;
   height: 5rem;
+  color: #333;
+  h4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
 `;
 
 const COURIER_SUPPORTED_PREFERENCES: Record<
@@ -24,52 +32,30 @@ const COURIER_SUPPORTED_PREFERENCES: Record<
 };
 
 export const Preferences: React.FunctionComponent<{
-  preferenceTemplateId: string;
-}> = ({ preferenceTemplateId }) => {
-  const [preferenceGroup, updatePreferenceGroup] = usePreferenceTemplate(
-    preferenceTemplateId
-  );
+  preferenceTemplate: IPreferenceTemplate;
+}> = ({ preferenceTemplate }) => {
+  const preferenceItems = preferenceTemplate?.templateItems ?? [];
 
-  if (!preferenceGroup) {
+  const [
+    recipientPreferences,
+    handleOnPreferenceChange,
+  ] = useRecipientPreference(preferenceTemplate);
+
+  if (!preferenceTemplate) {
     return null;
   }
 
-  const handleOnPreferenceChange = (
-    changedIndex: number,
-    changes: string | string[]
-  ) => {
-    const preferences = [...(preferenceGroup?.templateItems ?? [])];
-
-    const updatedPreferences = {
-      ...preferenceGroup,
-      templateItems: [
-        ...preferences.slice(0, changedIndex),
-        {
-          ...preferences[changedIndex],
-          itemValue: changes,
-        },
-        ...preferences.slice(changedIndex + 1),
-      ],
-    } as IPreferenceTemplate;
-
-    updatePreferenceGroup(updatedPreferences);
-  };
-
   return (
     <StyledItem>
-      <h4>{preferenceGroup?.templateName}</h4>
-      {preferenceGroup.templateItems.map((item, index) => {
+      <h4>{preferenceTemplate.templateName}</h4>
+      {preferenceItems.map((item, index) => {
         const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[item.type];
-        const handleOnPreferenceChangeForIndex = handleOnPreferenceChange.bind(
-          null,
-          index
-        );
         return (
           <PreferenceItem
             key={index}
             label={item.itemName}
-            value={item?.itemValue}
-            handleOnPreferenceChange={handleOnPreferenceChangeForIndex}
+            value={recipientPreferences[item.type]}
+            handleOnPreferenceChange={handleOnPreferenceChange}
           />
         );
       })}

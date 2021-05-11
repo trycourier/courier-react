@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const StyledToggle = styled.div`
+  display: flex;
   height: 16px;
 
   label {
