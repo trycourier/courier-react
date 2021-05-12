@@ -1,100 +1,53 @@
-import { useCourier } from "@trycourier/react-provider";
+import { ICourierContext, useCourier } from "@trycourier/react-provider";
 import { useEffect, useState } from "react";
 import { OperationResult } from "urql";
+import { IPreferenceTemplate } from "~/types";
 
-const GET_PREFRENCE_TEMPLATE = `
-  query($id: String!) {
-    preferenceTemplate(id: $id) {
-      templateName
-      templateItems {
-        itemName
-        type
+const RECIPIENT_PREFRENCES = `
+  query {
+    recipientPreferences {
+      nodes {
+        templateId
+        templateName
+        templateItems {
+          itemName
+          type
+        }
+        value {
+          status
+          snooze {
+            start
+          }
+          channel_preferences
+        }
       }
-      templateName
     }
   }
 `;
 
-const GET_PREFRENCE_TEMPLATES = `
-  query {
-    preferenceTemplates {
-      nodes {
-        templateId
-      }
-    }
-  }`;
-export interface IPreferenceRule {
-  itemName: string;
-  itemValue: string | string[];
-  type: "snooze" | "channel_preferences" | "status";
-}
-
-export interface IPreferenceTemplate {
-  templateName: string;
-  templateId?: string;
-  templateItems: IPreferenceRule[];
-}
-
-export const usePreferenceTemplate = (
-  templateId: string
-): [
-  IPreferenceTemplate | undefined,
-  (preferenceGrouping: IPreferenceTemplate) => Promise<void>
-] => {
-  const [preferenceTemplate, setPreferenceTemplate] = useState<
-    IPreferenceTemplate | undefined
+export const usePreferenceTemplates = (): IPreferenceTemplate[] | undefined => {
+  const [templates, setPreferenceTemplates] = useState<
+    IPreferenceTemplate[] | undefined
   >(undefined);
 
-  const context = useCourier();
+  const context = useCourier<ICourierContext>();
 
-  useEffect(() => {
-    context?.graphQLClient
-      ?.query(GET_PREFRENCE_TEMPLATE, {
-        id: templateId,
-      })
-      ?.then(
-        (
-          response: OperationResult<
-            { preferenceTemplate: IPreferenceTemplate },
-            { id: string }
-          >
-        ) => {
-          const template = response.data
-            ?.preferenceTemplate as IPreferenceTemplate;
-          setPreferenceTemplate(template);
-        }
+  const retriveRecipientPreferences = async (): Promise<void> => {
+    try {
+      const response: OperationResult<{
+        recipientPreferences: { nodes: IPreferenceTemplate[] };
+      }> = await context?.graphQLClient?.query(RECIPIENT_PREFRENCES);
+      return setPreferenceTemplates(response.data?.recipientPreferences.nodes);
+    } catch (error) {
+      console.error(
+        "Couldn't find any preferences associated with this user. Check if recipient profile extsts in Courier"
       );
-  }, [templateId]);
-
-  const handleUpdates = async (preferenceGrouping: IPreferenceTemplate) => {
-    // Update local state
-    setPreferenceTemplate(preferenceGrouping);
-    // Perform mutation to persist updates
+      return;
+    }
   };
 
-  return [preferenceTemplate, handleUpdates];
-};
-
-export const usePreferenceTemplates = (): string[] | undefined => {
-  const [templates, setPreferenceTemplates] = useState<string[] | undefined>(
-    undefined
-  );
-
-  const context = useCourier();
-
   useEffect(() => {
-    context?.graphQLClient?.query(GET_PREFRENCE_TEMPLATES)?.then(
-      (
-        response: OperationResult<{
-          preferenceTemplates: { nodes: IPreferenceTemplate[] };
-        }>
-      ) => {
-        const groupingIds = response.data?.preferenceTemplates.nodes
-          ?.map((response) => response?.templateId || "")
-          .filter((templateId) => Boolean(templateId));
-        setPreferenceTemplates(groupingIds);
-      }
-    );
+    retriveRecipientPreferences();
   }, []);
 
   return templates;
