@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { useRecipientPreference } from "~/hooks/use-recipient-preferences";
-import { IPreferenceTemplate } from "../hooks";
+
 import { ChannelPreferences } from "./ChannelPreferences";
 import { SnoozePreference } from "./SnoozePreference";
 import { StatusPreference } from "./Status";
-import { Preference, PreferenceItemComponentFn } from "./types";
+import {
+  IPreferenceTemplate,
+  Preference,
+  PreferenceItemComponentFn,
+} from "../types";
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;

@@ -1,6 +1,7 @@
 import { ICourierContext, useCourier } from "@trycourier/react-provider";
 import { useEffect, useState } from "react";
 import { OperationResult } from "urql";
+import { IPreferenceTemplate } from "~/types";
 
 const RECIPIENT_PREFRENCES = `
   query {
@@ -23,34 +24,6 @@ const RECIPIENT_PREFRENCES = `
     }
   }
 `;
-
-export interface IPreferenceRule {
-  itemName: string;
-  itemValue: string | string[];
-  type: "snooze" | "channel_preferences" | "status";
-}
-
-export type ChannelClassification = "direct_message" | "email" | "push";
-
-export type PreferenceStatus = "OPTED_OUT" | "OPTED_IN" | undefined;
-
-export type SnoozePreference = {
-  start?: string;
-  until: string;
-};
-
-export interface IPreference {
-  status: PreferenceStatus;
-  snooze: SnoozePreference;
-  channel_preferences?: Array<ChannelClassification>;
-}
-
-export interface IPreferenceTemplate {
-  templateName: string;
-  templateId: string;
-  templateItems: IPreferenceRule[];
-  value: IPreference;
-}
 
 export const usePreferenceTemplates = (): IPreferenceTemplate[] | undefined => {
   const [templates, setPreferenceTemplates] = useState<

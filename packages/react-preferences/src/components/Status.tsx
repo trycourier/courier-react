@@ -1,6 +1,6 @@
 import React from "react";
 import Toggle from "react-toggle";
-import { PreferenceItemComponentFn } from "./types";
+import { PreferenceItemComponentFn } from "../types";
 import { StyledToggle } from "./StyledToggle";
 
 export const StatusPreference: PreferenceItemComponentFn = ({

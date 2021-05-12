@@ -1,7 +1,6 @@
 import { useCourier, ICourierContext } from "@trycourier/react-provider";
 import { useState } from "react";
-import { IPreferenceTemplate } from "typings/hooks";
-import { IPreference } from ".";
+import { IPreferenceTemplate, IPreference } from "../types";
 
 const UPDATE_RECIPIENT_PREFERENCES = `
   mutation($id: String!, $preferences: PreferencesInput!) {
