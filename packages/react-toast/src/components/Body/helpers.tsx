@@ -3,6 +3,8 @@ import styled from "styled-components";
 import CourierIcon from "~/assets/courier_icon.svg";
 import { Icon, iconStyles } from "./styled";
 
+const StyledIcon = styled(CourierIcon)(iconStyles);
+
 export function getIcon(icon) {
   if (icon === false) {
     return;
@@ -13,5 +15,5 @@ export function getIcon(icon) {
     return (props) => <Icon src={icon} {...props} />;
   }
 
-  return styled(icon ?? CourierIcon)(iconStyles);
+  return StyledIcon;
 }
