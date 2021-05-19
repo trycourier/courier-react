@@ -7,15 +7,9 @@ export type PreferenceItemComponentFn = React.FunctionComponent<{
   handleOnPreferenceChange: (changes: Partial<IPreference>) => void;
 }>;
 
-export interface IPreferenceRule {
-  itemName: string;
-  itemValue: string | string[];
-  type: "snooze" | "channel_preferences" | "status";
-}
-
 export type ChannelClassification = "direct_message" | "email" | "push";
 
-export type PreferenceStatus = "OPTED_OUT" | "OPTED_IN" | undefined;
+export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
 
 export type SnoozePreference = {
   start?: string;
@@ -31,6 +25,5 @@ export interface IPreference {
 export interface IPreferenceTemplate {
   templateName: string;
   templateId: string;
-  templateItems: IPreferenceRule[];
   value: IPreference;
 }

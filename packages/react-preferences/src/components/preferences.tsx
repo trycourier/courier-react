@@ -38,31 +38,31 @@ const COURIER_SUPPORTED_PREFERENCES: Record<
 export const Preferences: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
 }> = ({ preferenceTemplate }) => {
-  const preferenceItems = preferenceTemplate?.templateItems ?? [];
-
   const [
     recipientPreferences,
     handleOnPreferenceChange,
   ] = useRecipientPreference(preferenceTemplate);
 
-  if (!preferenceTemplate) {
+  if (!preferenceTemplate || !recipientPreferences) {
     return null;
   }
 
   return (
     <StyledItem>
       <h4>{preferenceTemplate.templateName}</h4>
-      {preferenceItems.map((item, index) => {
-        const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[item.type];
-        return (
-          <PreferenceItem
-            key={index}
-            label={item.itemName}
-            value={recipientPreferences[item.type]}
-            handleOnPreferenceChange={handleOnPreferenceChange}
-          />
-        );
-      })}
+      {Object.keys(COURIER_SUPPORTED_PREFERENCES)
+        .filter((preference) => recipientPreferences[preference])
+        .map((preference, index) => {
+          const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[preference];
+          return (
+            <PreferenceItem
+              key={index}
+              label={preference}
+              value={recipientPreferences[preference]}
+              handleOnPreferenceChange={handleOnPreferenceChange}
+            />
+          );
+        })}
     </StyledItem>
   );
 };

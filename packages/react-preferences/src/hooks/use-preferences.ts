@@ -9,10 +9,6 @@ const RECIPIENT_PREFRENCES = `
       nodes {
         templateId
         templateName
-        templateItems {
-          itemName
-          type
-        }
         value {
           status
           snooze {
