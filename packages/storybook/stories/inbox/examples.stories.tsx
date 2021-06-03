@@ -84,6 +84,25 @@ const middleware = () => (next) => (action) => {
               },
             },
           },
+          {
+            messageId: 456,
+            created: "2021-04-06T18:02:28.065Z",
+            read: true,
+            content: {
+              title: "Read Message",
+              blocks: [
+                {
+                  type: "text",
+                  text: "Hello World",
+                },
+                {
+                  type: "action",
+                  text: "View Details",
+                  url: "https://www.courier.com",
+                },
+              ],
+            },
+          },
         ],
       },
     });

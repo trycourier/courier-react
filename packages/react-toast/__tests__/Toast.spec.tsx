@@ -35,6 +35,9 @@ function Component({ onClick }) {
     body,
     icon,
     onClick,
+    data: {
+      clickAction: "https://test",
+    },
   };
   return <button onClick={() => toast(notification)}>Show Toast</button>;
 }
@@ -59,8 +62,8 @@ describe("<ToastProvider />", () => {
     await waitFor(() => {
       expect(screen.getByText(title)).toBeInTheDocument();
       expect(screen.getByText(body)).toBeInTheDocument();
-      expect(screen.getByText("Dismiss")).toBeInTheDocument();
-      expect(screen.getByText("Details")).toBeInTheDocument();
+      expect(screen.getByTestId("dismiss")).toBeInTheDocument();
+      expect(screen.getByTestId("action-0")).toBeInTheDocument();
       expect(screen.getByTestId("message-icon").getAttribute("src")).toBe(icon);
     });
   });

@@ -74,6 +74,27 @@ export function CustomTitleAndBody() {
   );
 }
 
+export function WithBlocks() {
+  return (
+    <CourierProvider>
+      <ToastBody
+        blocks={[
+          {
+            type: "text",
+            text: "Hello World",
+          },
+          {
+            type: "action",
+            text: "View Details",
+            url: "https://www.courier.com",
+          },
+        ]}
+        title="This is a really long title lalalalalala"
+      />
+    </CourierProvider>
+  );
+}
+
 export function MultiLineMessage() {
   return (
     <CourierProvider>

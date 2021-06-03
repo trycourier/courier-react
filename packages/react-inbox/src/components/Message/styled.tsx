@@ -27,7 +27,6 @@ export const Container = styled.div(({ theme }) =>
 
 export const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
-  maxWidth: "58%",
   marginLeft: 18,
   ...theme.message?.contents,
 }));
@@ -52,7 +51,7 @@ export const Title = styled.div(({ theme }) =>
   )
 );
 
-export const Body = styled.div(({ theme }) =>
+export const TextBlock = styled.div(({ theme }) =>
   deepExtend(
     {
       color: "#73819B",
@@ -70,8 +69,41 @@ export const Body = styled.div(({ theme }) =>
       WebkitLineClamp: "2",
       WebkitBoxOrient: "vertical",
     },
-    theme.message?.body
+    theme.message?.textBlock
   )
+);
+
+export const ActionBlock = styled.a<{ href: string; target: string }>(
+  ({ theme }) =>
+    deepExtend(
+      {
+        display: "inline-block",
+        cursor: "pointer",
+        border: "none",
+        fontSize: 12,
+        color: theme?.brand?.inapp?.colors?.invertButtons
+          ? "white"
+          : theme?.brand?.colors?.primary ?? "#9121C2",
+        backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
+          ? theme?.brand?.colors?.primary
+          : "white",
+        padding: "6px 15px",
+        marginTop: 3,
+        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+        textDecoration: "none",
+        "&:active": {
+          boxShadow: "none",
+        },
+
+        "&:hover": {
+          color: "#73819B",
+          background: "rgb(0 0 0 / 10%)",
+        },
+
+        borderRadius: 4,
+      },
+      theme?.message?.actionBlock
+    )
 );
 
 export const TimeAgo = styled.div(({ theme }) =>

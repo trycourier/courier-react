@@ -1,8 +1,14 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
 import { ICourierToastMessage } from "../Toast/types";
-import Actions from "../Actions";
-import { Container, Message, Title, Body } from "./styled";
+import {
+  Container,
+  Message,
+  Title,
+  TextBlock,
+  ActionBlock,
+  Dismiss,
+} from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier } from "@trycourier/react-provider";
@@ -10,6 +16,7 @@ import { useCourier } from "@trycourier/react-provider";
 const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
   body,
+  blocks,
   icon,
   data,
   onClick,
@@ -49,20 +56,53 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   );
 
   return (
-    <>
-      <Container>
-        {Icon && <Icon data-testid="message-icon" />}
-        <Message data-testid="message">
-          {title && <Title data-testid="message-title">{title}</Title>}
-          <Body data-testid="message-body">{body}</Body>
-        </Message>
-      </Container>
-      <Actions
-        href={data?.clickAction}
-        onClickDetails={handleOnClickDetails}
-        onClickDismiss={handleOnClickDismiss}
-      />
-    </>
+    <Container>
+      {Icon && <Icon data-testid="message-icon" />}
+      <Message data-testid="message">
+        {title && <Title data-testid="message-title">{title}</Title>}
+        {blocks?.length ? (
+          blocks?.map((block, index) => {
+            if (block.type === "text") {
+              return (
+                <TextBlock key={index} data-testid="message-body">
+                  {block.text}
+                </TextBlock>
+              );
+            }
+
+            if (block.type === "action") {
+              return (
+                <ActionBlock
+                  data-testid={`action-${index}`}
+                  href={block.url}
+                  key={index}
+                  target="_blank"
+                >
+                  {block.text}
+                </ActionBlock>
+              );
+            }
+          })
+        ) : (
+          <>
+            <TextBlock data-testid="message-body">{body}</TextBlock>
+            {data?.clickAction && (
+              <ActionBlock
+                data-testid="action-0"
+                href={data?.clickAction}
+                onClick={handleOnClickDetails}
+                target="_blank"
+              >
+                View Details
+              </ActionBlock>
+            )}
+          </>
+        )}
+      </Message>
+      <Dismiss data-testid="dismiss" onClick={handleOnClickDismiss}>
+        X
+      </Dismiss>
+    </Container>
   );
 };
 

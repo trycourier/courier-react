@@ -1,9 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 import OptionsDropdown from "../OptionsDropdown";
-import Actions from "../Actions";
 import {
-  Body,
+  ActionBlock,
+  TextBlock,
   Container,
   Contents,
   getIcon,
@@ -13,13 +13,14 @@ import {
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 import { IMessageProps } from "./types";
-import { getActions, getOptions, getTimeAgo } from "./helpers";
+import { getAction, getOptions, getTimeAgo } from "./helpers";
 import { useCourier } from "@trycourier/react-provider";
 
 const Message: React.FunctionComponent<IMessageProps> = ({
   created,
   title,
   body,
+  blocks,
   icon,
   data,
   read,
@@ -52,7 +53,8 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   const timeAgo = getTimeAgo(created);
   const showMarkAsRead = !read && readTrackingId;
   const showMarkAsUnread = read && unreadTrackingId;
-  const buttonActions = getActions({
+
+  const action = getAction({
     clickAction: data?.clickAction,
     trackingIds,
     trackEvent: createTrackEvent,
@@ -79,10 +81,36 @@ const Message: React.FunctionComponent<IMessageProps> = ({
       {renderedIcon}
       <Contents>
         <Title>{title}</Title>
-        <Body>{body}</Body>
+        {blocks?.length ? (
+          blocks?.map((block, index) => {
+            if (block.type === "text") {
+              return (
+                <TextBlock key={index} data-testid="message-body">
+                  {block.text}
+                </TextBlock>
+              );
+            }
+
+            if (block.type === "action") {
+              return (
+                <ActionBlock key={index} href={block.url} target="_blank">
+                  {block.text}
+                </ActionBlock>
+              );
+            }
+          })
+        ) : (
+          <>
+            <TextBlock>{body}</TextBlock>
+            {action && (
+              <ActionBlock href={action.href} target="_blank">
+                {action.label}
+              </ActionBlock>
+            )}
+          </>
+        )}
         <TimeAgo>{timeAgo}</TimeAgo>
       </Contents>
-      <Actions actions={buttonActions} />
       {options?.length ? <OptionsDropdown options={options} /> : undefined}
     </Container>
   );
