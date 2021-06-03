@@ -72,7 +72,12 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
             if (block.type === "action") {
               return (
-                <ActionBlock key={index} href={block.url} target="_blank">
+                <ActionBlock
+                  data-testid={`action-${index}`}
+                  href={block.url}
+                  key={index}
+                  target="_blank"
+                >
                   {block.text}
                 </ActionBlock>
               );
@@ -83,9 +88,10 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
             <TextBlock data-testid="message-body">{body}</TextBlock>
             {data?.clickAction && (
               <ActionBlock
+                data-testid="action-0"
                 href={data?.clickAction}
-                target="_blank"
                 onClick={handleOnClickDetails}
+                target="_blank"
               >
                 View Details
               </ActionBlock>
@@ -93,7 +99,9 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
           </>
         )}
       </Message>
-      <Dismiss onClick={handleOnClickDismiss}>X</Dismiss>
+      <Dismiss data-testid="dismiss" onClick={handleOnClickDismiss}>
+        X
+      </Dismiss>
     </Container>
   );
 };
