@@ -71,7 +71,6 @@ export default (state: InboxState = initialState, action) => {
     }
 
     case "inbox/FETCH_MESSAGES/DONE": {
-      console.log("action.payload", action.payload);
       const newMessages = action?.payload?.messages?.map(makeMessage);
 
       return {

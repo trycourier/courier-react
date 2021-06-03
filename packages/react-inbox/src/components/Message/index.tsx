@@ -70,7 +70,6 @@ const Message: React.FunctionComponent<IMessageProps> = ({
     unreadTrackingId,
   });
 
-  console.log("blocks", blocks);
   return (
     <Container
       data-testid="inbox-message"
