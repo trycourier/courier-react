@@ -19,6 +19,17 @@ export const QUERY_MESSAGES = `
         content {
           title
           body
+          blocks {
+            ... on TextBlock {
+              type
+              text
+            }
+            ... on ActionBlock {
+              type
+              text
+              url
+            }
+          }
           data
           trackingIds {
             clickTrackingId

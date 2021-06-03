@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react";
 import { TippyProps } from "@tippyjs/react";
-import { Brand } from "@trycourier/react-provider";
+import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
 
 type InboxThemeOptions = "root" | "body" | "footer" | "header";
 type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
@@ -43,6 +43,7 @@ export interface IMessage {
   created: number;
   title: string;
   body: string;
+  blocks?: Array<IActionBlock | ITextBlock>;
   icon?: string;
   read: boolean;
   data?: {

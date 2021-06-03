@@ -1,6 +1,7 @@
 import { IMessage } from "./types";
 
 const makeMessage = (message): IMessage => ({
+  blocks: message?.content?.blocks,
   body: message?.content?.body,
   created: message.created,
   data: message?.content?.data,
@@ -70,6 +71,7 @@ export default (state: InboxState = initialState, action) => {
     }
 
     case "inbox/FETCH_MESSAGES/DONE": {
+      console.log("action.payload", action.payload);
       const newMessages = action?.payload?.messages?.map(makeMessage);
 
       return {
@@ -150,6 +152,7 @@ export default (state: InboxState = initialState, action) => {
             messageId: action.payload.messageId ?? new Date().getTime(),
             title: action.payload.title,
             body: action.payload.body,
+            blocks: action.payload.blocks,
             data: action.payload.data,
             trackingIds: action.payload.data?.trackingIds,
           },

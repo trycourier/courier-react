@@ -14,6 +14,7 @@ export const toastStyles = ({ theme }) => ({
     minHeight: 65,
     padding: 0,
     borderRadius: 6,
+    overflow: "visible",
     ...theme?.toast,
   },
   [".Toastify__toast-body"]: {
@@ -26,6 +27,7 @@ export const toastStyles = ({ theme }) => ({
     background: theme?.brand?.colors?.primary ?? "#9121C2",
     height: 3,
     top: 0,
+    zIndex: 25,
     ...theme?.progressBar,
   },
 });

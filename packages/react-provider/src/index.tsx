@@ -4,7 +4,7 @@ import Client from "./graph-ql";
 import { ICourierContext, Brand } from "./types";
 
 import { CourierTransport } from "./transports/courier";
-import { ICourierMessage } from "./transports/types";
+import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware from "./middleware";
 import { getBrand } from "./actions/brand";
@@ -14,7 +14,13 @@ export * from "./hooks";
 
 export const registerReducer = _registerReducer;
 
-export type { Brand, ICourierMessage, ICourierContext };
+export type {
+  Brand,
+  ITextBlock,
+  IActionBlock,
+  ICourierMessage,
+  ICourierContext,
+};
 
 export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined

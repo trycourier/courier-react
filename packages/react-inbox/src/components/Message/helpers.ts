@@ -11,20 +11,22 @@ export const getTimeAgo = (created: number) => {
   );
 };
 
-export const getActions = ({ clickAction, trackingIds, trackEvent }) => {
-  return [
-    clickAction && {
-      href: clickAction,
-      label: "View Details",
-      onClick: () => {
-        if (trackingIds?.clickTrackingId) {
-          trackEvent({
-            trackingId: trackingIds?.clickTrackingId,
-          });
-        }
-      },
+export const getAction = ({ clickAction, trackingIds, trackEvent }) => {
+  if (!clickAction) {
+    return;
+  }
+
+  return {
+    href: clickAction,
+    label: "View Details",
+    onClick: () => {
+      if (trackingIds?.clickTrackingId) {
+        trackEvent({
+          trackingId: trackingIds?.clickTrackingId,
+        });
+      }
     },
-  ].filter(Boolean);
+  };
 };
 
 export const getOptions = ({
