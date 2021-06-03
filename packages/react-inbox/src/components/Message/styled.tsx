@@ -37,14 +37,11 @@ export const Title = styled.div(({ theme }) =>
       fontSize: "14px",
       fontStyle: "normal",
       fontWeight: "600",
-      lineHeight: "19.1px",
-      letterSpacing: "0em",
+      lineHeight: "19px",
       textAlign: "left",
       display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      WebkitLineClamp: "1",
-      WebkitBoxOrient: "vertical",
       color: "#24324B",
     },
     theme.message?.title
@@ -61,7 +58,6 @@ export const TextBlock = styled.div(({ theme }) =>
       fontStyle: "normal",
       fontWeight: "400",
       lineHeight: "16px",
-      letterSpacing: "0em",
       textAlign: "left",
       display: "-webkit-box",
       overflow: "hidden",
@@ -110,13 +106,10 @@ export const TimeAgo = styled.div(({ theme }) =>
   deepExtend(
     {
       color: "#aaa",
-      marginTop: "2px",
       fontSize: "10px",
       fontStyle: "normal",
       fontWeight: "400",
       lineHeight: "14px",
-      letterSpacing: "0em",
-      textAlign: "left",
     },
     theme.message?.timeAgo
   )
@@ -138,11 +131,11 @@ const iconStyles = ({ theme }) =>
 export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
-      height: "36px",
+      height: 6,
+      width: 6,
       backgroundColor: theme?.brand?.colors?.tertiary ?? "#9121c2",
-      width: "5px",
-      position: "absolute",
-      left: "0",
+      borderRadius: "50%",
+      marginRight: 12,
     },
     theme?.message?.unreadIndicator
   )

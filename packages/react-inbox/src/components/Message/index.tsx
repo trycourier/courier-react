@@ -109,8 +109,8 @@ const Message: React.FunctionComponent<IMessageProps> = ({
             )}
           </>
         )}
-        <TimeAgo>{timeAgo}</TimeAgo>
       </Contents>
+      <TimeAgo>{timeAgo}</TimeAgo>
       {options?.length ? <OptionsDropdown options={options} /> : undefined}
     </Container>
   );
