@@ -1,15 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useRecipientPreference } from "~/hooks/use-recipient-preferences";
+import usePreferenceActions from "~/hooks/use-preferences-actions";
 
-import { ChannelPreferences } from "./ChannelPreferences";
-import { SnoozePreference } from "./SnoozePreference";
 import { StatusPreference } from "./Status";
-import {
-  IPreferenceTemplate,
-  Preference,
-  PreferenceItemComponentFn,
-} from "../types";
+import { IPreferenceTemplate, IRecipientPreference } from "../types";
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;
@@ -28,22 +22,18 @@ const StyledItem = styled.div`
   }
 `;
 
-const COURIER_SUPPORTED_PREFERENCES: Record<
-  Preference,
-  PreferenceItemComponentFn
-> = {
-  channel_preferences: ChannelPreferences,
-  snooze: SnoozePreference,
-  status: StatusPreference,
-};
-
 export const Preferences: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
-}> = ({ preferenceTemplate }) => {
-  const [
-    recipientPreferences,
-    handleOnPreferenceChange,
-  ] = useRecipientPreference(preferenceTemplate);
+  recipientPreference?: IRecipientPreference;
+}> = ({ preferenceTemplate, recipientPreference }) => {
+  const { updateRecipientPreferences } = usePreferenceActions();
+
+  const handleOnPreferenceChange = (newPreferences) => {
+    updateRecipientPreferences({
+      templateId: preferenceTemplate.templateId,
+      ...newPreferences,
+    });
+  };
 
   if (!preferenceTemplate) {
     return null;
@@ -52,17 +42,14 @@ export const Preferences: React.FunctionComponent<{
   return (
     <StyledItem>
       <h4>{preferenceTemplate.templateName}</h4>
-      {Object.keys(COURIER_SUPPORTED_PREFERENCES).map((preference, index) => {
-        const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[preference];
-        return (
-          <PreferenceItem
-            key={index}
-            label={preference}
-            value={recipientPreferences?.[preference]}
-            handleOnPreferenceChange={handleOnPreferenceChange}
-          />
-        );
-      })}
+      <StatusPreference
+        value={
+          preferenceTemplate?.defaultStatus === "REQUIRED"
+            ? "REQUIRED"
+            : recipientPreference?.status ?? preferenceTemplate?.defaultStatus
+        }
+        onPreferenceChange={handleOnPreferenceChange}
+      />
     </StyledItem>
   );
 };

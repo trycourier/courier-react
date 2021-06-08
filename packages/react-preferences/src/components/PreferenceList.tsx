@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { registerReducer } from "@trycourier/react-provider";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 
 import { Preferences } from "./Preferences";
 import reducer from "~/reducer";
-import { useCourier } from "@trycourier/react-provider";
-
+import usePreferenceActions from "~/hooks/use-preferences-actions";
 import styled from "styled-components";
 
 export const StyledList = styled.div`
@@ -18,21 +17,26 @@ export const StyledList = styled.div`
 `;
 
 export const PreferenceList: React.FunctionComponent = () => {
-  const { brand } = useCourier();
+  const { brand, preferences } = useCourier();
+  const { fetchRecipientPreferences } = usePreferenceActions();
 
   useEffect(() => {
     registerReducer("preferences", reducer);
+    fetchRecipientPreferences();
   }, []);
 
   return (
     <StyledList>
-      {!brand?.preferenceTemplates?.length ? (
+      {preferences?.isLoading || !brand?.preferenceTemplates?.length ? (
         <></>
       ) : (
         brand?.preferenceTemplates?.map((template) => (
           <Preferences
             key={template.templateId}
             preferenceTemplate={template}
+            recipientPreference={preferences?.recipientPreferences?.find(
+              (preference) => preference.templateId === template.templateId
+            )}
           ></Preferences>
         ))
       )}

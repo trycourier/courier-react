@@ -10,28 +10,31 @@ const initialState: PreferenceState = {
 
 export default (state: PreferenceState = initialState, action) => {
   switch (action.type) {
-    case "preferences/UPDATE_RECIPIENT_PREFERENCES/PENDING":
-    case "preferences/FETCH_PREFERENCES/PENDING":
+    case "preferences/FETCH_RECIPIENT_PREFERENCES/PENDING":
       return {
         ...state,
         isLoading: true,
       };
 
-    case "preferences/FETCH_PREFERENCES/DONE": {
-      const preferences = action?.payload;
+    case "preferences/UPDATE_RECIPIENT_PREFERENCES/PENDING":
+      return {
+        ...state,
+        isUpdating: true,
+      };
 
+    case "preferences/FETCH_RECIPIENT_PREFERENCES/DONE": {
       return {
         ...state,
         isLoading: false,
-        preferences,
+        recipientPreferences: action?.payload,
       };
     }
 
     case "preferences/UPDATE_RECIPIENT_PREFERENCES/DONE": {
       return {
         ...state,
-        isLoading: false,
-        preferences: state.preferences?.map((preference) => {
+        isUpdating: false,
+        recipientPreferences: state.preferences?.map((preference) => {
           if (preference.templateId === action?.payload?.templateId) {
             return action?.payload;
           }

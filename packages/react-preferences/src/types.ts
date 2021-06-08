@@ -1,10 +1,9 @@
 export type Preference = "channel_preferences" | "status" | "snooze";
 
 export type PreferenceItemComponentFn = React.FunctionComponent<{
-  key: number;
-  label: string;
+  label?: string;
   value: PreferenceStatus | ChannelClassification[] | SnoozePreference;
-  handleOnPreferenceChange: (changes: Partial<IPreference>) => void;
+  onPreferenceChange: (changes: Partial<IPreference>) => void;
 }>;
 
 export type ChannelClassification = "direct_message" | "email" | "push";
@@ -26,4 +25,9 @@ export interface IPreferenceTemplate {
   templateName: string;
   templateId: string;
   defaultStatus: PreferenceStatus;
+}
+
+export interface IRecipientPreference {
+  templateId: string;
+  status: PreferenceStatus;
 }
