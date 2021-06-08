@@ -55,7 +55,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
             Mark all as read
           </MarkAllAsRead>
         )}
-        {brand?.preferenceTemplates?.length && (
+        {brand?.preferenceTemplates?.length > 0 && (
           <SettingsIconButton onClick={handleSetView("preferences")}>
             <SettingsSvg />
           </SettingsIconButton>
