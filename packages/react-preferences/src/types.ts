@@ -18,12 +18,12 @@ export type SnoozePreference = {
 
 export interface IPreference {
   status: PreferenceStatus;
-  snooze: SnoozePreference;
+  snooze?: SnoozePreference;
   channel_preferences?: Array<ChannelClassification>;
 }
 
 export interface IPreferenceTemplate {
   templateName: string;
   templateId: string;
-  value: IPreference;
+  defaultStatus: PreferenceStatus;
 }

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.div(({ theme }) => ({
+export const Container = styled.div<{ view?: string }>(({ theme, view }) => ({
   padding: "18px 20px 12px",
   userSelect: "none",
   display: "flex",
@@ -14,6 +14,20 @@ export const Container = styled.div(({ theme }) => ({
   backgroundColor: theme?.brand?.inapp?.colors?.invertHeader
     ? theme?.brand?.colors?.primary
     : "white",
+
+  "svg:hover path": {
+    fill: theme?.brand?.colors?.primary ?? "#9121c2",
+  },
+  "svg path": {
+    fill:
+      view === "preferences"
+        ? theme?.brand?.colors?.primary ?? "#9121c2"
+        : undefined,
+  },
+  ".actions": {
+    display: "flex",
+    alignItems: "center",
+  },
 }));
 
 export const MarkAllAsRead = styled.div(({ theme }) => ({

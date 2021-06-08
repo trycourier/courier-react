@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledToggle = styled.div`
+export const StyledToggle = styled.div<{ checked: boolean }>`
   display: flex;
   height: 16px;
 
@@ -42,16 +42,22 @@ export const StyledToggle = styled.div`
   }
 
   .react-toggle-track {
-    width: 58px;
-    height: 27px;
+    width: 40px;
+    height: 12px;
     padding: 0;
     border-radius: 30px;
-    background-color: #344563;
+    background-color: #eae7eb;
     transition: all 0.2s ease;
   }
 
+  .react-toggle-thumb {
+    height: 30px;
+  }
+
   .react-toggle--checked .react-toggle-track {
-    background-color: #9121c2;
+    opacity: 0.5;
+    background-color: ${({ theme }) =>
+      theme?.brand?.colors?.primary ?? "#9121c2"};
   }
 
   .react-toggle-track-check {
@@ -80,18 +86,21 @@ export const StyledToggle = styled.div`
   .react-toggle-thumb {
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     position: absolute;
-    top: 1px;
-    left: 1px;
-    width: 25px;
-    height: 25px;
+    top: -10px;
+    left: -12px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: #fafafa;
     box-sizing: border-box;
     transition: all 0.25s ease;
+    box-shadow: 0px 1.5px 4.5px rgba(44, 19, 56, 0.25);
   }
 
   .react-toggle--checked .react-toggle-thumb {
-    left: 32px;
+    left: 18px;
+    background-color: ${({ theme }) =>
+      theme?.brand?.colors?.primary ?? "#9121c2"};
   }
 
   .react-toggle--focus .react-toggle-thumb {
@@ -101,9 +110,13 @@ export const StyledToggle = styled.div`
   .react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
     box-shadow: 0px 0px 5px 5px #0099e0;
   }
+
   label {
     display: flex;
-    width: 100%;
+    width: Calc(100% - 48px);
+    font-size: 12px;
+    color: #73819b;
+
     span {
       width: 80%;
       overflow: hidden;

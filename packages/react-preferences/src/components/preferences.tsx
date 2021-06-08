@@ -13,16 +13,18 @@ import {
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;
-  padding: 8px;
-  margin-bottom: 5px;
-  padding: 0 24px;
-  height: 5rem;
+  padding: 12px 18px;
+  margin-top: 8px;
+  background: #f9fafb;
+  border-radius: 4px;
   color: #333;
+
   h4 {
-    overflow: hidden;
+    font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
+    margin-bottom: 6px;
   }
 `;
 
@@ -43,26 +45,26 @@ export const Preferences: React.FunctionComponent<{
     handleOnPreferenceChange,
   ] = useRecipientPreference(preferenceTemplate);
 
-  if (!preferenceTemplate || !recipientPreferences) {
+  console.log("preferenceTemplate", preferenceTemplate);
+  console.log("recipientPreferences", recipientPreferences);
+  if (!preferenceTemplate) {
     return null;
   }
 
   return (
     <StyledItem>
       <h4>{preferenceTemplate.templateName}</h4>
-      {Object.keys(COURIER_SUPPORTED_PREFERENCES)
-        .filter((preference) => recipientPreferences[preference])
-        .map((preference, index) => {
-          const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[preference];
-          return (
-            <PreferenceItem
-              key={index}
-              label={preference}
-              value={recipientPreferences[preference]}
-              handleOnPreferenceChange={handleOnPreferenceChange}
-            />
-          );
-        })}
+      {Object.keys(COURIER_SUPPORTED_PREFERENCES).map((preference, index) => {
+        const PreferenceItem = COURIER_SUPPORTED_PREFERENCES[preference];
+        return (
+          <PreferenceItem
+            key={index}
+            label={preference}
+            value={recipientPreferences?.[preference]}
+            handleOnPreferenceChange={handleOnPreferenceChange}
+          />
+        );
+      })}
     </StyledItem>
   );
 };

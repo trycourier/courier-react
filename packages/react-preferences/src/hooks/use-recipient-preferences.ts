@@ -13,7 +13,9 @@ export function useRecipientPreference(
 ): [IPreference, (changes: Partial<IPreference>) => void] {
   const [recipientPreferences, updateRecipientPreferences] = useState<
     IPreference
-  >(preferenceTemplate.value);
+  >({
+    status: preferenceTemplate?.defaultStatus,
+  });
 
   const context = useCourier<ICourierContext | undefined>();
 

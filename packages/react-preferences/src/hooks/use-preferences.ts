@@ -3,19 +3,12 @@ import { useEffect, useState } from "react";
 import { OperationResult } from "urql";
 import { IPreferenceTemplate } from "~/types";
 
-const RECIPIENT_PREFRENCES = `
+const RECIPIENT_PREFERENCES = `
   query {
     recipientPreferences {
       nodes {
         templateId
-        templateName
-        value {
-          status
-          snooze {
-            start
-          }
-          channel_preferences
-        }
+        status
       }
     }
   }
@@ -32,7 +25,8 @@ export const usePreferenceTemplates = (): IPreferenceTemplate[] | undefined => {
     try {
       const response: OperationResult<{
         recipientPreferences: { nodes: IPreferenceTemplate[] };
-      }> = await context?.graphQLClient?.query(RECIPIENT_PREFRENCES);
+      }> = await context?.graphQLClient?.query(RECIPIENT_PREFERENCES);
+      console.log("response", response);
       return setPreferenceTemplates(response.data?.recipientPreferences.nodes);
     } catch (error) {
       console.error(
