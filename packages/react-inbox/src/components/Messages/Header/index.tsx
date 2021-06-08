@@ -7,7 +7,6 @@ import {
 } from "./styled";
 import { IHeaderProps } from "./types";
 import SettingsSvg from "~/assets/icon-settings.svg";
-import BackSvg from "~/assets/back.svg";
 import styled from "styled-components";
 import useInbox from "~/hooks/use-inbox";
 import { useCourier } from "@trycourier/react-provider";
