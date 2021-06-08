@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useCourier } from "@trycourier/react-provider";
+import { usePreferencesActions } from "@trycourier/react-preferences";
+
 import useInboxActions from "./use-inbox-actions";
 
 const useInbox = () => {
-  const { dispatch, inbox, transport } = useCourier();
+  const { dispatch, inbox, transport, preferences } = useCourier();
   const actions = useInboxActions();
+  const preferencesActions = usePreferencesActions();
 
   useEffect(() => {
     transport?.listen({
@@ -18,7 +21,7 @@ const useInbox = () => {
     });
   }, [transport]);
 
-  return { ...inbox, ...actions };
+  return { ...inbox, ...actions, ...preferencesActions, ...preferences };
 };
 
 export default useInbox;
