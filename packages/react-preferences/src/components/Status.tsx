@@ -20,7 +20,7 @@ export const StatusPreference: PreferenceItemComponentFn = ({
 
   return (
     <StyledToggle checked={checked}>
-      <label>Opted In</label>
+      <label>{value === "REQUIRED" ? "Required" : "Opted In"}</label>
       <Toggle
         icons={false}
         disabled={value === "REQUIRED"}
