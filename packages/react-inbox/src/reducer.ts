@@ -53,6 +53,7 @@ export default (state: InboxState = initialState, action) => {
     case "inbox/TOGGLE_INBOX": {
       return {
         ...state,
+        view: "messages",
         isOpen: action.payload?.isOpen ?? !state.isOpen,
       };
     }

@@ -45,8 +45,6 @@ export const Preferences: React.FunctionComponent<{
     handleOnPreferenceChange,
   ] = useRecipientPreference(preferenceTemplate);
 
-  console.log("preferenceTemplate", preferenceTemplate);
-  console.log("recipientPreferences", recipientPreferences);
   if (!preferenceTemplate) {
     return null;
   }
