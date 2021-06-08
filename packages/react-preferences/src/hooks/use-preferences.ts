@@ -21,12 +21,11 @@ export const usePreferenceTemplates = (): IPreferenceTemplate[] | undefined => {
 
   const context = useCourier<ICourierContext>();
 
-  const retriveRecipientPreferences = async (): Promise<void> => {
+  const retrieveRecipientPreferences = async (): Promise<void> => {
     try {
       const response: OperationResult<{
         recipientPreferences: { nodes: IPreferenceTemplate[] };
       }> = await context?.graphQLClient?.query(RECIPIENT_PREFERENCES);
-      console.log("response", response);
       return setPreferenceTemplates(response.data?.recipientPreferences.nodes);
     } catch (error) {
       console.error(
@@ -37,7 +36,7 @@ export const usePreferenceTemplates = (): IPreferenceTemplate[] | undefined => {
   };
 
   useEffect(() => {
-    retriveRecipientPreferences();
+    retrieveRecipientPreferences();
   }, []);
 
   return templates;
