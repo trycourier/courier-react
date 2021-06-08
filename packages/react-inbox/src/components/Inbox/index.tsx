@@ -10,6 +10,7 @@ import LazyTippy from "./LazyTippy";
 import { useInbox, useClickOutside } from "~/hooks";
 import { InboxProps } from "../../types";
 import reducer from "~/reducer";
+import { DEFAULT_TABS } from "~/constants";
 
 const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
@@ -76,6 +77,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     init,
     isOpen,
     messages,
+    setCurrentTab,
+    setView,
     toggleInbox,
     unreadMessageCount,
   } = useInbox();
@@ -135,10 +138,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     );
   }, [clientKey, userId, messages, unreadMessageCount]);
 
-  const handleIconOnClick = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-    toggleInbox();
-  }, []);
+  const handleIconOnClick = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      if (!isOpen) {
+        setView("messages");
+        setCurrentTab(DEFAULT_TABS[0]);
+      }
+
+      toggleInbox();
+    },
+    [isOpen]
+  );
 
   const handleBellOnMouseEnter = useCallback(
     (event: React.MouseEvent) => {

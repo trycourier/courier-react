@@ -68,7 +68,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <Heading>
         <h3>Preferences</h3>
         <PreferenceSubHeader onClick={handleSetView("messages")}>
-          <BackSvg /> Back to Inbox
+          {`◀ Back to Inbox`}
         </PreferenceSubHeader>
       </Heading>
       <SettingsIconButton onClick={handleSetView("messages")}>
