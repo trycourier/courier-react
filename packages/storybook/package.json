@@ -22,6 +22,7 @@
     "@storybook/addon-links": "^6.1.14",
     "@storybook/react": "^6.1.14",
     "@trycourier/react-inbox": "^0.1.10-beta.1",
+    "@trycourier/react-preferences": "^0.1.10-beta.1",
     "@trycourier/react-provider": "^0.1.10-beta.1",
     "@trycourier/react-toast": "^0.1.10-beta.1",
     "react-markdown": "^6.0.1",
