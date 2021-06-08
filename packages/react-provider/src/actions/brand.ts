@@ -19,6 +19,13 @@ settings {
     }
   }
 }
+preferenceTemplates {
+  nodes {
+    defaultStatus
+    templateName
+    templateId
+  }
+}
 `;
 
 const GET_BRAND = `
@@ -45,11 +52,15 @@ export const getBrand = async (client, brandId) => {
     : await client.query(GET_DEFAULT_BRAND);
 
   const brandProp = brandId ? "brand" : "defaultBrand";
-  const colors = results?.data?.[brandProp]?.settings?.colors;
-  const inapp = results?.data?.[brandProp]?.settings?.inapp;
+  const brand = results?.data?.[brandProp];
+
+  const colors = brand?.settings?.colors;
+  const inapp = brand?.settings?.inapp;
+  const preferenceTemplates = brand?.preferenceTemplates?.nodes;
 
   return {
     colors,
     inapp,
+    preferenceTemplates,
   };
 };

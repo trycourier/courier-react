@@ -1,31 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 
-import { Preferences } from "./preferences";
-import { usePreferenceTemplates } from "../hooks";
+import { PreferenceTemplate } from "./PreferenceTemplate";
+import reducer from "~/reducer";
+import usePreferenceActions from "~/hooks/use-preferences-actions";
 import styled from "styled-components";
 
 export const StyledList = styled.div`
-  background: "#F9FAFB";
+  padding: 0 24px;
   overflow: scroll;
   display: flex;
   height: 410px;
   flex-direction: column;
-  border-top: "1px solid rgba(203,213,224,.5)";
+  border-top: 1px solid rgba(203, 213, 224, 0.5);
   scroll-snap-type: "y proximity";
 `;
 
 export const PreferenceList: React.FunctionComponent = () => {
-  const preferenceTemplates = usePreferenceTemplates();
+  const { brand, preferences } = useCourier();
+  const { fetchRecipientPreferences } = usePreferenceActions();
+
+  useEffect(() => {
+    registerReducer("preferences", reducer);
+    fetchRecipientPreferences();
+  }, []);
+
   return (
     <StyledList>
-      {!preferenceTemplates?.length ? (
+      {preferences?.isLoading || !brand?.preferenceTemplates?.length ? (
         <></>
       ) : (
-        preferenceTemplates.map((template) => (
-          <Preferences
+        brand?.preferenceTemplates?.map((template) => (
+          <PreferenceTemplate
             key={template.templateId}
             preferenceTemplate={template}
-          ></Preferences>
+            recipientPreference={preferences?.recipientPreferences?.find(
+              (preference) => preference.templateId === template.templateId
+            )}
+          ></PreferenceTemplate>
         ))
       )}
     </StyledList>

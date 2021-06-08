@@ -1,23 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Toggle from "react-toggle";
-import { PreferenceItemComponentFn } from "../types";
+import { PreferenceItemComponentFn, PreferenceStatus } from "../types";
 import { StyledToggle } from "./StyledToggle";
 
 export const StatusPreference: PreferenceItemComponentFn = ({
-  label,
+  //label,
   value,
-  handleOnPreferenceChange,
+  onPreferenceChange,
 }) => {
-  const onToggleStatusChange = () => {
-    const toggledValue = value === "OPTED_IN" ? "OPTED_OUT" : "OPTED_IN";
-    handleOnPreferenceChange({ status: toggledValue });
+  const [checked, setChecked] = useState(
+    ["REQUIRED", "OPTED_IN"].includes(value as PreferenceStatus)
+  );
+
+  const onToggleStatusChange = (event) => {
+    setChecked(event.target.checked);
+    const toggledValue = event.target.checked ? "OPTED_IN" : "OPTED_OUT";
+    onPreferenceChange({ status: toggledValue });
   };
+
   return (
-    <StyledToggle>
-      <label>{label}</label>
+    <StyledToggle checked={checked}>
+      <label>{value === "REQUIRED" ? "Required" : "Opted In"}</label>
       <Toggle
         icons={false}
-        checked={value === "OPTED_IN" ? true : false}
+        disabled={value === "REQUIRED"}
+        checked={checked}
         value={value}
         onChange={onToggleStatusChange}
       />

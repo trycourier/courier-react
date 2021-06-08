@@ -23,11 +23,13 @@ interface InboxState {
       isRead: boolean;
     };
   };
+  view: "messages" | "preferences";
 }
 
 const initialState: InboxState = {
   isOpen: false,
   messages: [],
+  view: "messages",
   unreadMessageCount: 0,
 };
 
@@ -38,6 +40,13 @@ export default (state: InboxState = initialState, action) => {
         ...state,
         ...action.payload,
         currentTab: action.payload?.tabs?.[0],
+      };
+    }
+
+    case "inbox/SET_VIEW": {
+      return {
+        ...state,
+        view: action.payload,
       };
     }
 

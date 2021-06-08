@@ -13,6 +13,4 @@ export interface IHeaderProps {
     };
   };
   messages: IMessage[];
-  view: InboxView;
-  onViewToggle: (view: InboxView) => void;
 }

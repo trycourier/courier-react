@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Message from "../Message";
 import { InboxProps } from "../../types";
 import TabList from "../TabList";
@@ -9,8 +9,10 @@ import CourierLogo from "~/assets/courier_logo_text.svg";
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import useInbox from "~/hooks/use-inbox";
 import Header from "./Header";
-import { InboxView } from "./Header/types";
-//import { PreferenceList } from "@trycourier/react-preferences";
+import {
+  PreferenceList,
+  usePreferencesActions,
+} from "@trycourier/react-preferences";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
@@ -18,6 +20,7 @@ const Messages: React.ForwardRefExoticComponent<
   }
 > = React.forwardRef(
   ({ title = "Inbox", renderHeader, renderMessage }, ref) => {
+    const { fetchRecipientPreferences } = usePreferencesActions();
     const {
       fetchMessages,
       markAllAsRead,
@@ -25,11 +28,10 @@ const Messages: React.ForwardRefExoticComponent<
       isLoading,
       messages = [],
       startCursor,
+      view,
       unreadMessageCount,
     } = useInbox();
     const messageListRef = useRef<HTMLDivElement>(null);
-
-    const [view, setView] = useState<InboxView>("messages");
 
     useAtBottom(
       messageListRef,
@@ -47,6 +49,10 @@ const Messages: React.ForwardRefExoticComponent<
     );
 
     useEffect(() => {
+      fetchRecipientPreferences();
+    }, []);
+
+    useEffect(() => {
       fetchMessages(currentTab?.filter);
     }, [currentTab]);
 
@@ -61,8 +67,6 @@ const Messages: React.ForwardRefExoticComponent<
             unreadMessageCount={unreadMessageCount}
             markAllAsRead={markAllAsRead}
             messages={messages}
-            view={view}
-            onViewToggle={setView}
           />
         )}
         {view === "messages" ? (
@@ -86,11 +90,8 @@ const Messages: React.ForwardRefExoticComponent<
             </MessageList>
           </>
         ) : (
-          {
-            /*<PreferenceList />*/
-          }
+          <PreferenceList />
         )}
-
         <Footer>
           <a href="https://www.courier.com">
             Powered by&nbsp;&nbsp;

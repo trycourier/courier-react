@@ -31,6 +31,13 @@ const useInboxActions = () => {
       });
     },
 
+    setView: (view: "messages" | "preferences") => {
+      dispatch({
+        type: "inbox/SET_VIEW",
+        payload: view,
+      });
+    },
+
     setCurrentTab: (newTab: string) => {
       dispatch({
         type: "inbox/SET_CURRENT_TAB",
