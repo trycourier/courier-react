@@ -22,7 +22,7 @@ const StyledItem = styled.div`
   }
 `;
 
-export const Preferences: React.FunctionComponent<{
+export const PreferenceTemplate: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
   recipientPreference?: IRecipientPreference;
 }> = ({ preferenceTemplate, recipientPreference }) => {

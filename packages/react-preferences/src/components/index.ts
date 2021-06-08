@@ -1,2 +1,2 @@
-export { Preferences } from "./Preferences";
+export { PreferenceTemplate } from "./PreferenceTemplate";
 export { PreferenceList } from "./PreferenceList";

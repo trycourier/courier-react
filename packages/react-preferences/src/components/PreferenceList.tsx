@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
 
-import { Preferences } from "./Preferences";
+import { PreferenceTemplate } from "./PreferenceTemplate";
 import reducer from "~/reducer";
 import usePreferenceActions from "~/hooks/use-preferences-actions";
 import styled from "styled-components";
@@ -31,13 +31,13 @@ export const PreferenceList: React.FunctionComponent = () => {
         <></>
       ) : (
         brand?.preferenceTemplates?.map((template) => (
-          <Preferences
+          <PreferenceTemplate
             key={template.templateId}
             preferenceTemplate={template}
             recipientPreference={preferences?.recipientPreferences?.find(
               (preference) => preference.templateId === template.templateId
             )}
-          ></Preferences>
+          ></PreferenceTemplate>
         ))
       )}
     </StyledList>
