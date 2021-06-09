@@ -12,7 +12,7 @@
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
     "eslint": "eslint './packages/**/*.{ts,tsx}' --fix",
     "export:storybook": "lerna run build && lerna run export:storybook",
-    "lerna:publish": "lerna publish from-package --no-verify-access",
+    "lerna:publish": "lerna publish from-package --no-verify-access --yes",
     "lerna:publish:internal": "lerna publish --yes --canary --dist-tag internal --no-verify-access --force-publish=* --preid",
     "lerna:version": "lerna version --no-push --no-git-tag-version",
     "lerna": "lerna",
