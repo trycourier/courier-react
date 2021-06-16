@@ -99,8 +99,8 @@ export function MultiLineMessage() {
   return (
     <CourierProvider>
       <ToastBody
-        body="This is a really long message lalalalalala"
-        title="This is a really long title lalalalalala"
+        body="This is a really long message lalalalalalalalalalalala lalalalalala"
+        title="This is a really long title lalalalalala lalalalalala lalalalalala"
       />
     </CourierProvider>
   );

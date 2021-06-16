@@ -105,11 +105,6 @@ export const TextBlock = styled.div(({ theme }) =>
       lineHeight: "16px",
       letterSpacing: "0em",
       textAlign: "left",
-      display: "-webkit-box",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      WebkitLineClamp: "2",
-      WebkitBoxOrient: "vertical",
     },
     theme.message?.textBlock
   )
