@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@trycourier/react-provider": "^0.1.10-beta.2",
+    "@trycourier/react-provider": "0.1.10-beta.2",
     "concat-md": "^0.3.5",
     "deep-extend": "^0.6.0",
     "react-toastify": "^6.2.0",
