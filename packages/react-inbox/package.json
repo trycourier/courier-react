@@ -21,8 +21,8 @@
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
-    "@trycourier/react-preferences": "^0.1.10-beta.2",
-    "@trycourier/react-provider": "^0.1.10-beta.2",
+    "@trycourier/react-preferences": "0.1.10-beta.2",
+    "@trycourier/react-provider": "0.1.10-beta.2",
     "classnames": "^2.2.6",
     "concat-md": "^0.3.5",
     "date-fns": "^2.19.0",
