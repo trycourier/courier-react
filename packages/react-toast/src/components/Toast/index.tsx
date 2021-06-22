@@ -43,7 +43,6 @@ export const Toast: React.FunctionComponent<
 
   const brand = config?.brand ?? courierBrand;
 
-  console.log("brand", brand);
   const handleToast = useCallback(
     (message: ICourierToastMessage | string) => {
       message =
