@@ -34,11 +34,9 @@ export const Tab = styled.div(({ theme }) =>
       borderBottom: "2px solid transparent",
 
       "&.active": {
-        color: theme?.brand?.colors?.secondary ?? "#9121c2",
+        color: theme?.brand?.colors?.primary ?? "#9121c2",
         fontWeight: "600",
-        borderBottom: `2px solid ${
-          theme?.brand?.colors?.secondary ?? "#9121c2"
-        }`,
+        borderBottom: `2px solid ${theme?.brand?.colors?.primary ?? "#9121c2"}`,
       },
     },
     theme?.tabList?.tab

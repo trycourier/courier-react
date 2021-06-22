@@ -8,7 +8,7 @@ export const Container = styled.div(({ theme }) =>
     {
       display: "flex",
       position: "relative",
-      padding: "10px 15px",
+      padding: "10px 12px 10px 20px",
       backgroundColor: "#F9FAFB",
       alignItems: "center",
       maxHeight: 90,
@@ -27,7 +27,7 @@ export const Container = styled.div(({ theme }) =>
 
 export const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
-  marginLeft: 18,
+  marginLeft: 14,
   ...theme.message?.contents,
 }));
 
@@ -110,6 +110,10 @@ export const TimeAgo = styled.div(({ theme }) =>
       fontStyle: "normal",
       fontWeight: "400",
       lineHeight: "14px",
+      whiteSpace: "nowrap",
+      maxWidth: "55px",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
     },
     theme.message?.timeAgo
   )
@@ -135,7 +139,8 @@ export const UnreadIndicator = styled.div(({ theme }) =>
       width: 6,
       backgroundColor: theme?.brand?.colors?.tertiary ?? "#9121c2",
       borderRadius: "50%",
-      marginRight: 12,
+      position: "absolute",
+      left: "8px",
     },
     theme?.message?.unreadIndicator
   )

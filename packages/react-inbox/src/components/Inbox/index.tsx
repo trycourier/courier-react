@@ -36,8 +36,8 @@ const StyledTippy = styled(LazyTippy)<{
       background: "#FFFFFF !important",
       backgroundColor: "#FFFFFF !important",
       boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-      minWidth: 450,
-      maxHeight: 545,
+      width: 350,
+      maxHeight: 430,
 
       borderRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
       outline: "none",

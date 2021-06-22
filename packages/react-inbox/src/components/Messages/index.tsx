@@ -13,6 +13,7 @@ import {
   PreferenceList,
   usePreferencesActions,
 } from "@trycourier/react-preferences";
+import { useCourier } from "@trycourier/react-provider";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
@@ -20,8 +21,10 @@ const Messages: React.ForwardRefExoticComponent<
   }
 > = React.forwardRef(
   ({ title = "Inbox", renderHeader, renderMessage }, ref) => {
+    const { brand: courierBrand } = useCourier();
     const { fetchRecipientPreferences } = usePreferencesActions();
     const {
+      brand: inboxBrand,
       fetchMessages,
       markAllAsRead,
       currentTab,
@@ -32,6 +35,8 @@ const Messages: React.ForwardRefExoticComponent<
       unreadMessageCount,
     } = useInbox();
     const messageListRef = useRef<HTMLDivElement>(null);
+
+    const brand = inboxBrand ?? courierBrand;
 
     useAtBottom(
       messageListRef,
@@ -92,12 +97,14 @@ const Messages: React.ForwardRefExoticComponent<
         ) : (
           <PreferenceList />
         )}
-        <Footer>
-          <a href="https://www.courier.com">
-            Powered by&nbsp;&nbsp;
-            <CourierLogo />
-          </a>
-        </Footer>
+        {!brand?.inapp?.disableCourierFooter && (
+          <Footer>
+            <a href="https://www.courier.com">
+              Powered by&nbsp;&nbsp;
+              <CourierLogo />
+            </a>
+          </Footer>
+        )}
       </div>
     );
   }
