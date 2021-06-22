@@ -34,7 +34,14 @@ export const Toast: React.FunctionComponent<
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, transport, dispatch, brand } = courierContext;
+  const {
+    clientKey,
+    transport,
+    dispatch,
+    brand: courierBrand,
+  } = courierContext;
+
+  const brand = config?.brand ?? courierBrand;
 
   const handleToast = useCallback(
     (message: ICourierToastMessage | string) => {
@@ -82,6 +89,7 @@ export const Toast: React.FunctionComponent<
           data-testid="crt-toast-container"
           closeButton={false}
           closeOnClick={false}
+          autoClose={config?.autoClose ?? brand?.inapp?.toast?.autoCloseTimer}
           {...config}
           transition={getTransition(config?.transition)}
         />

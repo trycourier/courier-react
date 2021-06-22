@@ -3,6 +3,7 @@ import { Interceptor } from "./transports/types";
 
 export interface Brand {
   inapp?: {
+    disableCourierFooter?: boolean;
     borderRadius?: string;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";
@@ -13,6 +14,10 @@ export interface Brand {
     icons?: {
       bell?: string;
       message?: string;
+    };
+    toast?: {
+      borderRadius?: string;
+      timerAutoClose?: number;
     };
   };
   colors?: {

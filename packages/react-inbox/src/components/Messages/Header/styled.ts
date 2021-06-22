@@ -35,9 +35,7 @@ export const MarkAllAsRead = styled.div(({ theme }) => ({
   fontStyle: "normal",
   fontWeight: 400,
   letterSpacing: "0em",
-  color: theme?.brand?.inapp?.colors?.invertHeader
-    ? "white"
-    : theme?.brand?.colors?.primary ?? "#9121c2",
+  color: theme?.brand?.inapp?.colors?.invertHeader ? "white" : "#73819B",
 }));
 
 export const Heading = styled.div`

@@ -52,6 +52,7 @@ export const Container = styled.div`
   padding: 0 12px;
   width: 100%;
   position: relative;
+  border-radius: 5px;
 
   &:hover ${Dismiss} {
     opacity: 1;

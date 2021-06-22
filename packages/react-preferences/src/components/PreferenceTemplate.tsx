@@ -13,12 +13,13 @@ const StyledItem = styled.div`
   border-radius: 4px;
   color: #333;
 
-  h4 {
+  .template-name {
     font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
     margin-bottom: 6px;
+    font-weight: bold;
   }
 `;
 
@@ -41,7 +42,7 @@ export const PreferenceTemplate: React.FunctionComponent<{
 
   return (
     <StyledItem>
-      <h4>{preferenceTemplate.templateName}</h4>
+      <div className="template-name">{preferenceTemplate.templateName}</div>
       <StatusPreference
         value={
           preferenceTemplate?.defaultStatus === "REQUIRED"

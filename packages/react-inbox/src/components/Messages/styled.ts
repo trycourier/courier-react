@@ -7,8 +7,8 @@ export const MessageList = styled.div(({ theme }) =>
       background: "#FFFFFF",
       overflow: "scroll",
       display: "flex",
-      maxHeight: 365,
-      minHeight: 280,
+      height: 280,
+      maxHeight: 280,
       flexDirection: "column",
       borderTop: "1px solid rgba(203,213,224,.5)",
       scrollSnapType: "y proximity",
@@ -89,15 +89,15 @@ export const Footer = styled.div(({ theme }) =>
   )
 );
 
-export const Line = styled.div`
-  background-color: rgb(165, 116, 164);
-  height: 4px;
-  flex: 1;
-  opacity: 0.18;
-  :first-child {
-    margin-right: 15px;
-  }
-  :last-child {
-    margin-left: 15px;
-  }
-`;
+export const Line = styled.div(({ theme }) => ({
+  backgroundColor: theme?.brand?.colors?.primary ?? "#9121c2",
+  height: "4px",
+  flex: 1,
+  opacity: "0.18",
+  ":first-child": {
+    marginRight: "15px",
+  },
+  ":last-child": {
+    marginLeft: "15px",
+  },
+}));

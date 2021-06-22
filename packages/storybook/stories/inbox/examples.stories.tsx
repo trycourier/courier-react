@@ -134,6 +134,7 @@ export function Branded() {
           tertiary: color("Tertiary", "red"),
         },
         inapp: {
+          disableCourierFooter: boolean("Disable Footer", true),
           borderRadius: text("Border Radius", "24px"),
           disableMessageIcon: boolean("Disable Message Icon", false),
           placement: select("Placement", ["bottom", "left", "right"], "right"),
