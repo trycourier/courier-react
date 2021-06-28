@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox",
-  "version": "0.1.12-beta.0",
+  "version": "0.1.12-beta.1",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -11,7 +11,6 @@
     "clean": "rimraf dist",
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
-    "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "ISC",
@@ -21,10 +20,9 @@
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
-    "@trycourier/react-preferences": "^0.1.12-beta.0",
-    "@trycourier/react-provider": "^0.1.12-beta.0",
+    "@trycourier/react-preferences": "^0.1.12-beta.1",
+    "@trycourier/react-provider": "^0.1.12-beta.1",
     "classnames": "^2.2.6",
-    "concat-md": "^0.3.5",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
     "react-loading-skeleton": "^2.2.0",
