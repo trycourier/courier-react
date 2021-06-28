@@ -8,6 +8,7 @@ settings {
   inapp {
     borderRadius
     disableMessageIcon
+    disableCourierFooter
     placement
     colors {
       invertHeader
@@ -16,6 +17,10 @@ settings {
     icons {
       bell
       message
+    }
+    toast {
+      timerAutoClose
+      borderRadius
     }
   }
 }
