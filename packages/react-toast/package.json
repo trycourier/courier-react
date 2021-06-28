@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-toast",
-  "version": "0.1.12-beta.0",
+  "version": "0.1.12-beta.1",
   "description": "Beautiful, easy React toast notifications",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -21,9 +21,11 @@
     "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "MIT",
+  "devDependencies": {
+    "concat-md": "^0.3.5"
+  },
   "dependencies": {
-    "@trycourier/react-provider": "^0.1.12-beta.0",
-    "concat-md": "^0.3.5",
+    "@trycourier/react-provider": "^0.1.12-beta.1",
     "deep-extend": "^0.6.0",
     "react-toastify": "^6.2.0",
     "rimraf": "^3.0.2",
