@@ -76,6 +76,8 @@ export const Toast: React.FunctionComponent<
 
   useListenForTransportEvent(clientKey, transport, handleToast);
 
+  const autoClose = config?.autoClose ?? brand?.inapp?.toast?.timerAutoClose;
+
   return (
     <>
       <GlobalStyle />
@@ -89,7 +91,7 @@ export const Toast: React.FunctionComponent<
           data-testid="crt-toast-container"
           closeButton={false}
           closeOnClick={false}
-          autoClose={config?.autoClose ?? brand?.inapp?.toast?.timerAutoClose}
+          autoClose={autoClose ? Number(autoClose) : undefined}
           {...config}
           transition={getTransition(config?.transition)}
         />
