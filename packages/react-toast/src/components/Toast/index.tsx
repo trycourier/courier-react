@@ -89,7 +89,7 @@ export const Toast: React.FunctionComponent<
           data-testid="crt-toast-container"
           closeButton={false}
           closeOnClick={false}
-          autoClose={config?.autoClose ?? brand?.inapp?.toast?.autoCloseTimer}
+          autoClose={config?.autoClose ?? brand?.inapp?.toast?.timerAutoClose}
           {...config}
           transition={getTransition(config?.transition)}
         />
