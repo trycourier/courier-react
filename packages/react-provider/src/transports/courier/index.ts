@@ -20,12 +20,13 @@ export class CourierTransport extends Transport {
     this.clientKey = options.clientKey;
     this.userSignature = options.userSignature;
     this.ws = new WS({
+      clientKey: options.clientKey,
       url:
         options.wsUrl ??
         COURIER_WS_URL ??
         "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production",
     });
-    this.ws.connect(options.clientKey);
+    this.ws.connect();
   }
 
   send(message: any): void {

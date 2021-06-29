@@ -5,29 +5,38 @@ export class WS {
   protected connected;
   protected messageCallback;
   private url: string;
+  private clientKey: string;
 
-  constructor({ url }) {
+  constructor({ url, clientKey }: { url: string; clientKey: string }) {
     this.messageCallback = null;
     this.connection = undefined;
     this.connected = false;
     this.url = url;
+    this.clientKey = clientKey;
   }
 
-  connect(clientKey: string): void {
-    const url = `${this.url}/?clientKey=${clientKey}`;
+  connect(): void {
+    const url = `${this.url}/?clientKey=${this.clientKey}`;
     this.connection = new WebSocket(url);
+
     if (!this.connection) {
-      console.error("error creating websocket connection");
+      console.error("error creating courier websocket connection");
+      setTimeout(() => {
+        this.connect();
+      }, 1000);
       return;
     }
+
     this.connection.onopen = () => {
       this.connected = true;
     };
+
     this.connection.onclose = () => {
-      // i want to watch and see if we get connection closed events
-      // i think we will want to reconnect when this happens
-      console.warn("ws connection closed");
+      setTimeout(() => {
+        this.connect();
+      }, 1000);
     };
+
     this.connection.onmessage = this.onMessage.bind(this);
   }
 
