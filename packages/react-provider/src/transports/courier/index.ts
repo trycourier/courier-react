@@ -1,3 +1,4 @@
+import { ICourierMessage } from "@trycourier/react-provider";
 import { WS } from "../../ws";
 import { Transport } from "../base";
 import { Interceptor } from "../types";
@@ -5,11 +6,10 @@ import { COURIER_WS_URL } from "./constants";
 import { ITransportOptions } from "./types";
 
 export class CourierTransport extends Transport {
-  protected channel: any;
   protected ws: WS;
   protected clientKey: string;
   protected userSignature?: string;
-  protected interceptor?: Interceptor;
+  protected declare interceptor?: Interceptor;
 
   constructor(options: ITransportOptions) {
     super();
@@ -29,7 +29,7 @@ export class CourierTransport extends Transport {
     this.ws.connect();
   }
 
-  send(message: any): void {
+  send(message: ICourierMessage): void {
     this.ws.send({
       ...message,
       data: {
@@ -40,7 +40,7 @@ export class CourierTransport extends Transport {
   }
 
   subscribe(channel: string, event?: string): void {
-    this.ws.subscribe(channel, event ?? "*", this.clientKey, ({ data }) => {
+    this.ws.subscribe(channel, event ?? "*", ({ data }) => {
       if (this.interceptor) {
         data = this.interceptor(data);
       }
@@ -54,6 +54,6 @@ export class CourierTransport extends Transport {
   }
 
   unsubscribe(channel: string, event?: string): void {
-    this.ws.unsubscribe(channel, event ?? "*", this.clientKey);
+    this.ws.unsubscribe(channel, event ?? "*");
   }
 }

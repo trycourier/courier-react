@@ -1,8 +1,13 @@
-import { ICourierEventCallback } from "./transports/types";
+import { ICourierEventCallback, ICourierMessage } from "./transports/types";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
 export class WS {
   connection?: ReconnectingWebSocket;
+  private subscriptions: Array<{
+    channel: string;
+    event?: string;
+    callback: ICourierEventCallback;
+  }>;
   protected connected;
   protected messageCallback;
   private url: string;
@@ -14,6 +19,7 @@ export class WS {
     this.connected = false;
     this.url = url;
     this.clientKey = clientKey;
+    this.subscriptions = [];
   }
 
   connect(): void {
@@ -21,59 +27,68 @@ export class WS {
       `${this.url}/?clientKey=${this.clientKey}`
     );
 
-    if (!this.connection) {
-      console.error("error creating courier websocket connection");
-      setTimeout(() => {
-        this.connect();
-      }, 1000);
-      return;
-    }
-
-    this.connection.onopen = () => {
-      this.connected = true;
-    };
-
+    this.connection.onopen = this.onOpen.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
   }
 
-  onMessage({ data }: { data: string }): void {
-    try {
-      data = JSON.parse(data);
-    } catch {
-      console.error("Error Parsing Message");
-    }
+  onOpen(): void {
+    this.connected = true;
 
-    if (data && this.messageCallback) {
-      this.messageCallback({ data });
+    for (const sub of this.subscriptions) {
+      this.send({
+        action: "subscribe",
+        data: {
+          channel: sub.channel,
+          event: sub.event,
+          clientKey: this.clientKey,
+        },
+      });
     }
   }
 
-  waitForOpen(): Promise<any> {
-    return new Promise((resolve) => {
-      if (this.connected) {
-        resolve(true);
-      } else {
-        this.connection?.addEventListener("open", resolve);
+  onMessage({ data }: { data: string }): void {
+    let message: ICourierMessage;
+
+    try {
+      message = JSON.parse(data);
+    } catch {
+      console.error("Error Parsing Courier Message");
+      return;
+    }
+
+    console.log("message", message);
+
+    for (const sub of this.subscriptions) {
+      console.log("sub", sub);
+      if (sub.event !== "*" && sub.event !== message?.event) {
+        continue;
       }
-    });
+
+      sub.callback({ data: message });
+    }
   }
 
   async subscribe(
     channel: string,
     event: string,
-    clientKey: string,
     callback: ICourierEventCallback
   ): Promise<void> {
-    await this.waitForOpen();
-    this.send({
-      action: "subscribe",
-      data: {
-        channel,
-        event,
-        clientKey,
-      },
+    this.subscriptions.push({
+      channel,
+      event,
+      callback,
     });
-    this.messageCallback = callback;
+
+    if (this.connected) {
+      this.send({
+        action: "subscribe",
+        data: {
+          channel,
+          event,
+          clientKey: this.clientKey,
+        },
+      });
+    }
   }
 
   send(message: { [key: string]: any }): void {
@@ -85,13 +100,17 @@ export class WS {
     this.connection.send(JSON.stringify(message));
   }
 
-  unsubscribe(channel: string, event: string, clientKey: string): void {
+  unsubscribe(channel: string, event: string): void {
+    this.subscriptions = this.subscriptions.filter((sub) => {
+      return sub.channel === channel && sub.event === event;
+    });
+
     this.send({
       action: "unsubscribe",
       data: {
         channel,
         event,
-        clientKey,
+        clientKey: this.clientKey,
       },
     });
   }
