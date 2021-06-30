@@ -11,7 +11,7 @@
     "clean": "rimraf dist",
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
-    "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+    "types": "tsc --showConfig --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "ISC",
   "dependencies": {
