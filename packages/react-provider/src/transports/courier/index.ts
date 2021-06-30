@@ -1,7 +1,6 @@
-import { ICourierMessage } from "@trycourier/react-provider";
 import { WS } from "../../ws";
 import { Transport } from "../base";
-import { Interceptor } from "../types";
+import { Interceptor, ICourierMessage } from "../types";
 import { COURIER_WS_URL } from "./constants";
 import { ITransportOptions } from "./types";
 
