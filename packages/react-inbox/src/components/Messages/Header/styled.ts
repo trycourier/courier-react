@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const Container = styled.div<{ view?: string }>(({ theme, view }) => ({
-  padding: "18px 20px 12px",
+  padding: "18px",
   userSelect: "none",
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   fontSize: 18,
   fontWeight: 700,
-  lineHeight: "25px",
+  height: "65px",
   color: theme?.brand?.inapp?.colors?.invertHeader
     ? "white"
     : "rgb(36, 50, 75)",
@@ -61,13 +62,10 @@ export const MessageSubHeader = styled.h5(({ theme }) => ({
   lineHeight: "22px",
 }));
 
-export const PreferenceSubHeader = styled.h5(({ theme }) => ({
+export const PreferenceSubHeader = styled.a(({ theme }) => ({
   cursor: "pointer",
   color: theme?.brand?.inapp?.colors?.invertHeader
     ? "white"
     : theme?.brand?.colors?.primary ?? "#9121c2",
-  fontStyle: "normal",
-  fontWeight: "bold",
   fontSize: "12px",
-  lineHeight: "16px",
 }));

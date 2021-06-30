@@ -51,6 +51,9 @@ const StyledTippy = styled(LazyTippy)<{
         maxHeight: 545,
         display: "flex",
         flexDirection: "column",
+        "&, *": {
+          boxSizing: "border-box",
+        },
         "> div": {
           flex: 1,
           maxHeight: 545,
