@@ -1,74 +1,96 @@
-import { ICourierEventCallback } from "./transports/types";
+import { ICourierEventCallback, ICourierMessage } from "./transports/types";
+import ReconnectingWebSocket from "reconnecting-websocket";
 
 export class WS {
-  connection?: WebSocket;
+  connection?: ReconnectingWebSocket;
+  private subscriptions: Array<{
+    channel: string;
+    event?: string;
+    callback: ICourierEventCallback;
+  }>;
   protected connected;
   protected messageCallback;
   private url: string;
+  private clientKey: string;
 
-  constructor({ url }) {
+  constructor({ url, clientKey }: { url: string; clientKey: string }) {
     this.messageCallback = null;
     this.connection = undefined;
     this.connected = false;
     this.url = url;
+    this.clientKey = clientKey;
+    this.subscriptions = [];
   }
 
-  connect(clientKey: string): void {
-    const url = `${this.url}/?clientKey=${clientKey}`;
-    this.connection = new WebSocket(url);
-    if (!this.connection) {
-      console.error("error creating websocket connection");
-      return;
-    }
-    this.connection.onopen = () => {
-      this.connected = true;
-    };
-    this.connection.onclose = () => {
-      // i want to watch and see if we get connection closed events
-      // i think we will want to reconnect when this happens
-      console.warn("ws connection closed");
-    };
+  connect(): void {
+    this.connection = new ReconnectingWebSocket(
+      `${this.url}/?clientKey=${this.clientKey}`
+    );
+
+    this.connection.onopen = this.onOpen.bind(this);
+    this.connection.onclose = this.onClose.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
   }
 
-  onMessage({ data }: { data: string }): void {
-    try {
-      data = JSON.parse(data);
-    } catch {
-      console.error("Error Parsing Message");
-    }
+  onClose(): void {
+    this.connected = false;
+  }
 
-    if (data && this.messageCallback) {
-      this.messageCallback({ data });
+  onOpen(): void {
+    this.connected = true;
+
+    for (const sub of this.subscriptions) {
+      this.send({
+        action: "subscribe",
+        data: {
+          channel: sub.channel,
+          event: sub.event,
+          clientKey: this.clientKey,
+        },
+      });
     }
   }
 
-  waitForOpen(): Promise<any> {
-    return new Promise((resolve) => {
-      if (this.connected) {
-        resolve(true);
-      } else {
-        this.connection?.addEventListener("open", resolve);
+  onMessage({ data }: { data: string }): void {
+    let message: ICourierMessage;
+
+    try {
+      message = JSON.parse(data);
+    } catch {
+      console.error("Error Parsing Courier Message");
+      return;
+    }
+
+    for (const sub of this.subscriptions) {
+      if (sub.event !== "*" && sub.event !== message?.event) {
+        continue;
       }
-    });
+
+      sub.callback({ data: message });
+    }
   }
 
   async subscribe(
     channel: string,
     event: string,
-    clientKey: string,
     callback: ICourierEventCallback
   ): Promise<void> {
-    await this.waitForOpen();
-    this.send({
-      action: "subscribe",
-      data: {
-        channel,
-        event,
-        clientKey,
-      },
+    this.subscriptions.push({
+      channel,
+      event,
+      callback,
     });
-    this.messageCallback = callback;
+
+    if (this.connected) {
+      this.send({
+        action: "subscribe",
+        data: {
+          channel,
+          event,
+          clientKey: this.clientKey,
+        },
+      });
+    }
   }
 
   send(message: { [key: string]: any }): void {
@@ -80,13 +102,17 @@ export class WS {
     this.connection.send(JSON.stringify(message));
   }
 
-  unsubscribe(channel: string, event: string, clientKey: string): void {
+  unsubscribe(channel: string, event: string): void {
+    this.subscriptions = this.subscriptions.filter((sub) => {
+      return !(sub.channel === channel && sub.event === event);
+    });
+
     this.send({
       action: "unsubscribe",
       data: {
         channel,
         event,
-        clientKey,
+        clientKey: this.clientKey,
       },
     });
   }
