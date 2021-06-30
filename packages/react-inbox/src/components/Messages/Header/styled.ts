@@ -5,8 +5,10 @@ export const Container = styled.div<{ view?: string }>(({ theme, view }) => ({
   userSelect: "none",
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   fontSize: 18,
   fontWeight: 700,
+  height: "35px",
   lineHeight: "25px",
   color: theme?.brand?.inapp?.colors?.invertHeader
     ? "white"
