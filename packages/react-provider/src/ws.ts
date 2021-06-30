@@ -1,7 +1,8 @@
 import { ICourierEventCallback } from "./transports/types";
+import ReconnectingWebSocket from "reconnecting-websocket";
 
 export class WS {
-  connection?: WebSocket;
+  connection?: ReconnectingWebSocket;
   protected connected;
   protected messageCallback;
   private url: string;
@@ -16,8 +17,9 @@ export class WS {
   }
 
   connect(): void {
-    const url = `${this.url}/?clientKey=${this.clientKey}`;
-    this.connection = new WebSocket(url);
+    this.connection = new ReconnectingWebSocket(
+      `${this.url}/?clientKey=${this.clientKey}`
+    );
 
     if (!this.connection) {
       console.error("error creating courier websocket connection");
@@ -29,12 +31,6 @@ export class WS {
 
     this.connection.onopen = () => {
       this.connected = true;
-    };
-
-    this.connection.onclose = () => {
-      setTimeout(() => {
-        this.connect();
-      }, 1000);
     };
 
     this.connection.onmessage = this.onMessage.bind(this);
