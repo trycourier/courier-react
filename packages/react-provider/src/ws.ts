@@ -32,7 +32,6 @@ export class WS {
   }
 
   onOpen(): void {
-    console.log("wwebsocket open");
     this.connected = true;
 
     for (const sub of this.subscriptions) {
