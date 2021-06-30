@@ -28,7 +28,12 @@ export class WS {
     );
 
     this.connection.onopen = this.onOpen.bind(this);
+    this.connection.onclose = this.onClose.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
+  }
+
+  onClose(): void {
+    this.connected = false;
   }
 
   onOpen(): void {
