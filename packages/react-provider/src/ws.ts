@@ -56,8 +56,6 @@ export class WS {
       return;
     }
 
-    console.log("message", message);
-
     for (const sub of this.subscriptions) {
       console.log("sub", sub);
       if (sub.event !== "*" && sub.event !== message?.event) {
