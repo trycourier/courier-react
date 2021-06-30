@@ -104,7 +104,7 @@ export class WS {
 
   unsubscribe(channel: string, event: string): void {
     this.subscriptions = this.subscriptions.filter((sub) => {
-      return sub.channel === channel && sub.event === event;
+      return !(sub.channel === channel && sub.event === event);
     });
 
     this.send({
