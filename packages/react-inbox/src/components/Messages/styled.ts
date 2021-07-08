@@ -5,9 +5,9 @@ export const Container = styled.div(({ theme }) =>
   deepExtend(
     {
       background:
-        theme.brand.inapp?.widgetBackground?.topColor &&
-        theme.brand.inapp?.widgetBackground?.bottomColor
-          ? `linear-gradient(180deg, ${theme.brand.inapp?.widgetBackground?.topColor} 0%, ${theme.brand.inapp.widgetBackground.bottomColor} 100%)`
+        theme.brand?.inapp?.widgetBackground?.topColor &&
+        theme.brand?.inapp?.widgetBackground?.bottomColor
+          ? `linear-gradient(180deg, ${theme.brand?.inapp?.widgetBackground?.topColor} 0%, ${theme.brand?.inapp?.widgetBackground?.bottomColor} 100%)`
           : theme.brand?.colors?.secondary,
       padding: 17,
       paddingBottom: 0,
@@ -44,7 +44,7 @@ export const Header = styled.div(({ theme }) =>
       fontWeight: "700",
       lineHeight: "25px",
     },
-    theme.header
+    theme?.header
   )
 );
 
@@ -93,7 +93,7 @@ export const Footer = styled.div(({ theme }) =>
         color: "#B9C0CD",
       },
     },
-    theme.footer
+    theme?.footer
   )
 );
 
