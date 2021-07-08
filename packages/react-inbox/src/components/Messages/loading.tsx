@@ -29,6 +29,7 @@ const Loading: React.FunctionComponent = () => {
       <MessageSkeleton />
       <MessageSkeleton />
       <MessageSkeleton />
+      <MessageSkeleton />
     </>
   );
 };

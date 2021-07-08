@@ -2,25 +2,25 @@ import styled from "styled-components";
 
 export const Container = styled.div<{ view?: string }>(({ theme, view }) => ({
   padding: "18px",
+  paddingLeft: "38px",
   userSelect: "none",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  fontSize: 18,
+  fontSize: 24,
   fontWeight: 700,
   height: "65px",
-  color: theme?.brand?.inapp?.colors?.invertHeader
-    ? "white"
-    : "rgb(36, 50, 75)",
-  backgroundColor: theme?.brand?.inapp?.colors?.invertHeader
-    ? theme?.brand?.colors?.primary
-    : "white",
+  color: "rgb(36, 50, 75)",
+  backgroundColor: "white",
 
-  "svg:hover path": {
-    fill: theme?.brand?.colors?.primary ?? "#9121c2",
+  "svg:hover": {
+    background: "#f7f6f9",
+    "path, circle": {
+      stroke: theme?.brand?.colors?.primary ?? "#9121c2",
+    },
   },
-  "svg path": {
-    fill:
+  "svg path, svg circle": {
+    stroke:
       view === "preferences"
         ? theme?.brand?.colors?.primary ?? "#9121c2"
         : undefined,
@@ -29,43 +29,49 @@ export const Container = styled.div<{ view?: string }>(({ theme, view }) => ({
     display: "flex",
     alignItems: "center",
   },
+  borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
+  borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
 }));
 
-export const MarkAllAsRead = styled.div(({ theme }) => ({
+export const MarkAllAsRead = styled.button(() => ({
   fontSize: 14,
   fontStyle: "normal",
   fontWeight: 400,
   letterSpacing: "0em",
-  color: theme?.brand?.inapp?.colors?.invertHeader ? "white" : "#73819B",
+  color: "#73819B",
+  border: "1px solid #E4DFF0",
+  background: "white",
+  padding: "4px 18px",
+  borderRadius: "4px",
+  "&:hover": {
+    background: "#f7f6f9",
+  },
 }));
 
-export const Heading = styled.div`
-  display: flex;
-  flex-direction: column;
-  h3,
-  h5 {
-    margin: 0;
-    svg {
-      width: 3.88px;
-      height: 7.76px;
-    }
-  }
-`;
+export const Heading = styled.div<{
+  flexDirection?: "column";
+  alignItems?: "center";
+}>(({ theme, flexDirection, alignItems }) => ({
+  display: "flex",
+  flexDirection,
+  alignItems,
 
-export const MessageSubHeader = styled.h5(({ theme }) => ({
-  color: theme?.brand?.inapp?.colors?.invertHeader
-    ? "white"
-    : theme?.brand?.colors?.primary ?? "#24324B",
-  fontStyle: "normal",
-  fontWeight: "normal",
-  fontSize: "16px",
-  lineHeight: "22px",
+  ".message-count": {
+    fontSize: 18,
+    marginLeft: 14,
+    background: theme.brand?.colors?.primary,
+    color: "white",
+    borderRadius: "17px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 34,
+    minWidth: 34,
+  },
 }));
 
 export const PreferenceSubHeader = styled.a(({ theme }) => ({
   cursor: "pointer",
-  color: theme?.brand?.inapp?.colors?.invertHeader
-    ? "white"
-    : theme?.brand?.colors?.primary ?? "#9121c2",
+  color: theme?.brand?.colors?.primary ?? "#9121c2",
   fontSize: "12px",
 }));

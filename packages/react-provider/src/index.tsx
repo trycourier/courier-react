@@ -128,7 +128,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
       return;
     }
 
-    if (!graphQLClient.canRequest) {
+    if (!graphQLClient.client) {
       return;
     }
 

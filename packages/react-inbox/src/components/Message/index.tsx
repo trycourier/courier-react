@@ -28,15 +28,8 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const { createTrackEvent, brand: courierBrand } = useCourier();
-  const {
-    brand: inboxBrand,
-    defaultIcon,
-    markMessageRead,
-    markMessageUnread,
-  } = useInbox();
-
-  const brand = inboxBrand ?? courierBrand;
+  const { createTrackEvent } = useCourier();
+  const { brand, defaultIcon, markMessageRead, markMessageUnread } = useInbox();
 
   const renderedIcon = getIcon(
     /* priority:

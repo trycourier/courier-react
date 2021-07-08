@@ -8,7 +8,7 @@ import { IPreferenceTemplate, IRecipientPreference } from "../types";
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;
   padding: 12px 18px;
-  margin-top: 8px;
+  margin-top: 6px;
   background: #f9fafb;
   border-radius: 4px;
   color: #333;

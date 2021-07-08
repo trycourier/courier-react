@@ -7,13 +7,13 @@ export const DEFAULT_TABS = [
   {
     id: "unread",
     label: "Unread",
-    filter: {
+    filters: {
       isRead: false,
     },
   },
   {
     id: "all",
     label: "All Messages",
-    filter: {},
+    filters: {},
   },
 ];

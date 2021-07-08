@@ -1,11 +1,22 @@
 import { Client, createClient } from "urql";
 
 export class GraphQLClient {
-  client: Client;
-  canRequest: boolean;
+  client?: Client;
 
-  constructor({ clientKey, userId, userSignature, apiUrl }) {
-    this.canRequest = Boolean(clientKey && userId);
+  constructor({
+    clientKey,
+    userId,
+    userSignature,
+    apiUrl,
+  }: {
+    clientKey?: string;
+    userId?: string;
+    userSignature?: string;
+    apiUrl?: string;
+  }) {
+    if (!clientKey || !userId) {
+      return;
+    }
 
     this.client = createClient({
       url: `${
@@ -30,7 +41,7 @@ export class GraphQLClient {
   }
 
   query(queryString, variables) {
-    if (!this.canRequest) {
+    if (!this.client) {
       return;
     }
 
@@ -38,7 +49,7 @@ export class GraphQLClient {
   }
 
   mutate(mutateString, variables) {
-    if (!this.canRequest) {
+    if (!this.client) {
       return;
     }
     return this.client.mutation(mutateString, variables).toPromise();

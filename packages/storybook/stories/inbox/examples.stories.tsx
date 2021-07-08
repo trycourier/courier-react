@@ -138,9 +138,9 @@ export function Branded() {
           borderRadius: text("Border Radius", "24px"),
           disableMessageIcon: boolean("Disable Message Icon", false),
           placement: select("Placement", ["bottom", "left", "right"], "right"),
-          colors: {
-            invertHeader: boolean("Invert Header Colors", true),
-            invertButtons: boolean("Invert Button Colors", true),
+          widgetBackground: {
+            topColor: text("Top Colors", "red"),
+            bottomColor: text("Bottom Colors", "blue"),
           },
           icons: {
             bell: text("Bell Icon", ""),

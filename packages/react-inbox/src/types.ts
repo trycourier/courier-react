@@ -23,7 +23,7 @@ export interface InboxProps {
   renderIcon?: React.FunctionComponent<{
     unreadMessageCount?: number;
   }>;
-  renderMessage?: React.FunctionComponent;
+  renderMessage?: React.FunctionComponent<IMessage>;
   tabs?: Array<ITab>;
   theme?: ThemeObject;
   title?: string;
@@ -45,7 +45,7 @@ export interface IMessage {
   body: string;
   blocks?: Array<IActionBlock | ITextBlock>;
   icon?: string;
-  read: boolean;
+  read?: boolean;
   data?: {
     clickAction: string;
   };

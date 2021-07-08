@@ -7,9 +7,9 @@ export interface Brand {
     borderRadius?: string;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";
-    colors?: {
-      invertHeader?: boolean;
-      invertButtons?: boolean;
+    widgetBackground?: {
+      topColor?: string;
+      bottomColor?: string;
     };
     icons?: {
       bell?: string;
@@ -31,7 +31,7 @@ export interface ICourierContext {
   brand?: Brand;
   brandId?: string;
   clientKey?: string;
-  dispatch?: (mergeContext: any) => void;
+  dispatch?: (action: { type: string; payload: any }) => void;
   graphQLClient?: any;
   transport?: Transport;
   userId?: string;

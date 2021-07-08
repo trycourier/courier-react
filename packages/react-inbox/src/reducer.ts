@@ -1,4 +1,5 @@
-import { IMessage } from "./types";
+import { IMessage, ITab } from "./types";
+import { Brand } from "@trycourier/react-provider";
 
 const makeMessage = (message): IMessage => ({
   blocks: message?.content?.blocks,
@@ -11,18 +12,16 @@ const makeMessage = (message): IMessage => ({
   trackingIds: message?.content?.trackingIds,
 });
 
-interface InboxState {
+export interface InboxState {
+  brand?: Brand;
+  defaultIcon?: false | string;
+  tabs?: Array<ITab>;
   isLoading?: boolean;
   isOpen?: boolean;
   messages: Array<IMessage>;
+  startCursor?: string;
   unreadMessageCount: number;
-  currentTab?: {
-    id: string;
-    label: string;
-    filter?: {
-      isRead: boolean;
-    };
-  };
+  currentTab?: ITab;
   view: "messages" | "preferences";
 }
 
@@ -33,7 +32,7 @@ const initialState: InboxState = {
   unreadMessageCount: 0,
 };
 
-export default (state: InboxState = initialState, action) => {
+export default (state: InboxState = initialState, action): InboxState => {
   switch (action.type) {
     case "inbox/INIT": {
       return {
@@ -117,7 +116,7 @@ export default (state: InboxState = initialState, action) => {
         0
       );
 
-      if (state.currentTab?.filter?.isRead === false) {
+      if (state.currentTab?.filters?.isRead === false) {
         return {
           ...state,
           messages: state.messages.filter(
@@ -172,7 +171,7 @@ export default (state: InboxState = initialState, action) => {
     case "inbox/MARK_ALL_AS_READ": {
       const unreadMessageCount = 0;
 
-      if (state.currentTab?.filter?.isRead === false) {
+      if (state.currentTab?.filters?.isRead === false) {
         return {
           ...state,
           messages: [],

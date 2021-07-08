@@ -8,10 +8,11 @@ export const Container = styled.div(({ theme }) =>
     {
       display: "flex",
       position: "relative",
-      padding: "10px 12px 10px 20px",
+      padding: "10px 12px 10px 30px",
       backgroundColor: "#F9FAFB",
       alignItems: "center",
-      maxHeight: 90,
+      marginTop: 6,
+      borderRadius: 6,
       borderBottom: "1px solid rgba(203,213,224,.5)",
       "&.read": {
         backgroundColor: "#F7F6F9",
@@ -27,7 +28,7 @@ export const Container = styled.div(({ theme }) =>
 
 export const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
-  marginLeft: 14,
+  marginLeft: 15,
   ...theme.message?.contents,
 }));
 
@@ -59,11 +60,8 @@ export const TextBlock = styled.div(({ theme }) =>
       fontWeight: "400",
       lineHeight: "16px",
       textAlign: "left",
-      display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      WebkitLineClamp: "2",
-      WebkitBoxOrient: "vertical",
     },
     theme.message?.textBlock
   )
@@ -77,12 +75,8 @@ export const ActionBlock = styled.a<{ href: string; target: string }>(
         cursor: "pointer",
         border: "none",
         fontSize: 12,
-        color: theme?.brand?.inapp?.colors?.invertButtons
-          ? "white"
-          : theme?.brand?.colors?.primary ?? "#9121C2",
-        backgroundColor: theme?.brand?.inapp?.colors?.invertButtons
-          ? theme?.brand?.colors?.primary
-          : "white",
+        color: "white",
+        backgroundColor: theme?.brand?.colors?.primary ?? "#9121C2",
         padding: "6px 15px",
         marginTop: 3,
         boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
@@ -135,12 +129,12 @@ const iconStyles = ({ theme }) =>
 export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
-      height: 6,
-      width: 6,
-      backgroundColor: theme?.brand?.colors?.tertiary ?? "#9121c2",
+      height: 8,
+      width: 8,
+      backgroundColor: theme?.brand?.colors?.primary ?? "#9121c2",
       borderRadius: "50%",
       position: "absolute",
-      left: "8px",
+      left: "13px",
     },
     theme?.message?.unreadIndicator
   )

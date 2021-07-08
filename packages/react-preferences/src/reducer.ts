@@ -1,6 +1,6 @@
 import { IPreferenceTemplate } from "./types";
 
-interface PreferenceState {
+export interface PreferenceState {
   preferences?: IPreferenceTemplate[];
 }
 

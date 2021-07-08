@@ -1,16 +1,18 @@
-import React, { useEffect, useRef, useCallback } from "react";
 import { TippyProps } from "@tippyjs/react";
-import TippyStyle from "./TippyStyle";
-import styled, { ThemeProvider } from "styled-components";
-import deepExtend from "deep-extend";
-import Messages from "../Messages";
-import BellSvg, { Bell } from "./Bell";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
-import LazyTippy from "./LazyTippy";
+import deepExtend from "deep-extend";
+import React, { useEffect, useRef, useCallback } from "react";
+import styled, { ThemeProvider } from "styled-components";
+
 import { useInbox, useClickOutside } from "~/hooks";
-import { InboxProps } from "../../types";
+import BellSvg, { Bell } from "./Bell";
+import LazyTippy from "./LazyTippy";
+import Messages from "../Messages";
 import reducer from "~/reducer";
+import TippyGlobalStyle from "./TippyGlobalStyle";
+
 import { DEFAULT_TABS } from "~/constants";
+import { InboxProps } from "../../types";
 
 const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
@@ -20,7 +22,7 @@ const UnreadIndicator = styled.div(({ theme }) =>
       right: 0,
       borderRadius: "100%",
       padding: 5,
-      background: theme?.brand?.colors?.tertiary ?? "#de5063",
+      background: theme?.brand?.colors?.primary ?? "#de5063",
       animation: "badge-pulse 10s infinite",
     },
     theme.unreadIndicator
@@ -33,11 +35,9 @@ const StyledTippy = styled(LazyTippy)<{
   return deepExtend(
     {
       fontFamily: `'Nunito Sans', sans-serif`,
-      background: "#FFFFFF !important",
-      backgroundColor: "#FFFFFF !important",
       boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-      width: 350,
-      maxHeight: 430,
+      width: "483px",
+      maxWidth: "initial !important",
 
       borderRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
       outline: "none",
@@ -48,15 +48,10 @@ const StyledTippy = styled(LazyTippy)<{
 
       ".tippy-content": {
         padding: 0,
-        maxHeight: 545,
         display: "flex",
         flexDirection: "column",
         "&, *": {
           boxSizing: "border-box",
-        },
-        "> div": {
-          flex: 1,
-          maxHeight: 545,
         },
       },
     },
@@ -72,8 +67,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
-  const { clientKey, userId, brand: remoteBrand } = courierContext;
+  const { clientKey, userId } = courierContext;
   const {
+    brand,
     currentTab,
     fetchMessages,
     getUnreadMessageCount,
@@ -85,8 +81,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     toggleInbox,
     unreadMessageCount,
   } = useInbox();
-
-  const brand = props.brand ?? remoteBrand;
 
   const tippyProps: TippyProps = {
     visible: isOpen,
@@ -161,7 +155,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         return;
       }
 
-      fetchMessages(currentTab?.filter);
+      fetchMessages(currentTab?.filters);
     },
     [isOpen]
   );
@@ -185,7 +179,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   return (
     <>
-      <TippyStyle />
+      <TippyGlobalStyle />
       <ThemeProvider
         theme={{
           ...props.theme,
@@ -197,9 +191,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           content={<Messages ref={ref} {...props} />}
         >
           <Bell
-            isOpen={isOpen}
             aria-pressed="false"
             className={`inbox-bell ${props.className ?? ""}`}
+            isOpen={isOpen ?? false}
             onClick={handleIconOnClick}
             onMouseEnter={handleBellOnMouseEnter}
             role="button"

@@ -7,13 +7,13 @@ import usePreferenceActions from "~/hooks/use-preferences-actions";
 import styled, { ThemeProvider, ThemeProps } from "styled-components";
 
 export const StyledList = styled.div`
-  padding: 0 24px;
   overflow: scroll;
   display: flex;
-  height: 410px;
+  height: 433px;
   flex-direction: column;
   border-top: 1px solid rgba(203, 213, 224, 0.5);
   scroll-snap-type: "y proximity";
+  background: rgba(255, 255, 255, 0.2);
 `;
 
 export const PreferenceList: React.FunctionComponent<{
