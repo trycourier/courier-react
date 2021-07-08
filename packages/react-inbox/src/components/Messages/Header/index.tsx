@@ -42,11 +42,11 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
     <Container data-testid="header">
       <Heading alignItems="center">
         {title}
-        {unreadMessageCount && (
+        {unreadMessageCount ? (
           <span className="message-count">
             {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
           </span>
-        )}
+        ) : undefined}
       </Heading>
       <div className="actions">
         {currentTab?.filters?.isRead === false && messages.length > 0 && (

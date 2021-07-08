@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from "react";
 
-import { PreferenceList } from "@trycourier/react-preferences";
+import {
+  PreferenceList,
+  usePreferencesActions,
+} from "@trycourier/react-preferences";
 
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import Header from "./Header";
@@ -20,11 +23,12 @@ const Messages: React.ForwardRefExoticComponent<
   }
 > = React.forwardRef(
   ({ title = "Inbox", renderHeader, renderMessage }, ref) => {
+    const { fetchRecipientPreferences } = usePreferencesActions();
+
     const {
       brand,
       currentTab,
       fetchMessages,
-      fetchRecipientPreferences,
       isLoading,
       markAllAsRead,
       messages = [],
@@ -53,10 +57,6 @@ const Messages: React.ForwardRefExoticComponent<
     useEffect(() => {
       fetchRecipientPreferences();
     }, []);
-
-    useEffect(() => {
-      fetchMessages(currentTab?.filters);
-    }, [currentTab]);
 
     return (
       <>
