@@ -1,22 +1,17 @@
 import { useCourier } from "@trycourier/react-provider";
 import { useEffect } from "react";
-import {
-  usePreferencesActions,
-  PreferenceState,
-} from "@trycourier/react-preferences";
+
 import deepExtend from "deep-extend";
 
 import useInboxActions from "./use-inbox-actions";
 import { InboxState } from "../reducer";
 
 const useInbox = () => {
-  const { dispatch, inbox, transport, preferences, brand } = useCourier<{
+  const { dispatch, inbox, transport, brand } = useCourier<{
     inbox: InboxState;
-    preferences: PreferenceState;
   }>();
 
   const actions = useInboxActions();
-  const preferencesActions = usePreferencesActions();
 
   if (inbox) {
     inbox.brand = deepExtend({}, brand, inbox.brand);
@@ -38,7 +33,7 @@ const useInbox = () => {
     });
   }, [transport]);
 
-  return { ...inbox, ...actions, ...preferencesActions, ...preferences };
+  return { ...inbox, ...actions };
 };
 
 export default useInbox;

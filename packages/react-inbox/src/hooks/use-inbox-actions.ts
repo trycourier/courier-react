@@ -47,6 +47,11 @@ const useInboxActions = () => {
         type: "inbox/SET_CURRENT_TAB",
         payload: newTab,
       });
+
+      dispatch({
+        type: "inbox/FETCH_MESSAGES",
+        payload: () => getMessages(graphQLClient, newTab?.filters),
+      });
     },
 
     fetchMessages: (params?: IGetMessagesParams) => {
