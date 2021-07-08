@@ -7,6 +7,7 @@ const TabList: React.FunctionComponent = () => {
   const { setCurrentTab, currentTab, tabs } = useInbox();
 
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
+    console.log("newTab", newTab);
     event.preventDefault();
     setCurrentTab(newTab);
   };

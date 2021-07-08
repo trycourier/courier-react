@@ -43,16 +43,13 @@ export const QUERY_MESSAGES = `
   }
 `;
 
-export const getMessages = async (
-  client,
-  { isRead, after }: IGetMessagesParams
-) => {
-  const results = await client.query(QUERY_MESSAGES, { isRead, after });
+export const getMessages = async (client, params?: IGetMessagesParams) => {
+  const results = await client.query(QUERY_MESSAGES, params);
 
   const messages = results?.data?.messages?.nodes;
   const startCursor = results?.data?.messages?.pageInfo?.startCursor;
   return {
-    appendMessages: Boolean(after),
+    appendMessages: Boolean(params?.after),
     messages,
     startCursor,
   };

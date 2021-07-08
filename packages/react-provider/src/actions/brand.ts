@@ -10,6 +10,10 @@ settings {
     disableMessageIcon
     disableCourierFooter
     placement
+    widgetBackground {
+      topColor
+      bottomColor
+    }
     colors {
       invertHeader
       invertButtons

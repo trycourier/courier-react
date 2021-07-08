@@ -1,16 +1,10 @@
-import { IMessage } from "~/types";
+import { IMessage, ITab } from "~/types";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
   title: string;
   unreadMessageCount?: number;
   markAllAsRead?: () => any;
-  currentTab?: {
-    id: string;
-    label: string;
-    filter?: {
-      isRead: boolean;
-    };
-  };
+  currentTab?: ITab;
   messages: IMessage[];
 }

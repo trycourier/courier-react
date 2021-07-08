@@ -5,7 +5,6 @@ export const OptionsIconButton = styled.button`
   border: none;
   padding: 0;
   background: transparent;
-  margin-right: -15px;
   margin-top: 6px;
   padding: 0 12px;
   cursor: pointer;

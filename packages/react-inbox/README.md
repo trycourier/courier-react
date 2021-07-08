@@ -105,6 +105,7 @@ interface ITheme {
   footer?: React.CSSProperties;
   header?: React.CSSProperties;
   icon?: React.CSSProperties;
+  container?: React.CSSProperties;
   messageList?: {
     container?: React.CSSProperties;
     message?: {

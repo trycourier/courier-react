@@ -1,14 +1,29 @@
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
+export const Container = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      background:
+        theme.brand.inapp?.widgetBackground?.topColor &&
+        theme.brand.inapp?.widgetBackground?.bottomColor
+          ? `linear-gradient(180deg, ${theme.brand.inapp?.widgetBackground?.topColor} 0%, ${theme.brand.inapp.widgetBackground.bottomColor} 100%)`
+          : theme.brand.colors.secondary,
+      padding: 17,
+      paddingBottom: 0,
+    },
+    theme?.container
+  )
+);
+
 export const MessageList = styled.div(({ theme }) =>
   deepExtend(
     {
-      background: "#FFFFFF",
+      background: "rgba(255, 255, 255, 0.2)",
       overflow: "scroll",
       display: "flex",
-      height: 280,
-      maxHeight: 280,
+      height: 392,
+      maxHeight: 392,
       flexDirection: "column",
       borderTop: "1px solid rgba(203,213,224,.5)",
       scrollSnapType: "y proximity",
@@ -22,8 +37,6 @@ export const Header = styled.div(({ theme }) =>
     {
       padding: "18px 20px 12px 20px",
       userSelect: "none",
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
       display: "flex",
       color: "#24324b",
       justifyContent: "space-between",
@@ -51,7 +64,7 @@ export const Empty = styled.div`
   line-height: 25px;
   letter-spacing: 0em;
   text-align: center;
-  color: #73819b;
+  color: "white";
   margin: auto;
 `;
 
@@ -59,12 +72,16 @@ export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
       alignItems: "center",
+      background: "white",
       display: "flex",
       fontSize: "10px",
       fontStyle: "normal",
+      position: "relative",
+      zIndex: 1,
+      boxShadow: "0 14px 11px 18px #3445632e",
       fontWeight: "700",
       height: 45,
-      justifyContent: "flex-end",
+      justifyContent: "center",
       paddingRight: 18,
       svg: {
         marginTop: 2,
@@ -74,15 +91,6 @@ export const Footer = styled.div(({ theme }) =>
       a: {
         display: "inherit",
         color: "#B9C0CD",
-      },
-
-      "&:hover": {
-        a: {
-          color: "#9121c2",
-        },
-        path: {
-          fill: "#9121c2",
-        },
       },
     },
     theme.footer

@@ -1,19 +1,18 @@
 import React, { useEffect, useRef } from "react";
-import Message from "../Message";
-import { InboxProps } from "../../types";
-import TabList from "../TabList";
-import { MessageList, Empty, Footer } from "./styled";
-import Loading from "./loading";
-import PaginationEnd from "./PaginationEnd";
-import CourierLogo from "~/assets/courier_logo_text.svg";
+
+import { PreferenceList } from "@trycourier/react-preferences";
+
 import { useAtBottom } from "~/hooks/use-at-bottom";
-import useInbox from "~/hooks/use-inbox";
 import Header from "./Header";
-import {
-  PreferenceList,
-  usePreferencesActions,
-} from "@trycourier/react-preferences";
-import { useCourier } from "@trycourier/react-provider";
+import Loading from "./loading";
+import Message from "../Message";
+import PaginationEnd from "./PaginationEnd";
+import TabList from "../TabList";
+import useInbox from "~/hooks/use-inbox";
+
+import { InboxProps } from "../../types";
+import { Container, MessageList, Empty, Footer } from "./styled";
+import CourierLogo from "~/assets/courier_logo_text.svg";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
@@ -21,22 +20,20 @@ const Messages: React.ForwardRefExoticComponent<
   }
 > = React.forwardRef(
   ({ title = "Inbox", renderHeader, renderMessage }, ref) => {
-    const { brand: courierBrand } = useCourier();
-    const { fetchRecipientPreferences } = usePreferencesActions();
     const {
-      brand: inboxBrand,
-      fetchMessages,
-      markAllAsRead,
+      brand,
       currentTab,
+      fetchMessages,
+      fetchRecipientPreferences,
       isLoading,
+      markAllAsRead,
       messages = [],
       startCursor,
-      view,
       unreadMessageCount,
+      view,
     } = useInbox();
-    const messageListRef = useRef<HTMLDivElement>(null);
 
-    const brand = inboxBrand ?? courierBrand;
+    const messageListRef = useRef<HTMLDivElement>(null);
 
     useAtBottom(
       messageListRef,
@@ -46,7 +43,7 @@ const Messages: React.ForwardRefExoticComponent<
         }
 
         fetchMessages({
-          ...currentTab?.filter,
+          ...currentTab?.filters,
           after: startCursor,
         });
       },
@@ -58,45 +55,47 @@ const Messages: React.ForwardRefExoticComponent<
     }, []);
 
     useEffect(() => {
-      fetchMessages(currentTab?.filter);
+      fetchMessages(currentTab?.filters);
     }, [currentTab]);
 
     return (
-      <div ref={ref}>
-        {renderHeader ? (
-          renderHeader({})
-        ) : (
-          <Header
-            currentTab={currentTab}
-            title={title}
-            unreadMessageCount={unreadMessageCount}
-            markAllAsRead={markAllAsRead}
-            messages={messages}
-          />
-        )}
-        {view === "messages" ? (
-          <>
-            <TabList />
-            <MessageList ref={messageListRef} data-testid="messages">
-              {messages?.map((message) =>
-                renderMessage ? (
-                  renderMessage(message)
-                ) : (
-                  <Message key={message.messageId} {...message} />
-                )
-              )}
-              {isLoading && <Loading />}
-              {!isLoading && messages?.length === 0 && (
-                <Empty>You have no notifications at this time</Empty>
-              )}
-              {!isLoading && messages?.length > 5 && !startCursor && (
-                <PaginationEnd title="End Of The Road" />
-              )}
-            </MessageList>
-          </>
-        ) : (
-          <PreferenceList />
-        )}
+      <>
+        <Container ref={ref}>
+          {renderHeader ? (
+            renderHeader({})
+          ) : (
+            <Header
+              currentTab={currentTab}
+              title={title}
+              unreadMessageCount={unreadMessageCount}
+              markAllAsRead={markAllAsRead}
+              messages={messages}
+            />
+          )}
+          {view === "messages" ? (
+            <>
+              <TabList />
+              <MessageList ref={messageListRef} data-testid="messages">
+                {messages?.map((message) =>
+                  renderMessage ? (
+                    renderMessage(message)
+                  ) : (
+                    <Message key={message.messageId} {...message} />
+                  )
+                )}
+                {isLoading && <Loading />}
+                {!isLoading && messages?.length === 0 && (
+                  <Empty>You have no notifications at this time</Empty>
+                )}
+                {!isLoading && messages?.length > 5 && !startCursor && (
+                  <PaginationEnd title="End Of The Road" />
+                )}
+              </MessageList>
+            </>
+          ) : (
+            <PreferenceList />
+          )}
+        </Container>
         {!brand?.inapp?.disableCourierFooter && (
           <Footer>
             <a href="https://www.courier.com">
@@ -105,7 +104,7 @@ const Messages: React.ForwardRefExoticComponent<
             </a>
           </Footer>
         )}
-      </div>
+      </>
     );
   }
 );

@@ -18,12 +18,9 @@ const TippyStyle = createGlobalStyle`
   .tippy-box[data-animation="fade"][data-state="hidden"] {
     opacity: 0;
   }
-  [data-tippy-root] {
-    max-width: calc(100vw - 10px);
-  }
+
   .tippy-box {
     position: relative;
-    background-color: #333;
     color: #fff;
     font-size: 14px;
     line-height: 1.4;

@@ -15,7 +15,7 @@ export interface IMessageProps {
   body: string;
   blocks?: Array<TextBlock | ActionBlock>;
   icon?: string;
-  read: boolean;
+  read?: boolean;
   data?: {
     clickAction: string;
   };

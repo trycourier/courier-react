@@ -1,7 +1,11 @@
 import { useCourier } from "@trycourier/react-provider";
-import { getUnreadMessageCount } from "~/actions/message-count";
+import {
+  getUnreadMessageCount,
+  IMessageCountParams,
+} from "~/actions/message-count";
 import { getMessages, IGetMessagesParams } from "~/actions/messages";
 import { DEFAULT_TABS } from "~/constants";
+import { ITab } from "~/types";
 
 const useInboxActions = () => {
   const {
@@ -38,21 +42,21 @@ const useInboxActions = () => {
       });
     },
 
-    setCurrentTab: (newTab: string) => {
+    setCurrentTab: (newTab: ITab) => {
       dispatch({
         type: "inbox/SET_CURRENT_TAB",
         payload: newTab,
       });
     },
 
-    fetchMessages: (params: IGetMessagesParams) => {
+    fetchMessages: (params?: IGetMessagesParams) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         payload: () => getMessages(graphQLClient, params),
       });
     },
 
-    getUnreadMessageCount: (params) => {
+    getUnreadMessageCount: (params?: IMessageCountParams) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
         payload: () => getUnreadMessageCount(graphQLClient, params),

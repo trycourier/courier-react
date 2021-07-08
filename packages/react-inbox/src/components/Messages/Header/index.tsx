@@ -22,9 +22,6 @@ export const SettingsIconButton = styled.button`
   margin-right: -15px;
   padding: 0 12px;
   cursor: pointer;
-  svg {
-    background: #f7f6f9;
-  }
 `;
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
@@ -43,14 +40,16 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
 
   return view === "messages" ? (
     <Container data-testid="header">
-      <Heading>
-        <h3>
-          {title}
-          {unreadMessageCount ? ` (${unreadMessageCount})` : ""}
-        </h3>
+      <Heading alignItems="center">
+        {title}
+        {unreadMessageCount && (
+          <span className="message-count">
+            {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
+          </span>
+        )}
       </Heading>
       <div className="actions">
-        {currentTab?.filter?.isRead === false && messages.length > 0 && (
+        {currentTab?.filters?.isRead === false && messages.length > 0 && (
           <MarkAllAsRead onClick={markAllAsRead} style={{ cursor: "pointer" }}>
             Mark all as read
           </MarkAllAsRead>
@@ -64,8 +63,8 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
     </Container>
   ) : (
     <Container data-testid="header" view="preferences">
-      <Heading>
-        <h3>Preferences</h3>
+      <Heading flexDirection="column">
+        Preferences
         <PreferenceSubHeader onClick={handleSetView("messages")}>
           {`◀ Back to Inbox`}
         </PreferenceSubHeader>
