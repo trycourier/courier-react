@@ -93,6 +93,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, []);
 
   useEffect(() => {
+    if (!userId || !clientKey) {
+      return;
+    }
+
     getUnreadMessageCount();
   }, [userId, clientKey]);
 
@@ -145,7 +149,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       toggleInbox();
     },
-    [isOpen]
+    [isOpen, setView, setCurrentTab]
   );
 
   const handleBellOnMouseEnter = useCallback(
@@ -157,7 +161,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       fetchMessages(currentTab?.filters);
     },
-    [isOpen]
+    [isOpen, fetchMessages]
   );
 
   const handleClickOutside = useCallback(

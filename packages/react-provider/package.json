@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-provider",
-  "version": "0.1.15-beta.0",
+  "version": "0.1.16-beta.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
