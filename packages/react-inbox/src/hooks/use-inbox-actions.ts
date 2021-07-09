@@ -48,8 +48,6 @@ const useInboxActions = () => {
         payload: newTab,
       });
 
-      console.log("graphQLClient", graphQLClient);
-
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         payload: () => getMessages(graphQLClient, newTab?.filters),

@@ -37,7 +37,6 @@ const Messages: React.ForwardRefExoticComponent<
       view,
     } = useInbox();
 
-    console.log("messages", messages);
     const messageListRef = useRef<HTMLDivElement>(null);
 
     useAtBottom(
