@@ -65,8 +65,9 @@ export const Heading = styled.div<{
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: 34,
-    minWidth: 34,
+    height: 27,
+    padding: "0 6px",
+    minWidth: 27,
   },
 }));
 
