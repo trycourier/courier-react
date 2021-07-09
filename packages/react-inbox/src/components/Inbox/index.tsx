@@ -70,6 +70,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const { clientKey, userId } = courierContext;
   const {
     brand,
+    currentTab,
+    fetchMessages,
     getUnreadMessageCount,
     init,
     isOpen,
@@ -150,6 +152,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     [isOpen, setView, setCurrentTab]
   );
 
+  const handleBellOnMouseEnter = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      if (isOpen) {
+        return;
+      }
+
+      fetchMessages(currentTab?.filters);
+    },
+    [isOpen, fetchMessages]
+  );
+
   const handleClickOutside = useCallback(
     (event) => {
       if (!isOpen || event.target.closest(".inbox-bell")) {
@@ -185,6 +199,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             className={`inbox-bell ${props.className ?? ""}`}
             isOpen={isOpen ?? false}
             onClick={handleIconOnClick}
+            onMouseEnter={handleBellOnMouseEnter}
             role="button"
             tabIndex={0}
           >
