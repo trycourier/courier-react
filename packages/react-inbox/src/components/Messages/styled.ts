@@ -8,7 +8,7 @@ export const Container = styled.div(({ theme }) =>
         theme.brand?.inapp?.widgetBackground?.topColor &&
         theme.brand?.inapp?.widgetBackground?.bottomColor
           ? `linear-gradient(180deg, ${theme.brand?.inapp?.widgetBackground?.topColor} 0%, ${theme.brand?.inapp?.widgetBackground?.bottomColor} 100%)`
-          : theme.brand?.colors?.secondary,
+          : theme.brand?.colors?.secondary ?? "#9121c2",
       padding: 17,
       paddingBottom: 0,
     },

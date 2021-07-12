@@ -13,10 +13,13 @@ const useInbox = () => {
 
   const actions = useInboxActions();
 
+  console.log("brand", brand);
+  console.log("inbox.brand", inbox?.brand);
   if (inbox) {
     inbox.brand = deepExtend({}, brand, inbox.brand);
   }
 
+  console.log("inbox.brand", inbox?.brand);
   useEffect(() => {
     transport?.listen({
       id: "inbox-listener",
