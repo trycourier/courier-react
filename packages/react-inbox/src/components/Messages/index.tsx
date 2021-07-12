@@ -59,8 +59,8 @@ const Messages: React.ForwardRefExoticComponent<
     }, []);
 
     return (
-      <>
-        <Container ref={ref}>
+      <div ref={ref}>
+        <Container>
           {renderHeader ? (
             renderHeader({})
           ) : (
@@ -104,7 +104,7 @@ const Messages: React.ForwardRefExoticComponent<
             </a>
           </Footer>
         )}
-      </>
+      </div>
     );
   }
 );
