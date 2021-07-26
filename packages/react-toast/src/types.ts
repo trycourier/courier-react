@@ -5,13 +5,10 @@ export type Theme = {
   body?: React.CSSProperties;
   root?: React.CSSProperties;
   toast?: React.CSSProperties;
+  dismiss?: React.CSSProperties;
   message?: {
-    actions: {
-      container?: React.CSSProperties;
-      details?: React.CSSProperties;
-      dismiss?: React.CSSProperties;
-    };
-    body?: React.CSSProperties;
+    actionBlock?: React.CSSProperties;
+    textBlock?: React.CSSProperties;
     contents?: React.CSSProperties;
     icon?: React.CSSProperties;
     title?: React.CSSProperties;

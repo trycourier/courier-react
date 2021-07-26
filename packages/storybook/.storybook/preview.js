@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 const Styled = styled.div`
   ${githubCss};
-  width: 900px;
+  width: 1000px;
 
   img {
     max-width: 100%;
@@ -34,7 +34,7 @@ addDecorator((storyFn) =>
 export const parameters = {
   options: {
     storySort: {
-      order: ["Introduction", "Getting Started"],
+      order: ["Introduction", "Getting Started", "Authentication"],
     },
   },
 };
