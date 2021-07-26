@@ -43,7 +43,7 @@ export const Dismiss = styled.button(({ theme }) =>
 
       borderRadius: "100%",
     },
-    theme?.message?.dismiss
+    theme?.dismiss
   )
 );
 

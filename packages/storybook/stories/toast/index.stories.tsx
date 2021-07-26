@@ -1,38 +1,51 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import overviewMd from "@trycourier/react-toast/docs/1.overview.md";
-import installationMd from "@trycourier/react-toast/docs/2.installation.md";
 import propsMd from "@trycourier/react-toast/docs/3.props.md";
 import themeMd from "@trycourier/react-toast/docs/4.theme.md";
 import hooksMd from "@trycourier/react-toast/docs/5.hooks.md";
 
-import { CourierProvider } from "@trycourier/react-provider";
+import { CourierProvider, IBlocks } from "@trycourier/react-provider";
 
 import { Toast, useToast, ToastBody } from "@trycourier/react-toast";
 
-import { withKnobs, boolean, number, select } from "@storybook/addon-knobs";
+import {
+  withKnobs,
+  boolean,
+  number,
+  select,
+  text,
+} from "@storybook/addon-knobs";
 
 export default {
   title: "Toast",
   decorators: [withKnobs],
 };
 
-export const GettingStarted = () => {
-  return <ReactMarkdown>{overviewMd}</ReactMarkdown>;
-};
+const mockBlocks: IBlocks = [
+  {
+    type: "text",
+    text: "Text Block",
+  },
+  {
+    type: "action",
+    text: "Action Block",
+    url: "My Url",
+  },
+];
 
-export const Installation = () => {
-  return <ReactMarkdown>{installationMd}</ReactMarkdown>;
-};
-
-const ExampleButton: React.FunctionComponent = () => {
+const ExampleButton: React.FunctionComponent<{ text?: string }> = ({
+  text,
+}) => {
   const [toast] = useToast();
 
   const handleOnClick = () => {
-    toast("Hello World");
+    toast({
+      title: "Hello World",
+      blocks: mockBlocks,
+    });
   };
 
-  return <button onClick={handleOnClick}>Show Toast</button>;
+  return <button onClick={handleOnClick}>{text ?? "Show Toast"}</button>;
 };
 
 export const Props = () => {
@@ -43,7 +56,7 @@ export const Props = () => {
   return (
     <CourierProvider>
       <ReactMarkdown>{propsMd}</ReactMarkdown>
-      <ReactMarkdown>{`## Examples`}</ReactMarkdown>
+      <ReactMarkdown>{`## Example`}</ReactMarkdown>
       <Toast
         hideProgressBar={boolean("Hide Progress Bar", false)}
         autoClose={disableAutoClose === true ? false : autoCloseTimeout}
@@ -70,32 +83,25 @@ export const Props = () => {
 export const Theme = () => {
   const theme = {
     toast: {
-      backgroundColor: "black",
-      borderRadius: 5,
-      height: 40,
+      backgroundColor: text("Background Color", "black"),
+      borderRadius: number("Border Radius", 5),
       boxShadow: "0px 5px 20px 2px rgba(0,0,0,0.60)",
+    },
+    dismiss: {
+      background: "orange",
     },
     message: {
       title: {
-        color: "white",
+        color: text("Title Color", "white"),
       },
-      body: {
-        color: "white",
+      textBlock: {
+        color: text("Body Text Color", "white"),
       },
-      actions: {
-        details: {
-          backgroundColor: "black",
-          color: "white",
-          "&:hover": {
-            backgroundColor: "purple",
-          },
-        },
-        dismiss: {
-          backgroundColor: "black",
-          color: "white",
-          "&:hover": {
-            backgroundColor: "purple",
-          },
+      actionBlock: {
+        backgroundColor: text("Button Background Color", "white"),
+        color: text("Button Text Color", "red"),
+        "&:hover": {
+          backgroundColor: text("Button Hover BG Color", "red"),
         },
       },
     },
@@ -104,14 +110,14 @@ export const Theme = () => {
   return (
     <>
       <ReactMarkdown>{themeMd}</ReactMarkdown>
-      <ReactMarkdown>{`## Examples`}</ReactMarkdown>
+      <ReactMarkdown>{`## Example`}</ReactMarkdown>
       <ReactMarkdown>{`\`\`\`javascript\nconst theme = ${JSON.stringify(
         theme,
         null,
         2
       )}\n\`\`\``}</ReactMarkdown>
       <CourierProvider>
-        <ToastBody body="Theme" title="Title" theme={theme} />
+        <ToastBody blocks={mockBlocks} title="Title" theme={theme} />
       </CourierProvider>
     </>
   );

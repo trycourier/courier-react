@@ -45,9 +45,5 @@ const getButtonStyles = (theme) =>
   );
 
 export const Details = styled.a(({ theme }) =>
-  getButtonStyles(theme?.message?.actions?.details)
-);
-
-export const Dismiss = styled.a(({ theme }) =>
-  getButtonStyles(theme?.message?.actions?.dismiss)
+  getButtonStyles(theme?.message?.action)
 );

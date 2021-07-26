@@ -1,37 +1,43 @@
 import styled from "styled-components";
+import deepExtend from "deep-extend";
 
-export const Container = styled.div<{ view?: string }>(({ theme, view }) => ({
-  padding: "18px",
-  paddingLeft: "38px",
-  userSelect: "none",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  fontSize: 24,
-  fontWeight: 700,
-  height: "65px",
-  color: "rgb(36, 50, 75)",
-  backgroundColor: "white",
+export const Container = styled.div<{ view?: string }>(({ theme, view }) =>
+  deepExtend(
+    {
+      padding: "18px",
+      paddingLeft: "38px",
+      userSelect: "none",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      fontSize: 24,
+      fontWeight: 700,
+      height: "65px",
+      color: "rgb(36, 50, 75)",
+      backgroundColor: "white",
 
-  "svg:hover": {
-    background: "#f7f6f9",
-    "path, circle": {
-      stroke: theme?.brand?.colors?.primary ?? "#9121c2",
+      "svg:hover": {
+        background: "#f7f6f9",
+        "path, circle": {
+          stroke: theme?.brand?.colors?.primary ?? "#9121c2",
+        },
+      },
+      "svg path, svg circle": {
+        stroke:
+          view === "preferences"
+            ? theme?.brand?.colors?.primary ?? "#9121c2"
+            : undefined,
+      },
+      ".actions": {
+        display: "flex",
+        alignItems: "center",
+      },
+      borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
+      borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
     },
-  },
-  "svg path, svg circle": {
-    stroke:
-      view === "preferences"
-        ? theme?.brand?.colors?.primary ?? "#9121c2"
-        : undefined,
-  },
-  ".actions": {
-    display: "flex",
-    alignItems: "center",
-  },
-  borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
-  borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
-}));
+    theme?.header
+  )
+);
 
 export const MarkAllAsRead = styled.button(() => ({
   fontSize: 14,
