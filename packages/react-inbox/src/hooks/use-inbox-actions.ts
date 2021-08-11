@@ -4,7 +4,6 @@ import {
   IMessageCountParams,
 } from "~/actions/message-count";
 import { getMessages, IGetMessagesParams } from "~/actions/messages";
-import { DEFAULT_TABS } from "~/constants";
 import { ITab } from "~/types";
 
 const useInboxActions = () => {
@@ -17,11 +16,6 @@ const useInboxActions = () => {
 
   return {
     init: (payload) => {
-      payload = {
-        ...payload,
-        tabs: payload.tabs ?? DEFAULT_TABS,
-      };
-
       dispatch({
         type: "inbox/INIT",
         payload,

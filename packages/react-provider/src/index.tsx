@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import Client from "./graph-ql";
-import { ICourierContext, Brand } from "./types";
+import { ICourierProviderProps, ICourierContext, Brand } from "./types";
 
 import { CourierTransport } from "./transports/courier";
 import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
@@ -26,7 +26,7 @@ export const CourierContext = React.createContext<ICourierContext | undefined>(
   undefined
 );
 
-export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
+export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = ({
   apiUrl,
   brand,
   brandId,
@@ -110,6 +110,7 @@ export const CourierProvider: React.FunctionComponent<ICourierContext> = ({
         transport,
         userId,
         userSignature,
+        onMessage: transport?.intercept,
       },
     });
   }, [

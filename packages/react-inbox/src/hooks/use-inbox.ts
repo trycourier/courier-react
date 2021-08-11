@@ -1,5 +1,6 @@
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 import { useEffect } from "react";
+import reducer from "~/reducer";
 
 import deepExtend from "deep-extend";
 
@@ -16,6 +17,10 @@ const useInbox = () => {
   if (inbox) {
     inbox.brand = deepExtend({}, brand, inbox.brand);
   }
+
+  useEffect(() => {
+    registerReducer("inbox", reducer);
+  }, []);
 
   useEffect(() => {
     transport?.listen({

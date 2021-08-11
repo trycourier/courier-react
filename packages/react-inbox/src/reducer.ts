@@ -1,5 +1,6 @@
 import { IMessage, ITab } from "./types";
 import { Brand } from "@trycourier/react-provider";
+import { DEFAULT_TABS } from "~/constants";
 
 const makeMessage = (message): IMessage => ({
   blocks: message?.content?.blocks,
@@ -30,6 +31,8 @@ const initialState: InboxState = {
   messages: [],
   view: "messages",
   unreadMessageCount: 0,
+  tabs: DEFAULT_TABS,
+  currentTab: DEFAULT_TABS[0],
 };
 
 export default (state: InboxState = initialState, action): InboxState => {
@@ -38,7 +41,6 @@ export default (state: InboxState = initialState, action): InboxState => {
       return {
         ...state,
         ...action.payload,
-        currentTab: action.payload?.tabs?.[0],
       };
     }
 

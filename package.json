@@ -85,5 +85,6 @@
     "packages": [
       "packages/*"
     ]
-  }
+  },
+  "dependencies": {}
 }
