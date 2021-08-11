@@ -19,12 +19,18 @@ export interface InboxProps {
   defaultIcon?: false | string;
   isOpen?: boolean;
   placement?: TippyProps["placement"];
+  renderContainer?: React.FunctionComponent;
+  renderTabs?: React.FunctionComponent<{
+    currentTab?: ITab;
+    tabs?: ITab[];
+  }>;
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{
     unreadMessageCount?: number;
   }>;
   renderMessage?: React.FunctionComponent<IMessage>;
+  renderNoMessages?: React.FunctionComponent;
   tabs?: Array<ITab>;
   theme?: ThemeObject;
   title?: string;

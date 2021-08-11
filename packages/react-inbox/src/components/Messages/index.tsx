@@ -14,7 +14,12 @@ import TabList from "../TabList";
 import useInbox from "~/hooks/use-inbox";
 
 import { InboxProps } from "../../types";
-import { Container, MessageList, Empty, Footer } from "./styled";
+import {
+  Container as DefaultContainer,
+  MessageList,
+  Empty,
+  Footer,
+} from "./styled";
 import CourierLogo from "~/assets/courier_logo_text.svg";
 
 const Messages: React.ForwardRefExoticComponent<
@@ -22,7 +27,18 @@ const Messages: React.ForwardRefExoticComponent<
     ref: React.ForwardedRef<HTMLDivElement>;
   }
 > = React.forwardRef(
-  ({ title = "Inbox", renderHeader, renderMessage }, ref) => {
+  (
+    {
+      title = "Inbox",
+      renderContainer,
+      renderHeader,
+      renderMessage,
+      renderFooter,
+      renderTabs,
+      renderNoMessages,
+    },
+    ref
+  ) => {
     const { fetchRecipientPreferences } = usePreferencesActions();
 
     const {
@@ -35,6 +51,7 @@ const Messages: React.ForwardRefExoticComponent<
       startCursor,
       unreadMessageCount,
       view,
+      tabs,
     } = useInbox();
 
     const messageListRef = useRef<HTMLDivElement>(null);
@@ -58,6 +75,8 @@ const Messages: React.ForwardRefExoticComponent<
       fetchRecipientPreferences();
     }, []);
 
+    const Container = renderContainer ? renderContainer : DefaultContainer;
+
     return (
       <div ref={ref}>
         <Container>
@@ -74,7 +93,7 @@ const Messages: React.ForwardRefExoticComponent<
           )}
           {view === "messages" ? (
             <>
-              <TabList />
+              {renderTabs ? renderTabs({ tabs, currentTab }) : <TabList />}
               <MessageList ref={messageListRef} data-testid="messages">
                 {messages?.map((message) =>
                   renderMessage ? (
@@ -84,9 +103,13 @@ const Messages: React.ForwardRefExoticComponent<
                   )
                 )}
                 {isLoading && <Loading />}
-                {!isLoading && messages?.length === 0 && (
-                  <Empty>You have no notifications at this time</Empty>
-                )}
+                {!isLoading &&
+                  messages?.length === 0 &&
+                  (renderNoMessages ? (
+                    renderNoMessages({})
+                  ) : (
+                    <Empty>You have no notifications at this time</Empty>
+                  ))}
                 {!isLoading && messages?.length > 5 && !startCursor && (
                   <PaginationEnd title="End Of The Road" />
                 )}
@@ -96,14 +119,16 @@ const Messages: React.ForwardRefExoticComponent<
             <PreferenceList />
           )}
         </Container>
-        {!brand?.inapp?.disableCourierFooter && (
-          <Footer>
-            <a href="https://www.courier.com">
-              Powered by&nbsp;&nbsp;
-              <CourierLogo />
-            </a>
-          </Footer>
-        )}
+        {renderFooter
+          ? renderFooter({})
+          : !brand?.inapp?.disableCourierFooter && (
+              <Footer>
+                <a href="https://www.courier.com">
+                  Powered by&nbsp;&nbsp;
+                  <CourierLogo />
+                </a>
+              </Footer>
+            )}
       </div>
     );
   }

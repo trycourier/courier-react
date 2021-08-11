@@ -1,5 +1,5 @@
 import { TippyProps } from "@tippyjs/react";
-import { useCourier, registerReducer } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
 import React, { useEffect, useRef, useCallback } from "react";
 import styled, { ThemeProvider } from "styled-components";
@@ -8,7 +8,6 @@ import { useInbox, useClickOutside } from "~/hooks";
 import BellSvg, { Bell } from "./Bell";
 import LazyTippy from "./LazyTippy";
 import Messages from "../Messages";
-import reducer from "~/reducer";
 import TippyGlobalStyle from "./TippyGlobalStyle";
 
 import { DEFAULT_TABS } from "~/constants";
@@ -87,10 +86,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
   };
-
-  useEffect(() => {
-    registerReducer("inbox", reducer);
-  }, []);
 
   useEffect(() => {
     if (!userId || !clientKey) {

@@ -26,17 +26,20 @@ export interface Brand {
     tertiary?: string;
   };
 }
-export interface ICourierContext {
+
+export interface ICourierProviderProps {
   apiUrl?: string;
   brand?: Brand;
   brandId?: string;
   clientKey?: string;
-  dispatch?: (action: { type: string; payload: any }) => void;
-  graphQLClient?: any;
   transport?: Transport;
   userId?: string;
   userSignature?: string;
   wsUrl?: string;
   middleware?: any;
   onMessage?: Interceptor;
+}
+export interface ICourierContext extends ICourierProviderProps {
+  dispatch?: (action: { type: string; payload: any }) => void;
+  graphQLClient?: any;
 }
