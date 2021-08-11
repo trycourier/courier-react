@@ -110,7 +110,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
         transport,
         userId,
         userSignature,
-        onMessage: transport?.intercept,
       },
     });
   }, [
