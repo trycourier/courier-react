@@ -68,7 +68,7 @@ const CourierSdk: React.FunctionComponent<{
 
         case "toast": {
           window.courier.toast = {
-            add: courier.toast,
+            add: courier.toast.toast,
           };
           break;
         }
@@ -149,7 +149,7 @@ const CourierComponents: React.FunctionComponent = () => {
       {inboxElement &&
         ReactDOM.createPortal(
           <Suspense fallback={<div />}>
-            <Inbox config={inboxConfig} />
+            <Inbox {...inboxConfig} />
           </Suspense>,
           inboxElement
         )}
@@ -168,7 +168,7 @@ let hasInit = false;
 
 const initCourier = async (courierConfig?: ICourierConfig) => {
   const { clientKey, apiUrl, userId, userSignature, wsUrl } =
-    courierConfig ?? window.courierConfig;
+    courierConfig ?? window.courierConfig ?? {};
 
   if (hasInit || typeof document === "undefined") {
     return;
@@ -205,7 +205,7 @@ window.courier = {
   },
 };
 
-if (window.courierConfig.initOnLoad !== false) {
+if (window.courierConfig?.initOnLoad !== false) {
   initCourier();
 }
 
