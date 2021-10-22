@@ -49,18 +49,12 @@ export function Default() {
 
   return (
     <CourierProvider
-      apiUrl={API_URL}
       clientKey={clientKey}
       transport={courierTransport}
       userId={USER_ID}
-      brand={{
-        inapp: {
-          disableMessageIcon: true,
-        },
-      }}
     >
       <Toast />
-      <Inbox />
+      <Inbox isOpen={true} />
       <button onClick={handleNotify}>Test</button>
     </CourierProvider>
   );

@@ -12,12 +12,23 @@
       }
     </style>
     <script type="text/javascript">
-      window.courierConfig = {
+      /*window.courierConfig = {
         clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
         userId: "3b17362c-0c91-4fcd-a829-885a2343eb67",
         apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
         wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
-      };
+      };*/
+
+      const userId = "3b17362c-0c91-4fcd-a829-885a2343eb67";
+
+      setTimeout(() => {
+        window.courier.init({
+          clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
+          userId,
+          apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
+          wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+        });
+      }, 3000);
 
       window.courierAsyncInit = () => {
         window.courier.on("toast/init", () => {
@@ -36,7 +47,7 @@
           window.courier.transport.send({
             action: "notify",
             data: {
-              channel: window.courierConfig.userId,
+              channel: userId,
               event: "*",
               message: {
                 title: "Success!",
@@ -46,10 +57,10 @@
           });
         };
 
-        window.courier.transport.intercept((message) => {
+        /*window.courier.transport.intercept((message) => {
           console.log(message);
           return message;
-        });
+        });*/
 
         const notify = document.getElementById("notify");
         notify.removeAttribute("disabled");
