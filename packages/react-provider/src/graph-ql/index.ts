@@ -20,7 +20,7 @@ export class GraphQLClient {
 
     this.client = createClient({
       url: `${
-        apiUrl ?? process.env.API_URL ?? `https://api.courier.com`
+        apiUrl || process.env.API_URL || `https://api.courier.com`
       }/client/q`,
       requestPolicy: "network-only",
       fetchOptions: () => {
