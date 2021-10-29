@@ -16,13 +16,14 @@ export class CourierTransport extends Transport {
     if (!options.clientKey) {
       throw new Error("Missing Client Key");
     }
+
     this.clientKey = options.clientKey;
     this.userSignature = options.userSignature;
     this.ws = new WS({
       clientKey: options.clientKey,
       url:
-        options.wsUrl ??
-        COURIER_WS_URL ??
+        options.wsUrl ||
+        COURIER_WS_URL ||
         "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production",
     });
     this.ws.connect();
