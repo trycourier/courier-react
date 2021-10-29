@@ -24,6 +24,7 @@ jobs:
       - run: yarn lerna:publish:internal internal.$(git rev-parse --short "$GITHUB_SHA")
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - run: yarn build:components
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
