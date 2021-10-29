@@ -12,10 +12,8 @@ module.exports = (env, argv) => {
     mode: argv.mode ? argv.mode : "development",
     entry: path.resolve(__dirname, "./src/index.tsx"),
     output: {
-      publicPath: isProduction
-        ? "https://courier-components-xvdza5.s3.amazonaws.com/"
-        : undefined,
-      filename: isProduction ? "latest.js" : "staging.js",
+      publicPath: isProduction ? "assets/" : undefined,
+      filename: process.env.IS_STAGING ? "staging.js" : "latest.js",
       chunkFilename: "[id].[chunkhash:8].js",
       path: path.resolve(__dirname, "./dist"),
     },

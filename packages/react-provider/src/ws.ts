@@ -23,6 +23,7 @@ export class WS {
   }
 
   connect(): void {
+    console.log("this.url", this.url);
     this.connection = new ReconnectingWebSocket(
       `${this.url}/?clientKey=${this.clientKey}`
     );
