@@ -12,10 +12,8 @@ module.exports = (env, argv) => {
     mode: argv.mode ? argv.mode : "development",
     entry: path.resolve(__dirname, "./src/index.tsx"),
     output: {
-      publicPath: isProduction
-        ? "https://courier-components-xvdza5.s3.amazonaws.com/"
-        : undefined,
-      filename: isProduction ? "latest.js" : "staging.js",
+      publicPath: isProduction ? "assets/" : undefined,
+      filename: process.env.IS_STAGING ? "staging.js" : "latest.js",
       chunkFilename: "[id].[chunkhash:8].js",
       path: path.resolve(__dirname, "./dist"),
     },
@@ -26,8 +24,9 @@ module.exports = (env, argv) => {
         }),
       process.env.ANALYZE && new BundleAnalyzerPlugin(),
       new webpack.EnvironmentPlugin({
-        API_URL: "",
-        COURIER_WS_URL: "",
+        API_URL: "https://api.courier.com",
+        COURIER_WS_URL:
+          "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production",
       }),
       new webpack.ProvidePlugin({
         Buffer: ["buffer", "Buffer"],
