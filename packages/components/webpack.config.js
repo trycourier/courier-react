@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
       publicPath: isProduction
         ? "https://courier-components-xvdza5.s3.amazonaws.com/"
         : undefined,
-      filename: "latest.js",
+      filename: isProduction ? "latest.js" : "staging.js",
       chunkFilename: "[id].[chunkhash:8].js",
       path: path.resolve(__dirname, "./dist"),
     },
