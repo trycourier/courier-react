@@ -12,7 +12,9 @@ module.exports = (env, argv) => {
     mode: argv.mode ? argv.mode : "development",
     entry: path.resolve(__dirname, "./src/index.tsx"),
     output: {
-      publicPath: isProduction ? "assets/" : "assets/",
+      publicPath: isProduction
+        ? "https://courier-components-xvdza5.s3.amazonaws.com/"
+        : undefined,
       filename: "latest.js",
       chunkFilename: "[id].[chunkhash:8].js",
       path: path.resolve(__dirname, "./dist"),
