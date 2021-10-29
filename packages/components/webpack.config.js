@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
@@ -12,9 +12,7 @@ module.exports = (env, argv) => {
     mode: argv.mode ? argv.mode : "development",
     entry: path.resolve(__dirname, "./src/index.tsx"),
     output: {
-      publicPath: isProduction
-        ? "https://courier-components-xvdza5.s3.amazonaws.com/"
-        : undefined,
+      publicPath: isProduction ? "assets/" : "assets/",
       filename: "latest.js",
       chunkFilename: "[id].[chunkhash:8].js",
       path: path.resolve(__dirname, "./dist"),
@@ -25,6 +23,13 @@ module.exports = (env, argv) => {
           template: "src/index.html",
         }),
       process.env.ANALYZE && new BundleAnalyzerPlugin(),
+      new webpack.EnvironmentPlugin({
+        API_URL: "",
+        COURIER_WS_URL: "",
+      }),
+      new webpack.ProvidePlugin({
+        Buffer: ["buffer", "Buffer"],
+      }),
     ].filter(Boolean),
     module: {
       rules: [
@@ -54,9 +59,6 @@ module.exports = (env, argv) => {
         react: "preact/compat",
         "react-dom": "preact/compat",
       },
-    },
-    optimization: {
-      minimizer: [isProduction && new UglifyJsPlugin()].filter(Boolean),
     },
   };
 };

@@ -12,73 +12,41 @@
       }
     </style>
     <script type="text/javascript">
-      /*window.courierConfig = {
-        clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
-        userId: "3b17362c-0c91-4fcd-a829-885a2343eb67",
-        apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
-        wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
-      };*/
-
       const userId = "3b17362c-0c91-4fcd-a829-885a2343eb67";
+      window.loadCourier = function (config) {
+        if (!config || !config.clientKey || !config.userId) {
+          return Promise.reject();
+        }
+        window.courierConfig = { ...config };
 
-      setTimeout(() => {
+        return new Promise((resolve) => {
+          var src =
+            "https://courier-components-xvdza5.s3.amazonaws.com/latest.js";
+          (function () {
+            var d = document;
+            var s = d.createElement("script");
+            s.type = "text/javascript";
+            s.onload = resolve;
+            s.charset = "utf-8";
+            s.async = true;
+            s.src = src;
+            document.body.appendChild(s);
+          })();
+        });
+      };
+      /*setTimeout(() => {
         window.courier.init({
           clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
           userId,
           apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
           wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
         });
-      }, 3000);
-
-      window.courierAsyncInit = () => {
-        window.courier.on("toast/init", () => {
-          window.showToastOnClick = () => {
-            window.courier.toast.add({
-              title: "Hello",
-              body: "World",
-            });
-          };
-
-          const showToast = document.getElementById("show-toast");
-          showToast.removeAttribute("disabled");
-        });
-
-        window.notifyClick = () => {
-          window.courier.transport.send({
-            action: "notify",
-            data: {
-              channel: userId,
-              event: "*",
-              message: {
-                title: "Success!",
-                body: "We sent a toast with a websocket",
-              },
-            },
-          });
-        };
-
-        /*window.courier.transport.intercept((message) => {
-          console.log(message);
-          return message;
-        });*/
-
-        const notify = document.getElementById("notify");
-        notify.removeAttribute("disabled");
-      };
+      }, 3000);*/
     </script>
   </head>
-
   <body>
     <h1>Treva Homepage</h1>
     <courier-toast></courier-toast>
     <courier-inbox></courier-inbox>
-    <div>
-      <button id="show-toast" onclick="showToastOnClick()" disabled>
-        Show Toast
-      </button>
-    </div>
-    <div>
-      <button id="notify" onclick="notifyClick()" disabled>Notify</button>
-    </div>
   </body>
 </html>
