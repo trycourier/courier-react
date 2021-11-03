@@ -1,7 +1,7 @@
 import { TippyProps } from "@tippyjs/react";
 import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 
 import { useInbox, useClickOutside } from "~/hooks";
@@ -170,6 +170,35 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     [isOpen]
   );
 
+  const bell = useMemo(() => {
+    return (
+      <Bell
+        aria-pressed="false"
+        className={`inbox-bell ${props.className ?? ""}`}
+        isOpen={isOpen ?? false}
+        onClick={handleIconOnClick}
+        onMouseEnter={handleBellOnMouseEnter}
+        role="button"
+        tabIndex={0}
+      >
+        {props.renderIcon ? (
+          <span>
+            {props.renderIcon({
+              unreadMessageCount,
+            })}
+          </span>
+        ) : brand?.inapp?.icons?.bell ? (
+          <img src={brand?.inapp?.icons?.bell} />
+        ) : (
+          <BellSvg />
+        )}
+        {unreadMessageCount > 0 && (
+          <UnreadIndicator data-testid="unread-badge" />
+        )}
+      </Bell>
+    );
+  }, [props, brand, isOpen, handleIconOnClick, handleBellOnMouseEnter]);
+
   useClickOutside(ref, handleClickOutside);
 
   if (!courierContext?.inbox) {
@@ -185,35 +214,16 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           brand,
         }}
       >
-        <StyledTippy
-          {...tippyProps}
-          content={<Messages ref={ref} {...props} />}
-        >
-          <Bell
-            aria-pressed="false"
-            className={`inbox-bell ${props.className ?? ""}`}
-            isOpen={isOpen ?? false}
-            onClick={handleIconOnClick}
-            onMouseEnter={handleBellOnMouseEnter}
-            role="button"
-            tabIndex={0}
+        {tippyProps.visible ? (
+          <StyledTippy
+            {...tippyProps}
+            content={<Messages ref={ref} {...props} />}
           >
-            {props.renderIcon ? (
-              <span>
-                {props.renderIcon({
-                  unreadMessageCount,
-                })}
-              </span>
-            ) : brand?.inapp?.icons?.bell ? (
-              <img src={brand?.inapp?.icons?.bell} />
-            ) : (
-              <BellSvg />
-            )}
-            {unreadMessageCount > 0 && (
-              <UnreadIndicator data-testid="unread-badge" />
-            )}
-          </Bell>
-        </StyledTippy>
+            {bell}
+          </StyledTippy>
+        ) : (
+          bell
+        )}
       </ThemeProvider>
     </>
   );

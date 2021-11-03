@@ -5,8 +5,9 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 const path = require("path");
 const webpack = require("webpack");
 
-module.exports = (env, argv) => {
+module.exports = (_env, argv) => {
   const isProduction = argv.mode === "production";
+  const isStaging = process.env.IS_STAGING;
 
   return {
     mode: argv.mode ? argv.mode : "development",
@@ -15,7 +16,7 @@ module.exports = (env, argv) => {
       publicPath: isProduction
         ? "https://courier-components-xvdza5.s3.amazonaws.com/"
         : undefined,
-      filename: isProduction ? "latest.js" : "staging.js",
+      filename: isStaging ? "staging.js" : "latest.js",
       chunkFilename: "[id].[chunkhash:8].js",
       path: path.resolve(__dirname, "./dist"),
     },
