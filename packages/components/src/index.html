@@ -13,7 +13,7 @@
     </style>
     <script type="text/javascript">
       const userId = "3b17362c-0c91-4fcd-a829-885a2343eb67";
-      window.loadCourier = function (config) {
+      /* window.loadCourier = function (config) {
         if (!config || !config.clientKey || !config.userId) {
           return Promise.reject();
         }
@@ -33,20 +33,34 @@
             document.body.appendChild(s);
           })();
         });
+      };*/
+      window.courierConfig = {
+        clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
+        userId,
+        apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
+        wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
       };
-      /*setTimeout(() => {
-        window.courier.init({
-          clientKey: "ZDRiMTViNmMtODdmZi00OWMzLWI5YTgtYmU5NTc3YTRlM2Y1",
-          userId,
-          apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
-          wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
-        });
-      }, 3000);*/
+
+      window.addInbox = () => {
+        const existingComponent = document.querySelector("courier-inbox");
+        if (existingComponent) {
+          existingComponent.remove();
+
+          setTimeout(() => {
+            const inbox = document.createElement("courier-inbox");
+            document.body.appendChild(inbox);
+          }, 2000);
+          return;
+        }
+
+        const inbox = document.createElement("courier-inbox");
+        document.body.appendChild(inbox);
+      };
     </script>
   </head>
   <body>
     <h1>Treva Homepage</h1>
     <courier-toast></courier-toast>
-    <courier-inbox></courier-inbox>
+    <div id="root" />
   </body>
 </html>
