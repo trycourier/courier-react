@@ -16,7 +16,7 @@ const querySelector = (element: HTMLElement, selector: string) => {
 
 export const CourierComponents: React.FunctionComponent = () => {
   const componentConfigs = window.courierConfig?.components;
-  const initialInbox = querySelector(document.body, "courier-inbox");
+  const initialInbox = querySelector(window?.document?.body, "courier-inbox");
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
 
   const inboxConfig = {
@@ -24,7 +24,7 @@ export const CourierComponents: React.FunctionComponent = () => {
     ...getAttrsAsJson(inboxElement),
   };
 
-  const initialToast = querySelector(document.body, "courier-toast");
+  const initialToast = querySelector(window?.document?.body, "courier-toast");
   const [toastElement, setToastElement] = useState(initialToast ?? undefined);
 
   const toastConfig = {
