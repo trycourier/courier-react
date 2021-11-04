@@ -8,7 +8,7 @@ const Inbox = lazy(() => import("./Inbox"));
 
 export const CourierComponents: React.FunctionComponent = () => {
   const componentConfigs = window.courierConfig?.components;
-  const initialInbox = document.querySelector("courier-inbox");
+  const initialInbox = document?.querySelector("courier-inbox");
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
 
   const inboxConfig = {
@@ -16,7 +16,7 @@ export const CourierComponents: React.FunctionComponent = () => {
     ...getAttrsAsJson(inboxElement),
   };
 
-  const initialToast = document.querySelector("courier-toast");
+  const initialToast = document?.querySelector("courier-toast");
   const [toastElement, setToastElement] = useState(initialToast ?? undefined);
 
   const toastConfig = {
@@ -45,11 +45,11 @@ export const CourierComponents: React.FunctionComponent = () => {
               return;
 
             default: {
-              const childInbox = element.querySelector("courier-inbox");
+              const childInbox = element?.querySelector("courier-inbox");
               if (childInbox) {
                 setInboxElement(childInbox);
               }
-              const childToast = element.querySelector("courier-toast");
+              const childToast = element?.querySelector("courier-toast");
               if (childToast) {
                 setToastElement(childToast);
               }
