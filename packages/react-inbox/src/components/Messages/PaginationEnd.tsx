@@ -10,6 +10,9 @@ const Styled = styled.div(({ theme }) => ({
   alignItems: "center",
   flex: "1 0",
   color: theme?.brand?.colors?.primary ?? "#9121c2",
+  borderRadius: "6px",
+  margin: "6px 0",
+  backgroundColor: theme?.brand?.colors?.background ?? "#F7F6F9",
   fontSize: 12,
 
   "svg .running-man": {
