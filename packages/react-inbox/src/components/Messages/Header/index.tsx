@@ -31,7 +31,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   markAllAsRead,
   messages = [],
 }) => {
-  const { brand } = useCourier();
+  const { inbox, brand } = useCourier();
   const { view, setView } = useInbox();
   const handleSetView = (newView) => (event: React.MouseEvent) => {
     event.preventDefault();
@@ -51,7 +51,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <div className="actions">
         {currentTab?.filters?.isRead === false && messages.length > 0 && (
           <MarkAllAsRead onClick={markAllAsRead} style={{ cursor: "pointer" }}>
-            Mark all as read
+            {inbox?.labels?.markAllAsRead ?? "Mark all as read"}
           </MarkAllAsRead>
         )}
         {brand?.preferenceTemplates?.length > 0 && (
@@ -66,7 +66,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <Heading flexDirection="column">
         Preferences
         <PreferenceSubHeader onClick={handleSetView("messages")}>
-          {`◀ Back to Inbox`}
+          {`◀ ${inbox?.labels?.backToInbox ?? "Back to Inbox"}`}
         </PreferenceSubHeader>
       </Heading>
       <SettingsIconButton onClick={handleSetView("messages")}>

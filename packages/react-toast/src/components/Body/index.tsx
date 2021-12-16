@@ -72,14 +72,16 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
             if (block.type === "action") {
               return (
-                <ActionBlock
-                  data-testid={`action-${index}`}
-                  href={block.url}
-                  key={index}
-                  target="_blank"
-                >
-                  {block.text}
-                </ActionBlock>
+                <div>
+                  <ActionBlock
+                    data-testid={`action-${index}`}
+                    href={block.url}
+                    key={index}
+                    target="_blank"
+                  >
+                    {block.text}
+                  </ActionBlock>
+                </div>
               );
             }
           })

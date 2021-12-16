@@ -4,13 +4,13 @@ const useCourierActions = (dispatch) => {
   return {
     initToast: (payload) => {
       dispatch({
-        type: "INIT_TOAST",
+        type: "toast/INIT",
         payload,
       });
     },
     initInbox: (payload) => {
       dispatch({
-        type: "INIT_INBOX",
+        type: "inbox/INIT",
         payload,
       });
     },

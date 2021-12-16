@@ -34,6 +34,12 @@ export interface InboxProps {
   tabs?: Array<ITab>;
   theme?: ThemeObject;
   title?: string;
+  labels?: {
+    markAsRead?: string;
+    markAsUnread?: string;
+    markAllAsRead?: string;
+    backToInbox?: string;
+  };
   trigger?: TippyProps["trigger"];
 }
 

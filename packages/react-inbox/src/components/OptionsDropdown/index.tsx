@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Tippy, { TippyProps } from "@tippyjs/react";
 import OptionsIcon from "~/assets/options.svg";
 import { OptionsIconButton } from "./styled";
 import Options from "./Options";
+import { useClickOutside } from "~/hooks";
 
 const StyledTippy = styled(Tippy)`
   transform: translateX(-1px);
@@ -34,6 +35,8 @@ const tippyProps: TippyProps = {
 };
 
 function OptionsDropdown({ options }) {
+  const ref = useRef(null);
+
   const [showOptions, setShowOptions] = useState(false);
 
   const handleShowOptions = (event: React.MouseEvent) => {
@@ -41,11 +44,22 @@ function OptionsDropdown({ options }) {
     setShowOptions(!showOptions);
   };
 
+  const handleClickOutside: EventListener = (event) => {
+    event?.preventDefault();
+    setShowOptions(false);
+  };
+
+  useClickOutside(ref, handleClickOutside);
+
   return (
     <StyledTippy
       {...tippyProps}
       visible={showOptions}
-      content={<Options options={options} onClose={handleShowOptions} />}
+      content={
+        <span ref={ref}>
+          <Options options={options} onClose={handleShowOptions} />{" "}
+        </span>
+      }
     >
       <OptionsIconButton onClick={handleShowOptions}>
         <OptionsIcon />

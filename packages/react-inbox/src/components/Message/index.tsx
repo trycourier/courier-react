@@ -13,7 +13,7 @@ import {
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 import { IMessageProps } from "./types";
-import { getAction, getOptions, getTimeAgo } from "./helpers";
+import { getAction, useMessageOptions, getTimeAgo } from "./helpers";
 import { useCourier } from "@trycourier/react-provider";
 
 const Message: React.FunctionComponent<IMessageProps> = ({
@@ -53,7 +53,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
     trackEvent: createTrackEvent,
   });
 
-  const options = getOptions({
+  const messageOptions = useMessageOptions({
     showMarkAsRead,
     showMarkAsUnread,
     markMessageRead,
@@ -86,9 +86,11 @@ const Message: React.FunctionComponent<IMessageProps> = ({
 
             if (block.type === "action") {
               return (
-                <ActionBlock key={index} href={block.url} target="_blank">
-                  {block.text}
-                </ActionBlock>
+                <div>
+                  <ActionBlock key={index} href={block.url} target="_blank">
+                    {block.text}
+                  </ActionBlock>
+                </div>
               );
             }
           })
@@ -104,7 +106,9 @@ const Message: React.FunctionComponent<IMessageProps> = ({
         )}
       </Contents>
       <TimeAgo>{timeAgo}</TimeAgo>
-      {options?.length ? <OptionsDropdown options={options} /> : undefined}
+      {messageOptions?.length ? (
+        <OptionsDropdown options={messageOptions} />
+      ) : undefined}
     </Container>
   );
 };

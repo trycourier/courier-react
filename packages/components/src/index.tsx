@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 
 import { CourierProvider } from "@trycourier/react-provider";
-import { CourierComponents } from "./components";
+import { CourierComponents, SetCourierConfig } from "./components";
 
 declare global {
   interface Window {
@@ -11,10 +11,12 @@ declare global {
         [action: string]: Array<() => void>;
       };
       toast?: {
-        add: (message: { title: string; body: string }) => void;
+        setConfig?: (config: any) => void;
+        add?: (message: { title: string; body: string }) => void;
       };
       inbox?: {
-        config: any;
+        setConfig?: (config: any) => void;
+        config?: any;
       };
       transport?: any;
       init: (config: ICourierConfig) => void;
@@ -62,6 +64,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       userSignature={userSignature}
       wsUrl={wsUrl}
     >
+      <SetCourierConfig />
       <CourierComponents />
     </CourierProvider>,
     courierRoot

@@ -1,3 +1,4 @@
+import { useCourier } from "@trycourier/react-provider";
 import distanceInWords from "date-fns/formatDistanceStrict";
 import { MESSAGE_LABELS } from "~/constants";
 
@@ -29,7 +30,7 @@ export const getAction = ({ clickAction, trackingIds, trackEvent }) => {
   };
 };
 
-export const getOptions = ({
+export const useMessageOptions = ({
   showMarkAsRead,
   showMarkAsUnread,
   markMessageRead,
@@ -38,16 +39,17 @@ export const getOptions = ({
   readTrackingId,
   unreadTrackingId,
 }) => {
+  const { inbox } = useCourier();
   return [
     showMarkAsRead && {
-      label: MESSAGE_LABELS.MARK_AS_READ,
+      label: inbox?.labels?.markAsRead ?? MESSAGE_LABELS.MARK_AS_READ,
       onClick: () => {
         markMessageRead(messageId, readTrackingId || "");
       },
     },
 
     showMarkAsUnread && {
-      label: MESSAGE_LABELS.MARK_AS_UNREAD,
+      label: inbox?.labels?.markAsUnread ?? MESSAGE_LABELS.MARK_AS_UNREAD,
       onClick: () => {
         markMessageUnread(messageId, unreadTrackingId || "");
       },

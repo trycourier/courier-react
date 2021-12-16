@@ -33,7 +33,7 @@ export const Theme = () => {
   return <ReactMarkdown>{themeMd}</ReactMarkdown>;
 };
 
-export const ThemeExammple = () => {
+export const ThemeExample = () => {
   const theme = {
     container: {
       background: "green",
@@ -181,6 +181,10 @@ const middleware = () => (next) => (action) => {
               created: "2021-04-06T18:02:28.065Z",
               read: false,
               content: {
+                trackingIds: {
+                  readTrackingId: 123,
+                  unreadTrackingId: 123,
+                },
                 title: "Unread Message",
                 body: "This Message is Unread",
               },
@@ -190,6 +194,10 @@ const middleware = () => (next) => (action) => {
               created: "2021-04-06T18:02:28.065Z",
               read: true,
               content: {
+                trackingIds: {
+                  readTrackingId: 123,
+                  unreadTrackingId: 123,
+                },
                 title: "Read Message",
                 body: "This Message is Read",
               },
@@ -227,6 +235,46 @@ export const Hooks = () => {
           userId={USER_ID}
         >
           <MyCustomInbox />
+        </CourierProvider>
+      </div>
+    </>
+  );
+};
+
+export const CustomLabels = () => {
+  return (
+    <>
+      <ReactMarkdown>{hooksMd}</ReactMarkdown>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "top",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <ReactMarkdown>{`## Example`}</ReactMarkdown>
+          <ReactMarkdown>{`\`\`\`javascript\n<Inbox labels={{
+            markAsRead: "markey read pwease",
+            markAsUnread: "jk, unread me",
+          }} />\n\`\`\``}</ReactMarkdown>
+        </div>
+        <CourierProvider
+          middleware={[middleware]}
+          wsUrl={WS_URL}
+          apiUrl={API_URL}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
+        >
+          <Inbox
+            isOpen={true}
+            labels={{
+              markAsRead: "markey read pwease",
+              markAsUnread: "jk, unread me",
+              backToInbox: "back it up!",
+              markAllAsRead: "mark em all captn",
+            }}
+          />
         </CourierProvider>
       </div>
     </>
