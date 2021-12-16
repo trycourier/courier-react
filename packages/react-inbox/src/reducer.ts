@@ -15,6 +15,13 @@ const makeMessage = (message): IMessage => ({
 
 export interface InboxState {
   brand?: Brand;
+  title?: string;
+  labels?: {
+    markAsRead?: string;
+    markAsUnread?: string;
+    markAllAsRead?: string;
+    backToInbox?: string;
+  };
   defaultIcon?: false | string;
   tabs?: Array<ITab>;
   isLoading?: boolean;

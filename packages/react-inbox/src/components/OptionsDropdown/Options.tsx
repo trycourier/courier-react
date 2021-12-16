@@ -25,6 +25,7 @@ const Option = styled.button`
   background: transparent;
   border: none;
   outline: none;
+  border-radius: 4px;
 
   :hover {
     background-color: #5c6a82;

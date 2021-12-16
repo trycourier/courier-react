@@ -88,6 +88,11 @@ export function WithBlocks() {
             text: "View Details",
             url: "https://www.courier.com",
           },
+          {
+            type: "action",
+            text: "View Details2",
+            url: "https://www.courier.com",
+          },
         ]}
         title="This is a really long title lalalalalala"
       />

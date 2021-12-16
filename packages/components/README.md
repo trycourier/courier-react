@@ -124,7 +124,11 @@ To listen for actions that happen inside Courier's SDK.
 
 ## [Configuring Components](#config)
 
-You can configure components in 2 different ways. Inline html attributes but also through `window.courierConfig`.
+You can configure components in 2 different ways. Inline html attributes but also through `window.courierConfig`. These are the same properties passed to the React components
+
+[Inbox Config](https://github.com/trycourier/courier-react/blob/main/packages/react-inbox/docs/0.props.md)
+
+[Toast Config](https://github.com/trycourier/courier-react/blob/main/packages/react-toast/docs/3.props.md)
 
 > Inline configuration attributes will take precedence over `window.courierConfig` options
 
@@ -153,3 +157,11 @@ window.courierConfig = {
   },
 };
 ```
+
+## [Updating Component Configs](#updating-config)
+
+You update configuration of components by using:
+
+`window.courier.inbox.setConfig(config: InboxConfig);`
+
+`window.courier.toast.setConfig(config: ToastConfig);`

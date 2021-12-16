@@ -2,6 +2,7 @@ import { getAttrsAsJson } from "../lib/get-attrs-as-json";
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import { CourierSdk } from "./CourierSdk";
+import { useCourier } from "@trycourier/react-provider";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
@@ -12,6 +13,24 @@ const querySelector = (element: HTMLElement, selector: string) => {
   }
 
   return element.querySelector(selector);
+};
+
+export const SetCourierConfig: React.FunctionComponent = () => {
+  const courier = useCourier();
+
+  useEffect(() => {
+    window.courier.inbox = {
+      ...window.courier.inbox,
+      setConfig: courier.initInbox,
+    };
+
+    window.courier.toast = {
+      ...window.courier.toast,
+      setConfig: courier.initToast,
+    };
+  }, []);
+
+  return null;
 };
 
 export const CourierComponents: React.FunctionComponent = () => {

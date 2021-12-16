@@ -29,7 +29,6 @@ const Messages: React.ForwardRefExoticComponent<
 > = React.forwardRef(
   (
     {
-      title = "Inbox",
       renderContainer,
       renderHeader,
       renderMessage,
@@ -42,6 +41,7 @@ const Messages: React.ForwardRefExoticComponent<
     const { fetchRecipientPreferences } = usePreferencesActions();
 
     const {
+      title = "Inbox",
       brand,
       currentTab,
       fetchMessages,
