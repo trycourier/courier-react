@@ -2,6 +2,7 @@ import React from "react";
 
 import { Normalize } from "styled-normalize";
 import { addParameters, addDecorator } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
 import githubCss from "./github.css";
 import styled from "styled-components";
@@ -36,5 +37,8 @@ export const parameters = {
     storySort: {
       order: ["Introduction", "Getting Started", "Authentication"],
     },
+  },
+  viewport: {
+    viewports: INITIAL_VIEWPORTS,
   },
 };

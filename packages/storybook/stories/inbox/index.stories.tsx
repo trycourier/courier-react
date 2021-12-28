@@ -20,6 +20,12 @@ import {
 
 import myCustomInboxString from "!raw-loader!./hooks.tsx";
 import { MyCustomInbox } from "./hooks";
+import mockMiddleware from "./mock-middleware";
+
+const API_URL = process.env.API_URL || "";
+const CLIENT_KEY = process.env.CLIENT_KEY || "";
+const USER_ID = process.env.USER_ID || "";
+const WS_URL = process.env.WS_URL || "";
 
 export default {
   title: "Inbox",
@@ -140,78 +146,6 @@ export const RenderPropsExammple = () => {
   );
 };
 
-const API_URL = process.env.API_URL || "";
-const CLIENT_KEY = process.env.CLIENT_KEY || "";
-const USER_ID = process.env.USER_ID || "";
-const WS_URL = process.env.WS_URL || "";
-
-const middleware = () => (next) => (action) => {
-  if (action.type === "inbox/INIT") {
-    next({
-      ...action,
-      payload: {
-        ...action.payload,
-        isLoading: true,
-      },
-    });
-    return;
-  }
-
-  if (action.type === "inbox/SET_UNREAD_MESSAGE_COUNT") {
-    next({
-      type: action.type + "/DONE",
-      payload: 2,
-    });
-    return;
-  }
-
-  if (action.type === "inbox/FETCH_MESSAGES") {
-    next({
-      type: action.type + "/PENDING",
-    });
-
-    setTimeout(() => {
-      next({
-        type: action.type + "/DONE",
-        payload: {
-          appendMessages: false,
-          messages: [
-            {
-              messageId: 123,
-              created: "2021-04-06T18:02:28.065Z",
-              read: false,
-              content: {
-                trackingIds: {
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
-                },
-                title: "Unread Message",
-                body: "This Message is Unread",
-              },
-            },
-            {
-              messageId: 456,
-              created: "2021-04-06T18:02:28.065Z",
-              read: true,
-              content: {
-                trackingIds: {
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
-                },
-                title: "Read Message",
-                body: "This Message is Read",
-              },
-            },
-          ],
-        },
-      });
-    }, 1000);
-
-    return;
-  }
-  next(action);
-};
-
 export const Hooks = () => {
   return (
     <>
@@ -228,7 +162,7 @@ export const Hooks = () => {
           <ReactMarkdown>{`\`\`\`javascript\n${myCustomInboxString}\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[middleware]}
+          middleware={[mockMiddleware]}
           wsUrl={WS_URL}
           apiUrl={API_URL}
           clientKey={CLIENT_KEY}
@@ -260,7 +194,7 @@ export const CustomLabels = () => {
           }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[middleware]}
+          middleware={[mockMiddleware]}
           wsUrl={WS_URL}
           apiUrl={API_URL}
           clientKey={CLIENT_KEY}
