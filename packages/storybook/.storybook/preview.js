@@ -32,8 +32,6 @@ addDecorator((storyFn) =>
   ))
 );
 
-console.log("INITIAL_VIEWPORTS", INITIAL_VIEWPORTS);
-
 export const parameters = {
   options: {
     storySort: {
