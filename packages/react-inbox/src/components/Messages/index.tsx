@@ -80,8 +80,9 @@ const Messages: React.ForwardRefExoticComponent<
       fetchRecipientPreferences();
     }, []);
 
-    const handleCloseInbox = () => {
-      toggleInbox();
+    const handleCloseInbox = (event: React.MouseEvent) => {
+      event.preventDefault();
+      toggleInbox(false);
     };
     const Container = renderContainer ? renderContainer : MessageListContainer;
 
