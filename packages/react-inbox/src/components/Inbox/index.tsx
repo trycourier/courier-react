@@ -4,7 +4,7 @@ import deepExtend from "deep-extend";
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 
-import { useInbox, useClickOutside } from "~/hooks";
+import { useInbox, useClickOutside, useWindowSize } from "~/hooks";
 import BellSvg, { Bell } from "./Bell";
 import LazyTippy from "./LazyTippy";
 import Messages from "../Messages";
@@ -66,6 +66,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
+  const windowSize = useWindowSize();
   const { clientKey, userId } = courierContext;
   const {
     brand,
@@ -205,6 +206,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     return null;
   }
 
+  const isMobile = windowSize?.width ? windowSize?.width <= 480 : false;
+
   return (
     <>
       <TippyGlobalStyle />
@@ -215,12 +218,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         }}
       >
         {tippyProps.visible ? (
-          <StyledTippy
-            {...tippyProps}
-            content={<Messages ref={ref} {...props} />}
-          >
-            {bell}
-          </StyledTippy>
+          <>
+            {isMobile ? (
+              <Messages ref={ref} isMobile={true} {...props} />
+            ) : (
+              <StyledTippy
+                {...tippyProps}
+                content={<Messages ref={ref} {...props} />}
+              >
+                {bell}
+              </StyledTippy>
+            )}
+          </>
         ) : (
           bell
         )}

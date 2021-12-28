@@ -15,7 +15,9 @@ import useInbox from "~/hooks/use-inbox";
 
 import { InboxProps } from "../../types";
 import {
-  Container as DefaultContainer,
+  ResponsiveContainer,
+  DismissInbox,
+  MessageListContainer,
   MessageList,
   Empty,
   Footer,
@@ -24,11 +26,13 @@ import CourierLogo from "~/assets/courier_logo_text.svg";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
+    isMobile?: boolean;
     ref: React.ForwardedRef<HTMLDivElement>;
   }
 > = React.forwardRef(
   (
     {
+      isMobile,
       renderContainer,
       renderHeader,
       renderMessage,
@@ -52,6 +56,7 @@ const Messages: React.ForwardRefExoticComponent<
       unreadMessageCount,
       view,
       tabs,
+      toggleInbox,
     } = useInbox();
 
     const messageListRef = useRef<HTMLDivElement>(null);
@@ -75,10 +80,14 @@ const Messages: React.ForwardRefExoticComponent<
       fetchRecipientPreferences();
     }, []);
 
-    const Container = renderContainer ? renderContainer : DefaultContainer;
+    const handleCloseInbox = () => {
+      toggleInbox();
+    };
+    const Container = renderContainer ? renderContainer : MessageListContainer;
 
     return (
-      <div ref={ref}>
+      <ResponsiveContainer ref={ref} isMobile={isMobile}>
+        {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
         <Container>
           {renderHeader ? (
             renderHeader({})
@@ -94,7 +103,11 @@ const Messages: React.ForwardRefExoticComponent<
           {view === "messages" ? (
             <>
               {renderTabs ? renderTabs({ tabs, currentTab }) : <TabList />}
-              <MessageList ref={messageListRef} data-testid="messages">
+              <MessageList
+                ref={messageListRef}
+                isMobile={isMobile}
+                data-testid="messages"
+              >
                 {messages?.map((message) =>
                   renderMessage ? (
                     renderMessage(message)
@@ -129,7 +142,7 @@ const Messages: React.ForwardRefExoticComponent<
                 </a>
               </Footer>
             )}
-      </div>
+      </ResponsiveContainer>
     );
   }
 );

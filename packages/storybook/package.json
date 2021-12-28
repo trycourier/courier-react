@@ -20,6 +20,7 @@
     "@storybook/addon-essentials": "^6.1.14",
     "@storybook/addon-knobs": "^6.1.21",
     "@storybook/addon-links": "^6.1.14",
+    "@storybook/addon-viewport": "^6.4.9",
     "@storybook/react": "^6.1.14",
     "@trycourier/components": "1.2.0",
     "@trycourier/react-inbox": "1.2.0",

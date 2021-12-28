@@ -1,35 +1,89 @@
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
-export const Container = styled.div(({ theme }) =>
+export const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
+  ({ theme, isMobile }) =>
+    deepExtend(
+      {
+        ...(isMobile
+          ? {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+            }
+          : {}),
+      },
+      theme?.container
+    )
+);
+
+export const DismissInbox = styled.button(({ theme }) =>
   deepExtend(
     {
-      background:
-        theme.brand?.inapp?.widgetBackground?.topColor &&
-        theme.brand?.inapp?.widgetBackground?.bottomColor
-          ? `linear-gradient(180deg, ${theme.brand?.inapp?.widgetBackground?.topColor} 0%, ${theme.brand?.inapp?.widgetBackground?.bottomColor} 100%)`
-          : theme.brand?.colors?.secondary ?? "#9121c2",
-      padding: 17,
-      paddingBottom: 0,
+      border: "none",
+      borderRadius: "50%",
+      position: "absolute",
+      top: 6,
+      right: 8,
+      cursor: "pointer",
+      width: 42,
+      height: 42,
+      background: "rgba(115, 129, 155, 0.6)",
+      color: "white",
+      transition: "background 100ms ease-in",
+
+      "&:hover": {
+        background: "rgba(115, 129, 155, 0.8)",
+      },
     },
-    theme?.container
+    theme?.dismissInbox
   )
 );
 
-export const MessageList = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      background: "rgba(255, 255, 255, 0.2)",
-      overflow: "scroll",
-      display: "flex",
-      height: 392,
-      maxHeight: 392,
-      flexDirection: "column",
-      borderTop: "1px solid rgba(203,213,224,.5)",
-      scrollSnapType: "y proximity",
-    },
-    theme?.messageList?.container
-  )
+export const MessageListContainer = styled.div<{ isMobile?: boolean }>(
+  ({ theme }) =>
+    deepExtend(
+      {
+        background:
+          theme.brand?.inapp?.widgetBackground?.topColor &&
+          theme.brand?.inapp?.widgetBackground?.bottomColor
+            ? `linear-gradient(180deg, ${theme.brand?.inapp?.widgetBackground?.topColor} 0%, ${theme.brand?.inapp?.widgetBackground?.bottomColor} 100%)`
+            : theme.brand?.colors?.secondary ?? "#9121c2",
+        padding: 17,
+        paddingBottom: 0,
+      },
+      theme?.container
+    )
+);
+
+export const MessageList = styled.div<{ isMobile?: boolean }>(
+  ({ isMobile, theme }) => {
+    const defaultHeight = 392;
+
+    const height = (() => {
+      if (!isMobile) {
+        return defaultHeight;
+      }
+
+      return `Calc(100vh - 205px)`;
+    })();
+
+    return deepExtend(
+      {
+        background: "rgba(255, 255, 255, 0.2)",
+        overflow: "scroll",
+        display: "flex",
+        height,
+        maxHeight: height,
+        flexDirection: "column",
+        borderTop: "1px solid rgba(203,213,224,.5)",
+        scrollSnapType: "y proximity",
+      },
+      theme?.messageList?.container
+    );
+  }
 );
 
 export const Header = styled.div(({ theme }) =>
