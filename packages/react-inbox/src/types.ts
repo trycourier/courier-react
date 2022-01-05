@@ -1,10 +1,5 @@
-/* eslint-disable no-unused-vars */
-import { CSSProperties } from "react";
 import { TippyProps } from "@tippyjs/react";
 import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
-
-type InboxThemeOptions = "root" | "body" | "footer" | "header";
-type MessageThemeOptions = "root" | "title" | "body" | "icon" | "clickAction";
 
 export interface ITab {
   filters: {
@@ -32,7 +27,32 @@ export interface InboxProps {
   renderMessage?: React.FunctionComponent<IMessage>;
   renderNoMessages?: React.FunctionComponent;
   tabs?: Array<ITab>;
-  theme?: ThemeObject;
+  theme?: {
+    container?: React.CSSProperties;
+    footer?: React.CSSProperties;
+    header?: React.CSSProperties;
+    icon?: React.CSSProperties;
+    messageList?: {
+      container?: React.CSSProperties;
+    };
+    message?: {
+      actions?: {
+        container?: React.CSSProperties;
+        details?: React.CSSProperties;
+        dismiss?: React.CSSProperties;
+      };
+      body?: React.CSSProperties;
+      container?: React.CSSProperties;
+      icon?: React.CSSProperties;
+      title?: React.CSSProperties;
+      unreadIndicator?: React.CSSProperties;
+    };
+    tabList?: {
+      container?: React.CSSProperties;
+      tab?: React.CSSProperties;
+    };
+    root?: React.CSSProperties;
+  };
   title?: string;
   labels?: {
     markAsRead?: string;
@@ -42,13 +62,6 @@ export interface InboxProps {
   };
   trigger?: TippyProps["trigger"];
 }
-
-type ThemeObject = {
-  //https://github.com/mui-org/material-ui/blob/master/packages/material-ui-styles/src/withStyles/withStyles.d.ts#L21
-  [key in InboxThemeOptions | MessageThemeOptions | string]?:
-    | CSSProperties
-    | ThemeObject;
-};
 
 export interface IMessage {
   unread?: number;
