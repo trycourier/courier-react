@@ -27,8 +27,6 @@ export const Toast: React.FunctionComponent<
     throw new Error("Missing Courier Provider");
   }
 
-  console.log("courierContext", courierContext);
-
   const {
     clientKey,
     transport,

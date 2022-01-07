@@ -61,8 +61,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     }
   }, [_transport, clientKey, wsUrl]);
 
-  console.log("transport", transport);
-
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
     brand,

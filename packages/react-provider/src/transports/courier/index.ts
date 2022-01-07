@@ -7,7 +7,6 @@ import { ITransportOptions } from "./types";
 export class CourierTransport extends Transport {
   protected ws: WS;
   protected clientKey: string;
-  public connected: boolean;
   protected userSignature?: string;
   protected declare interceptor?: Interceptor;
 
@@ -29,7 +28,6 @@ export class CourierTransport extends Transport {
         "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production",
     });
     this.ws.connect();
-    this.connected = true;
   }
 
   send(message: ICourierMessage): void {

@@ -9,6 +9,11 @@ export default {
   component: Toast,
 };
 
+function tenantIdToClientKey(tenantId) {
+  const buffer = Buffer.from(tenantId);
+  return buffer.toString("base64");
+}
+
 export function CreateEvent() {
   const [subScribeChannel, setSubscribeChannel] = useState();
   const [subscribeEvent, setSubscribeEvent] = useState();
@@ -16,10 +21,8 @@ export function CreateEvent() {
 
   useEffect(() => {
     const courierTransport = new CourierTransport({
-      wsUrl: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev", //process.env.WS_URL,
-      userSignature:
-        "b03f747e58724b4f08949e5c81816d11c0dfed13700f99ff1641a8664f2deaea",
-      clientKey: "YTEzOTQxY2ItZDQ5Ni00YmVmLTkxMTItMTA5MTg0MWNlNGY2", //tenantIdToClientKey("a13941cb-d496-4bef-9112-1091841ce4f6"),
+      wsUrl: process.env.WS_URL,
+      clientKey: tenantIdToClientKey("a13941cb-d496-4bef-9112-1091841ce4f6"),
     });
     setTransport(courierTransport);
   }, []);
