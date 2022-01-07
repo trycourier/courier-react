@@ -61,6 +61,8 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     }
   }, [_transport, clientKey, wsUrl]);
 
+  console.log("transport", transport);
+
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
     brand,
@@ -96,7 +98,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
   }, [transport, userId]);
 
   useEffect(() => {
-    if (!clientKey || !userId) {
+    if (!_transport && (!clientKey || !userId)) {
       return;
     }
 

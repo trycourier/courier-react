@@ -1,5 +1,6 @@
 import { ICourierEventCallback, ICourierMessage } from "./transports/types";
 import ReconnectingWebSocket from "reconnecting-websocket";
+import packageJson from "../package.json";
 
 export class WS {
   connection?: ReconnectingWebSocket;
@@ -12,13 +13,23 @@ export class WS {
   protected messageCallback;
   private url: string;
   private clientKey: string;
+  private userSignature?: string;
 
-  constructor({ url, clientKey }: { url: string; clientKey: string }) {
+  constructor({
+    url,
+    clientKey,
+    userSignature,
+  }: {
+    url: string;
+    clientKey: string;
+    userSignature?: string;
+  }) {
     this.messageCallback = null;
     this.connection = undefined;
     this.connected = false;
     this.url = url;
     this.clientKey = clientKey;
+    this.userSignature = userSignature;
     this.subscriptions = [];
   }
 
@@ -29,7 +40,13 @@ export class WS {
 
     this.connection.onopen = this.onOpen.bind(this);
     this.connection.onclose = this.onClose.bind(this);
+    this.connection.onerror = this.onError.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
+  }
+
+  onError(): void {
+    console.error("Error Connecting to Courier Push");
+    this.connection?.close();
   }
 
   onClose(): void {
@@ -43,9 +60,11 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
+          version: packageJson.version,
           channel: sub.channel,
           event: sub.event,
           clientKey: this.clientKey,
+          userSignature: this.userSignature,
         },
       });
     }
@@ -85,9 +104,11 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
+          version: packageJson.version,
           channel,
           event,
           clientKey: this.clientKey,
+          userSignature: this.userSignature,
         },
       });
     }
@@ -110,9 +131,11 @@ export class WS {
     this.send({
       action: "unsubscribe",
       data: {
+        version: packageJson.version,
         channel,
         event,
         clientKey: this.clientKey,
+        userSignature: this.userSignature,
       },
     });
   }

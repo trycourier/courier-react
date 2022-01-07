@@ -28,6 +28,7 @@ export const useListenForTransportEvent = (
   const { createTrackEvent } = useCourier();
 
   useEffect(() => {
+    console.log("transport", transport);
     if (!transport) {
       return;
     }
@@ -35,6 +36,7 @@ export const useListenForTransportEvent = (
     transport.listen({
       id: "toast-listener",
       listener: (courierEvent) => {
+        console.log("courierEvent", courierEvent);
         const courierData = courierEvent?.data?.data;
 
         if (clientKey && courierData?.deliverTrackingId) {
