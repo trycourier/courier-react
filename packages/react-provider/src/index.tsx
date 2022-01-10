@@ -60,7 +60,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
         wsUrl,
       });
     }
-  }, [_transport, clientKey, wsUrl]);
+  }, [_transport, clientKey, wsUrl, userSignature]);
 
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,
