@@ -10,6 +10,7 @@ export interface IActionBlock {
 }
 export interface ICourierMessage {
   event?: string;
+  error?: string;
   body?: string | React.ReactElement;
   blocks?: Array<ITextBlock | IActionBlock>;
   icon?: string | false;
