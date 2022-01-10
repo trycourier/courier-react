@@ -55,6 +55,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
 
     if (clientKey && !_transport) {
       return new CourierTransport({
+        userSignature,
         clientKey,
         wsUrl,
       });
