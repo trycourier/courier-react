@@ -96,7 +96,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
   }, [transport, userId]);
 
   useEffect(() => {
-    if (!clientKey || !userId) {
+    if (!_transport && (!clientKey || !userId)) {
       return;
     }
 

@@ -21,6 +21,7 @@ export class CourierTransport extends Transport {
     this.userSignature = options.userSignature;
     this.ws = new WS({
       clientKey: options.clientKey,
+      userSignature: options.userSignature,
       url:
         options.wsUrl ||
         COURIER_WS_URL ||

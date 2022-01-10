@@ -1,23 +1,28 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { CourierToast, ToastProvider } from "@trycourier/react-toast";
-import { CourierTransport } from "@trycourier/react-provider";
+import { Toast } from "@trycourier/react-toast";
+import { CourierTransport, CourierProvider } from "@trycourier/react-provider";
 import { Button, Input, Label } from "./styled";
 
 export default {
   title: "Toast/Transport",
-  component: CourierToast,
+  component: Toast,
 };
+
+function tenantIdToClientKey(tenantId) {
+  const buffer = Buffer.from(tenantId);
+  return buffer.toString("base64");
+}
 
 export function CreateEvent() {
   const [subScribeChannel, setSubscribeChannel] = useState();
   const [subscribeEvent, setSubscribeEvent] = useState();
-  const [transport, setTransport] = useState(null);
+  const [transport, setTransport] = useState<any>(null);
 
   useEffect(() => {
     const courierTransport = new CourierTransport({
       wsUrl: process.env.WS_URL,
-      clientKey: tenantIdToClientKey("87c50d2d-b03d-4ce1-bb3f-2ae93ed576f5"),
+      clientKey: tenantIdToClientKey("a13941cb-d496-4bef-9112-1091841ce4f6"),
     });
     setTransport(courierTransport);
   }, []);
@@ -48,7 +53,8 @@ export function CreateEvent() {
     [transport]
   );
   return (
-    <ToastProvider transport={transport}>
+    <CourierProvider transport={transport}>
+      <Toast />
       <CourierTransportExample
         subscribe={subscribe}
         unsubscribe={unsubscribe}
@@ -58,7 +64,7 @@ export function CreateEvent() {
         event={subscribeEvent}
         createTestEvent={createTestEvent}
       />
-    </ToastProvider>
+    </CourierProvider>
   );
 }
 
@@ -129,9 +135,4 @@ function CourierTransportExample({
       </div>
     </div>
   );
-}
-
-function tenantIdToClientKey(tenantId) {
-  const buffer = Buffer.from(tenantId);
-  return buffer.toString("base64");
 }
