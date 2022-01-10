@@ -79,6 +79,11 @@ export class WS {
       return;
     }
 
+    if (message.error) {
+      console.error(message.error);
+      return;
+    }
+
     for (const sub of this.subscriptions) {
       if (sub.event !== "*" && sub.event !== message?.event) {
         continue;
