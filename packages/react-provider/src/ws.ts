@@ -1,6 +1,5 @@
 import { ICourierEventCallback, ICourierMessage } from "./transports/types";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import packageJson from "../package.json";
 
 export class WS {
   connection?: ReconnectingWebSocket;
@@ -60,7 +59,7 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
-          version: packageJson.version,
+          version: "2",
           channel: sub.channel,
           event: sub.event,
           clientKey: this.clientKey,
@@ -104,7 +103,7 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
-          version: packageJson.version,
+          version: "2",
           channel,
           event,
           clientKey: this.clientKey,
@@ -131,7 +130,7 @@ export class WS {
     this.send({
       action: "unsubscribe",
       data: {
-        version: packageJson.version,
+        version: "2",
         channel,
         event,
         clientKey: this.clientKey,
