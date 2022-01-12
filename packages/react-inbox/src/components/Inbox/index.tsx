@@ -177,7 +177,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   );
 
   useEventListener("keydown", (event: KeyboardEvent) => {
-    if (event?.key === "Escape") {
+    if (event?.key === "Escape" && isOpen) {
       toggleInbox(false);
     }
   });
