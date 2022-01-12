@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-preferences",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {

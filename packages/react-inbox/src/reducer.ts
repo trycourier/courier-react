@@ -61,7 +61,8 @@ export default (state: InboxState = initialState, action): InboxState => {
     case "inbox/TOGGLE_INBOX": {
       return {
         ...state,
-        isOpen: action.payload?.isOpen ?? !state.isOpen,
+        isOpen:
+          typeof action.payload === "boolean" ? action.payload : !state.isOpen,
       };
     }
 
