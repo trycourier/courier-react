@@ -3,6 +3,7 @@ module.exports = {
   plugins: [
     "@babel/transform-runtime",
     "babel-plugin-styled-components",
+    "transform-inline-environment-variables",
     "transform-class-properties",
     [
       "babel-plugin-inline-import",
