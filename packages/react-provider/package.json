@@ -16,6 +16,7 @@
   },
   "license": "ISC",
   "dependencies": {
+    "buffer": "^6.0.3",
     "graphql": "^15.5.0",
     "react-use": "^17.2.1",
     "reconnecting-websocket": "^4.4.0",
