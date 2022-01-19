@@ -29,6 +29,7 @@ export const Container = styled.div(({ theme }) =>
 export const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
   marginLeft: 15,
+  textAlign: "left",
   ...theme.message?.contents,
 }));
 
