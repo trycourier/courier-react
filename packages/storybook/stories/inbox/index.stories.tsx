@@ -66,8 +66,8 @@ export const ThemeExample = () => {
   };
 
   const props = {
-    isOpen: true,
     title: "Custom Title",
+    showUnreadMessageCount: true,
   };
 
   return (
@@ -91,7 +91,10 @@ export const ThemeExample = () => {
           2
         )}\n\`\`\``}</ReactMarkdown>
       </div>
-      <CourierProvider>
+      <CourierProvider
+        clientKey="Y2U3OWI3NGEtY2FhZC00NTFjLTliZDMtMGZkOTVhMmQ0ZWE4"
+        userId="Google_108669107033656954156"
+      >
         <Inbox theme={theme} {...props} />
       </CourierProvider>
     </div>

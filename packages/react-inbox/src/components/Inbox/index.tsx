@@ -18,19 +18,34 @@ import TippyGlobalStyle from "./TippyGlobalStyle";
 import { DEFAULT_TABS } from "~/constants";
 import { InboxProps } from "../../types";
 
-const UnreadIndicator = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      position: "absolute",
-      top: -2,
-      right: 0,
-      borderRadius: "100%",
-      padding: 5,
-      background: theme?.brand?.colors?.primary ?? "#de5063",
-      animation: "badge-pulse 10s infinite",
-    },
-    theme.unreadIndicator
-  )
+const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
+  ({ theme, showUnreadMessageCount }) =>
+    deepExtend(
+      {
+        color: "white",
+        fontSize: 11,
+        position: "absolute",
+        background: theme?.brand?.colors?.primary ?? "#de5063",
+        animation: "badge-pulse 10s infinite",
+      },
+      showUnreadMessageCount
+        ? {
+            top: -4,
+            borderRadius: 17,
+            padding: "0 4px",
+            height: 16,
+            left: 12,
+            textAlign: "center",
+            minWidth: 8,
+          }
+        : {
+            top: -2,
+            right: 0,
+            borderRadius: "100%",
+            padding: 5,
+          },
+      theme.unreadIndicator
+    )
 );
 
 const StyledTippy = styled(LazyTippy)<{
@@ -84,6 +99,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     setCurrentTab,
     setView,
     toggleInbox,
+    showUnreadMessageCount,
     unreadMessageCount,
   } = useInbox();
 
@@ -205,7 +221,16 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           <BellSvg />
         )}
         {unreadMessageCount > 0 && (
-          <UnreadIndicator data-testid="unread-badge" />
+          <UnreadIndicator
+            showUnreadMessageCount={showUnreadMessageCount}
+            data-testid="unread-badge"
+          >
+            {showUnreadMessageCount
+              ? unreadMessageCount > 99
+                ? "99+"
+                : unreadMessageCount
+              : undefined}
+          </UnreadIndicator>
         )}
       </Bell>
     );

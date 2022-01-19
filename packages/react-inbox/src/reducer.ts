@@ -24,12 +24,13 @@ export interface InboxState {
   };
   defaultIcon?: false | string;
   tabs?: Array<ITab>;
+  currentTab?: ITab;
   isLoading?: boolean;
   isOpen?: boolean;
   messages: Array<IMessage>;
+  showUnreadMessageCount?: boolean;
   startCursor?: string;
   unreadMessageCount: number;
-  currentTab?: ITab;
   view: "messages" | "preferences";
 }
 
