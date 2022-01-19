@@ -86,8 +86,8 @@ const Message: React.FunctionComponent<IMessageProps> = ({
 
             if (block.type === "action") {
               return (
-                <div>
-                  <ActionBlock key={index} href={block.url} target="_blank">
+                <div key={index}>
+                  <ActionBlock href={block.url} target="_blank">
                     {block.text}
                   </ActionBlock>
                 </div>

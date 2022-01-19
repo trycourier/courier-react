@@ -3,6 +3,7 @@ module.exports = {
   plugins: [
     "inline-react-svg",
     "@babel/transform-runtime",
+    "transform-inline-environment-variables",
     "babel-plugin-styled-components",
     "transform-class-properties",
     [

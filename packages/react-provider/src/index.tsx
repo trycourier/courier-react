@@ -1,3 +1,8 @@
+(window as any).global = window;
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+window.Buffer = window.Buffer || require("buffer").Buffer;
+
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import Client from "./graph-ql";
