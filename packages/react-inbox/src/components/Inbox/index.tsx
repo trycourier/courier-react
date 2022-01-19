@@ -34,7 +34,9 @@ const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
             borderRadius: 17,
             padding: "0 4px",
             height: 16,
-            right: -19,
+            left: 12,
+            textAlign: "center",
+            minWidth: 8,
           }
         : {
             top: -2,
