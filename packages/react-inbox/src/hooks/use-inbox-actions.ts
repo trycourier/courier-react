@@ -12,6 +12,7 @@ const useInboxActions = () => {
     createTrackEvent,
     createBatchTrackEvent,
     graphQLClient,
+    inbox,
   } = useCourier();
 
   return {
@@ -44,14 +45,22 @@ const useInboxActions = () => {
 
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => getMessages(graphQLClient, newTab?.filters),
+        payload: () =>
+          getMessages(graphQLClient, {
+            from: inbox.from,
+            ...newTab?.filters,
+          }),
       });
     },
 
     fetchMessages: (params?: IGetMessagesParams) => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => getMessages(graphQLClient, params),
+        payload: () =>
+          getMessages(graphQLClient, {
+            from: inbox.from,
+            ...params,
+          }),
       });
     },
 

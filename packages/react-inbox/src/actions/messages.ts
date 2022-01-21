@@ -1,11 +1,15 @@
 export interface IGetMessagesParams {
   after?: string;
   isRead?: boolean;
+  from?: number;
 }
 
 export const QUERY_MESSAGES = `
-  query GetMessages($after: String, $isRead: Boolean){
-    messages(params: { isRead: $isRead }, after: $after) {
+  query GetMessages($after: String, $isRead: Boolean, $from: Float){
+    messages(params: { 
+        isRead: $isRead, 
+        from: $from 
+      }, after: $after) {
       totalCount
       pageInfo {
         startCursor

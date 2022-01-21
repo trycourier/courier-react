@@ -92,14 +92,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     brand,
     currentTab,
     fetchMessages,
+    from,
     getUnreadMessageCount,
     init,
     isOpen,
     messages,
     setCurrentTab,
     setView,
-    toggleInbox,
     showUnreadMessageCount,
+    toggleInbox,
     unreadMessageCount,
   } = useInbox();
 
@@ -114,8 +115,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return;
     }
 
-    getUnreadMessageCount();
-  }, [userId, clientKey]);
+    getUnreadMessageCount({ from: from ?? props.from });
+  }, [userId, clientKey, from]);
 
   useEffect(() => {
     let didInit = false;
@@ -178,7 +179,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       fetchMessages(currentTab?.filters);
     },
-    [isOpen, fetchMessages]
+    [isOpen, fetchMessages, currentTab]
   );
 
   const handleClickOutside = useCallback(
