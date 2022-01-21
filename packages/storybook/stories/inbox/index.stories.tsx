@@ -68,7 +68,6 @@ export const ThemeExample = () => {
   const props = {
     title: "Custom Title",
     showUnreadMessageCount: true,
-    from: Date.now(),
   };
 
   return (
@@ -93,10 +92,8 @@ export const ThemeExample = () => {
         )}\n\`\`\``}</ReactMarkdown>
       </div>
       <CourierProvider
-        apiUrl="https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev"
-        wsUrl="wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev"
-        clientKey="ZTk2MWU4ZDQtYzNhYS00NmY1LWIzZjItOTJkNTIzMjgyYzhm"
-        userId="abc123"
+        clientKey="Y2U3OWI3NGEtY2FhZC00NTFjLTliZDMtMGZkOTVhMmQ0ZWE4"
+        userId="Google_108669107033656954156"
       >
         <Inbox theme={theme} {...props} />
       </CourierProvider>

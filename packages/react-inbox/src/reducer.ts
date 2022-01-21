@@ -45,7 +45,6 @@ const initialState: InboxState = {
 };
 
 export default (state: InboxState = initialState, action): InboxState => {
-  console.log("action", action);
   switch (action.type) {
     case "inbox/INIT": {
       return {

@@ -48,7 +48,6 @@ const Messages: React.ForwardRefExoticComponent<
       brand,
       currentTab,
       fetchMessages,
-      from,
       isLoading,
       markAllAsRead,
       messages = [],
@@ -70,12 +69,11 @@ const Messages: React.ForwardRefExoticComponent<
         }
 
         fetchMessages({
-          from,
           ...currentTab?.filters,
           after: startCursor,
         });
       },
-      [isLoading, startCursor, currentTab, from]
+      [isLoading, startCursor, currentTab]
     );
 
     useEffect(() => {
