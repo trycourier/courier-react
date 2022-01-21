@@ -45,7 +45,6 @@ const Messages: React.ForwardRefExoticComponent<
     const { fetchRecipientPreferences } = usePreferencesActions();
 
     const {
-      title = "Inbox",
       brand,
       currentTab,
       fetchMessages,
@@ -53,10 +52,11 @@ const Messages: React.ForwardRefExoticComponent<
       markAllAsRead,
       messages = [],
       startCursor,
+      tabs,
+      title = "Inbox",
+      toggleInbox,
       unreadMessageCount,
       view,
-      tabs,
-      toggleInbox,
     } = useInbox();
 
     const messageListRef = useRef<HTMLDivElement>(null);

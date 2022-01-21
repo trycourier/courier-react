@@ -15,6 +15,7 @@ export interface InboxProps {
   isOpen?: boolean;
   placement?: TippyProps["placement"];
   renderContainer?: React.FunctionComponent;
+  from?: number;
   showUnreadCount?: boolean;
   renderTabs?: React.FunctionComponent<{
     currentTab?: ITab;

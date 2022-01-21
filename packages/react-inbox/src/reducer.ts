@@ -22,14 +22,15 @@ export interface InboxState {
     markAllAsRead?: string;
     backToInbox?: string;
   };
-  defaultIcon?: false | string;
-  tabs?: Array<ITab>;
   currentTab?: ITab;
+  defaultIcon?: false | string;
+  from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
   messages: Array<IMessage>;
   showUnreadMessageCount?: boolean;
   startCursor?: string;
+  tabs?: Array<ITab>;
   unreadMessageCount: number;
   view: "messages" | "preferences";
 }
