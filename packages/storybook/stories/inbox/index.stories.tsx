@@ -10,6 +10,7 @@ import { Inbox } from "@trycourier/react-inbox";
 
 import customComponentsString from "!raw-loader!./custom-components.tsx";
 import {
+  CustomBell,
   CustomHeader,
   CustomContainer,
   CustomFooter,
@@ -109,6 +110,7 @@ export const RenderPropsExammple = () => {
   const props = {
     isOpen: true,
     title: "Custom Title",
+    renderBell: CustomBell,
     renderContainer: CustomContainer,
     renderHeader: CustomHeader,
     renderFooter: CustomFooter,

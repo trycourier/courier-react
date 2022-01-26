@@ -81,6 +81,7 @@ interface InboxProps = {
   placement?: "top" | "left" | "right" | "bottom";
 
   // Render Props for Custom Rendering
+  renderBell?: React.FunctionComponent;
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{

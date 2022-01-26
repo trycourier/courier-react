@@ -21,6 +21,7 @@ export interface InboxProps {
     currentTab?: ITab;
     tabs?: ITab[];
   }>;
+  renderBell?: React.FunctionComponent;
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{

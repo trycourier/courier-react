@@ -23,3 +23,7 @@ export const CustomTabs: React.FunctionComponent = () => {
 export const CustomNoMessages: React.FunctionComponent = () => {
   return <div>No Messages</div>;
 };
+
+export const CustomBell: React.FunctionComponent = () => {
+  return <div>Bell</div>;
+};
