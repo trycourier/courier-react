@@ -16,7 +16,7 @@ export interface InboxProps {
   placement?: TippyProps["placement"];
   renderContainer?: React.FunctionComponent;
   from?: number;
-  showUnreadCount?: boolean;
+  showUnreadMessageCount?: boolean;
   renderTabs?: React.FunctionComponent<{
     currentTab?: ITab;
     tabs?: ITab[];
@@ -54,6 +54,7 @@ export interface InboxProps {
       tab?: React.CSSProperties;
     };
     root?: React.CSSProperties;
+    unreadIndicator?: React.CSSProperties;
   };
   title?: string;
   labels?: {
