@@ -245,6 +245,17 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   const isMobile = windowSize?.width ? windowSize?.width <= 480 : false;
 
+  const BellWrapper = () => {
+    return props.renderBell
+      ? props.renderBell({
+          className: `inbox-bell ${props.className ?? ""}`,
+          isOpen: isOpen ?? false,
+          onClick: handleIconOnClick,
+          onMouseEnter: handleBellOnMouseEnter,
+        }) ?? bell
+      : bell;
+  };
+
   return (
     <>
       <TippyGlobalStyle />
@@ -263,12 +274,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
                 {...tippyProps}
                 content={<Messages ref={ref} {...props} />}
               >
-                {bell}
+                {BellWrapper()}
               </StyledTippy>
             )}
           </>
         ) : (
-          bell
+          BellWrapper()
         )}
       </ThemeProvider>
     </>
