@@ -21,7 +21,12 @@ export interface InboxProps {
     currentTab?: ITab;
     tabs?: ITab[];
   }>;
-  renderBell?: React.FunctionComponent;
+  renderBell?: React.FunctionComponent<{
+    className?: string;
+    isOpen?: boolean;
+    onClick?: (event: React.MouseEvent) => void;
+    onMouseEnter?: (event: React.MouseEvent) => void;
+  }>;
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{
