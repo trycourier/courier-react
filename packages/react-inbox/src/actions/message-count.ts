@@ -16,6 +16,9 @@ export const getUnreadMessageCount = async (
   client,
   params?: IMessageCountParams
 ): Promise<number> => {
-  const results = await client.query(GET_UNREAD_MESSAGE_COUNT, params);
+  const results = await client.query(GET_UNREAD_MESSAGE_COUNT, {
+    ...params,
+    isRead: false,
+  });
   return results?.data?.messageCount;
 };
