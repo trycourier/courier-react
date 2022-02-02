@@ -45,9 +45,9 @@ query GetBrand($brandId: String!) {
 }
 `;
 
-const GET_DEFAULT_BRAND = `
-query GetDefaultBrand {
-  defaultBrand {
+const GET_INAPP_BRAND = `
+query GetInAppBrand {
+  inAppBrand {
     ${brandProps}
   }
 }
@@ -58,9 +58,9 @@ export const getBrand = async (client, brandId) => {
     ? await client.query(GET_BRAND, {
         brandId,
       })
-    : await client.query(GET_DEFAULT_BRAND);
+    : await client.query(GET_INAPP_BRAND);
 
-  const brandProp = brandId ? "brand" : "defaultBrand";
+  const brandProp = brandId ? "brand" : "inAppBrand";
   const brand = results?.data?.[brandProp];
 
   const colors = brand?.settings?.colors;
