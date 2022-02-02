@@ -7,7 +7,7 @@ import fetchMock from "fetch-mock";
 import { Inbox } from "../../src";
 
 import * as fetchMessages from "../../src/actions/messages";
-import { DEFAULT_BRAND } from "../../__mocks__/api/brand";
+import { INAPP_BRAND } from "../../__mocks__/api/brand";
 
 describe("Test Bell Initial Render", () => {
   beforeEach(() => {
@@ -83,11 +83,11 @@ describe("Test Bell State", () => {
           operationName: "MessageCount",
         },
       })
-      .post("https://api.courier.com/client/q", DEFAULT_BRAND, {
+      .post("https://api.courier.com/client/q", INAPP_BRAND, {
         overwriteRoutes: false,
         matchPartialBody: true,
         body: {
-          operationName: "GetDefaultBrand",
+          operationName: "GetInAppBrand",
         },
       });
   });

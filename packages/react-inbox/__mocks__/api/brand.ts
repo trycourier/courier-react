@@ -1,6 +1,6 @@
-export const DEFAULT_BRAND = {
+export const INAPP_BRAND = {
   data: {
-    defaultBrand: {
+    inAppBrand: {
       settings: {
         colors: {
           primary: "#FFFFFF",
@@ -23,15 +23,15 @@ export const DEFAULT_BRAND = {
       execution: {
         resolvers: [
           {
-            path: ["defaultBrand"],
+            path: ["inAppBrand"],
             parentType: "Query",
-            fieldName: "defaultBrand",
+            fieldName: "inAppBrand",
             returnType: "Brand",
             startOffset: 241418,
             duration: 107085289,
           },
           {
-            path: ["defaultBrand", "settings"],
+            path: ["inAppBrand", "settings"],
             parentType: "Brand",
             fieldName: "settings",
             returnType: "BrandSettings",
@@ -39,7 +39,7 @@ export const DEFAULT_BRAND = {
             duration: 35225,
           },
           {
-            path: ["defaultBrand", "settings", "colors"],
+            path: ["inAppBrand", "settings", "colors"],
             parentType: "BrandSettings",
             fieldName: "colors",
             returnType: "BrandColors",
@@ -47,7 +47,7 @@ export const DEFAULT_BRAND = {
             duration: 15525,
           },
           {
-            path: ["defaultBrand", "settings", "colors", "primary"],
+            path: ["inAppBrand", "settings", "colors", "primary"],
             parentType: "BrandColors",
             fieldName: "primary",
             returnType: "String",
@@ -55,7 +55,7 @@ export const DEFAULT_BRAND = {
             duration: 10134,
           },
           {
-            path: ["defaultBrand", "settings", "colors", "secondary"],
+            path: ["inAppBrand", "settings", "colors", "secondary"],
             parentType: "BrandColors",
             fieldName: "secondary",
             returnType: "String",
@@ -63,7 +63,7 @@ export const DEFAULT_BRAND = {
             duration: 7991,
           },
           {
-            path: ["defaultBrand", "settings", "colors", "tertiary"],
+            path: ["inAppBrand", "settings", "colors", "tertiary"],
             parentType: "BrandColors",
             fieldName: "tertiary",
             returnType: "String",
@@ -71,7 +71,7 @@ export const DEFAULT_BRAND = {
             duration: 7620,
           },
           {
-            path: ["defaultBrand", "settings", "inapp"],
+            path: ["inAppBrand", "settings", "inapp"],
             parentType: "BrandSettings",
             fieldName: "inapp",
             returnType: "BrandInApp",
