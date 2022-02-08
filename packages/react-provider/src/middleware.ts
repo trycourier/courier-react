@@ -6,6 +6,7 @@ const asyncMiddleware = (store) => (next) => async (action) => {
 
   store.dispatch({
     type: `${action.type}/PENDING`,
+    meta: action.meta,
   });
 
   try {

@@ -106,7 +106,7 @@ export const RenderProps = () => {
   return <ReactMarkdown>{renderPropsMd}</ReactMarkdown>;
 };
 
-export const RenderPropsExammple = () => {
+export const RenderPropsExample = () => {
   const props = {
     isOpen: true,
     title: "Custom Title",
@@ -119,6 +119,9 @@ export const RenderPropsExammple = () => {
     renderNoMessages: CustomNoMessages,
     theme: {
       root: {
+        "*": {
+          color: "red",
+        },
         width: 300,
         padding: 10,
         background: "#ccc",

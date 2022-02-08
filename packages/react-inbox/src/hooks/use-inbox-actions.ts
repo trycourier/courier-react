@@ -43,24 +43,27 @@ const useInboxActions = () => {
         payload: newTab,
       });
 
+      const meta = {
+        from: inbox.from,
+        ...newTab?.filters,
+      };
+
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () =>
-          getMessages(graphQLClient, {
-            from: inbox.from,
-            ...newTab?.filters,
-          }),
+        meta,
+        payload: () => getMessages(graphQLClient, meta),
       });
     },
 
     fetchMessages: (params?: IGetMessagesParams) => {
+      const meta = {
+        from: inbox.from,
+        ...params,
+      };
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () =>
-          getMessages(graphQLClient, {
-            from: inbox.from,
-            ...params,
-          }),
+        payload: () => getMessages(graphQLClient, meta),
+        meta,
       });
     },
 
