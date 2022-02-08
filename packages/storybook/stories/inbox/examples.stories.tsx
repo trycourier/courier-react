@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { Inbox, useInbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
-import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
+import { CourierProvider } from "@trycourier/react-provider";
 import {
   withKnobs,
   text,
@@ -19,16 +19,6 @@ export default {
 const API_URL = process.env.API_URL || "";
 const CLIENT_KEY = process.env.CLIENT_KEY || "";
 const USER_ID = process.env.USER_ID || "";
-const WS_URL = process.env.WS_URL || "";
-
-let courierTransport: CourierTransport;
-
-if (typeof window !== "undefined") {
-  courierTransport = new CourierTransport({
-    wsUrl: WS_URL,
-    clientKey: CLIENT_KEY,
-  });
-}
 
 const middleware = () => (next) => (action) => {
   if (action.type === "inbox/INIT") {
@@ -51,6 +41,17 @@ const middleware = () => (next) => (action) => {
   }
 
   if (action.type === "inbox/FETCH_MESSAGES") {
+    if (action.meta.isRead === false) {
+      next({
+        type: action.type + "/DONE",
+        payload: {
+          appendMessages: false,
+          messages: [],
+        },
+      });
+      return;
+    }
+
     next({
       type: action.type + "/DONE",
       payload: {
@@ -138,6 +139,10 @@ export function Branded() {
           borderRadius: text("Border Radius", "24px"),
           disableMessageIcon: boolean("Disable Message Icon", false),
           placement: select("Placement", ["bottom", "left", "right"], "right"),
+          emptyState: {
+            text: text("Text", "No Messages!"),
+            textColor: text("Text Color", "blue"),
+          },
           widgetBackground: {
             topColor: text("Top Colors", "red"),
             bottomColor: text("Bottom Colors", "blue"),

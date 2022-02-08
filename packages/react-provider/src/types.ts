@@ -7,6 +7,10 @@ export interface Brand {
     borderRadius?: string;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";
+    emptyState?: {
+      textColor?: string;
+      text?: string;
+    };
     widgetBackground?: {
       topColor?: string;
       bottomColor?: string;
