@@ -122,7 +122,10 @@ const Messages: React.ForwardRefExoticComponent<
                   (renderNoMessages ? (
                     renderNoMessages({})
                   ) : (
-                    <Empty>You have no notifications at this time</Empty>
+                    <Empty>
+                      {brand?.inapp?.emptyState?.text ??
+                        "You have no notifications at this time"}
+                    </Empty>
                   ))}
                 {!isLoading && messages?.length > 5 && !startCursor && (
                   <PaginationEnd title="End Of The Road" />

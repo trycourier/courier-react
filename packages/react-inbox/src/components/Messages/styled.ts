@@ -111,16 +111,21 @@ export const MarkAllAsRead = styled.a`
   color: #9121c2;
 `;
 
-export const Empty = styled.div`
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 25px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: "white";
-  margin: auto;
-`;
+export const Empty = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      fontSize: "18px",
+      fontStyle: "normal",
+      fontWeight: 700,
+      lineHeight: "25px",
+      letterSpacing: "0em",
+      textAlign: "center",
+      color: theme?.brand?.inapp?.emptyState?.textColor ?? "white",
+      margin: "auto",
+    },
+    theme?.emptyState
+  )
+);
 
 export const Footer = styled.div(({ theme }) =>
   deepExtend(
