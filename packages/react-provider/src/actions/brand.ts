@@ -10,6 +10,10 @@ settings {
     disableMessageIcon
     disableCourierFooter
     placement
+    emptyState {
+      textColor
+      text
+    }
     widgetBackground {
       topColor
       bottomColor
