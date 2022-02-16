@@ -18,7 +18,6 @@ import {
   CustomIcon,
   CustomTabs,
   CustomNoMessages,
-  CustomMessagesMessageBlock,
 } from "./custom-components";
 
 // @ts-ignore
@@ -121,7 +120,6 @@ export const RenderPropsExample = () => {
     renderIcon: CustomIcon,
     renderTabs: CustomTabs,
     renderNoMessages: CustomNoMessages,
-    renderMessageBlock: CustomMessagesMessageBlock,
     theme: {
       root: {
         "*": {
