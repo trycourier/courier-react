@@ -14,17 +14,22 @@ import {
 import useInbox from "~/hooks/use-inbox";
 import { IMessageProps } from "./types";
 import { getAction, useMessageOptions, getTimeAgo } from "./helpers";
-import { useCourier } from "@trycourier/react-provider";
+import {
+  IActionBlock,
+  ITextBlock,
+  useCourier,
+} from "@trycourier/react-provider";
 
 const Message: React.FunctionComponent<IMessageProps> = ({
-  created,
-  title,
-  body,
   blocks,
-  icon,
+  body,
+  created,
   data,
-  read,
+  icon,
   messageId,
+  read,
+  renderBlocks,
+  title,
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
@@ -75,8 +80,13 @@ const Message: React.FunctionComponent<IMessageProps> = ({
       <Contents>
         <Title>{title}</Title>
         {blocks?.length ? (
-          blocks?.map((block, index) => {
+          blocks?.map((block: ITextBlock | IActionBlock, index: number) => {
             if (block.type === "text") {
+              if (renderBlocks?.text) {
+                const Block = renderBlocks?.text;
+                return <Block {...block} key={index} />;
+              }
+
               return (
                 <TextBlock key={index} data-testid="message-body">
                   {block.text}
@@ -85,12 +95,17 @@ const Message: React.FunctionComponent<IMessageProps> = ({
             }
 
             if (block.type === "action") {
+              if (renderBlocks?.action) {
+                const Block = renderBlocks?.action;
+                return <Block {...block} key={index} />;
+              }
+
               return (
-                <div key={index}>
-                  <ActionBlock href={block.url} target="_blank">
+                <ActionBlock key={index}>
+                  <a href={block.url} target="_blank" rel="noreferrer">
                     {block.text}
-                  </ActionBlock>
-                </div>
+                  </a>
+                </ActionBlock>
               );
             }
           })
@@ -98,8 +113,10 @@ const Message: React.FunctionComponent<IMessageProps> = ({
           <>
             <TextBlock>{body}</TextBlock>
             {action && (
-              <ActionBlock href={action.href} target="_blank">
-                {action.label}
+              <ActionBlock>
+                <a href={action.href} target="_blank" rel="noreferrer">
+                  {action.label}
+                </a>
               </ActionBlock>
             )}
           </>

@@ -1,21 +1,16 @@
-interface TextBlock {
-  type: "text";
-  text: string;
-}
-interface ActionBlock {
-  type: "action";
-  text: string;
-  url: string;
-}
+import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import { InboxProps } from "~/types";
+
 export interface IMessageProps {
-  unread?: number;
-  messageId: string;
-  created: number;
-  title: string;
+  blocks?: Array<ITextBlock | IActionBlock>;
   body: string;
-  blocks?: Array<TextBlock | ActionBlock>;
+  created: number;
   icon?: string;
+  messageId: string;
   read?: boolean;
+  renderBlocks?: InboxProps["renderBlocks"];
+  title: string;
+  unread?: number;
   data?: {
     clickAction: string;
   };

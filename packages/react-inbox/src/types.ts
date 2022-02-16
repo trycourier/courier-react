@@ -12,11 +12,10 @@ export interface InboxProps {
   brand?: Brand;
   className?: string;
   defaultIcon?: false | string;
+  from?: number;
   isOpen?: boolean;
   placement?: TippyProps["placement"];
   renderContainer?: React.FunctionComponent;
-  from?: number;
-  showUnreadMessageCount?: boolean;
   renderTabs?: React.FunctionComponent<{
     currentTab?: ITab;
     tabs?: ITab[];
@@ -27,6 +26,10 @@ export interface InboxProps {
     onClick?: (event: React.MouseEvent) => void;
     onMouseEnter?: (event: React.MouseEvent) => void;
   }>;
+  renderBlocks?: {
+    action?: React.FunctionComponent<IActionBlock>;
+    text?: React.FunctionComponent<ITextBlock>;
+  };
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{
@@ -34,6 +37,7 @@ export interface InboxProps {
   }>;
   renderMessage?: React.FunctionComponent<IMessage>;
   renderNoMessages?: React.FunctionComponent;
+  showUnreadMessageCount?: boolean;
   tabs?: Array<ITab>;
   theme?: {
     container?: React.CSSProperties;

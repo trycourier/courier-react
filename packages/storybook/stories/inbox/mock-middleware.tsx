@@ -55,6 +55,29 @@ export default () => (next) => (action) => {
                 body: "This Message is Read",
               },
             },
+            {
+              messageId: 789,
+              created: "2021-04-06T18:02:28.065Z",
+              read: false,
+              content: {
+                trackingIds: {
+                  readTrackingId: 123,
+                  unreadTrackingId: 123,
+                },
+                title: "Blocks",
+                blocks: [
+                  {
+                    type: "text",
+                    text: "Im a text block",
+                  },
+                  {
+                    type: "action",
+                    url: "https://www.courier.com",
+                    text: "Click Me",
+                  },
+                ],
+              },
+            },
           ],
         },
       });

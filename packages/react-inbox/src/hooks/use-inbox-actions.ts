@@ -21,6 +21,18 @@ const useInboxActions = () => {
         type: "inbox/INIT",
         payload,
       });
+
+      if (payload.isOpen) {
+        const meta = {
+          from: inbox?.from,
+        };
+
+        dispatch({
+          type: "inbox/FETCH_MESSAGES",
+          meta,
+          payload: () => getMessages(graphQLClient, meta),
+        });
+      }
     },
 
     toggleInbox: (isOpen?: boolean) => {
@@ -44,7 +56,7 @@ const useInboxActions = () => {
       });
 
       const meta = {
-        from: inbox.from,
+        from: inbox?.from,
         ...newTab?.filters,
       };
 
@@ -57,7 +69,7 @@ const useInboxActions = () => {
 
     fetchMessages: (params?: IGetMessagesParams) => {
       const meta = {
-        from: inbox.from,
+        from: inbox?.from,
         ...params,
       };
       dispatch({
