@@ -27,3 +27,7 @@ export const CustomNoMessages: React.FunctionComponent = () => {
 export const CustomBell: React.FunctionComponent = () => {
   return <div>Bell</div>;
 };
+
+export const CustomMessagesMessageBlock: React.FunctionComponent = () => {
+  return <div>Block</div>;
+};

@@ -6,8 +6,9 @@ import renderPropsMd from "@trycourier/react-inbox/docs/2.render-props.md";
 import hooksMd from "@trycourier/react-inbox/docs/3.hooks.md";
 
 import { CourierProvider } from "@trycourier/react-provider";
-import { Inbox } from "@trycourier/react-inbox";
+import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
 
+// @ts-ignore
 import customComponentsString from "!raw-loader!./custom-components.tsx";
 import {
   CustomBell,
@@ -17,8 +18,10 @@ import {
   CustomIcon,
   CustomTabs,
   CustomNoMessages,
-} from "./custom-components.tsx";
+  CustomMessagesMessageBlock,
+} from "./custom-components";
 
+// @ts-ignore
 import myCustomInboxString from "!raw-loader!./hooks.tsx";
 import { MyCustomInbox } from "./hooks";
 import mockMiddleware from "./mock-middleware";
@@ -93,6 +96,7 @@ export const ThemeExample = () => {
         )}\n\`\`\``}</ReactMarkdown>
       </div>
       <CourierProvider
+        middleware={[mockMiddleware]}
         clientKey="Y2U3OWI3NGEtY2FhZC00NTFjLTliZDMtMGZkOTVhMmQ0ZWE4"
         userId="Google_108669107033656954156"
       >
@@ -117,6 +121,7 @@ export const RenderPropsExample = () => {
     renderIcon: CustomIcon,
     renderTabs: CustomTabs,
     renderNoMessages: CustomNoMessages,
+    renderMessageBlock: CustomMessagesMessageBlock,
     theme: {
       root: {
         "*": {
@@ -197,9 +202,11 @@ export const CustomLabels = () => {
         <div>
           <ReactMarkdown>{`## Example`}</ReactMarkdown>
           <ReactMarkdown>{`\`\`\`javascript\n<Inbox labels={{
-            markAsRead: "markey read pwease",
-            markAsUnread: "jk, unread me",
-          }} />\n\`\`\``}</ReactMarkdown>
+  markAsRead: "markey read pwease",
+  markAsUnread: "jk, unread me",
+  backToInbox: "back it up!",
+  markAllAsRead: "mark em all captn",
+}} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
           middleware={[mockMiddleware]}
@@ -215,6 +222,48 @@ export const CustomLabels = () => {
               markAsUnread: "jk, unread me",
               backToInbox: "back it up!",
               markAllAsRead: "mark em all captn",
+            }}
+          />
+        </CourierProvider>
+      </div>
+    </>
+  );
+};
+
+export const CustomBlocks = () => {
+  return (
+    <>
+      <ReactMarkdown>{hooksMd}</ReactMarkdown>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "top",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <ReactMarkdown>{`## Example`}</ReactMarkdown>
+          <ReactMarkdown>{`\`\`\`javascript\n<Inbox labels={{
+            markAsRead: "markey read pwease",
+            markAsUnread: "jk, unread me",
+          }} />\n\`\`\``}</ReactMarkdown>
+        </div>
+        <CourierProvider
+          middleware={[mockMiddleware]}
+          wsUrl={WS_URL}
+          apiUrl={API_URL}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
+        >
+          <Inbox
+            isOpen={true}
+            renderBlocks={{
+              action: (props) => (
+                <ActionBlock>
+                  <a href={props.url}>{props.text}</a>
+                </ActionBlock>
+              ),
+              text: (props) => <TextBlock>{props.text}</TextBlock>,
             }}
           />
         </CourierProvider>

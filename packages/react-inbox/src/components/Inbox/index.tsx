@@ -95,7 +95,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     from,
     getUnreadMessageCount,
     init,
-    isOpen,
+    isOpen: isOpenState,
     messages,
     setCurrentTab,
     setView,
@@ -104,8 +104,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     unreadMessageCount,
   } = useInbox();
 
+  const isOpen = props.isOpen ?? isOpenState;
+
   const tippyProps: TippyProps = {
-    visible: props.isOpen ?? isOpen,
+    visible: isOpen,
     placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
   };
@@ -188,13 +190,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         return;
       }
 
+      // prop is overriding our state
+      if (props.isOpen) {
+        return;
+      }
+
       toggleInbox(false);
     },
     [isOpen]
   );
 
   useEventListener("keydown", (event: KeyboardEvent) => {
-    if (event?.key === "Escape") {
+    if (event?.key === "Escape" && isOpen) {
       toggleInbox(false);
     }
   });

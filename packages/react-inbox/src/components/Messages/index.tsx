@@ -34,11 +34,12 @@ const Messages: React.ForwardRefExoticComponent<
     {
       isMobile,
       renderContainer,
+      renderFooter,
       renderHeader,
       renderMessage,
-      renderFooter,
-      renderTabs,
+      renderBlocks,
       renderNoMessages,
+      renderTabs,
     },
     ref
   ) => {
@@ -113,7 +114,11 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage ? (
                     renderMessage(message)
                   ) : (
-                    <Message key={message.messageId} {...message} />
+                    <Message
+                      key={message.messageId}
+                      renderBlocks={renderBlocks}
+                      {...message}
+                    />
                   )
                 )}
                 {isLoading && <Loading />}

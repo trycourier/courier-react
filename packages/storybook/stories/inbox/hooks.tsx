@@ -30,7 +30,7 @@ export const MyCustomInbox: React.FunctionComponent = () => {
         padding: "10px",
         borderRadius: "12px",
         width: 250,
-        height: 200,
+        height: 300,
       }}
     >
       <h3>My Inbox</h3>
