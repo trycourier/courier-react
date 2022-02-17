@@ -86,6 +86,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
+  // set defaults
+  props = useMemo(() => {
+    return {
+      openLinksInNewTab: true,
+      ...props,
+    };
+  }, [props]);
+
   const windowSize = useWindowSize();
   const { clientKey, userId } = courierContext;
   const {

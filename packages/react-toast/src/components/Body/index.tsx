@@ -27,7 +27,7 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   const { createTrackEvent, brand: courierBrand } = useCourier();
 
   const brand = props.brand ?? config?.brand ?? courierBrand;
-  const { renderBlocks, openLinksInNewTab = true } = config;
+  const { renderBlocks, openLinksInNewTab } = config;
 
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps?.toastId),

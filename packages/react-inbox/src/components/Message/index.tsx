@@ -38,7 +38,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
     defaultIcon,
     markMessageRead,
     markMessageUnread,
-    openLinksInNewTab = true,
+    openLinksInNewTab,
     renderBlocks,
   } = useInbox();
 

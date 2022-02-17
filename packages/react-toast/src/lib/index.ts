@@ -1,16 +1,5 @@
 import { Bounce, Slide, Zoom } from "react-toastify";
 
-export function mergeConfig(defaultConfig, config) {
-  return {
-    ...defaultConfig,
-    ...config,
-    theme: {
-      ...defaultConfig?.theme,
-      ...config?.theme,
-    },
-  };
-}
-
 export function getTransition(type?: string) {
   switch (type) {
     case "slide":
