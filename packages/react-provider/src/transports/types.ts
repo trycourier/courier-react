@@ -7,6 +7,7 @@ export interface IActionBlock {
   type: "action";
   text: string;
   url: string;
+  openInNewTab?: boolean;
 }
 export interface ICourierMessage {
   event?: string;

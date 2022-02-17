@@ -28,13 +28,19 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   icon,
   messageId,
   read,
-  renderBlocks,
   title,
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
   const { createTrackEvent } = useCourier();
-  const { brand, defaultIcon, markMessageRead, markMessageUnread } = useInbox();
+  const {
+    brand,
+    defaultIcon,
+    markMessageRead,
+    markMessageUnread,
+    openLinksInNewTab = false,
+    renderBlocks,
+  } = useInbox();
 
   const renderedIcon = getIcon(
     /* priority:
@@ -100,9 +106,23 @@ const Message: React.FunctionComponent<IMessageProps> = ({
                 return <Block {...block} key={index} />;
               }
 
+              let actionProps = {};
+              const openInNewTab =
+                typeof block.openInNewTab === "boolean"
+                  ? block.openInNewTab
+                  : openLinksInNewTab;
+
+              if (openInNewTab) {
+                actionProps = {
+                  ...actionProps,
+                  target: "_blank",
+                  rel: "noreferrer",
+                };
+              }
+
               return (
                 <ActionBlock key={index}>
-                  <a href={block.url} target="_blank" rel="noreferrer">
+                  <a href={block.url} {...actionProps}>
                     {block.text}
                   </a>
                 </ActionBlock>

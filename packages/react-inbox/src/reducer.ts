@@ -1,5 +1,4 @@
-import { IMessage, ITab } from "./types";
-import { Brand } from "@trycourier/react-provider";
+import { IMessage, ITab, InboxProps } from "./types";
 import { DEFAULT_TABS } from "~/constants";
 
 const makeMessage = (message): IMessage => ({
@@ -13,24 +12,11 @@ const makeMessage = (message): IMessage => ({
   trackingIds: message?.content?.trackingIds,
 });
 
-export interface InboxState {
-  brand?: Brand;
-  title?: string;
-  labels?: {
-    markAsRead?: string;
-    markAsUnread?: string;
-    markAllAsRead?: string;
-    backToInbox?: string;
-  };
+export interface InboxState extends InboxProps {
   currentTab?: ITab;
-  defaultIcon?: false | string;
-  from?: number;
   isLoading?: boolean;
-  isOpen?: boolean;
   messages: Array<IMessage>;
-  showUnreadMessageCount?: boolean;
   startCursor?: string;
-  tabs?: Array<ITab>;
   unreadMessageCount: number;
   view: "messages" | "preferences";
 }
