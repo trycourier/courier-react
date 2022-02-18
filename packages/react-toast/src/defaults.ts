@@ -2,7 +2,8 @@ import { IToastConfig } from "./types";
 
 export const defaultConfig: IToastConfig = {
   hideProgressBar: false,
+  openLinksInNewTab: true,
   position: "top-right",
-  transition: "slide",
   theme: {},
+  transition: "slide",
 };

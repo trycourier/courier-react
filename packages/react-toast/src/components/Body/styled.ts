@@ -111,10 +111,10 @@ export const TextBlock = styled.div(({ theme }) =>
   )
 );
 
-export const ActionBlock = styled.a<{ href: string; target: string }>(
-  ({ theme }) =>
-    deepExtend(
-      {
+export const ActionBlock = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      a: {
         display: "inline-block",
         cursor: "pointer",
         border: "none",
@@ -136,6 +136,7 @@ export const ActionBlock = styled.a<{ href: string; target: string }>(
 
         borderRadius: 4,
       },
-      theme?.message?.actionBlock
-    )
+    },
+    theme?.message?.actionBlock
+  )
 );

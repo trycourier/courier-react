@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { CourierProvider, ICourierContext } from "@trycourier/react-provider";
 import { ThemeProvider } from "styled-components";
 import { IToastConfig } from "./types";
-import { mergeConfig } from "./lib";
 import { defaultConfig } from "./defaults";
 import Toast from "./components/Toast";
+import deepExtend from "deep-extend";
 
 export { useToast } from "./hooks";
 export { Toast };
@@ -14,8 +14,11 @@ export const ToastProvider: React.FunctionComponent<
   ICourierContext & {
     config?: IToastConfig;
   }
-> = ({ children, transport, clientKey, config: _config }) => {
-  const config = mergeConfig(defaultConfig, _config);
+> = ({ children, transport, clientKey, config }) => {
+  config = useMemo(() => {
+    return deepExtend({}, defaultConfig, config);
+  }, [config]) as IToastConfig;
+
   return (
     <ThemeProvider theme={config.theme ?? {}}>
       <CourierProvider clientKey={clientKey} transport={transport}>

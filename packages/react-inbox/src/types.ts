@@ -1,6 +1,5 @@
 import { TippyProps } from "@tippyjs/react";
 import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
-
 export interface ITab {
   filters: {
     isRead?: boolean;
@@ -8,35 +7,21 @@ export interface ITab {
   label: string;
   id: string;
 }
+
 export interface InboxProps {
   brand?: Brand;
   className?: string;
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
-  placement?: TippyProps["placement"];
-  renderContainer?: React.FunctionComponent;
-  renderTabs?: React.FunctionComponent<{
-    currentTab?: ITab;
-    tabs?: ITab[];
-  }>;
-  renderBell?: React.FunctionComponent<{
-    className?: string;
-    isOpen?: boolean;
-    onClick?: (event: React.MouseEvent) => void;
-    onMouseEnter?: (event: React.MouseEvent) => void;
-  }>;
-  renderBlocks?: {
-    action?: React.FunctionComponent<IActionBlock>;
-    text?: React.FunctionComponent<ITextBlock>;
+  labels?: {
+    markAsRead?: string;
+    markAsUnread?: string;
+    markAllAsRead?: string;
+    backToInbox?: string;
   };
-  renderFooter?: React.FunctionComponent;
-  renderHeader?: React.FunctionComponent;
-  renderIcon?: React.FunctionComponent<{
-    unreadMessageCount?: number;
-  }>;
-  renderMessage?: React.FunctionComponent<IMessage>;
-  renderNoMessages?: React.FunctionComponent;
+  openLinksInNewTab?: boolean;
+  placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
   tabs?: Array<ITab>;
   theme?: {
@@ -67,15 +52,30 @@ export interface InboxProps {
     unreadIndicator?: React.CSSProperties;
   };
   title?: string;
-  labels?: {
-    markAsRead?: string;
-    markAsUnread?: string;
-    markAllAsRead?: string;
-    backToInbox?: string;
-  };
   trigger?: TippyProps["trigger"];
+  renderContainer?: React.FunctionComponent;
+  renderTabs?: React.FunctionComponent<{
+    currentTab?: ITab;
+    tabs?: ITab[];
+  }>;
+  renderBell?: React.FunctionComponent<{
+    className?: string;
+    isOpen?: boolean;
+    onClick?: (event: React.MouseEvent) => void;
+    onMouseEnter?: (event: React.MouseEvent) => void;
+  }>;
+  renderBlocks?: {
+    action?: React.FunctionComponent<IActionBlock>;
+    text?: React.FunctionComponent<ITextBlock>;
+  };
+  renderFooter?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent;
+  renderIcon?: React.FunctionComponent<{
+    unreadMessageCount?: number;
+  }>;
+  renderMessage?: React.FunctionComponent<IMessage>;
+  renderNoMessages?: React.FunctionComponent;
 }
-
 export interface IMessage {
   unread?: number;
   messageId: string;

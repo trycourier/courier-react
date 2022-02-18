@@ -86,6 +86,7 @@ export function WithBlocks() {
           {
             type: "action",
             text: "View Details",
+            openInNewTab: false,
             url: "https://www.courier.com",
           },
           {

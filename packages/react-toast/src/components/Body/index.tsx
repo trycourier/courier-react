@@ -13,7 +13,7 @@ import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier } from "@trycourier/react-provider";
 
-const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
+const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
   body,
   blocks,
@@ -27,6 +27,7 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   const { createTrackEvent, brand: courierBrand } = useCourier();
 
   const brand = props.brand ?? config?.brand ?? courierBrand;
+  const { renderBlocks, openLinksInNewTab } = config;
 
   const handleOnClickDismiss = useCallback(
     () => toast.dismiss(toastProps?.toastId),
@@ -63,6 +64,11 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
         {blocks?.length ? (
           blocks?.map((block, index) => {
             if (block.type === "text") {
+              if (renderBlocks?.text) {
+                const Block = renderBlocks?.text;
+                return <Block {...block} key={index} />;
+              }
+
               return (
                 <TextBlock key={index} data-testid="message-body">
                   {block.text}
@@ -71,17 +77,30 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
             }
 
             if (block.type === "action") {
+              if (renderBlocks?.action) {
+                const Block = renderBlocks?.action;
+                return <Block {...block} key={index} />;
+              }
+
+              let actionProps = {};
+              const openInNewTab =
+                typeof block.openInNewTab === "boolean"
+                  ? block.openInNewTab
+                  : openLinksInNewTab;
+              if (openInNewTab) {
+                actionProps = {
+                  ...actionProps,
+                  target: "_blank",
+                  rel: "noreferrer",
+                };
+              }
+
               return (
-                <div>
-                  <ActionBlock
-                    data-testid={`action-${index}`}
-                    href={block.url}
-                    key={index}
-                    target="_blank"
-                  >
+                <ActionBlock data-testid={`action-${index}`} key={index}>
+                  <a href={block.url} {...actionProps}>
                     {block.text}
-                  </ActionBlock>
-                </div>
+                  </a>
+                </ActionBlock>
               );
             }
           })
@@ -89,13 +108,15 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
           <>
             <TextBlock data-testid="message-body">{body}</TextBlock>
             {data?.clickAction && (
-              <ActionBlock
-                data-testid="action-0"
-                href={data?.clickAction}
-                onClick={handleOnClickDetails}
-                target="_blank"
-              >
-                View Details
+              <ActionBlock data-testid="action-0">
+                <a
+                  href={data?.clickAction}
+                  onClick={handleOnClickDetails}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  View Details
+                </a>
               </ActionBlock>
             )}
           </>
@@ -108,4 +129,4 @@ const ToastBody: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   );
 };
 
-export default ToastBody;
+export default Body;
