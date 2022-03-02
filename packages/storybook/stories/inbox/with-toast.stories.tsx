@@ -19,7 +19,9 @@ let courierTransport: CourierTransport;
 
 if (typeof window !== "undefined") {
   courierTransport = new CourierTransport({
-    wsUrl: process.env.WS_URL,
+    wsOptions: {
+      url: process.env.WS_URL,
+    },
     clientKey,
   });
 }
@@ -110,7 +112,9 @@ export function OnMessage() {
   return (
     <CourierProvider
       apiUrl={API_URL}
-      wsUrl={process.env.WS_URL}
+      wsOptions={{
+        url: process.env.WS_URL,
+      }}
       clientKey={clientKey}
       userId={USER_ID}
       onMessage={handleOnMessage}

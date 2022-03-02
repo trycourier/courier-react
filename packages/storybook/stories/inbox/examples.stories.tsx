@@ -163,7 +163,9 @@ export function Branded() {
 export function MultipleInbox() {
   return (
     <CourierProvider
-      wsUrl={process.env.WS_URL}
+      wsOptions={{
+        url: process.env.WS_URL,
+      }}
       apiUrl={API_URL}
       clientKey={CLIENT_KEY}
       userId={USER_ID}
@@ -172,7 +174,9 @@ export function MultipleInbox() {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Inbox />
         <CourierProvider
-          wsUrl={process.env.WS_URL}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
           apiUrl={API_URL}
           clientKey={CLIENT_KEY}
           userId={USER_ID}
