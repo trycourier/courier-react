@@ -26,7 +26,9 @@ export const Mobile = () => {
   return (
     <CourierProvider
       middleware={[mockMiddleware]}
-      wsUrl={WS_URL}
+      wsOptions={{
+        url: process.env.WS_URL,
+      }}
       apiUrl={API_URL}
       clientKey={CLIENT_KEY}
       userId={USER_ID}

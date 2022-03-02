@@ -8,7 +8,12 @@ if (typeof window !== "undefined") {
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import Client from "./graph-ql";
-import { ICourierProviderProps, ICourierContext, Brand } from "./types";
+import {
+  ICourierProviderProps,
+  ICourierContext,
+  Brand,
+  WSOptions,
+} from "./types";
 
 import { CourierTransport } from "./transports/courier";
 import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
@@ -23,6 +28,7 @@ export const registerReducer = _registerReducer;
 
 export type {
   Brand,
+  WSOptions,
   ITextBlock,
   IActionBlock,
   ICourierMessage,
@@ -44,7 +50,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
   transport: _transport,
   userId,
   userSignature,
-  wsUrl,
+  wsOptions,
 }) => {
   const middleware = [..._middleware, ...defaultMiddleware];
   const useReducer = useCallback(
@@ -64,10 +70,10 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
       return new CourierTransport({
         userSignature,
         clientKey,
-        wsUrl,
+        wsOptions,
       });
     }
-  }, [_transport, clientKey, wsUrl, userSignature]);
+  }, [_transport, clientKey, wsOptions, userSignature]);
 
   const [state, dispatch] = useReducer(reducer, {
     apiUrl,

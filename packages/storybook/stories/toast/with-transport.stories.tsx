@@ -9,7 +9,7 @@ export default {
   component: Toast,
 };
 
-function tenantIdToClientKey(tenantId) {
+function tenantIdToClientKey(tenantId: string) {
   const buffer = Buffer.from(tenantId);
   return buffer.toString("base64");
 }
@@ -21,7 +21,9 @@ export function CreateEvent() {
 
   useEffect(() => {
     const courierTransport = new CourierTransport({
-      wsUrl: process.env.WS_URL,
+      wsOptions: {
+        url: process.env.WS_URL,
+      },
       clientKey: tenantIdToClientKey("a13941cb-d496-4bef-9112-1091841ce4f6"),
     });
     setTransport(courierTransport);

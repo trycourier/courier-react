@@ -1,6 +1,14 @@
 import { Transport } from "./transports";
 import { Interceptor } from "./transports/types";
+import { ErrorEvent } from "reconnecting-websocket";
 
+export type ErrorEventHandler = (event: ErrorEvent) => void;
+
+export type WSOptions = {
+  url?: string;
+  onError?: ErrorEventHandler;
+  connectionTimeout?: number;
+};
 export interface Brand {
   inapp?: {
     disableCourierFooter?: boolean;
@@ -36,12 +44,12 @@ export interface ICourierProviderProps {
   brand?: Brand;
   brandId?: string;
   clientKey?: string;
+  middleware?: any;
+  onMessage?: Interceptor;
   transport?: Transport;
   userId?: string;
   userSignature?: string;
-  wsUrl?: string;
-  middleware?: any;
-  onMessage?: Interceptor;
+  wsOptions?: WSOptions;
 }
 export interface ICourierContext extends ICourierProviderProps {
   dispatch?: (action: { type: string; payload: any }) => void;

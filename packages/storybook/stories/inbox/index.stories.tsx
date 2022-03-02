@@ -174,7 +174,9 @@ export const Hooks = () => {
         </div>
         <CourierProvider
           middleware={[mockMiddleware]}
-          wsUrl={WS_URL}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
           apiUrl={API_URL}
           clientKey={CLIENT_KEY}
           userId={USER_ID}
@@ -208,7 +210,9 @@ export const CustomLabels = () => {
         </div>
         <CourierProvider
           middleware={[mockMiddleware]}
-          wsUrl={WS_URL}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
           apiUrl={API_URL}
           clientKey={CLIENT_KEY}
           userId={USER_ID}
@@ -248,7 +252,9 @@ export const CustomBlocks = () => {
         </div>
         <CourierProvider
           middleware={[mockMiddleware]}
-          wsUrl={WS_URL}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
           apiUrl={API_URL}
           clientKey={CLIENT_KEY}
           userId={USER_ID}

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { CourierProvider } from "@trycourier/react-provider";
+import { CourierProvider, WSOptions } from "@trycourier/react-provider";
 import { CourierComponents, SetCourierConfig } from "./components";
 
 declare global {
@@ -32,7 +32,7 @@ interface ICourierConfig {
   clientKey: string;
   userId?: string;
   userSignature?: string;
-  wsUrl?: string;
+  wsOptions?: WSOptions;
   components?: {
     inbox?: any;
     toast?: any;
@@ -42,7 +42,7 @@ interface ICourierConfig {
 let hasInit = false;
 
 const initCourier = async (courierConfig?: ICourierConfig) => {
-  const { clientKey, apiUrl, userId, userSignature, wsUrl } =
+  const { clientKey, apiUrl, userId, userSignature, wsOptions } =
     courierConfig ?? window.courierConfig ?? {};
 
   if (hasInit || typeof document === "undefined") {
@@ -62,7 +62,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       clientKey={clientKey}
       userId={userId}
       userSignature={userSignature}
-      wsUrl={wsUrl}
+      wsOptions={wsOptions}
     >
       <SetCourierConfig />
       <CourierComponents />
