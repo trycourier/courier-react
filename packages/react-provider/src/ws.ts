@@ -34,8 +34,8 @@ export class WS {
     this.connection = undefined;
     this.connected = false;
     this.url =
-      options?.url ??
-      process.env.COURIER_WS_URL ??
+      options?.url ||
+      process.env.COURIER_WS_URL ||
       "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production";
     this.clientKey = clientKey;
     this.userSignature = userSignature;
