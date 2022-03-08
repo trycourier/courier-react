@@ -24,7 +24,7 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 }) => {
   const { toastProps } = props as { toastProps: any };
   const [, { config }] = useToast();
-  const { createTrackEvent, brand: courierBrand } = useCourier();
+  const { brand: courierBrand } = useCourier();
 
   const brand = props.brand ?? config?.brand ?? courierBrand;
   const { renderBlocks, openLinksInNewTab } = config;
@@ -33,16 +33,6 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
     () => toast.dismiss(toastProps?.toastId),
     [toastProps?.toastId]
   );
-
-  const handleOnClickDetails = useCallback((event) => {
-    if (onClick) {
-      onClick(event);
-    }
-
-    createTrackEvent({
-      trackingId: data?.clickTrackingId,
-    });
-  }, []);
 
   const Icon = getIcon(
     /* priority:
@@ -87,6 +77,7 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
                 typeof block.openInNewTab === "boolean"
                   ? block.openInNewTab
                   : openLinksInNewTab;
+
               if (openInNewTab) {
                 actionProps = {
                   ...actionProps,
@@ -111,7 +102,7 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
               <ActionBlock data-testid="action-0">
                 <a
                   href={data?.clickAction}
-                  onClick={handleOnClickDetails}
+                  onClick={onClick}
                   rel="noreferrer"
                   target="_blank"
                 >

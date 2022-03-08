@@ -13,12 +13,8 @@ import {
 } from "./styled";
 import useInbox from "~/hooks/use-inbox";
 import { IMessageProps } from "./types";
-import { getAction, useMessageOptions, getTimeAgo } from "./helpers";
-import {
-  IActionBlock,
-  ITextBlock,
-  useCourier,
-} from "@trycourier/react-provider";
+import { useMessageOptions, getTimeAgo } from "./helpers";
+import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 
 const Message: React.FunctionComponent<IMessageProps> = ({
   blocks,
@@ -32,7 +28,6 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const { createTrackEvent } = useCourier();
   const {
     brand,
     defaultIcon,
@@ -57,12 +52,6 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   const timeAgo = getTimeAgo(created);
   const showMarkAsRead = !read && readTrackingId;
   const showMarkAsUnread = read && unreadTrackingId;
-
-  const action = getAction({
-    clickAction: data?.clickAction,
-    trackingIds,
-    trackEvent: createTrackEvent,
-  });
 
   const messageOptions = useMessageOptions({
     showMarkAsRead,
@@ -106,7 +95,11 @@ const Message: React.FunctionComponent<IMessageProps> = ({
                 return <Block {...block} key={index} />;
               }
 
-              let actionProps = {};
+              let actionProps: {
+                target?: string;
+                rel?: string;
+              } = {};
+
               const openInNewTab =
                 typeof block.openInNewTab === "boolean"
                   ? block.openInNewTab
@@ -132,10 +125,10 @@ const Message: React.FunctionComponent<IMessageProps> = ({
         ) : (
           <>
             <TextBlock>{body}</TextBlock>
-            {action && (
+            {data?.clickAction && (
               <ActionBlock>
-                <a href={action.href} target="_blank" rel="noreferrer">
-                  {action.label}
+                <a href={data?.clickAction} target="_blank" rel="noreferrer">
+                  View Details
                 </a>
               </ActionBlock>
             )}

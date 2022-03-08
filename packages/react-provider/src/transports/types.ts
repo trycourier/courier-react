@@ -17,10 +17,16 @@ export interface ICourierMessage {
   icon?: string | false;
   title?: string | React.ReactElement;
   data?: {
+    brandId: string;
+    trackingIds: {
+      channelTrackingId?: string;
+      clickTrackingId?: string;
+      deliverTrackingId?: string;
+      readTrackingId?: string;
+      unreadTrackingId?: string;
+    };
+    trackingUrl?: string;
     clickAction?: string;
-    clickTrackingId?: string;
-    readTrackingId?: string;
-    deliverTrackingId?: string;
   };
   brand?: Brand;
 }

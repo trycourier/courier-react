@@ -25,8 +25,6 @@ export const useListenForTransportEvent = (
   transport: ICourierContext["transport"],
   handleToast
 ) => {
-  const { createTrackEvent } = useCourier();
-
   useEffect(() => {
     if (!transport) {
       return;
@@ -35,16 +33,8 @@ export const useListenForTransportEvent = (
     transport.listen({
       id: "toast-listener",
       listener: (courierEvent) => {
-        const courierData = courierEvent?.data?.data;
-
-        if (clientKey && courierData?.deliverTrackingId) {
-          createTrackEvent({
-            trackingId: courierData?.deliverTrackingId,
-          });
-        }
-
         handleToast(courierEvent?.data);
       },
     });
-  }, [createTrackEvent, clientKey, handleToast, transport]);
+  }, [clientKey, handleToast, transport]);
 };

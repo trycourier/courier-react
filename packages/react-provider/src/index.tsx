@@ -87,6 +87,8 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     middleware,
   });
 
+  const actions = useCourierActions(dispatch);
+
   useEffect(() => {
     if (_transport) {
       // this means the transport was passed in and we shouldn't subscribe
@@ -103,6 +105,19 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     if (onMessage) {
       courierTransport.intercept(onMessage);
     }
+
+    courierTransport.listen({
+      id: "deliver-tracking",
+      listener: (courierEvent) => {
+        const courierData = courierEvent?.data?.data;
+        if (!courierData?.trackingIds?.deliverTrackingId) {
+          return;
+        }
+
+        console.log(courierData?.trackingIds?.deliverTrackingId);
+        actions.createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
+      },
+    });
 
     return () => {
       courierTransport.unsubscribe(userId);
@@ -186,8 +201,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
       }
     }
   }, [clientKey, userId]);
-
-  const actions = useCourierActions(dispatch);
 
   return (
     <CourierContext.Provider
