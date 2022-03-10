@@ -17,8 +17,8 @@ export interface ICourierMessage {
   icon?: string | false;
   title?: string | React.ReactElement;
   data?: {
-    brandId: string;
-    trackingIds: {
+    brandId?: string;
+    trackingIds?: {
       channelTrackingId?: string;
       clickTrackingId?: string;
       deliverTrackingId?: string;
