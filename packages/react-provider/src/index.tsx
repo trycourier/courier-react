@@ -114,7 +114,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
           return;
         }
 
-        console.log(courierData?.trackingIds?.deliverTrackingId);
         actions.createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
       },
     });
