@@ -3,6 +3,7 @@ import { MESSAGES } from "../__mocks__/api/messages";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { Toast, ToastProvider, useToast } from "../src";
 import fetchMock from "fetch-mock";
+import { ICourierToastMessage } from "../src/components/Toast/types";
 
 jest.mock("styled-components", () => {
   const styled = jest.requireActual("styled-components");
@@ -30,7 +31,7 @@ const icon = "https://app.courier.com/static/favicon/favicon-32x32.png";
 
 function Component({ onClick }) {
   const [toast] = useToast();
-  const notification = {
+  const notification: ICourierToastMessage = {
     title,
     body,
     icon,

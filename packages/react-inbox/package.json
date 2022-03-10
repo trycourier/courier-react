@@ -22,6 +22,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "@tippyjs/react": "^4.2.3",
+    "@trycourier/client-graphql": "^1.9.1",
     "@trycourier/react-preferences": "^1.9.1",
     "@trycourier/react-provider": "^1.9.1",
     "classnames": "^2.2.6",
