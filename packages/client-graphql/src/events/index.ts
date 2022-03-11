@@ -1,6 +1,6 @@
 import { Client } from "urql";
 import { ICourierClientParams } from "../types";
-import { GraphQLClient } from "../client";
+import { createCourierClient } from "../client";
 
 const TRACK_EVENT = `
   mutation TrackEvent($trackingId: String!) {
@@ -44,7 +44,7 @@ export default (
   trackEvent: TrackEvent;
   trackEventBatch: TrackEventBatch;
 } => {
-  const client = GraphQLClient(params);
+  const client = createCourierClient(params);
 
   return {
     trackEvent: trackEvent(client),

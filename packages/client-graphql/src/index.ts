@@ -1,3 +1,8 @@
-export { default as Brands } from "./brands";
-export { default as Messages } from "./messages";
-export { default as Events } from "./events";
+export { default as Brands, getBrand } from "./brands";
+export {
+  default as Messages,
+  getMessages,
+  getUnreadMessageCount,
+} from "./messages";
+export { default as Events, trackEvent, trackEventBatch } from "./events";
+export { createCourierClient } from "./client";

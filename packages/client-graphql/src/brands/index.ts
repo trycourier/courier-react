@@ -1,6 +1,6 @@
 import { ICourierClientParams } from "./../types";
 import { Client } from "urql";
-import { GraphQLClient } from "../client";
+import { createCourierClient } from "../client";
 
 const brandProps = `
 settings {
@@ -97,7 +97,7 @@ export default (
 ): {
   getBrand: GetBrand;
 } => {
-  const client = GraphQLClient(params);
+  const client = createCourierClient(params);
 
   return {
     getBrand: getBrand(client),

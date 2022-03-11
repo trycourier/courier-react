@@ -1,7 +1,7 @@
 import { Client, createClient } from "urql";
 import { ICourierClientParams, ICourierHeaders } from "./types";
 
-export const GraphQLClient = ({
+export const createCourierClient = ({
   clientKey,
   userId,
   userSignature,

@@ -7,7 +7,6 @@ if (typeof window !== "undefined") {
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
-import Client from "./graph-ql";
 import {
   ICourierProviderProps,
   ICourierContext,
@@ -19,7 +18,6 @@ import { CourierTransport } from "./transports/courier";
 import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware from "./middleware";
-import { getBrand } from "./actions/brand";
 import useCourierActions from "./hooks/use-courier-actions";
 export * from "./transports";
 export * from "./hooks";
@@ -57,9 +55,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     createReducer<any, ICourierContext>(...middleware),
     [_middleware]
   );
-  const graphQLClient = useMemo(() => {
-    return new Client({ clientKey, userId, userSignature, apiUrl });
-  }, [clientKey, userId, userSignature, apiUrl]);
 
   const transport = useMemo(() => {
     if (_transport) {
@@ -79,7 +74,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     apiUrl,
     brand,
     brandId,
-    graphQLClient,
     clientKey,
     transport,
     userId,
@@ -87,7 +81,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     middleware,
   });
 
-  const actions = useCourierActions(dispatch);
+  const actions = useCourierActions(state, dispatch);
 
   useEffect(() => {
     if (_transport) {
@@ -128,27 +122,15 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
       return;
     }
 
-    dispatch({
-      type: "root/INIT",
-      payload: {
-        apiUrl,
-        brandId,
-        graphQLClient,
-        clientKey,
-        transport,
-        userId,
-        userSignature,
-      },
+    actions.init({
+      apiUrl,
+      brandId,
+      clientKey,
+      transport,
+      userId,
+      userSignature,
     });
-  }, [
-    apiUrl,
-    graphQLClient,
-    clientKey,
-    transport,
-    userId,
-    userSignature,
-    brandId,
-  ]);
+  }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
 
   useEffect(() => {
     if (brand) {
@@ -156,15 +138,8 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
       return;
     }
 
-    if (!graphQLClient.client) {
-      return;
-    }
-
-    dispatch({
-      type: "root/GET_BRAND",
-      payload: () => getBrand(graphQLClient, brandId),
-    });
-  }, [graphQLClient, brand, brandId]);
+    actions.getBrand(brandId);
+  }, [brand, brandId]);
 
   useEffect(() => {
     if (!state.brand || !clientKey || !userId) {
@@ -191,10 +166,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = (
     if (localStorageState) {
       try {
         const { brand } = JSON.parse(localStorageState);
-        dispatch({
-          type: "root/GET_BRAND/DONE",
-          payload: brand,
-        });
+        actions.setBrand(brand);
       } catch (ex) {
         console.log("error", ex);
       }

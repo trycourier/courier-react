@@ -1,6 +1,6 @@
 import { Client } from "urql";
 import { ICourierClientParams } from "../types";
-import { GraphQLClient } from "../client";
+import { createCourierClient } from "../client";
 
 export const GET_UNREAD_MESSAGE_COUNT = `
   query MessageCount($isRead: Boolean, $from: Float) {
@@ -104,7 +104,7 @@ export default (
   getUnreadMessageCount: GetUnreadMessageCount;
   getMessages: GetMessages;
 } => {
-  const client = GraphQLClient(params);
+  const client = createCourierClient(params);
 
   return {
     getUnreadMessageCount: getUnreadMessageCount(client),
