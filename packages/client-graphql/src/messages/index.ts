@@ -17,8 +17,12 @@ export interface IMessageCountParams {
 }
 type GetUnreadMessageCount = (params?: IMessageCountParams) => Promise<number>;
 export const getUnreadMessageCount = (
-  client: Client
+  client?: Client
 ): GetUnreadMessageCount => async (params) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   const results = await client
     .query(GET_UNREAD_MESSAGE_COUNT, {
       ...params,
@@ -83,11 +87,15 @@ type GetMessages = (
   appendMessages: boolean;
   startCursor: string;
   messages: any[];
-}>;
+} | void>;
 
-export const getMessages = (client: Client): GetMessages => async (
+export const getMessages = (client?: Client): GetMessages => async (
   params?: IGetMessagesParams
 ) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   const results = await client.query(QUERY_MESSAGES, params).toPromise();
 
   const messages = results?.data?.messages?.nodes;
@@ -106,13 +114,7 @@ export default (
   getUnreadMessageCount: GetUnreadMessageCount;
   getMessages: GetMessages;
 } => {
-  let client: Client;
-
-  if ("client" in params) {
-    client = params.client;
-  } else {
-    client = createCourierClient(params as ICourierClientParams);
-  }
+  const client = createCourierClient(params);
 
   return {
     getUnreadMessageCount: getUnreadMessageCount(client),

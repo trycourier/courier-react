@@ -10,9 +10,13 @@ const TRACK_EVENT = `
   }
 `;
 export type TrackEvent = (trackingId: string) => Promise<void>;
-export const trackEvent = (client: Client): TrackEvent => async (
+export const trackEvent = (client?: Client): TrackEvent => async (
   trackingId
 ) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   await client
     .mutation(TRACK_EVENT, {
       trackingId,
@@ -28,9 +32,13 @@ const TRACK_EVENT_BATCH = `
   }
 `;
 export type TrackEventBatch = (eventType: string) => Promise<void>;
-export const trackEventBatch = (client: Client): TrackEventBatch => async (
+export const trackEventBatch = (client?: Client): TrackEventBatch => async (
   eventType
 ) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   await client
     .mutation(TRACK_EVENT_BATCH, {
       eventType,
@@ -45,6 +53,7 @@ export default (
   trackEventBatch: TrackEventBatch;
 } => {
   const client = createCourierClient(params);
+
   return {
     trackEvent: trackEvent(client),
     trackEventBatch: trackEventBatch(client),

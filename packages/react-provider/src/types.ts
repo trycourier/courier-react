@@ -47,7 +47,7 @@ export interface ICourierProviderProps {
   middleware?: any;
   onMessage?: Interceptor;
   transport?: Transport;
-  userId: string;
+  userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;
 }
