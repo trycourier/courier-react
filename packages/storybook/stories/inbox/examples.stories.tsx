@@ -124,9 +124,11 @@ const UseInbox = () => {
   return null;
 };
 
-export function Branded() {
+export function Branded(): React.ReactElement {
   return (
     <CourierProvider
+      clientKey={CLIENT_KEY}
+      userId={USER_ID}
       middleware={[middleware]}
       brand={{
         colors: {
@@ -160,7 +162,7 @@ export function Branded() {
   );
 }
 
-export function MultipleInbox() {
+export function MultipleInbox(): React.ReactElement {
   return (
     <CourierProvider
       wsOptions={{

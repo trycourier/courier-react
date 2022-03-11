@@ -1,3 +1,7 @@
+import { ICourierClientParams } from "./../types";
+import { Client } from "urql";
+import { createCourierClient } from "../client";
+
 const brandProps = `
 settings {
   colors {
@@ -57,12 +61,22 @@ query GetInAppBrand {
 }
 `;
 
-export const getBrand = async (client, brandId) => {
+type GetBrand = (
+  brandId?: string
+) => Promise<{
+  colors: any;
+  inapp: any;
+  preferenceTemplates: any;
+}>;
+
+export const getBrand = (client: Client): GetBrand => async (brandId) => {
   const results = brandId
-    ? await client.query(GET_BRAND, {
-        brandId,
-      })
-    : await client.query(GET_INAPP_BRAND);
+    ? await client
+        .query(GET_BRAND, {
+          brandId,
+        })
+        .toPromise()
+    : await client.query(GET_INAPP_BRAND).toPromise();
 
   const brandProp = brandId ? "brand" : "inAppBrand";
   const brand = results?.data?.[brandProp];
@@ -75,5 +89,16 @@ export const getBrand = async (client, brandId) => {
     colors,
     inapp,
     preferenceTemplates,
+  };
+};
+
+export default (
+  params: ICourierClientParams
+): {
+  getBrand: GetBrand;
+} => {
+  const client = createCourierClient(params);
+  return {
+    getBrand: getBrand(client),
   };
 };

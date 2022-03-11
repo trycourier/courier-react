@@ -16,7 +16,11 @@ export default {
   },
 };
 
-export function Default({ bodyText }) {
+export function Default({
+  bodyText,
+}: {
+  bodyText: string;
+}): React.ReactElement {
   return (
     <CourierProvider>
       <ToastBody
@@ -24,9 +28,6 @@ export function Default({ bodyText }) {
         title="Title"
         brand={{
           inapp: {
-            colors: {
-              invertButtons: true,
-            },
             disableMessageIcon: true,
             icons: {
               message:
@@ -43,7 +44,7 @@ export function Default({ bodyText }) {
   );
 }
 
-export function CustomTitleAndBody() {
+export function CustomTitleAndBody(): React.ReactElement {
   const handleOnClick = () => {
     console.log("click");
   };
@@ -55,10 +56,6 @@ export function CustomTitleAndBody() {
         title={<h1>Title</h1>}
         brand={{
           inapp: {
-            colors: {
-              invertButtons: true,
-            },
-
             icons: {
               message:
                 "https://d33wubrfki0l68.cloudfront.net/ca2747f11cc64d0e424e27b4a804b9d981b22453/9ab46/_next/static/images/logo@2x-5d5af82635bfdd3ad24e54f9eb364097.png",
@@ -74,7 +71,7 @@ export function CustomTitleAndBody() {
   );
 }
 
-export function WithBlocks() {
+export function WithBlocks(): React.ReactElement {
   return (
     <CourierProvider>
       <ToastBody
@@ -101,7 +98,7 @@ export function WithBlocks() {
   );
 }
 
-export function MultiLineMessage() {
+export function MultiLineMessage(): React.ReactElement {
   return (
     <CourierProvider>
       <ToastBody
@@ -112,7 +109,7 @@ export function MultiLineMessage() {
   );
 }
 
-export function WithCourierProvider({ bodyText }) {
+export function WithCourierProvider(): React.ReactElement {
   function DefaultComponent() {
     const [toast] = useToast();
     return <Button onClick={() => toast("Hello World")}>Show Toast</Button>;
@@ -145,8 +142,8 @@ export function WithCourierProvider({ bodyText }) {
   );
 }
 
-export function NoIcon({ bodyText }) {
-  function DefaultComponent({ body }) {
+export function NoIcon({ bodyText }: { bodyText: string }): React.ReactElement {
+  function DefaultComponent({ body }: { body: string }) {
     const [toast] = useToast();
     return (
       <Button onClick={() => toast({ body, title: "Title" })}>
@@ -166,8 +163,12 @@ export function NoIcon({ bodyText }) {
   );
 }
 
-export function NoAutoClose({ bodyText }) {
-  function DefaultComponent({ body }) {
+export function NoAutoClose({
+  bodyText,
+}: {
+  bodyText: string;
+}): React.ReactElement {
+  function DefaultComponent({ body }: { body: string }) {
     const [toast] = useToast();
     return (
       <Button onClick={() => toast({ body, title: "Title" })}>
@@ -188,8 +189,12 @@ export function NoAutoClose({ bodyText }) {
   );
 }
 
-export function WithClickAction({ bodyText }) {
-  function DefaultComponent({ body }) {
+export function WithClickAction({
+  bodyText,
+}: {
+  bodyText: string;
+}): React.ReactElement {
+  function DefaultComponent({ body }: { body: string }) {
     const notification = {
       title: "Courier",
       body,

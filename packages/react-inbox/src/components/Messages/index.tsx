@@ -110,7 +110,7 @@ const Messages: React.ForwardRefExoticComponent<
                   <Message key={message.messageId} {...message} />
                 )
               )}
-              {isLoading && <Loading />}
+              {isLoading && messages?.length === 0 && <Loading />}
               {!isLoading &&
                 messages?.length === 0 &&
                 (renderNoMessages ? (

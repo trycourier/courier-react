@@ -43,11 +43,11 @@ export interface ICourierProviderProps {
   apiUrl?: string;
   brand?: Brand;
   brandId?: string;
-  clientKey?: string;
+  clientKey: string;
   middleware?: any;
   onMessage?: Interceptor;
   transport?: Transport;
-  userId?: string;
+  userId: string;
   userSignature?: string;
   wsOptions?: WSOptions;
 }

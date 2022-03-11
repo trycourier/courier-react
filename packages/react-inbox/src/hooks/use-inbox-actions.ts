@@ -1,19 +1,36 @@
 import { useCourier } from "@trycourier/react-provider";
-import {
-  getUnreadMessageCount,
-  IMessageCountParams,
-} from "~/actions/message-count";
-import { getMessages, IGetMessagesParams } from "~/actions/messages";
 import { ITab } from "~/types";
+
+import {
+  createCourierClient,
+  Events,
+  Messages,
+} from "@trycourier/client-graphql";
+
+import {
+  IGetMessagesParams,
+  IMessageCountParams,
+} from "@trycourier/client-graphql/typings/messages";
 
 const useInboxActions = () => {
   const {
+    apiUrl,
     dispatch,
-    createTrackEvent,
-    createBatchTrackEvent,
-    graphQLClient,
     inbox,
+    clientKey,
+    userId,
+    userSignature,
   } = useCourier();
+
+  const courierClient = createCourierClient({
+    apiUrl,
+    clientKey,
+    userId,
+    userSignature,
+  });
+
+  const events = Events({ client: courierClient });
+  const messages = Messages({ client: courierClient });
 
   return {
     init: (payload) => {
@@ -30,7 +47,7 @@ const useInboxActions = () => {
         dispatch({
           type: "inbox/FETCH_MESSAGES",
           meta,
-          payload: () => getMessages(graphQLClient, meta),
+          payload: () => messages.getMessages(meta),
         });
       }
     },
@@ -63,7 +80,7 @@ const useInboxActions = () => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         meta,
-        payload: () => getMessages(graphQLClient, meta),
+        payload: () => messages.getMessages(meta),
       });
     },
 
@@ -74,7 +91,7 @@ const useInboxActions = () => {
       };
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => getMessages(graphQLClient, meta),
+        payload: () => messages.getMessages(meta),
         meta,
       });
     },
@@ -82,7 +99,7 @@ const useInboxActions = () => {
     getUnreadMessageCount: (params?: IMessageCountParams) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
-        payload: () => getUnreadMessageCount(graphQLClient, params),
+        payload: () => messages.getUnreadMessageCount(params),
       });
     },
 
@@ -93,7 +110,7 @@ const useInboxActions = () => {
           messageId,
         },
       });
-      await createTrackEvent(trackingId);
+      await events.trackEvent(trackingId);
     },
 
     markMessageUnread: async (messageId: string, trackingId: string) => {
@@ -103,13 +120,13 @@ const useInboxActions = () => {
           messageId,
         },
       });
-      await createTrackEvent(trackingId);
+      await events.trackEvent(trackingId);
     },
     markAllAsRead: async () => {
       dispatch({
         type: "inbox/MARK_ALL_AS_READ",
       });
-      await createBatchTrackEvent("read");
+      await events.trackEventBatch("read");
     },
   };
 };

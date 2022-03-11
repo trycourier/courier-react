@@ -1,7 +1,27 @@
-import { updateTrackEvent, updateTrackEventBatch } from "~/actions/track-event";
+import {
+  createCourierClient,
+  Brands,
+  Events,
+} from "@trycourier/client-graphql";
 
-const useCourierActions = (dispatch) => {
+const useCourierActions = (state, dispatch) => {
+  const courierClient = createCourierClient({
+    apiUrl: state.apiUrl,
+    clientKey: state.clientKey,
+    userId: state.userId,
+    userSignature: state.userSignature,
+  });
+
+  const brands = Brands({ client: courierClient });
+  const events = Events({ client: courierClient });
+
   return {
+    init: (payload) => {
+      dispatch({
+        type: "root/INIT",
+        payload,
+      });
+    },
     initToast: (payload) => {
       dispatch({
         type: "toast/INIT",
@@ -14,18 +34,28 @@ const useCourierActions = (dispatch) => {
         payload,
       });
     },
+    getBrand: (brandId) => {
+      dispatch({
+        type: "root/GET_BRAND",
+        payload: () => brands.getBrand(brandId),
+      });
+    },
+    setBrand: (brand) => {
+      dispatch({
+        type: "root/GET_BRAND/DONE",
+        payload: brand,
+      });
+    },
     createTrackEvent: (trackingId) => {
       dispatch({
         type: "CREATE_TRACKING_EVENT",
-        payload: (_, getState) =>
-          updateTrackEvent(getState().graphQLClient, trackingId),
+        payload: () => events.trackEvent(trackingId),
       });
     },
     createBatchTrackEvent: (eventType) => {
       dispatch({
         type: "CREATE_TRACKING_EVENT_BATCH",
-        payload: (_, getState) =>
-          updateTrackEventBatch(getState().graphQLClient, eventType),
+        payload: () => events.trackEventBatch(eventType),
       });
     },
   };
