@@ -1,12 +1,13 @@
 import { Client, createClient } from "urql";
 import { ICourierClientParams, ICourierHeaders } from "./types";
 
-export const createCourierClient = ({
-  clientKey,
-  userId,
-  userSignature,
-  apiUrl,
-}: ICourierClientParams): Client => {
+export const createCourierClient = (params: ICourierClientParams): Client => {
+  if ("client" in params) {
+    return params.client;
+  }
+
+  const { clientKey, userId, apiUrl, userSignature } = params;
+
   if (!clientKey) {
     throw new Error("Courier: Missing Client Key");
   }

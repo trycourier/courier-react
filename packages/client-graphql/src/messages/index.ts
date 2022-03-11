@@ -99,12 +99,18 @@ export const getMessages = (client: Client): GetMessages => async (
 };
 
 export default (
-  params: ICourierClientParams
+  params: ICourierClientParams | { client: Client }
 ): {
   getUnreadMessageCount: GetUnreadMessageCount;
   getMessages: GetMessages;
 } => {
-  const client = createCourierClient(params);
+  let client: Client;
+
+  if ("client" in params) {
+    client = params.client;
+  } else {
+    client = createCourierClient(params as ICourierClientParams);
+  }
 
   return {
     getUnreadMessageCount: getUnreadMessageCount(client),

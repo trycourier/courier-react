@@ -3,10 +3,8 @@ import { ITab } from "~/types";
 
 import {
   createCourierClient,
-  getMessages,
-  getUnreadMessageCount,
-  trackEvent,
-  trackEventBatch,
+  Events,
+  Messages,
 } from "@trycourier/client-graphql";
 
 import {
@@ -24,12 +22,15 @@ const useInboxActions = () => {
     userSignature,
   } = useCourier();
 
-  const graphQLClient = createCourierClient({
+  const courierClient = createCourierClient({
     apiUrl,
     clientKey,
     userId,
     userSignature,
   });
+
+  const events = Events({ client: courierClient });
+  const messages = Messages({ client: courierClient });
 
   return {
     init: (payload) => {
@@ -46,7 +47,7 @@ const useInboxActions = () => {
         dispatch({
           type: "inbox/FETCH_MESSAGES",
           meta,
-          payload: () => getMessages(graphQLClient)(meta),
+          payload: () => messages.getMessages(meta),
         });
       }
     },
@@ -79,7 +80,7 @@ const useInboxActions = () => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         meta,
-        payload: () => getMessages(graphQLClient)(meta),
+        payload: () => messages.getMessages(meta),
       });
     },
 
@@ -90,7 +91,7 @@ const useInboxActions = () => {
       };
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => getMessages(graphQLClient)(meta),
+        payload: () => messages.getMessages(meta),
         meta,
       });
     },
@@ -98,7 +99,7 @@ const useInboxActions = () => {
     getUnreadMessageCount: (params?: IMessageCountParams) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
-        payload: () => getUnreadMessageCount(graphQLClient)(params),
+        payload: () => messages.getUnreadMessageCount(params),
       });
     },
 
@@ -109,7 +110,7 @@ const useInboxActions = () => {
           messageId,
         },
       });
-      await trackEvent(graphQLClient)(trackingId);
+      await events.trackEvent(trackingId);
     },
 
     markMessageUnread: async (messageId: string, trackingId: string) => {
@@ -119,13 +120,13 @@ const useInboxActions = () => {
           messageId,
         },
       });
-      await trackEvent(graphQLClient)(trackingId);
+      await events.trackEvent(trackingId);
     },
     markAllAsRead: async () => {
       dispatch({
         type: "inbox/MARK_ALL_AS_READ",
       });
-      await trackEventBatch(graphQLClient)("read");
+      await events.trackEventBatch("read");
     },
   };
 };

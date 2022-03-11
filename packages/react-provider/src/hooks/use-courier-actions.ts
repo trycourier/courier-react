@@ -1,17 +1,19 @@
 import {
   createCourierClient,
-  trackEvent,
-  trackEventBatch,
-  getBrand,
+  Brands,
+  Events,
 } from "@trycourier/client-graphql";
 
 const useCourierActions = (state, dispatch) => {
-  const graphQLClient = createCourierClient({
+  const courierClient = createCourierClient({
     apiUrl: state.apiUrl,
     clientKey: state.clientKey,
     userId: state.userId,
     userSignature: state.userSignature,
   });
+
+  const brands = Brands({ client: courierClient });
+  const events = Events({ client: courierClient });
 
   return {
     init: (payload) => {
@@ -35,7 +37,7 @@ const useCourierActions = (state, dispatch) => {
     getBrand: (brandId) => {
       dispatch({
         type: "root/GET_BRAND",
-        payload: () => getBrand(graphQLClient)(brandId),
+        payload: () => brands.getBrand(brandId),
       });
     },
     setBrand: (brand) => {
@@ -47,13 +49,13 @@ const useCourierActions = (state, dispatch) => {
     createTrackEvent: (trackingId) => {
       dispatch({
         type: "CREATE_TRACKING_EVENT",
-        payload: () => trackEvent(graphQLClient)(trackingId),
+        payload: () => events.trackEvent(trackingId),
       });
     },
     createBatchTrackEvent: (eventType) => {
       dispatch({
         type: "CREATE_TRACKING_EVENT_BATCH",
-        payload: () => trackEventBatch(graphQLClient)(eventType),
+        payload: () => events.trackEventBatch(eventType),
       });
     },
   };

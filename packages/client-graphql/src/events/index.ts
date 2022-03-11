@@ -45,7 +45,6 @@ export default (
   trackEventBatch: TrackEventBatch;
 } => {
   const client = createCourierClient(params);
-
   return {
     trackEvent: trackEvent(client),
     trackEventBatch: trackEventBatch(client),

@@ -98,7 +98,6 @@ export default (
   getBrand: GetBrand;
 } => {
   const client = createCourierClient(params);
-
   return {
     getBrand: getBrand(client),
   };
