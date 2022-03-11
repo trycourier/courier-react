@@ -1,22 +1,30 @@
 import { useCourier } from "@trycourier/react-provider";
-import { getRecipientPreferences } from "~/actions/recipient-preferences";
-import { updateRecipientPreferences } from "~/actions/update-recipient-preferences";
+import { createCourierClient, Preferences } from "@trycourier/client-graphql";
 
 const usePreferencesActions = () => {
-  const { dispatch, graphQLClient } = useCourier();
+  const { apiUrl, clientKey, userId, userSignature, dispatch } = useCourier();
+
+  const courierClient = createCourierClient({
+    apiUrl,
+    clientKey,
+    userId,
+    userSignature,
+  });
+
+  const preferences = Preferences({ client: courierClient });
 
   return {
     fetchRecipientPreferences: () => {
       dispatch({
         type: "preferences/FETCH_RECIPIENT_PREFERENCES",
-        payload: () => getRecipientPreferences(graphQLClient),
+        payload: () => preferences.getRecipientPreferences(),
       });
     },
 
     updateRecipientPreferences: async (payload) => {
       dispatch({
         type: "preferences/UPDATE_RECIPIENT_PREFERENCES",
-        payload: () => updateRecipientPreferences(graphQLClient, payload),
+        payload: () => preferences.updateRecipientPreferences(payload),
       });
     },
   };
