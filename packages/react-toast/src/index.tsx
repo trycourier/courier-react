@@ -14,14 +14,18 @@ export const ToastProvider: React.FunctionComponent<
   ICourierContext & {
     config?: IToastConfig;
   }
-> = ({ children, transport, clientKey, config }) => {
+> = ({ children, transport, clientKey, config, userId }) => {
   config = useMemo(() => {
     return deepExtend({}, defaultConfig, config);
   }, [config]) as IToastConfig;
 
   return (
     <ThemeProvider theme={config.theme ?? {}}>
-      <CourierProvider clientKey={clientKey} transport={transport}>
+      <CourierProvider
+        clientKey={clientKey}
+        userId={userId}
+        transport={transport}
+      >
         <Toast {...config} />
         {children}
       </CourierProvider>

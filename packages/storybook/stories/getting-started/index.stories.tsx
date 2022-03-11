@@ -15,30 +15,30 @@ export default {
   args: {},
 };
 
-export const Introduction = () => {
+export const Introduction = (): React.ReactElement => {
   return <ReactMarkdown>{introduction}</ReactMarkdown>;
 };
 
-export const GettingStarted = () => {
+export const GettingStarted = (): React.ReactElement => {
   return <ReactMarkdown>{gettingStarted}</ReactMarkdown>;
 };
 
-export const Authentication = () => {
+export const Authentication = (): React.ReactElement => {
   return <ReactMarkdown>{authentication}</ReactMarkdown>;
 };
 
-export const ReactIntegration = () => {
+export const ReactIntegration = (): React.ReactElement => {
   return <ReactMarkdown>{reactIntegration}</ReactMarkdown>;
 };
 
-export const EmbeddedIntegration = () => {
+export const EmbeddedIntegration = (): React.ReactElement => {
   return <ReactMarkdown>{embeddedIntegration}</ReactMarkdown>;
 };
 
-export const TestingTheIntegration = () => {
+export const TestingTheIntegration = (): React.ReactElement => {
   return <ReactMarkdown>{testingTheIntegration}</ReactMarkdown>;
 };
 
-export const Troubleshooting = () => {
+export const Troubleshooting = (): React.ReactElement => {
   return <ReactMarkdown>{troubleshooting}</ReactMarkdown>;
 };

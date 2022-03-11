@@ -80,6 +80,7 @@ export const QUERY_MESSAGES = `
 type GetMessages = (
   params?: IGetMessagesParams
 ) => Promise<{
+  appendMessages: boolean;
   startCursor: string;
   messages: any[];
 }>;
@@ -93,6 +94,7 @@ export const getMessages = (client: Client): GetMessages => async (
   const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
   return {
+    appendMessages: Boolean(params?.after),
     messages,
     startCursor,
   };

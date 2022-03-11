@@ -80,6 +80,7 @@ const Messages: React.ForwardRefExoticComponent<
   };
   const Container = renderContainer ? renderContainer : MessageListContainer;
 
+  console.log("messages", messages);
   return (
     <ResponsiveContainer ref={ref} isMobile={isMobile}>
       {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
@@ -110,7 +111,7 @@ const Messages: React.ForwardRefExoticComponent<
                   <Message key={message.messageId} {...message} />
                 )
               )}
-              {isLoading && <Loading />}
+              {isLoading && messages?.length === 0 && <Loading />}
               {!isLoading &&
                 messages?.length === 0 &&
                 (renderNoMessages ? (

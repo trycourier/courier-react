@@ -41,7 +41,7 @@ const messagesApi = Messages({
   userSignature: "SUPER_SECRET",
 });
 
-const getMyMessageCount = async (params?: {
+const getMessageCount = async (params?: {
   isRead?: boolean,
   from?: number,
 }) => {
@@ -49,7 +49,7 @@ const getMyMessageCount = async (params?: {
   return messageCount;
 };
 
-const getMyMessages = async (params?: {
+const getMessages = async (params?: {
   after?: string,
   isRead?: boolean,
   from?: number,
@@ -73,7 +73,7 @@ const eventsApi = Events({
   userSignature: "SUPER_SECRET",
 });
 
-const trackMyEvent = async (trackingId: string) => {
+const trackEvent = async (trackingId: string) => {
   await eventsApi.trackEvent(trackingId);
 };
 ```
@@ -88,7 +88,7 @@ const brandsApi = Brands({
   userSignature: "SUPER_SECRET",
 });
 
-const getMyBrand = async (brandId?: string) => {
+const getBrand = async (brandId?: string) => {
   const myBrand = await brandsApi.getBrand(brandId);
   return myBrand;
 };
