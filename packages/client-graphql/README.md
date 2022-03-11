@@ -2,6 +2,35 @@
 
 Courier GraqphQl Client for usage in the browser.
 
+### Initialization
+
+You can initialize each module with either an object containing:
+
+```
+{
+  clientKey: string;
+  userId: string;
+  userSignature?: string,
+}
+```
+
+or you can create the client separtly and pass the client in:
+
+```
+import { createCourierClient } from "@trycourier/client-graphql";
+
+const courierClient = createCourierClient({
+  clientKey: "abc123",
+  userId: "@me",
+  userSignature: "SUPER_SECRET",
+});
+
+const messages = Messages({ client: courierClient })
+const events = Events({ events: courierClient })
+const events = Brands({ events: courierClient })
+
+```
+
 ### Messages
 
 ```js
