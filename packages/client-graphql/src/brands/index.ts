@@ -67,9 +67,13 @@ type GetBrand = (
   colors: any;
   inapp: any;
   preferenceTemplates: any;
-}>;
+} | void>;
 
-export const getBrand = (client: Client): GetBrand => async (brandId) => {
+export const getBrand = (client?: Client): GetBrand => async (brandId) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   const results = brandId
     ? await client
         .query(GET_BRAND, {
@@ -98,6 +102,7 @@ export default (
   getBrand: GetBrand;
 } => {
   const client = createCourierClient(params);
+
   return {
     getBrand: getBrand(client),
   };

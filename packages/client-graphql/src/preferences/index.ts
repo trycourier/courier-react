@@ -15,8 +15,12 @@ const RECIPIENT_PREFERENCES = `
 
 type GetRecipientPreferences = () => Promise<any>;
 export const getRecipientPreferences = (
-  client: Client
+  client: Client | undefined
 ): GetRecipientPreferences => async () => {
+  if (!client) {
+    return;
+  }
+
   const results = await client.query(RECIPIENT_PREFERENCES).toPromise();
   return results.data?.recipientPreferences.nodes;
 };
@@ -32,8 +36,12 @@ type UpdateRecipientPreferences = (payload: {
   status: string;
 }) => Promise<any>;
 export const updateRecipientPreferences = (
-  client: Client
+  client: Client | undefined
 ): UpdateRecipientPreferences => async (payload) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   await client
     .mutation(UPDATE_RECIPIENT_PREFERENCES, {
       id: payload.templateId,
@@ -50,13 +58,7 @@ export default (
   getRecipientPreferences: GetRecipientPreferences;
   updateRecipientPreferences: UpdateRecipientPreferences;
 } => {
-  let client: Client;
-
-  if ("client" in params) {
-    client = params.client;
-  } else {
-    client = createCourierClient(params as ICourierClientParams);
-  }
+  const client = createCourierClient(params);
 
   return {
     getRecipientPreferences: getRecipientPreferences(client),
