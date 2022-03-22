@@ -24,7 +24,6 @@ export const getUnreadMessageCount = (
     .query(GET_UNREAD_MESSAGE_COUNT, {
       params: {
         ...params,
-        tags: ["foo"],
         isRead: false,
       },
     })
