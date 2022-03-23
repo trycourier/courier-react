@@ -84,15 +84,18 @@ const useInboxActions = () => {
       });
     },
 
-    fetchMessages: (params?: IGetMessagesParams) => {
-      const meta = {
+    fetchMessages: (payload: {
+      params?: IGetMessagesParams;
+      after?: string;
+    }) => {
+      const params = {
         from: inbox?.from,
-        ...params,
+        ...payload.params,
       };
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => messages.getMessages(meta),
-        meta,
+        payload: () => messages.getMessages(params, payload.after),
+        meta: payload,
       });
     },
 

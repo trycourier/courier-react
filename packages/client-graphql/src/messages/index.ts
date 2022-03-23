@@ -3,11 +3,8 @@ import { ICourierClientParams } from "../types";
 import { createCourierClient } from "../client";
 
 export const GET_UNREAD_MESSAGE_COUNT = `
-  query MessageCount($isRead: Boolean, $from: Float) {
-    messageCount(params: {
-      isRead: $isRead,
-      from: $from
-    })
+  query MessageCount($params: FilterParamsInput) {
+    messageCount(params: $params)
   }
 `;
 
@@ -25,25 +22,24 @@ export const getUnreadMessageCount = (
 
   const results = await client
     .query(GET_UNREAD_MESSAGE_COUNT, {
-      ...params,
-      isRead: false,
+      params: {
+        ...params,
+        isRead: false,
+      },
     })
     .toPromise();
   return results?.data?.messageCount;
 };
 
 export interface IGetMessagesParams {
-  after?: string;
   isRead?: boolean;
   from?: number;
+  tags?: string[];
 }
 
 export const QUERY_MESSAGES = `
-  query GetMessages($after: String, $isRead: Boolean, $from: Float){
-    messages(params: { 
-        isRead: $isRead, 
-        from: $from 
-      }, after: $after) {
+  query GetMessages($params: FilterParamsInput, $limit: Int = 10, $after: String){
+    messages(params: $params, limit: $limit, after: $after) {
       totalCount
       pageInfo {
         startCursor
@@ -82,7 +78,8 @@ export const QUERY_MESSAGES = `
 `;
 
 type GetMessages = (
-  params?: IGetMessagesParams
+  params?: IGetMessagesParams,
+  after?: string
 ) => Promise<{
   appendMessages: boolean;
   startCursor: string;
@@ -90,19 +87,22 @@ type GetMessages = (
 } | void>;
 
 export const getMessages = (client?: Client): GetMessages => async (
-  params?: IGetMessagesParams
+  params?: IGetMessagesParams,
+  after?: string
 ) => {
   if (!client) {
     return Promise.resolve();
   }
 
-  const results = await client.query(QUERY_MESSAGES, params).toPromise();
+  const results = await client
+    .query(QUERY_MESSAGES, { after, params })
+    .toPromise();
 
   const messages = results?.data?.messages?.nodes;
   const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
   return {
-    appendMessages: Boolean(params?.after),
+    appendMessages: Boolean(after),
     messages,
     startCursor,
   };

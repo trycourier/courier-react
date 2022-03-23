@@ -187,7 +187,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         return;
       }
 
-      fetchMessages(currentTab?.filters);
+      fetchMessages({
+        params: currentTab?.filters,
+      });
     },
     [isOpen, fetchMessages, currentTab]
   );

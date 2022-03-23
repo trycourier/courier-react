@@ -49,11 +49,14 @@ const getMessageCount = async (params?: {
   return messageCount;
 };
 
-const getMessages = async (params?: {
-  after?: string,
-  isRead?: boolean,
-  from?: number,
-}) => {
+const getMessages = async (
+  params?: {
+    isRead?: boolean,
+    from?: number,
+    tags?: string[],
+  },
+  after?: string
+) => {
   const { startCursor, messages } = await messagesApi.getMessages(params);
 
   return {

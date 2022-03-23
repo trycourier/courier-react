@@ -63,7 +63,7 @@ const Messages: React.ForwardRefExoticComponent<
       }
 
       fetchMessages({
-        ...currentTab?.filters,
+        params: currentTab?.filters,
         after: startCursor,
       });
     },
