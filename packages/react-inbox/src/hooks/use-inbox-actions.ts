@@ -12,6 +12,11 @@ import {
   IMessageCountParams,
 } from "@trycourier/client-graphql/typings/messages";
 
+export interface IFetchMessagesParams {
+  params?: IGetMessagesParams;
+  after?: string;
+}
+
 const useInboxActions = () => {
   const {
     apiUrl,
@@ -84,25 +89,22 @@ const useInboxActions = () => {
       });
     },
 
-    fetchMessages: (payload: {
-      params?: IGetMessagesParams;
-      after?: string;
-    }) => {
+    fetchMessages: (payload?: IFetchMessagesParams) => {
       const params = {
         from: inbox?.from,
-        ...payload.params,
+        ...payload?.params,
       };
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => messages.getMessages(params, payload.after),
+        payload: () => messages.getMessages(params, payload?.after),
         meta: payload,
       });
     },
 
-    getUnreadMessageCount: (params?: IMessageCountParams) => {
+    getMessageCount: (params?: IMessageCountParams) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
-        payload: () => messages.getUnreadMessageCount(params),
+        payload: () => messages.getMessageCount(params),
       });
     },
 

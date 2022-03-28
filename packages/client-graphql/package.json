@@ -9,7 +9,7 @@
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",
-    "test": "jest -c jest.config.js --runInBand --silent",
+    "test": "jest -c jest.config.js --runInBand",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "graphql": "^15.5.0",
+    "isomorphic-fetch": "^3.0.0",
     "rimraf": "^3.0.2",
     "urql": "^2.0.1"
   },

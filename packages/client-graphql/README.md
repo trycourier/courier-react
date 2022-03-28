@@ -44,6 +44,7 @@ const messagesApi = Messages({
 const getMessageCount = async (params?: {
   isRead?: boolean,
   from?: number,
+  tags?: string[],
 }) => {
   const messageCount = await messagesApi.getMessageCount(params);
   return messageCount;
