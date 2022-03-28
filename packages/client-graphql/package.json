@@ -17,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "graphql": "^15.5.0",
-    "isomorphic-fetch": "^3.0.0",
     "rimraf": "^3.0.2",
     "urql": "^2.0.1"
   },
