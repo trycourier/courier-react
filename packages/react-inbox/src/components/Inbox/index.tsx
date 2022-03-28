@@ -101,7 +101,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     currentTab,
     fetchMessages,
     from,
-    getUnreadMessageCount,
+    getMessageCount,
     init,
     isOpen: isOpenState,
     messages,
@@ -125,7 +125,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return;
     }
 
-    getUnreadMessageCount({ from: from ?? props.from });
+    getMessageCount({ from: from ?? props.from, isRead: false });
   }, [userId, clientKey, from]);
 
   useEffect(() => {

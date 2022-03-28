@@ -8,7 +8,7 @@ export const MyCustomInbox: React.FunctionComponent = () => {
     isLoading,
     messages = [],
     unreadMessageCount,
-    getUnreadMessageCount,
+    getMessageCount,
     setCurrentTab,
     tabs,
   } = useInbox();
@@ -19,7 +19,7 @@ export const MyCustomInbox: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    getUnreadMessageCount();
+    getMessageCount();
     fetchMessages();
   }, []);
 

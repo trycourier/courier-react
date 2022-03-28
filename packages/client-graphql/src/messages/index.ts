@@ -2,30 +2,28 @@ import { Client } from "urql";
 import { ICourierClientParams } from "../types";
 import { createCourierClient } from "../client";
 
-export const GET_UNREAD_MESSAGE_COUNT = `
+export const GET_MESSAGE_COUNT = `
   query MessageCount($params: FilterParamsInput) {
     messageCount(params: $params)
   }
 `;
 
 export interface IMessageCountParams {
-  isRead?: boolean;
+  tags?: string[];
   from?: number;
+  isRead?: boolean;
 }
-type GetUnreadMessageCount = (params?: IMessageCountParams) => Promise<number>;
-export const getUnreadMessageCount = (
-  client?: Client
-): GetUnreadMessageCount => async (params) => {
+type GetMessageCount = (params?: IMessageCountParams) => Promise<number>;
+export const getMessageCount = (client?: Client): GetMessageCount => async (
+  params
+) => {
   if (!client) {
     return Promise.resolve();
   }
 
   const results = await client
-    .query(GET_UNREAD_MESSAGE_COUNT, {
-      params: {
-        ...params,
-        isRead: false,
-      },
+    .query(GET_MESSAGE_COUNT, {
+      params,
     })
     .toPromise();
   return results?.data?.messageCount;
@@ -50,6 +48,7 @@ export const QUERY_MESSAGES = `
         messageId
         created
         read
+        tags
         content {
           title
           body
@@ -111,13 +110,13 @@ export const getMessages = (client?: Client): GetMessages => async (
 export default (
   params: ICourierClientParams | { client: Client }
 ): {
-  getUnreadMessageCount: GetUnreadMessageCount;
+  getMessageCount: GetMessageCount;
   getMessages: GetMessages;
 } => {
   const client = createCourierClient(params);
 
   return {
-    getUnreadMessageCount: getUnreadMessageCount(client),
+    getMessageCount: getMessageCount(client),
     getMessages: getMessages(client),
   };
 };
