@@ -1,4 +1,3 @@
-//require("isomorphic-fetch");
 global.fetch = jest.fn();
 
 const fetchMock = global.fetch as jest.Mock;
