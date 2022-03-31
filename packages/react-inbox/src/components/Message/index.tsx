@@ -15,6 +15,7 @@ import useInbox from "~/hooks/use-inbox";
 import { IMessageProps } from "./types";
 import { useMessageOptions, getTimeAgo } from "./helpers";
 import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import Markdown from "markdown-to-jsx";
 
 const Message: React.FunctionComponent<IMessageProps> = ({
   blocks,
@@ -84,7 +85,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
 
               return (
                 <TextBlock key={index} data-testid="message-body">
-                  {block.text}
+                  <Markdown>{block.text}</Markdown>
                 </TextBlock>
               );
             }
@@ -124,7 +125,9 @@ const Message: React.FunctionComponent<IMessageProps> = ({
           })
         ) : (
           <>
-            <TextBlock>{body}</TextBlock>
+            <TextBlock>
+              <Markdown>{body}</Markdown>
+            </TextBlock>
             {data?.clickAction && (
               <ActionBlock>
                 <a href={data?.clickAction} target="_blank" rel="noreferrer">

@@ -81,6 +81,14 @@ export function WithBlocks(): React.ReactElement {
             text: "Hello World",
           },
           {
+            type: "text",
+            text: "**markdown** wooo _italic_ ~~strikethrough~~",
+          },
+          {
+            type: "text",
+            text: "links work [click me](https://www.courier.com)",
+          },
+          {
             type: "action",
             text: "View Details",
             openInNewTab: false,

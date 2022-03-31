@@ -12,6 +12,7 @@ import {
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier } from "@trycourier/react-provider";
+import Markdown from "markdown-to-jsx";
 
 const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
   title,
@@ -61,7 +62,7 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
               return (
                 <TextBlock key={index} data-testid="message-body">
-                  {block.text}
+                  <Markdown>{block.text}</Markdown>
                 </TextBlock>
               );
             }
@@ -97,7 +98,13 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
           })
         ) : (
           <>
-            <TextBlock data-testid="message-body">{body}</TextBlock>
+            <TextBlock data-testid="message-body">
+              {typeof body === "string" ? (
+                <Markdown>{body as string}</Markdown>
+              ) : (
+                body
+              )}
+            </TextBlock>
             {data?.clickAction && (
               <ActionBlock data-testid="action-0">
                 <a
