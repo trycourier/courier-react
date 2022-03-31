@@ -68,12 +68,31 @@ export default () => (next) => (action) => {
                 blocks: [
                   {
                     type: "text",
-                    text: "Im a text block",
+                    text: "I'm a text block",
                   },
                   {
                     type: "action",
                     url: "https://www.courier.com",
                     text: "Click Me",
+                  },
+                ],
+              },
+            },
+            {
+              messageId: 789,
+              created: "2021-04-06T18:02:28.065Z",
+              read: false,
+              content: {
+                trackingIds: {
+                  readTrackingId: 123,
+                  unreadTrackingId: 123,
+                },
+                title: "Markdown",
+                blocks: [
+                  {
+                    type: "text",
+                    text:
+                      "I can understand *markdown* **woooo** [click here](https://www.courier.com)",
                   },
                 ],
               },
