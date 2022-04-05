@@ -2,6 +2,7 @@ module.exports = {
   sourceType: "unambiguous",
   plugins: [
     "@babel/transform-runtime",
+    "transform-inline-environment-variables",
     process.env.NODE_ENV !== "test" && [
       "babel-plugin-root-import",
       {
