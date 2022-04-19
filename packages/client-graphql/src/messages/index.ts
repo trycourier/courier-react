@@ -79,18 +79,21 @@ export const QUERY_MESSAGES = `
 type GetMessages = (
   params?: IGetMessagesParams,
   after?: string
-) => Promise<{
-  appendMessages: boolean;
-  startCursor: string;
-  messages: any[];
-} | void>;
+) => Promise<
+  | {
+      appendMessages: boolean;
+      startCursor: string;
+      messages: any[];
+    }
+  | undefined
+>;
 
 export const getMessages = (client?: Client): GetMessages => async (
   params?: IGetMessagesParams,
   after?: string
 ) => {
   if (!client) {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 
   const results = await client
