@@ -62,7 +62,7 @@ const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
 
               return (
                 <TextBlock key={index} data-testid="message-body">
-                  <Markdown>{block.text}</Markdown>
+                  {block.text && <Markdown>{block.text}</Markdown>}
                 </TextBlock>
               );
             }

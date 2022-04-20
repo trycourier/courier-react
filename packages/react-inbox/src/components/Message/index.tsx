@@ -85,7 +85,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
 
               return (
                 <TextBlock key={index} data-testid="message-body">
-                  <Markdown>{block.text}</Markdown>
+                  {block.text && <Markdown>{block.text}</Markdown>}
                 </TextBlock>
               );
             }
@@ -125,9 +125,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
           })
         ) : (
           <>
-            <TextBlock>
-              <Markdown>{body}</Markdown>
-            </TextBlock>
+            <TextBlock>{body && <Markdown>{body}</Markdown>}</TextBlock>
             {data?.clickAction && (
               <ActionBlock>
                 <a href={data?.clickAction} target="_blank" rel="noreferrer">

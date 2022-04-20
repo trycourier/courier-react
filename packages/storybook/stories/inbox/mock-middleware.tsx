@@ -97,6 +97,18 @@ export default () => (next) => (action) => {
                 ],
               },
             },
+            {
+              messageId: 101,
+              created: "2021-04-06T18:02:28.065Z",
+              read: false,
+              content: {
+                trackingIds: {
+                  readTrackingId: 123,
+                  unreadTrackingId: 123,
+                },
+                title: "Markdown",
+              },
+            },
           ],
         },
       });
