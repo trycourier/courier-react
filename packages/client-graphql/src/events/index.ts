@@ -14,7 +14,7 @@ export const trackEvent = (client?: Client): TrackEvent => async (
   trackingId
 ) => {
   if (!client) {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 
   await client
@@ -36,7 +36,7 @@ export const trackEventBatch = (client?: Client): TrackEventBatch => async (
   eventType
 ) => {
   if (!client) {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 
   await client
