@@ -2,6 +2,7 @@ global.fetch = jest.fn();
 
 const fetchMock = global.fetch as jest.Mock;
 import Messages from "../src/messages";
+import Banner from "../src/banner";
 
 describe("getMessages", () => {
   afterEach(() => {
@@ -108,5 +109,19 @@ describe("getMessageCount", () => {
         "signal": AbortSignal {},
       }
     `);
+  });
+});
+
+describe("test123", () => {
+  test("works", async () => {
+    const bannerApi = Banner({
+      apiUrl: "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev",
+      clientKey: "MDE0ZDMwZDYtMjlkMS00ZTI1LTk0MTctNzQ1NTljN2I1YTk2",
+      userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+    });
+
+    const result = await bannerApi.getBanner();
+
+    console.log("result", result);
   });
 });
