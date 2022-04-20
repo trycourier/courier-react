@@ -63,15 +63,18 @@ query GetInAppBrand {
 
 type GetBrand = (
   brandId?: string
-) => Promise<{
-  colors: any;
-  inapp: any;
-  preferenceTemplates: any;
-} | void>;
+) => Promise<
+  | {
+      colors: any;
+      inapp: any;
+      preferenceTemplates: any;
+    }
+  | undefined
+>;
 
 export const getBrand = (client?: Client): GetBrand => async (brandId) => {
   if (!client) {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 
   const results = brandId
