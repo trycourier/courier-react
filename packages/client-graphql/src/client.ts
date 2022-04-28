@@ -1,34 +1,56 @@
 import { Client, createClient } from "urql";
-import { ICourierClientParams, ICourierHeaders } from "./types";
+import {
+  ICourierClientJWTParams,
+  ICourierClientBasicParams,
+  CourierBasicHeaders,
+  CourierJWTHeaders,
+} from "./types";
 
 export const createCourierClient = (
-  params: ICourierClientParams
+  params:
+    | ICourierClientBasicParams
+    | ICourierClientJWTParams
+    | {
+        client: Client;
+      }
 ): Client | undefined => {
   if ("client" in params) {
     return params.client;
   }
 
-  const { clientKey, userId, apiUrl, userSignature } = params;
+  let headers: CourierBasicHeaders | CourierJWTHeaders;
 
-  if (!clientKey || !userId) {
-    return;
+  if ("authorization" in params) {
+    headers = {
+      authorization: params.authorization,
+    } as CourierJWTHeaders;
+  } else {
+    const {
+      clientKey,
+      userId,
+      userSignature,
+    } = params as ICourierClientBasicParams;
+
+    headers = {
+      "x-courier-client-key": clientKey,
+      "x-courier-user-id": userId,
+    } as CourierBasicHeaders;
+
+    if (userSignature) {
+      headers["x-courier-user-signature"] = userSignature;
+    }
+
+    if (!clientKey || !userId) {
+      return;
+    }
   }
 
   return createClient({
     url: `${
-      apiUrl || process.env.API_URL || `https://api.courier.com`
+      params.apiUrl || process.env.API_URL || `https://api.courier.com`
     }/client/q`,
     requestPolicy: "network-only",
     fetchOptions: () => {
-      const headers: ICourierHeaders & RequestInit["headers"] = {
-        "x-courier-client-key": clientKey,
-        "x-courier-user-id": userId,
-      };
-
-      if (userSignature) {
-        headers["x-courier-user-signature"] = userSignature;
-      }
-
       return {
         headers,
       };

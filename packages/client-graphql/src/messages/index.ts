@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { ICourierClientParams } from "../types";
+import { ICourierClientBasicParams } from "../types";
 import { createCourierClient } from "../client";
 
 export const GET_MESSAGE_COUNT = `
@@ -111,7 +111,7 @@ export const getMessages = (client?: Client): GetMessages => async (
 };
 
 export default (
-  params: ICourierClientParams | { client: Client }
+  params: ICourierClientBasicParams | { client: Client }
 ): {
   getMessageCount: GetMessageCount;
   getMessages: GetMessages;

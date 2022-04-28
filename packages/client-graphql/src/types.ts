@@ -1,15 +1,29 @@
 import { Client } from "urql";
 
-export type ICourierClientParams = {
+export type ICourierClientBasicParams = {
   client?: Client;
-  clientKey?: string;
-  userId?: string;
+  clientKey: string;
+  userId: string;
   userSignature?: string;
   apiUrl?: string;
 };
 
-export interface ICourierHeaders {
+export type ICourierClientJWTParams = {
+  client?: Client;
+  authorization: string;
+  apiUrl?: string;
+};
+
+export type ICourierClientParams =
+  | ICourierClientBasicParams
+  | ICourierClientJWTParams;
+
+export type CourierBasicHeaders = RequestInit["headers"] & {
   "x-courier-client-key": string;
   "x-courier-user-id": string;
   "x-courier-user-signature"?: string;
-}
+};
+
+export type CourierJWTHeaders = RequestInit["headers"] & {
+  authorization: string;
+};

@@ -8,8 +8,8 @@ export interface IGetBannerParams {
 }
 
 export const QUERY_BANNER = `
-  query GetBanner($params: FilterParamsInput, $limit: Int = 10, $after: String){
-    banner(params: $params, limit: $limit, after: $after) {
+  query GetBanners($params: BannerParamsInput, $limit: Int = 10, $after: String){
+    banners(params: $params, limit: $limit, after: $after) {
       totalCount
       pageInfo {
         startCursor
@@ -45,15 +45,15 @@ export const QUERY_BANNER = `
   }
 `;
 
-type GetBanner = (
+type GetBanners = (
   params?: IGetBannerParams,
   after?: string
 ) => Promise<{
   startCursor: string;
-  banner: any[];
+  banners: any[];
 } | void>;
 
-export const getBanner = (client?: Client): GetBanner => async (
+export const getBanners = (client?: Client): GetBanners => async (
   params?: IGetBannerParams,
   after?: string
 ) => {
@@ -65,12 +65,12 @@ export const getBanner = (client?: Client): GetBanner => async (
     .query(QUERY_BANNER, { after, params })
     .toPromise();
 
-  const banner = results?.data?.banner?.nodes;
-  const startCursor = results?.data?.banner?.pageInfo?.startCursor;
+  const banners = results?.data?.banners?.nodes;
+  const startCursor = results?.data?.banners?.pageInfo?.startCursor;
 
   return {
     appendMessages: Boolean(after),
-    banner,
+    banners,
     startCursor,
   };
 };
@@ -78,11 +78,11 @@ export const getBanner = (client?: Client): GetBanner => async (
 export default (
   params: ICourierClientParams | { client: Client }
 ): {
-  getBanner: GetBanner;
+  getBanners: GetBanners;
 } => {
   const client = createCourierClient(params);
 
   return {
-    getBanner: getBanner(client),
+    getBanners: getBanners(client),
   };
 };

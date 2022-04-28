@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { ICourierClientParams } from "../types";
+import { ICourierClientBasicParams } from "../types";
 import { createCourierClient } from "../client";
 
 const RECIPIENT_PREFERENCES = `
@@ -53,7 +53,7 @@ export const updateRecipientPreferences = (
 };
 
 export default (
-  params: ICourierClientParams | { client: Client }
+  params: ICourierClientBasicParams | { client: Client }
 ): {
   getRecipientPreferences: GetRecipientPreferences;
   updateRecipientPreferences: UpdateRecipientPreferences;
