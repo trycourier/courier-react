@@ -18,6 +18,7 @@ export const QUERY_BANNER = `
       }
       nodes {
         id
+        userId
         messageId
         created
         tags
@@ -36,10 +37,6 @@ export const QUERY_BANNER = `
             }
           }
           data
-          trackingIds {
-            clickTrackingId
-            deliverTrackingId
-          }
         }
       }
     }
