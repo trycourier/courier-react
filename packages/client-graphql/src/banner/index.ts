@@ -4,6 +4,7 @@ import { createCourierClient } from "../client";
 
 export interface IGetBannerParams {
   from?: number;
+  locale?: string;
   tags?: string[];
 }
 
