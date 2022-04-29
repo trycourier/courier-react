@@ -107,7 +107,7 @@ import { Banner } from "@trycourier/client-graphql";
 const bannerApi = Banner({
   clientKey: "abc123",
   userId: "@me",
-  userSignature: "SUPER_SECRET",
+  userSignature: "SUPER_SECRET", //optional
 });
 
 const getBanners = async (params?: { tags?: string[], locale?: string }) => {
@@ -121,6 +121,7 @@ const getBanners = async (params?: { tags?: string[], locale?: string }) => {
 ```js
 import { Banner } from "@trycourier/client-graphql";
 const bannerApi = Banner({
+  clientKey: "abc123",
   authorization: "MY JWT TOKEN",
 });
 
