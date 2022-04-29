@@ -11,6 +11,7 @@ export type ICourierClientBasicParams = {
 export type ICourierClientJWTParams = {
   client?: Client;
   authorization: string;
+  clientKey: string;
   apiUrl?: string;
 };
 
@@ -25,5 +26,6 @@ export type CourierBasicHeaders = RequestInit["headers"] & {
 };
 
 export type CourierJWTHeaders = RequestInit["headers"] & {
+  "x-courier-client-key": string;
   authorization: string;
 };

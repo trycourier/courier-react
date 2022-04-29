@@ -34,6 +34,7 @@ describe("banner", () => {
     fetchMock.mockImplementation(() => Promise.resolve([]));
     const bannerApi = Banner({
       authorization: "abc123",
+      clientKey: "CLIENT_KEY",
     });
 
     await bannerApi.getBanners({
@@ -48,6 +49,7 @@ describe("banner", () => {
     );
     expect(thisCall.headers).toEqual({
       authorization: "abc123",
+      "x-courier-client-key": "CLIENT_KEY",
       "content-type": "application/json",
     });
     expect(thisCall.method).toBe("POST");
