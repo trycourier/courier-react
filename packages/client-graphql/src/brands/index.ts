@@ -100,7 +100,7 @@ export const getBrand = (client?: Client): GetBrand => async (brandId) => {
 };
 
 export default (
-  params: ICourierClientBasicParams | { client: Client }
+  params: ICourierClientBasicParams | { client?: Client }
 ): {
   getBrand: GetBrand;
 } => {

@@ -11,7 +11,8 @@ export const createCourierClient = (
     | ICourierClientBasicParams
     | ICourierClientJWTParams
     | {
-        client: Client;
+        client?: Client;
+        apiUrl?: string;
       }
 ): Client | undefined => {
   if ("client" in params) {

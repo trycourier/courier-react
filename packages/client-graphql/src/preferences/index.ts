@@ -53,7 +53,7 @@ export const updateRecipientPreferences = (
 };
 
 export default (
-  params: ICourierClientBasicParams | { client: Client }
+  params: ICourierClientBasicParams | { client?: Client }
 ): {
   getRecipientPreferences: GetRecipientPreferences;
   updateRecipientPreferences: UpdateRecipientPreferences;

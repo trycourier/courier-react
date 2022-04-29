@@ -47,7 +47,7 @@ export const trackEventBatch = (client?: Client): TrackEventBatch => async (
 };
 
 export default (
-  params: ICourierClientBasicParams | { client: Client }
+  params: ICourierClientBasicParams | { client?: Client }
 ): {
   trackEvent: TrackEvent;
   trackEventBatch: TrackEventBatch;

@@ -111,7 +111,7 @@ export const getMessages = (client?: Client): GetMessages => async (
 };
 
 export default (
-  params: ICourierClientBasicParams | { client: Client }
+  params: ICourierClientBasicParams | { client?: Client }
 ): {
   getMessageCount: GetMessageCount;
   getMessages: GetMessages;
