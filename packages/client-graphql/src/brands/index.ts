@@ -1,4 +1,4 @@
-import { ICourierClientParams } from "./../types";
+import { ICourierClientBasicParams } from "./../types";
 import { Client } from "urql";
 import { createCourierClient } from "../client";
 
@@ -100,7 +100,7 @@ export const getBrand = (client?: Client): GetBrand => async (brandId) => {
 };
 
 export default (
-  params: ICourierClientParams
+  params: ICourierClientBasicParams | { client?: Client }
 ): {
   getBrand: GetBrand;
 } => {

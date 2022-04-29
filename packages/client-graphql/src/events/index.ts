@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { ICourierClientParams } from "../types";
+import { ICourierClientBasicParams } from "../types";
 import { createCourierClient } from "../client";
 
 const TRACK_EVENT = `
@@ -47,7 +47,7 @@ export const trackEventBatch = (client?: Client): TrackEventBatch => async (
 };
 
 export default (
-  params: ICourierClientParams
+  params: ICourierClientBasicParams | { client?: Client }
 ): {
   trackEvent: TrackEvent;
   trackEventBatch: TrackEventBatch;
