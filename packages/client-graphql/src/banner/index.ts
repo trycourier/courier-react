@@ -46,17 +46,20 @@ export const QUERY_BANNER = `
 type GetBanners = (
   params?: IGetBannerParams,
   after?: string
-) => Promise<{
-  startCursor: string;
-  banners: any[];
-} | void>;
+) => Promise<
+  | {
+      startCursor: string;
+      banners: any[];
+    }
+  | undefined
+>;
 
 export const getBanners = (client?: Client): GetBanners => async (
   params?: IGetBannerParams,
   after?: string
 ) => {
   if (!client) {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 
   const results = await client
