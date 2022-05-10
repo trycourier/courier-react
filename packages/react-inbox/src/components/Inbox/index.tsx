@@ -100,14 +100,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     brand,
     currentTab,
     fetchMessages,
-    from,
     getMessageCount,
     init,
     isOpen: isOpenState,
     messages,
     setCurrentTab,
     setView,
-    showUnreadMessageCount,
     toggleInbox,
     unreadMessageCount,
   } = useInbox();
@@ -125,8 +123,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return;
     }
 
-    getMessageCount({ from: from ?? props.from, isRead: false });
-  }, [userId, clientKey, from]);
+    getMessageCount({ from: props.from, isRead: false });
+  }, [userId, clientKey, props.from]);
 
   useEffect(() => {
     let didInit = false;
@@ -240,10 +238,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         )}
         {unreadMessageCount > 0 && (
           <UnreadIndicator
-            showUnreadMessageCount={showUnreadMessageCount}
+            showUnreadMessageCount={props.showUnreadMessageCount}
             data-testid="unread-badge"
           >
-            {showUnreadMessageCount
+            {props.showUnreadMessageCount
               ? unreadMessageCount > 99
                 ? "99+"
                 : unreadMessageCount

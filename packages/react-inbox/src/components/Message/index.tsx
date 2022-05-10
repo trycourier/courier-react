@@ -11,17 +11,28 @@ import {
   Title,
   UnreadIndicator,
 } from "./styled";
-import useInbox from "~/hooks/use-inbox";
+import { useInbox } from "@trycourier/react-hooks";
 import { IMessageProps } from "./types";
+import { InboxProps } from "../../types";
+
 import { useMessageOptions, getTimeAgo } from "./helpers";
 import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 import Markdown from "markdown-to-jsx";
 
-const Message: React.FunctionComponent<IMessageProps> = ({
+const Message: React.FunctionComponent<
+  IMessageProps & {
+    defaultIcon: InboxProps["defaultIcon"];
+    openLinksInNewTab: InboxProps["openLinksInNewTab"];
+    renderBlocks: InboxProps["renderBlocks"];
+  }
+> = ({
   blocks,
   body,
   created,
   data,
+  defaultIcon,
+  openLinksInNewTab,
+  renderBlocks,
   icon,
   messageId,
   read,
@@ -29,14 +40,7 @@ const Message: React.FunctionComponent<IMessageProps> = ({
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const {
-    brand,
-    defaultIcon,
-    markMessageRead,
-    markMessageUnread,
-    openLinksInNewTab,
-    renderBlocks,
-  } = useInbox();
+  const { brand, markMessageRead, markMessageUnread } = useInbox();
 
   const renderedIcon = getIcon(
     /* priority:

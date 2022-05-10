@@ -1,5 +1,19 @@
-import { IMessage, ITab, InboxProps } from "./types";
-import { DEFAULT_TABS } from "~/constants";
+import { IMessage, InboxState } from "./types";
+
+export const DEFAULT_TABS = [
+  {
+    id: "unread",
+    label: "Unread",
+    filters: {
+      isRead: false,
+    },
+  },
+  {
+    id: "all",
+    label: "All Messages",
+    filters: {},
+  },
+];
 
 const makeMessage = (message): IMessage => ({
   blocks: message?.content?.blocks,
@@ -11,15 +25,6 @@ const makeMessage = (message): IMessage => ({
   title: message?.content?.title,
   trackingIds: message?.content?.trackingIds,
 });
-
-export interface InboxState extends InboxProps {
-  currentTab?: ITab;
-  isLoading?: boolean;
-  messages: Array<IMessage>;
-  startCursor?: string;
-  unreadMessageCount: number;
-  view: "messages" | "preferences";
-}
 
 const initialState: InboxState = {
   isOpen: false,

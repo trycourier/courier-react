@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { Container, Tab } from "./styled";
-import useInbox from "~/hooks/use-inbox";
+import { useInbox } from "@trycourier/react-hooks";
 
 const TabList: React.FunctionComponent = () => {
   const { setCurrentTab, currentTab, tabs } = useInbox();

@@ -1,11 +1,11 @@
 import { useCourier, registerReducer } from "@trycourier/react-provider";
 import { useEffect } from "react";
-import reducer from "~/reducer";
+import reducer from "./reducer";
 
 import deepExtend from "deep-extend";
 
 import useInboxActions from "./use-inbox-actions";
-import { InboxState } from "../reducer";
+import { InboxState } from "./types";
 
 const useInbox = () => {
   const { dispatch, inbox, transport, brand } = useCourier<{
@@ -15,7 +15,7 @@ const useInbox = () => {
   const actions = useInboxActions();
 
   if (inbox) {
-    inbox.brand = deepExtend({}, brand, inbox.brand);
+    inbox.brand = deepExtend({}, brand ?? {}, inbox.brand ?? {});
   }
 
   useEffect(() => {

@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noImplicitAny": false,
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  },
+  "exclude": [
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.ts",
+    "**/*.story.ts",
+    "**/dist/**",
+    "**/typings/**",
+    "node_modules"
+  ],
+  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.ts"]
+}

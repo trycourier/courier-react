@@ -1,5 +1,5 @@
 import { useCourier } from "@trycourier/react-provider";
-import { ITab } from "~/types";
+import { ITab } from "./types";
 
 import {
   createCourierClient,
