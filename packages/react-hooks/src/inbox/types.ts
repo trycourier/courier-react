@@ -34,8 +34,8 @@ export interface IInbox {
   tabs?: ITab[];
   currentTab?: ITab;
   isLoading?: boolean;
-  messages: Array<IMessage>;
+  messages?: Array<IMessage>;
   startCursor?: string;
-  unreadMessageCount: number;
-  view: "messages" | "preferences";
+  unreadMessageCount?: number;
+  view?: "messages" | "preferences";
 }

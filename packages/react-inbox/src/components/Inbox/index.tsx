@@ -107,7 +107,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     setCurrentTab,
     setView,
     toggleInbox,
-    unreadMessageCount,
+    unreadMessageCount = 0,
   } = useInbox();
 
   const isOpen = props.isOpen ?? isOpenState;
@@ -138,7 +138,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           const { messages, unreadMessageCount } = JSON.parse(
             localStorageState
           );
-          init({ messages, unreadMessageCount, ...props });
+          init({
+            messages,
+            unreadMessageCount,
+            brand: props.brand,
+            isOpen: props.isOpen,
+          });
           didInit = true;
         } catch (ex) {
           console.log("error", ex);
@@ -147,7 +152,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     }
 
     if (!didInit) {
-      init(props);
+      init({
+        brand: props.brand,
+        isOpen: props.isOpen,
+      });
     }
   }, [props, clientKey, userId]);
 

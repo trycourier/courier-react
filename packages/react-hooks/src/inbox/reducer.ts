@@ -100,7 +100,7 @@ export default (state: IInbox = initialState, action): IInbox => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => {
+        messages: state?.messages?.map((message) => {
           if (message.messageId === action.payload.messageId) {
             return {
               ...message,
@@ -123,7 +123,7 @@ export default (state: IInbox = initialState, action): IInbox => {
       if (state.currentTab?.filters?.isRead === false) {
         return {
           ...state,
-          messages: state.messages.filter(
+          messages: state?.messages?.filter(
             (message) => message.messageId !== action.payload.messageId
           ),
           unreadMessageCount,
@@ -132,7 +132,7 @@ export default (state: IInbox = initialState, action): IInbox => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => {
+        messages: state?.messages?.map((message) => {
           if (message.messageId === action.payload.messageId) {
             return {
               ...message,
@@ -156,7 +156,7 @@ export default (state: IInbox = initialState, action): IInbox => {
     case "inbox/NEW_MESSAGE": {
       return {
         ...state,
-        unreadMessageCount: state.unreadMessageCount + 1,
+        unreadMessageCount: (state?.unreadMessageCount ?? 0) + 1,
         messages: [
           {
             created: new Date().getTime(),
@@ -185,7 +185,7 @@ export default (state: IInbox = initialState, action): IInbox => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => {
+        messages: state?.messages?.map((message) => {
           return {
             ...message,
             read: true,
