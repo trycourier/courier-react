@@ -8,7 +8,7 @@ import {
 import { IHeaderProps } from "./types";
 import SettingsSvg from "~/assets/icon-settings.svg";
 import styled from "styled-components";
-import useInbox from "~/hooks/use-inbox";
+import { useInbox } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
 
 export const SettingsIconButton = styled.button`

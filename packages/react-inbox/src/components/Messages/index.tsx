@@ -11,7 +11,7 @@ import Loading from "./loading";
 import Message from "../Message";
 import PaginationEnd from "./PaginationEnd";
 import TabList from "../TabList";
-import useInbox from "~/hooks/use-inbox";
+import { useInbox } from "@trycourier/react-hooks";
 
 import { InboxProps } from "../../types";
 import {
@@ -29,119 +29,135 @@ const Messages: React.ForwardRefExoticComponent<
     isMobile?: boolean;
     ref: React.ForwardedRef<HTMLDivElement>;
   }
-> = React.forwardRef(({ isMobile }, ref) => {
-  const { fetchRecipientPreferences } = usePreferencesActions();
-
-  const {
-    brand,
-    currentTab,
-    fetchMessages,
-    isLoading,
-    markAllAsRead,
-    messages = [],
-    startCursor,
-    tabs,
-    title = "Inbox",
-    toggleInbox,
-    unreadMessageCount,
-    renderContainer,
-    renderFooter,
-    renderHeader,
-    renderMessage,
-    renderNoMessages,
-    renderTabs,
-    view,
-  } = useInbox();
-
-  const messageListRef = useRef<HTMLDivElement>(null);
-
-  useAtBottom(
-    messageListRef,
-    () => {
-      if (isLoading || !startCursor) {
-        return;
-      }
-
-      fetchMessages({
-        params: currentTab?.filters,
-        after: startCursor,
-      });
+> = React.forwardRef(
+  (
+    {
+      defaultIcon,
+      isMobile,
+      openLinksInNewTab,
+      renderBlocks,
+      renderContainer,
+      renderFooter,
+      renderHeader,
+      renderMessage,
+      renderNoMessages,
+      renderTabs,
+      title = "Inbox",
     },
-    [isLoading, startCursor, currentTab]
-  );
+    ref
+  ) => {
+    const { fetchRecipientPreferences } = usePreferencesActions();
 
-  useEffect(() => {
-    fetchRecipientPreferences();
-  }, []);
+    const {
+      brand,
+      currentTab,
+      fetchMessages,
+      isLoading,
+      markAllAsRead,
+      messages = [],
+      startCursor,
+      tabs,
+      toggleInbox,
+      unreadMessageCount,
+      view,
+    } = useInbox();
 
-  const handleCloseInbox = (event: React.MouseEvent) => {
-    event.preventDefault();
-    toggleInbox(false);
-  };
-  const Container = renderContainer ? renderContainer : MessageListContainer;
+    const messageListRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <ResponsiveContainer ref={ref} isMobile={isMobile}>
-      {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
-      <Container>
-        {renderHeader ? (
-          renderHeader({})
-        ) : (
-          <Header
-            currentTab={currentTab}
-            title={title}
-            unreadMessageCount={unreadMessageCount}
-            markAllAsRead={markAllAsRead}
-            messages={messages}
-          />
-        )}
-        {view === "messages" ? (
-          <>
-            {renderTabs ? renderTabs({ tabs, currentTab }) : <TabList />}
-            <MessageList
-              ref={messageListRef}
-              isMobile={isMobile}
-              data-testid="messages"
-            >
-              {messages?.map((message) =>
-                renderMessage ? (
-                  renderMessage(message)
-                ) : (
-                  <Message key={message.messageId} {...message} />
-                )
-              )}
-              {isLoading && messages?.length === 0 && <Loading />}
-              {!isLoading &&
-                messages?.length === 0 &&
-                (renderNoMessages ? (
-                  renderNoMessages({})
-                ) : (
-                  <Empty>
-                    {brand?.inapp?.emptyState?.text ??
-                      "You have no notifications at this time"}
-                  </Empty>
-                ))}
-              {!isLoading && messages?.length > 5 && !startCursor && (
-                <PaginationEnd title="End Of The Road" />
-              )}
-            </MessageList>
-          </>
-        ) : (
-          <PreferenceList />
-        )}
-      </Container>
-      {renderFooter
-        ? renderFooter({})
-        : !brand?.inapp?.disableCourierFooter && (
-            <Footer>
-              <a href="https://www.courier.com">
-                Powered by&nbsp;&nbsp;
-                <CourierLogo />
-              </a>
-            </Footer>
+    useAtBottom(
+      messageListRef,
+      () => {
+        if (isLoading || !startCursor) {
+          return;
+        }
+
+        fetchMessages({
+          params: currentTab?.filters,
+          after: startCursor,
+        });
+      },
+      [isLoading, startCursor, currentTab]
+    );
+
+    useEffect(() => {
+      fetchRecipientPreferences();
+    }, []);
+
+    const handleCloseInbox = (event: React.MouseEvent) => {
+      event.preventDefault();
+      toggleInbox(false);
+    };
+    const Container = renderContainer ? renderContainer : MessageListContainer;
+
+    return (
+      <ResponsiveContainer ref={ref} isMobile={isMobile}>
+        {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
+        <Container>
+          {renderHeader ? (
+            renderHeader({})
+          ) : (
+            <Header
+              currentTab={currentTab}
+              title={title}
+              unreadMessageCount={unreadMessageCount}
+              markAllAsRead={markAllAsRead}
+              messages={messages}
+            />
           )}
-    </ResponsiveContainer>
-  );
-});
+          {view === "messages" ? (
+            <>
+              {renderTabs ? renderTabs({ tabs, currentTab }) : <TabList />}
+              <MessageList
+                ref={messageListRef}
+                isMobile={isMobile}
+                data-testid="messages"
+              >
+                {messages?.map((message) =>
+                  renderMessage ? (
+                    renderMessage(message)
+                  ) : (
+                    <Message
+                      key={message.messageId}
+                      {...message}
+                      defaultIcon={defaultIcon}
+                      openLinksInNewTab={openLinksInNewTab}
+                      renderBlocks={renderBlocks}
+                    />
+                  )
+                )}
+                {isLoading && messages?.length === 0 && <Loading />}
+                {!isLoading &&
+                  messages?.length === 0 &&
+                  (renderNoMessages ? (
+                    renderNoMessages({})
+                  ) : (
+                    <Empty>
+                      {brand?.inapp?.emptyState?.text ??
+                        "You have no notifications at this time"}
+                    </Empty>
+                  ))}
+                {!isLoading && messages?.length > 5 && !startCursor && (
+                  <PaginationEnd title="End Of The Road" />
+                )}
+              </MessageList>
+            </>
+          ) : (
+            <PreferenceList />
+          )}
+        </Container>
+        {renderFooter
+          ? renderFooter({})
+          : !brand?.inapp?.disableCourierFooter && (
+              <Footer>
+                <a href="https://www.courier.com">
+                  Powered by&nbsp;&nbsp;
+                  <CourierLogo />
+                </a>
+              </Footer>
+            )}
+      </ResponsiveContainer>
+    );
+  }
+);
 
 export default Messages;

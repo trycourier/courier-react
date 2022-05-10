@@ -18,17 +18,14 @@ or you can create the client separtly and pass the client in:
 
 ```
 import { createCourierClient } from "@trycourier/client-graphql";
-
 const courierClient = createCourierClient({
   clientKey: "abc123",
   userId: "@me",
   userSignature: "SUPER_SECRET",
 });
-
 const messages = Messages({ client: courierClient })
 const events = Events({ events: courierClient })
 const events = Brands({ events: courierClient })
-
 ```
 
 ### Messages
@@ -40,7 +37,6 @@ const messagesApi = Messages({
   userId: "@me",
   userSignature: "SUPER_SECRET",
 });
-
 const getMessageCount = async (params?: {
   isRead?: boolean,
   from?: number,
@@ -49,7 +45,6 @@ const getMessageCount = async (params?: {
   const messageCount = await messagesApi.getMessageCount(params);
   return messageCount;
 };
-
 const getMessages = async (
   params?: {
     isRead?: boolean,
@@ -59,7 +54,6 @@ const getMessages = async (
   after?: string
 ) => {
   const { startCursor, messages } = await messagesApi.getMessages(params);
-
   return {
     startCursor,
     messages,
@@ -76,7 +70,6 @@ const eventsApi = Events({
   userId: "@me",
   userSignature: "SUPER_SECRET",
 });
-
 const trackEvent = async (trackingId: string) => {
   await eventsApi.trackEvent(trackingId);
 };
@@ -91,7 +84,6 @@ const brandsApi = Brands({
   userId: "@me",
   userSignature: "SUPER_SECRET",
 });
-
 const getBrand = async (brandId?: string) => {
   const myBrand = await brandsApi.getBrand(brandId);
   return myBrand;
@@ -109,7 +101,6 @@ const bannerApi = Banner({
   userId: "@me",
   userSignature: "SUPER_SECRET", //optional
 });
-
 const getBanners = async (params?: { tags?: string[], locale?: string }) => {
   const myBanners = await bannerApi.getBanners(params);
   return myBanners;
@@ -124,7 +115,6 @@ const bannerApi = Banner({
   clientKey: "abc123",
   authorization: "MY JWT TOKEN",
 });
-
 const getBanners = async (params?: { tags?: string[], locale?: string }) => {
   const myBanners = await bannerApi.getBanners(params);
   return myBanners;

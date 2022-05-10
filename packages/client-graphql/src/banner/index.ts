@@ -70,7 +70,6 @@ export const getBanners = (client?: Client): GetBanners => async (
   const startCursor = results?.data?.banners?.pageInfo?.startCursor;
 
   return {
-    appendMessages: Boolean(after),
     banners,
     startCursor,
   };

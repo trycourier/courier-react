@@ -100,16 +100,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     brand,
     currentTab,
     fetchMessages,
-    from,
     getMessageCount,
     init,
     isOpen: isOpenState,
     messages,
     setCurrentTab,
     setView,
-    showUnreadMessageCount,
     toggleInbox,
-    unreadMessageCount,
+    unreadMessageCount = 0,
   } = useInbox();
 
   const isOpen = props.isOpen ?? isOpenState;
@@ -125,8 +123,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return;
     }
 
-    getMessageCount({ from: from ?? props.from, isRead: false });
-  }, [userId, clientKey, from]);
+    getMessageCount({ from: props.from, isRead: false });
+  }, [userId, clientKey, props.from]);
 
   useEffect(() => {
     let didInit = false;
@@ -140,7 +138,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           const { messages, unreadMessageCount } = JSON.parse(
             localStorageState
           );
-          init({ messages, unreadMessageCount, ...props });
+          init({
+            messages,
+            unreadMessageCount,
+            brand: props.brand,
+            isOpen: props.isOpen,
+          });
           didInit = true;
         } catch (ex) {
           console.log("error", ex);
@@ -149,7 +152,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     }
 
     if (!didInit) {
-      init(props);
+      init({
+        brand: props.brand,
+        isOpen: props.isOpen,
+      });
     }
   }, [props, clientKey, userId]);
 
@@ -240,10 +246,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         )}
         {unreadMessageCount > 0 && (
           <UnreadIndicator
-            showUnreadMessageCount={showUnreadMessageCount}
+            showUnreadMessageCount={props.showUnreadMessageCount}
             data-testid="unread-badge"
           >
-            {showUnreadMessageCount
+            {props.showUnreadMessageCount
               ? unreadMessageCount > 99
                 ? "99+"
                 : unreadMessageCount

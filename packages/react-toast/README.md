@@ -7,8 +7,8 @@
 - [Client Install](#client-install)
 - [Courier Integration](#courier-integration)
 - [Client Setup](#client-setup)
-  - [Props](#props)
-  - [Theme](#theme)
+- [Props](#props)
+- [Theme](#theme)
 - [Using Hook](#using-hook)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -68,7 +68,7 @@ Now that you have a notification ready to be sent lets setup the client to liste
 
 <a name="3propsmd"></a>
 
-### [Props](#props)
+## [Props](#props)
 
 ```
 interface ToastProps {
@@ -90,27 +90,29 @@ interface ToastProps {
   theme?: Theme;
 
   // Animation when the Toast is displayed
-  transition?: "bounce" | "slide" | "zoom" | "flip";
+  transition?: "bounce" | "slide" | "zoom";
 }
 ```
 
-### [Theme](#theming)
+<a name="4thememd"></a>
+
+## [Theme](#theme)
 
 ```
 interface ITheme {
-  icon?: React.CSSProperties;
+  body?: React.CSSProperties;
   root?: React.CSSProperties;
+  toast?: React.CSSProperties;
+  dismiss?: React.CSSProperties;
   message?: {
-    actions: {
-      container?: React.CSSProperties;
-      details?: React.CSSProperties;
-      dismiss?: React.CSSProperties;
-    };
+    actionBlock?: React.CSSProperties;
+    textBlock?: React.CSSProperties;
     body?: React.CSSProperties;
-    container?: React.CSSProperties;
+    contents?: React.CSSProperties;
     icon?: React.CSSProperties;
     title?: React.CSSProperties;
   };
+  progressBar?: React.CSSProperties;
 };
 ```
 
@@ -118,36 +120,7 @@ The style configuration objects should be defined with Style Objects. Style Obje
 
 > Styles will be merged with defaults so if you do not explicitly override a style it will not be changed.
 
-An example usage of custom styling is shown below:
-
-![image](https://user-images.githubusercontent.com/16184018/109723047-6cf5ed80-7b62-11eb-940a-4f29ddcfe80c.gif)
-
-```js
-//App.js
-const theme = {
-  toast: {
-    backgroundColor: "black",
-    borderRadius: 5,
-    height: 40,
-    boxShadow: "0px 5px 20px 2px rgba(0,0,0,0.60)",
-  },
-  title: {
-    color: "white",
-  },
-  body: {
-    color: "white",
-  },
-  sidebar: {
-    background: "black",
-  },
-};
-
-function ThemedToast() {
-  return <Toast theme={theme} />;
-}
-```
-
-<a name="4hooksmd"></a>
+<a name="5hooksmd"></a>
 
 ## [Using Hook](#using-hook)
 

@@ -1,5 +1,19 @@
-import { IMessage, ITab, InboxProps } from "./types";
-import { DEFAULT_TABS } from "~/constants";
+import { IMessage, IInbox } from "./types";
+
+export const DEFAULT_TABS = [
+  {
+    id: "unread",
+    label: "Unread",
+    filters: {
+      isRead: false,
+    },
+  },
+  {
+    id: "all",
+    label: "All Messages",
+    filters: {},
+  },
+];
 
 const makeMessage = (message): IMessage => ({
   blocks: message?.content?.blocks,
@@ -12,16 +26,7 @@ const makeMessage = (message): IMessage => ({
   trackingIds: message?.content?.trackingIds,
 });
 
-export interface InboxState extends InboxProps {
-  currentTab?: ITab;
-  isLoading?: boolean;
-  messages: Array<IMessage>;
-  startCursor?: string;
-  unreadMessageCount: number;
-  view: "messages" | "preferences";
-}
-
-const initialState: InboxState = {
+const initialState: IInbox = {
   isOpen: false,
   messages: [],
   view: "messages",
@@ -30,7 +35,7 @@ const initialState: InboxState = {
   currentTab: DEFAULT_TABS[0],
 };
 
-export default (state: InboxState = initialState, action): InboxState => {
+export default (state: IInbox = initialState, action): IInbox => {
   switch (action.type) {
     case "inbox/INIT": {
       return {
@@ -95,7 +100,7 @@ export default (state: InboxState = initialState, action): InboxState => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => {
+        messages: state?.messages?.map((message) => {
           if (message.messageId === action.payload.messageId) {
             return {
               ...message,
@@ -118,7 +123,7 @@ export default (state: InboxState = initialState, action): InboxState => {
       if (state.currentTab?.filters?.isRead === false) {
         return {
           ...state,
-          messages: state.messages.filter(
+          messages: state?.messages?.filter(
             (message) => message.messageId !== action.payload.messageId
           ),
           unreadMessageCount,
@@ -127,7 +132,7 @@ export default (state: InboxState = initialState, action): InboxState => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => {
+        messages: state?.messages?.map((message) => {
           if (message.messageId === action.payload.messageId) {
             return {
               ...message,
@@ -151,7 +156,7 @@ export default (state: InboxState = initialState, action): InboxState => {
     case "inbox/NEW_MESSAGE": {
       return {
         ...state,
-        unreadMessageCount: state.unreadMessageCount + 1,
+        unreadMessageCount: (state?.unreadMessageCount ?? 0) + 1,
         messages: [
           {
             created: new Date().getTime(),
@@ -180,7 +185,7 @@ export default (state: InboxState = initialState, action): InboxState => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => {
+        messages: state?.messages?.map((message) => {
           return {
             ...message,
             read: true,

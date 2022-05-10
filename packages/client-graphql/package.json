@@ -11,7 +11,6 @@
     "clean": "rimraf dist",
     "test": "jest -c jest.config.js --runInBand",
     "type-check": "tsc --noEmit",
-    "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
   },
   "license": "ISC",

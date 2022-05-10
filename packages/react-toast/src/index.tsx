@@ -16,7 +16,7 @@ export const ToastProvider: React.FunctionComponent<
   }
 > = ({ children, transport, clientKey, config, userId }) => {
   config = useMemo(() => {
-    return deepExtend({}, defaultConfig, config);
+    return deepExtend({}, defaultConfig, config ?? {});
   }, [config]) as IToastConfig;
 
   return (
