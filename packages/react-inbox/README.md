@@ -1,14 +1,83 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Props](#props)
 - [What is Inbox?](#what-is-inbox)
   - [How does @trycourier/react-inbox work?](#how-does-trycourierreact-inbox-work)
-- [Client Install](#client-install)
-- [Courier Provider](#courier-provider)
-  - [Props](#props)
   - [Theme](#theme)
+  - [Render Props](#render-props)
+  - [Hooks](#hooks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+<a name="0propsmd"></a>
+
+### [Props](#props)
+
+```
+interface ITab {
+  filters: {
+    isRead?: boolean;
+  };
+  label: string;
+  id: string;
+}
+
+interface InboxProps {
+  //Brand Override
+  brand?: Brand;
+
+  //Icon Class Name
+  className?: string;
+
+  // defaults to true
+  openLinksInNewTab?: boolean;
+
+  // Default Icon to use if no Icon is present in Message
+  defaultIcon?: false | string;
+
+  // Placement of the Bell relative to the Inbox
+  placement?: "top" | "left" | "right" | "bottom";
+
+  // Render Props for Custom Rendering
+  renderTabs?: React.FunctionComponent<{
+    currentTab?: ITab;
+    tabs?: ITab[];
+  }>;
+  renderBell?: React.FunctionComponent<{
+    className?: string;
+    isOpen?: boolean;
+    onClick?: (event: React.MouseEvent) => void;
+    onMouseEnter?: (event: React.MouseEvent) => void;
+  }>;
+  renderBlocks?: {
+    action?: React.FunctionComponent<IActionBlock>;
+    text?: React.FunctionComponent<ITextBlock>;
+  }
+  renderFooter?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent;
+  renderIcon?: React.FunctionComponent<{
+    unreadMessageCount?: number;
+  }>;
+  renderMessage?: React.FunctionComponent<IMessage>;
+  renderNoMessages?: React.FunctionComponent;
+
+  // Tab Overrides
+  tabs?: Array<ITab>;
+  theme?: ThemeObject;
+
+  // Inbox Title Override
+  title?: string;
+  trigger?: "click" | "hover";
+
+  labels?: {
+    backToInbox?: string;
+    markAsRead?: string;
+    markAllAsRead?: string;
+    markAsUnread?: string;
+  }
+}
+```
 
 <a name="1overviewmd"></a>
 
@@ -30,57 +99,59 @@ After installing the integration you will be provided with a Client Key
 
 As of right now, we will fetch all messages sent to any `push` channel and display them in the `inbox`.
 
-<a name="2installationmd"></a>
+<a name="1thememd"></a>
 
-## [Client Install](#client-install)
+### [Theme](#theme)
 
-```js
-yarn add @trycourier/react-inbox
 ```
-
-## [Courier Provider](#courier-provider)
-
-In order for the `Inbox` component to be placed in the dom you will need to use the `CourierProvider`. This will handle context and give us access Courier's backend API.
-
-> Check [here](https://reactjs.org/docs/context.html#contextprovider) for more information on this concept.
-
-```js
-//App.js
-import { Inbox, CourierProvider } from "@trycourier/react-inbox";
-
-/*
-alternatively you can access from its own package
-import { CourierProvider } from "@trycourier/react-provider";
-*/
-
-function App() {
-  return (
-    <CourierProvider userId={yourUserId} clientKey={yourClientKey}>
-      <Inbox />
-    </CourierProvider>
-  );
+interface ITheme {
+  container?: React.CSSProperties;
+  emptyState?: React.CSSProperties;
+  footer?: React.CSSProperties;
+  header?: React.CSSProperties;
+  icon?: React.CSSProperties;
+  messageList?: {
+    container?: React.CSSProperties;
+  };
+  message?: {
+    actions?: {
+      container?: React.CSSProperties;
+      details?: React.CSSProperties;
+      dismiss?: React.CSSProperties;
+    }
+    body?: React.CSSProperties;
+    container?: React.CSSProperties;
+    icon?: React.CSSProperties;
+    title?: React.CSSProperties;
+    unreadIndicator?: React.CSSProperties;
+  };
+  tabList?: {
+    container?: React.CSSProperties;
+    tab?: React.CSSProperties;
+  };
+  root?: React.CSSProperties;
 }
 ```
 
-<a name="3propsmd"></a>
+<a name="2render-propsmd"></a>
 
-### [Props](#props)
+### [Render Props](#render-props)
+
+[Render Props](https://reactjs.org/docs/render-props.html) are a react concept that allows you to supply your own react components instead of the ones built for this library. **Inbox** supplies render props for most sub components.
+
+To overrwrite the rendering of each of these you can supply your own react component.
 
 ```
-interface InboxProps = {
-  //Brand Override
-  brand?: Brand;
-
-  //Icon Class Name
-  className?: string;
-
-  // Default Icon to use if no Icon is present in Message
-  defaultIcon?: false | string;
-
-  // Placement of the Bell relative to the Inbox
-  placement?: "top" | "left" | "right" | "bottom";
-
-  // Render Props for Custom Rendering
+// Render Props for Custom Rendering
+  renderBlocks?: {
+    action?: React.FunctionComponent<IActionBlock>;
+    text?: React.FunctionComponent<ITextBlock>;
+  };
+  renderContainer?: React.FunctionComponent;
+  renderTabs?: React.FunctionComponent<{
+    currentTab?: ITab;
+    tabs?: ITab[];
+  }>;
   renderBell?: React.FunctionComponent<{
     className?: string;
     isOpen?: boolean;
@@ -90,47 +161,14 @@ interface InboxProps = {
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{
-    hasUnreadMessages: boolean;
+    unreadMessageCount?: number;
   }>;
-  renderMessage?: React.FunctionComponent;
-
-  // Tab Overrides
-  tabs?: Array<ITab>;
-  theme?: ThemeObject;
-
-  // Inbox Title Override
-  title?: string;
-  trigger?: "click" | "hover";
-}
+  renderMessage?: React.FunctionComponent<IMessage>;
+  renderNoMessages?: React.FunctionComponent;
 ```
 
-### [Theme](#theme)
+<a name="3hooksmd"></a>
 
-```
-interface ITheme {
-  footer?: React.CSSProperties;
-  header?: React.CSSProperties;
-  icon?: React.CSSProperties;
-  container?: React.CSSProperties;
-  messageList?: {
-    container?: React.CSSProperties;
-    message?: {
-      actions?: {
-        container?: React.CSSProperties;
-        details?: React.CSSProperties;
-        dismiss?: React.CSSProperties;
-      }
-      body?: React.CSSProperties;
-      container?: React.CSSProperties;
-      icon?: React.CSSProperties;
-      title?: React.CSSProperties;
-      unreadIndicator?: React.CSSProperties;
-    }
-  };
-  tabList?: {
-    container?: React.CSSProperties;
-    tab?: React.CSSProperties;
-  };
-  root?: React.CSSProperties;
-}
-```
+### [Hooks](#hooks)
+
+`useInbox` is a hook that you can import and use to interact with Inbox without having to use any of the react components. Think of it as a `headless` Inbox.

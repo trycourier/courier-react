@@ -1,5 +1,5 @@
 import { useCourier } from "@trycourier/react-provider";
-import { ITab } from "./types";
+import { IInbox, ITab } from "./types";
 
 import {
   createCourierClient,
@@ -17,7 +17,19 @@ export interface IFetchMessagesParams {
   after?: string;
 }
 
-const useInboxActions = () => {
+interface IInboxActions {
+  init: (inbox: IInbox) => void;
+  toggleInbox: (isOpen?: boolean) => void;
+  setView: (view: "messages" | "preferences") => void;
+  setCurrentTab: (newTab: ITab) => void;
+  fetchMessages: (params?: IFetchMessagesParams) => void;
+  getMessageCount: (params?: IGetMessagesParams) => void;
+  markMessageRead: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
+  markAllAsRead: () => void;
+}
+
+const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
     dispatch,

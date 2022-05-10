@@ -28,7 +28,7 @@ export interface IMessage {
   };
 }
 
-export interface InboxState {
+export interface IInbox {
   brand?: Brand;
   isOpen?: boolean;
   tabs?: ITab[];

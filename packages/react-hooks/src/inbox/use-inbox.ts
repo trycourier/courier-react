@@ -5,11 +5,11 @@ import reducer from "./reducer";
 import deepExtend from "deep-extend";
 
 import useInboxActions from "./use-inbox-actions";
-import { InboxState } from "./types";
+import { IInbox } from "./types";
 
 const useInbox = () => {
   const { dispatch, inbox, transport, brand } = useCourier<{
-    inbox: InboxState;
+    inbox: IInbox;
   }>();
 
   const actions = useInboxActions();

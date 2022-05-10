@@ -1,4 +1,4 @@
-import { IMessage, InboxState } from "./types";
+import { IMessage, IInbox } from "./types";
 
 export const DEFAULT_TABS = [
   {
@@ -26,7 +26,7 @@ const makeMessage = (message): IMessage => ({
   trackingIds: message?.content?.trackingIds,
 });
 
-const initialState: InboxState = {
+const initialState: IInbox = {
   isOpen: false,
   messages: [],
   view: "messages",
@@ -35,7 +35,7 @@ const initialState: InboxState = {
   currentTab: DEFAULT_TABS[0],
 };
 
-export default (state: InboxState = initialState, action): InboxState => {
+export default (state: IInbox = initialState, action): IInbox => {
   switch (action.type) {
     case "inbox/INIT": {
       return {
