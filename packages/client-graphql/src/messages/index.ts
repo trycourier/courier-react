@@ -30,8 +30,9 @@ export const getMessageCount = (client?: Client): GetMessageCount => async (
 };
 
 export interface IGetMessagesParams {
-  isRead?: boolean;
   from?: number;
+  isRead?: boolean;
+  limit?: number;
   tags?: string[];
 }
 
@@ -96,8 +97,9 @@ export const getMessages = (client?: Client): GetMessages => async (
     return Promise.resolve(undefined);
   }
 
+  const { limit, ...restParams } = params ?? {};
   const results = await client
-    .query(QUERY_MESSAGES, { after, params })
+    .query(QUERY_MESSAGES, { after, limit, params: restParams })
     .toPromise();
 
   const messages = results?.data?.messages?.nodes;

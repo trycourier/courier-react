@@ -4,6 +4,7 @@ import { createCourierClient } from "../client";
 
 export interface IGetBannerParams {
   from?: number;
+  limit?: number;
   locale?: string;
   tags?: string[];
 }
@@ -62,8 +63,9 @@ export const getBanners = (client?: Client): GetBanners => async (
     return Promise.resolve(undefined);
   }
 
+  const { limit, ...restParams } = params ?? {};
   const results = await client
-    .query(QUERY_BANNER, { after, params })
+    .query(QUERY_BANNER, { after, limit, params: restParams })
     .toPromise();
 
   const banners = results?.data?.banners?.nodes;
