@@ -6,7 +6,7 @@ import renderPropsMd from "@trycourier/react-inbox/docs/2.render-props.md";
 import hooksMd from "@trycourier/react-inbox/docs/3.hooks.md";
 
 import { CourierProvider } from "@trycourier/react-provider";
-import { Inbox, Header, ActionBlock, TextBlock } from "@trycourier/react-inbox";
+import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
 
 // @ts-ignore
 import customComponentsString from "!raw-loader!./custom-components.tsx";
