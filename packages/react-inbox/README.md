@@ -15,6 +15,14 @@
 ### [Props](#props)
 
 ```
+interface IHeaderProps {
+  title: string;
+  unreadMessageCount?: number;
+  markAllAsRead?: () => any;
+  currentTab?: ITab;
+  messages: IMessage[];
+}
+
 interface ITab {
   filters: {
     isRead?: boolean;
@@ -55,7 +63,7 @@ interface InboxProps {
     text?: React.FunctionComponent<ITextBlock>;
   }
   renderFooter?: React.FunctionComponent;
-  renderHeader?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderIcon?: React.FunctionComponent<{
     unreadMessageCount?: number;
   }>;
