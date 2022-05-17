@@ -94,7 +94,13 @@ const Messages: React.ForwardRefExoticComponent<
         {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
         <Container>
           {renderHeader ? (
-            renderHeader({})
+            renderHeader({
+              currentTab,
+              title,
+              unreadMessageCount,
+              markAllAsRead,
+              messages,
+            })
           ) : (
             <Header
               currentTab={currentTab}
