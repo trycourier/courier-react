@@ -10,6 +10,8 @@ import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
 
 // @ts-ignore
 import customComponentsString from "!raw-loader!./custom-components.tsx";
+import customHeaderString from "!raw-loader!./custom-header.tsx";
+
 import {
   CustomBell,
   CustomHeader,
@@ -19,6 +21,8 @@ import {
   CustomTabs,
   CustomNoMessages,
 } from "./custom-components";
+
+import customHeaderProps from "./custom-header";
 
 // @ts-ignore
 import myCustomInboxString from "!raw-loader!./hooks.tsx";
@@ -152,6 +156,31 @@ export const RenderPropsExample = () => {
       </div>
       <CourierProvider>
         <Inbox {...props} />
+      </CourierProvider>
+    </div>
+  );
+};
+
+export const RenderPropsExample2 = () => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "top",
+        justifyContent: "space-between",
+      }}
+    >
+      <div>
+        <ReactMarkdown>{`## Example`}</ReactMarkdown>
+        <ReactMarkdown>{`\`\`\`javascript\n${customHeaderString}\n\`\`\``}</ReactMarkdown>
+        <ReactMarkdown>{`\`\`\`javascript\nconst props = ${JSON.stringify(
+          customHeaderProps,
+          null,
+          2
+        )}\n\`\`\``}</ReactMarkdown>
+      </div>
+      <CourierProvider>
+        <Inbox {...customHeaderProps} />
       </CourierProvider>
     </div>
   );

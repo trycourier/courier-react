@@ -1,5 +1,6 @@
 import { TippyProps } from "@tippyjs/react";
 import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import { IHeaderProps } from "./components/Messages/Header/types";
 export interface ITab {
   filters: {
     isRead?: boolean;
@@ -69,7 +70,7 @@ export interface InboxProps {
     text?: React.FunctionComponent<ITextBlock>;
   };
   renderFooter?: React.FunctionComponent;
-  renderHeader?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderIcon?: React.FunctionComponent<{
     unreadMessageCount?: number;
   }>;

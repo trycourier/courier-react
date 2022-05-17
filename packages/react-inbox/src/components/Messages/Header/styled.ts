@@ -65,7 +65,7 @@ export const Heading = styled.div<{
   ".message-count": {
     fontSize: 18,
     marginLeft: 14,
-    background: theme.brand?.colors?.primary,
+    background: theme.brand?.colors?.primary ?? "#9121c2",
     color: "white",
     borderRadius: "17px",
     display: "flex",
