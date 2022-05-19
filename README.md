@@ -6,6 +6,10 @@
 
 This repository, also called **In-App**, is a set of features and components that can work inside our customers websites. Courier is a powerful application but integrating all of the features into your frontend manually can be overwhelming and time consuming. This is where In-App steps up and can superpower your application by providing Realtime Messaging (Toast), an Inbox, Notification Preferences, and many more coming soon!
 
+## Embedded Integration
+
+Want to use packages with other frameworks/libraries? Check out how to do [Embedded Integration](https://www.courier.com/docs/guides/providers/in-app/courier-push/#embedded-integration)
+
 ## Table of Contents
 
 1. [Contributing](https://github.com/trycourier/courier-react/tree/main/CONTRIBUTING.md)
