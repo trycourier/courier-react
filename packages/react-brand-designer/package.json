@@ -1,0 +1,35 @@
+{
+  "name": "react-brand-designer",
+  "version": "1.16.0",
+  "description": "> TODO: description",
+  "author": "Drew Youngwerth <drew@youngwerth.com>",
+  "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-brand-designer#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trycourier/courier-react.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/trycourier/courier-react/issues"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.25"
+  },
+  "dependencies": {
+    "styled-components": "^5.3.5"
+  }
+}
