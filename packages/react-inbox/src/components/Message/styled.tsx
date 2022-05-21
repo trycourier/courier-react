@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
-import CourierSvg from "~/assets/courier_icon.svg";
+import { icons } from "@trycourier/react-shared";
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -143,7 +143,6 @@ export const UnreadIndicator = styled.div(({ theme }) =>
 );
 
 export const Icon = styled.img(iconStyles);
-const CourierIcon = styled(CourierSvg)(iconStyles);
 
 export const getIcon = (icon?: false | string) => {
   return useMemo(() => {
@@ -155,6 +154,6 @@ export const getIcon = (icon?: false | string) => {
       return <Icon src={icon} />;
     }
 
-    return <CourierIcon />;
+    return <icons.CourierIcon />;
   }, [icon]);
 };

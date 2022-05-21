@@ -1,8 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "baseUrl": ".",
     "noImplicitAny": false,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "paths": {
       "~/*": ["src/*"]
     }
@@ -16,5 +19,10 @@
     "**/typings/**",
     "node_modules"
   ],
-  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
+  "include": [
+    "../types/@types/*/index.d.ts",
+    "**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.ts"
+  ]
 }

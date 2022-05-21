@@ -26,6 +26,7 @@
     "@trycourier/react-hooks": "^1.16.0",
     "@trycourier/react-preferences": "^1.16.0",
     "@trycourier/react-provider": "^1.16.0",
+    "@trycourier/react-shared": "^1.16.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
