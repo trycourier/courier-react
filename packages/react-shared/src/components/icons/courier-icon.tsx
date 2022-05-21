@@ -1,5 +1,8 @@
 import styled from "styled-components";
+import { ThemedOpts } from "~/types";
+import { getStandardIconStyles } from "../icon";
 import CourierSvg from "./courier-icon.svg";
-import { iconStyles } from "../icon";
 
-export const CourierIcon = styled(CourierSvg)(iconStyles);
+export const CourierIcon = styled(CourierSvg)<ThemedOpts>((opts) =>
+  getStandardIconStyles(opts)
+);
