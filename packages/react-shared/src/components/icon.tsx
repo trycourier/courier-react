@@ -1,20 +1,24 @@
 import deepExtend from "deep-extend";
 import styled, { CSSObject } from "styled-components";
-import { ThemedOpts } from "~/types";
 
-export const getStandardIconStyles = ({ theme }: ThemedOpts): CSSObject =>
+export type IconProps = {
+  fill?: string;
+  extend?: CSSObject;
+};
+
+export const getStandardIconStyles = ({ fill, extend }: IconProps): CSSObject =>
   deepExtend(
     {
       height: 25,
       width: 25,
       flexShrink: "0",
       path: {
-        fill: theme?.brand?.colors?.primary ?? "#9121c2",
+        fill: fill ?? "#9121c2",
       },
     },
-    theme?.message?.icon ?? {}
+    extend ?? {}
   );
 
-export const Icon = styled.img<ThemedOpts>((opts) =>
+export const Icon = styled.img<IconProps>((opts) =>
   getStandardIconStyles(opts)
 );

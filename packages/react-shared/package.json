@@ -6,7 +6,7 @@
   "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-shared#readme",
   "license": "ISC",
   "main": "dist/index.js",
-  "types": "typings/index.d.ts",
+  "types": "src/index.ts",
   "files": [
     "dist/",
     "typings/"

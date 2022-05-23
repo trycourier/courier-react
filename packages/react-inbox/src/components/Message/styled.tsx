@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
-import { icons } from "@trycourier/react-shared";
+import { Icon, icons } from "@trycourier/react-shared";
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -115,19 +115,6 @@ export const TimeAgo = styled.div(({ theme }) =>
   )
 );
 
-const iconStyles = ({ theme }) =>
-  deepExtend(
-    {
-      height: 25,
-      width: 25,
-      flexShrink: "0",
-      path: {
-        fill: theme?.brand?.colors?.primary ?? "#9121c2",
-      },
-    },
-    theme.message?.icon
-  );
-
 export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
@@ -142,7 +129,13 @@ export const UnreadIndicator = styled.div(({ theme }) =>
   )
 );
 
-export const Icon = styled.img(iconStyles);
+export const MessageIcon = (props: { src: string; theme?: any }) => (
+  <Icon
+    fill={props.theme?.brand?.colors?.primary}
+    extend={props.theme.message?.icon}
+    {...props}
+  />
+);
 
 export const getIcon = (icon?: false | string) => {
   return useMemo(() => {
@@ -151,7 +144,7 @@ export const getIcon = (icon?: false | string) => {
     }
 
     if (icon && typeof icon === "string") {
-      return <Icon src={icon} />;
+      return <MessageIcon src={icon} />;
     }
 
     return <icons.CourierIcon />;

@@ -4,8 +4,7 @@
     "baseUrl": ".",
     "noImplicitAny": false,
     "paths": {
-      "~/*": ["src/*"],
-      "@trycourier/react-shared": ["../react-shared"]
+      "~/*": ["src/*"]
     }
   },
   "exclude": [
@@ -17,6 +16,5 @@
     "**/typings/**",
     "node_modules"
   ],
-  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"],
-  "references": [{ "path": "../react-shared" }]
+  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
 }
