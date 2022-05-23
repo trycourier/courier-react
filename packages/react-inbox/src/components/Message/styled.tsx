@@ -34,25 +34,11 @@ export const Contents = styled.div(({ theme }) => ({
 }));
 
 export const MessageTitle = (props: { theme?: any }) => (
-  <Title css={props.theme} />
+  <Title css={props.theme?.message?.title} />
 );
 
-export const TextBlock = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      color: "#73819B",
-      marginTop: "1px",
-      wordBreak: "break-word",
-      fontSize: "12px",
-      fontStyle: "normal",
-      fontWeight: "400",
-      lineHeight: "16px",
-      textAlign: "left",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-    theme.message?.textBlock
-  )
+export const MessageTextBlock = (props: { theme?: any }) => (
+  <Title css={props.theme?.message?.textBlock} />
 );
 
 export const ActionBlock = styled.div(({ theme }) =>

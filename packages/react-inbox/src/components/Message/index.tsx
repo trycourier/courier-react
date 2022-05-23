@@ -3,7 +3,7 @@ import classNames from "classnames";
 import OptionsDropdown from "../OptionsDropdown";
 import {
   ActionBlock,
-  TextBlock,
+  MessageTextBlock,
   Container,
   Contents,
   getIcon,
@@ -88,9 +88,9 @@ const Message: React.FunctionComponent<
               }
 
               return (
-                <TextBlock key={index} data-testid="message-body">
+                <MessageTextBlock key={index} data-testid="message-body">
                   {block.text && <Markdown>{block.text}</Markdown>}
-                </TextBlock>
+                </MessageTextBlock>
               );
             }
 
@@ -129,7 +129,9 @@ const Message: React.FunctionComponent<
           })
         ) : (
           <>
-            <TextBlock>{body && <Markdown>{body}</Markdown>}</TextBlock>
+            <MessageTextBlock>
+              {body && <Markdown>{body}</Markdown>}
+            </MessageTextBlock>
             {data?.clickAction && (
               <ActionBlock>
                 <a href={data?.clickAction} target="_blank" rel="noreferrer">
