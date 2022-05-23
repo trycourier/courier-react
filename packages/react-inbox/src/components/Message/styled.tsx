@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
-import { Icon, icons } from "@trycourier/react-shared";
+import { Icon, icons, Title } from "@trycourier/react-shared";
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -33,21 +33,8 @@ export const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-export const Title = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      fontSize: "14px",
-      fontStyle: "normal",
-      fontWeight: "600",
-      lineHeight: "19px",
-      textAlign: "left",
-      display: "-webkit-box",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      color: "#24324B",
-    },
-    theme.message?.title
-  )
+export const MessageTitle = (props: { theme?: any }) => (
+  <Title css={props.theme} />
 );
 
 export const TextBlock = styled.div(({ theme }) =>
@@ -132,7 +119,7 @@ export const UnreadIndicator = styled.div(({ theme }) =>
 export const MessageIcon = (props: { src: string; theme?: any }) => (
   <Icon
     fill={props.theme?.brand?.colors?.primary}
-    extend={props.theme.message?.icon}
+    css={props.theme.message?.icon}
     {...props}
   />
 );

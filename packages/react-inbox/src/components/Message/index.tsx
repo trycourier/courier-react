@@ -8,7 +8,7 @@ import {
   Contents,
   getIcon,
   TimeAgo,
-  Title,
+  MessageTitle,
   UnreadIndicator,
 } from "./styled";
 import { useInbox } from "@trycourier/react-hooks";
@@ -78,7 +78,7 @@ const Message: React.FunctionComponent<
       {!read && <UnreadIndicator />}
       {renderedIcon}
       <Contents>
-        <Title>{title}</Title>
+        <MessageTitle>{title}</MessageTitle>
         {blocks?.length ? (
           blocks?.map((block: ITextBlock | IActionBlock, index: number) => {
             if (block.type === "text") {

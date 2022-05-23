@@ -3,10 +3,10 @@ import styled, { CSSObject } from "styled-components";
 
 export type IconProps = {
   fill?: string;
-  extend?: CSSObject;
+  css?: CSSObject;
 };
 
-export const getStandardIconStyles = ({ fill, extend }: IconProps): CSSObject =>
+export const getStandardIconStyles = ({ fill, css }: IconProps): CSSObject =>
   deepExtend(
     {
       height: 25,
@@ -16,7 +16,7 @@ export const getStandardIconStyles = ({ fill, extend }: IconProps): CSSObject =>
         fill: fill ?? "#9121c2",
       },
     },
-    extend ?? {}
+    css ?? {}
   );
 
 export const Icon = styled.img<IconProps>((opts) =>
