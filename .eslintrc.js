@@ -11,7 +11,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "prettier", "react"],
   parserOptions: {
     ecmaVersion: 2017,
-    project: "./tsconfig.json",
+    project: "./tsconfig-base.json",
   },
   env: {
     browser: true,

@@ -1,20 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "noImplicitAny": false,
+    "rootDir": "./src",
+    "declarationDir": "./typings",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"]
     }
   },
-  "exclude": [
-    "**/__mocks__/**",
-    "**/__tests__/**",
-    "**/*.spec.ts",
-    "**/*.story.ts",
-    "**/dist/**",
-    "**/typings/**",
-    "node_modules"
-  ],
-  "include": ["../types/@types/*/index.d.ts", "**/*.ts", "src/index.tsx"]
+  "include": ["../types/@types/*/index.d.ts", "./src/**/*.tsx", "./src/**/*.ts"]
 }

@@ -26,7 +26,7 @@
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
-    "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+    "types": "tsc --build"
   },
   "bugs": {
     "url": "https://github.com/trycourier/courier-react/issues"
@@ -39,9 +39,9 @@
     "styled-components": "5.x"
   },
   "peerDependencies": {
-    "deep-extend": "^0.6.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
+    "deep-extend": "0.6.x",
+    "react": "^18.x",
+    "react-dom": "^18.x",
     "styled-components": "5.x"
   }
 }
