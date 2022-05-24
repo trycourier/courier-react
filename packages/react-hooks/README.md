@@ -3,6 +3,7 @@
 
 - [Overview](#overview)
 - [Types](#types)
+- [Events](#events)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -42,6 +43,7 @@ interface IMessage {
     clickAction: string;
   };
   trackingIds?: {
+    archiveTrackingId: string;
     clickTrackingId: string;
     deliveredTrackingId: string;
     readTrackingId: string;
@@ -71,4 +73,99 @@ interface IInbox {
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
 }
+```
+
+<a name="2eventsmd"></a>
+
+### [Events](#events)
+
+#### Inbox
+
+Inbox supports a few different events that can be triggered on the client side.
+
+These events are:
+
+- Delivered
+- Read
+- Unread
+- Click
+- Archive
+
+Some of these events are called automatically.
+
+- Delivered events are called automatically inside the Courier Provider when a message has been delivered through the websocket
+- Click events are triggered using our `click through tracking` links. Click events will also automatically trigger a `read` event.
+
+#### Manually calling events
+
+You can call events manually by importing the corresponding function from the react hook.
+
+For Example:
+
+```js
+import { CourierProvider } from "@trycourier/react-provider";
+import { useInbox } from "@trycourier/react-hooks";
+
+const MyInbox = () => {
+  const inbox = useInbox();
+
+  useEffect(() => {
+    inbox.fetchMessages();
+  }, []);
+
+  const handleReadMessage = (message) => (event) => {
+    event.preventDefault();
+    inbox.markMessageRead(
+      message.messageId,
+      message.trackingIds.readTrackingId
+    );
+  };
+
+  const handleUnreadMessage = (message) => (event) => {
+    event.preventDefault();
+    inbox.markMessageUnread(
+      message.messageId,
+      message.trackingIds.unreadTrackingId
+    );
+  };
+
+  const handleArchiveMessage = (message) => (event) => {
+    event.preventDefault();
+    inbox.markMessageArchived(
+      message.messageId,
+      message.trackingIds.archiveTrackingId
+    );
+  };
+
+  return (
+    <Container>
+      {inbox.messsages.map((message) => {
+        return (
+          <Message>
+            {message.read ? (
+              <>
+                <button onClick={handleUnreadMessage(message)}>
+                  Unread Me
+                </button>
+                <button onClick={handleArchiveMessage(message)}>
+                  Archive Me
+                </button>
+              </>
+            ) : (
+              <button onClick={handleReadMessage(message)}>Read Me</button>
+            )}
+          </Message>
+        );
+      })}
+    </Container>
+  );
+};
+
+const MyApp = () => {
+  return (
+    <CourierProvider userId="MY_USER_ID" clientKey="MY_CLIENT_KEY">
+      <MyInbox />
+    </CourierProvider>
+  );
+};
 ```
