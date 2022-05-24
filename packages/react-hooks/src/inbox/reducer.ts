@@ -146,6 +146,25 @@ export default (state: IInbox = initialState, action): IInbox => {
       };
     }
 
+    case "inbox/MARK_MESSAGE_ARCHIVED": {
+      let unreadMessageCount = state.unreadMessageCount ?? 0;
+
+      const newMessages = state?.messages?.filter((message) => {
+        const isMatching = message.messageId !== action.payload.messageId;
+        if (isMatching && message.read) {
+          unreadMessageCount = Math.max(unreadMessageCount - 1, 0);
+        }
+
+        return isMatching;
+      });
+
+      return {
+        ...state,
+        messages: newMessages,
+        unreadMessageCount,
+      };
+    }
+
     case "inbox/FETCH_MESSAGES/ERROR": {
       return {
         ...state,

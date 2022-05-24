@@ -18,23 +18,24 @@ export interface IFetchMessagesParams {
 }
 
 interface IInboxActions {
-  init: (inbox: IInbox) => void;
-  toggleInbox: (isOpen?: boolean) => void;
-  setView: (view: "messages" | "preferences") => void;
-  setCurrentTab: (newTab: ITab) => void;
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getMessageCount: (params?: IGetMessagesParams) => void;
+  init: (inbox: IInbox) => void;
+  markAllAsRead: () => void;
+  markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
   markMessageRead: (messageId: string, trackingId: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
-  markAllAsRead: () => void;
+  setCurrentTab: (newTab: ITab) => void;
+  setView: (view: "messages" | "preferences") => void;
+  toggleInbox: (isOpen?: boolean) => void;
 }
 
 const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
+    clientKey,
     dispatch,
     inbox,
-    clientKey,
     userId,
     userSignature,
   } = useCourier();
@@ -68,21 +69,18 @@ const useInboxActions = (): IInboxActions => {
         });
       }
     },
-
     toggleInbox: (isOpen?: boolean) => {
       dispatch({
         type: "inbox/TOGGLE_INBOX",
         payload: isOpen,
       });
     },
-
     setView: (view: "messages" | "preferences") => {
       dispatch({
         type: "inbox/SET_VIEW",
         payload: view,
       });
     },
-
     setCurrentTab: (newTab: ITab) => {
       dispatch({
         type: "inbox/SET_CURRENT_TAB",
@@ -100,7 +98,6 @@ const useInboxActions = (): IInboxActions => {
         payload: () => messages.getMessages(meta),
       });
     },
-
     fetchMessages: (payload?: IFetchMessagesParams) => {
       const params = {
         from: inbox?.from,
@@ -112,27 +109,15 @@ const useInboxActions = (): IInboxActions => {
         meta: payload,
       });
     },
-
     getMessageCount: (params?: IMessageCountParams) => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
         payload: () => messages.getMessageCount(params),
       });
     },
-
     markMessageRead: async (messageId: string, trackingId: string) => {
       dispatch({
         type: "inbox/MARK_MESSAGE_READ",
-        payload: {
-          messageId,
-        },
-      });
-      await events.trackEvent(trackingId);
-    },
-
-    markMessageUnread: async (messageId: string, trackingId: string) => {
-      dispatch({
-        type: "inbox/MARK_MESSAGE_UNREAD",
         payload: {
           messageId,
         },
@@ -144,6 +129,24 @@ const useInboxActions = (): IInboxActions => {
         type: "inbox/MARK_ALL_AS_READ",
       });
       await events.trackEventBatch("read");
+    },
+    markMessageUnread: async (messageId: string, trackingId: string) => {
+      dispatch({
+        type: "inbox/MARK_MESSAGE_UNREAD",
+        payload: {
+          messageId,
+        },
+      });
+      await events.trackEvent(trackingId);
+    },
+    markMessageArchived: async (messageId: string, trackingId: string) => {
+      dispatch({
+        type: "inbox/MARK_MESSAGE_ARCHIVED",
+        payload: {
+          messageId,
+        },
+      });
+      await events.trackEvent(trackingId);
     },
   };
 };
