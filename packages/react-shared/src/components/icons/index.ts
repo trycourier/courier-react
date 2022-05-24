@@ -1,2 +1,2 @@
-export * from "./courier-icon";
-export { default as CourierLogoText } from "./courier-logo-text.svg";
+export * from "./courier";
+export * from "./courier-text-logo";
