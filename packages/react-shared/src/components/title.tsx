@@ -1,7 +1,7 @@
 import deepExtend from "deep-extend";
 import styled, { CSSObject } from "styled-components";
 
-export const Title = styled.div<{ css?: CSSObject }>(({ css, ...props }) =>
+export const Title = styled.div<{ css?: CSSObject }>(({ css }) =>
   deepExtend(
     {
       fontSize: "14px",

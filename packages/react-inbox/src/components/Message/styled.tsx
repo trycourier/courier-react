@@ -1,7 +1,19 @@
 import React, { useMemo } from "react";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
-import { Icon, icons, Title } from "@trycourier/react-shared";
+import {
+  Icon,
+  icons,
+  Title,
+  ActionBlock,
+  TextBlock,
+} from "@trycourier/react-shared";
+
+export type StyledProps = {
+  theme?: any;
+  children?: React.ReactNode;
+  [key: string]: any;
+};
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -33,42 +45,34 @@ export const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-export const MessageTitle = (props: { theme?: any }) => (
-  <Title css={props.theme?.message?.title} />
+export const MessageTitle = ({ theme, children, ...props }: StyledProps) => (
+  <Title css={theme?.message?.title} {...props}>
+    {children}
+  </Title>
 );
 
-export const MessageTextBlock = (props: { theme?: any }) => (
-  <Title css={props.theme?.message?.textBlock} />
+export const MessageTextBlock = ({
+  theme,
+  children,
+  ...props
+}: StyledProps) => (
+  <TextBlock css={theme?.message?.textBlock} {...props}>
+    {children}
+  </TextBlock>
 );
 
-export const ActionBlock = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      a: {
-        display: "inline-block",
-        cursor: "pointer",
-        border: "none",
-        fontSize: 12,
-        color: "white",
-        backgroundColor: theme?.brand?.colors?.primary ?? "#9121C2",
-        padding: "6px 15px",
-        marginTop: 3,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-        textDecoration: "none",
-        "&:active": {
-          boxShadow: "none",
-        },
-
-        "&:hover": {
-          color: "#73819B",
-          background: "rgb(0 0 0 / 10%)",
-        },
-
-        borderRadius: 4,
-      },
-    },
-    theme?.message?.actionBlock
-  )
+export const MessageActionBlock = ({
+  theme,
+  children,
+  ...props
+}: StyledProps) => (
+  <ActionBlock
+    backgroundColor={theme?.brand?.colors?.primary}
+    css={theme?.message?.actionBlock}
+    {...props}
+  >
+    {children}
+  </ActionBlock>
 );
 
 export const TimeAgo = styled.div(({ theme }) =>
@@ -102,10 +106,10 @@ export const UnreadIndicator = styled.div(({ theme }) =>
   )
 );
 
-export const MessageIcon = (props: { src: string; theme?: any }) => (
+export const MessageIcon = ({ theme, ...props }: StyledProps) => (
   <Icon
-    fill={props.theme?.brand?.colors?.primary}
-    css={props.theme.message?.icon}
+    fill={theme?.brand?.colors?.primary}
+    css={theme.message?.icon}
     {...props}
   />
 );

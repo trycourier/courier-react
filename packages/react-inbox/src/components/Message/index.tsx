@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import OptionsDropdown from "../OptionsDropdown";
 import {
-  ActionBlock,
+  MessageActionBlock,
   MessageTextBlock,
   Container,
   Contents,
@@ -119,11 +119,11 @@ const Message: React.FunctionComponent<
               }
 
               return (
-                <ActionBlock key={index}>
+                <MessageActionBlock key={index}>
                   <a href={block.url} {...actionProps}>
                     {block.text}
                   </a>
-                </ActionBlock>
+                </MessageActionBlock>
               );
             }
           })
@@ -133,11 +133,11 @@ const Message: React.FunctionComponent<
               {body && <Markdown>{body}</Markdown>}
             </MessageTextBlock>
             {data?.clickAction && (
-              <ActionBlock>
+              <MessageActionBlock>
                 <a href={data?.clickAction} target="_blank" rel="noreferrer">
                   View Details
                 </a>
-              </ActionBlock>
+              </MessageActionBlock>
             )}
           </>
         )}

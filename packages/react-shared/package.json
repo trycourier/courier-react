@@ -35,12 +35,13 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.25"
+    "@types/styled-components": "^5.1.25",
+    "styled-components": "5.x"
   },
   "peerDependencies": {
     "deep-extend": "^0.6.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "5.x"
   }
 }
