@@ -63,7 +63,6 @@ export interface InboxProps {
     className?: string;
     isOpen?: boolean;
     onClick?: (event: React.MouseEvent) => void;
-    onMouseEnter?: (event: React.MouseEvent) => void;
   }>;
   renderBlocks?: {
     action?: React.FunctionComponent<IActionBlock>;

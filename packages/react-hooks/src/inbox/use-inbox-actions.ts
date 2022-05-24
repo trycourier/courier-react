@@ -93,6 +93,14 @@ const useInboxActions = (): IInboxActions => {
       };
 
       dispatch({
+        type: "inbox/SET_UNREAD_MESSAGE_COUNT",
+        payload: () =>
+          messages.getMessageCount({
+            from: inbox?.from,
+            isRead: false,
+          }),
+      });
+      dispatch({
         type: "inbox/FETCH_MESSAGES",
         meta,
         payload: () => messages.getMessages(meta),
