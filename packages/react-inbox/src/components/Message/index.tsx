@@ -2,13 +2,13 @@ import React from "react";
 import classNames from "classnames";
 import OptionsDropdown from "../OptionsDropdown";
 import {
-  MessageActionBlock,
-  MessageTextBlock,
+  ActionBlock,
+  TextBlock,
   Container,
   Contents,
   getIcon,
   TimeAgo,
-  MessageTitle,
+  Title,
   UnreadIndicator,
 } from "./styled";
 import { useInbox } from "@trycourier/react-hooks";
@@ -78,7 +78,7 @@ const Message: React.FunctionComponent<
       {!read && <UnreadIndicator />}
       {renderedIcon}
       <Contents>
-        <MessageTitle>{title}</MessageTitle>
+        <Title>{title}</Title>
         {blocks?.length ? (
           blocks?.map((block: ITextBlock | IActionBlock, index: number) => {
             if (block.type === "text") {
@@ -88,9 +88,9 @@ const Message: React.FunctionComponent<
               }
 
               return (
-                <MessageTextBlock key={index} data-testid="message-body">
+                <TextBlock key={index} data-testid="message-body">
                   {block.text && <Markdown>{block.text}</Markdown>}
-                </MessageTextBlock>
+                </TextBlock>
               );
             }
 
@@ -119,25 +119,23 @@ const Message: React.FunctionComponent<
               }
 
               return (
-                <MessageActionBlock key={index}>
+                <ActionBlock key={index}>
                   <a href={block.url} {...actionProps}>
                     {block.text}
                   </a>
-                </MessageActionBlock>
+                </ActionBlock>
               );
             }
           })
         ) : (
           <>
-            <MessageTextBlock>
-              {body && <Markdown>{body}</Markdown>}
-            </MessageTextBlock>
+            <TextBlock>{body && <Markdown>{body}</Markdown>}</TextBlock>
             {data?.clickAction && (
-              <MessageActionBlock>
+              <ActionBlock>
                 <a href={data?.clickAction} target="_blank" rel="noreferrer">
                   View Details
                 </a>
-              </MessageActionBlock>
+              </ActionBlock>
             )}
           </>
         )}

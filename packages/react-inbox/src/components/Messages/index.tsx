@@ -22,7 +22,7 @@ import {
   Empty,
   Footer,
 } from "./styled";
-import { icons } from "@trycourier/react-shared";
+import CourierLogo from "~/assets/courier_logo_text.svg";
 
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
@@ -157,7 +157,7 @@ const Messages: React.ForwardRefExoticComponent<
               <Footer>
                 <a href="https://www.courier.com">
                   Powered by&nbsp;&nbsp;
-                  <icons.CourierLogoText />
+                  <CourierLogo />
                 </a>
               </Footer>
             )}

@@ -1,19 +1,7 @@
 import React, { useMemo } from "react";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
-import {
-  Icon,
-  icons,
-  Title,
-  ActionBlock,
-  TextBlock,
-} from "@trycourier/react-shared";
-
-export type StyledProps = {
-  theme?: any;
-  children?: React.ReactNode;
-  [key: string]: any;
-};
+import CourierSvg from "~/assets/courier_icon.svg";
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -45,34 +33,69 @@ export const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-export const MessageTitle = ({ theme, children, ...props }: StyledProps) => (
-  <Title css={theme?.message?.title} {...props}>
-    {children}
-  </Title>
+export const Title = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      fontSize: "14px",
+      fontStyle: "normal",
+      fontWeight: "600",
+      lineHeight: "19px",
+      textAlign: "left",
+      display: "-webkit-box",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      color: "#24324B",
+    },
+    theme.message?.title
+  )
 );
 
-export const MessageTextBlock = ({
-  theme,
-  children,
-  ...props
-}: StyledProps) => (
-  <TextBlock css={theme?.message?.textBlock} {...props}>
-    {children}
-  </TextBlock>
+export const TextBlock = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      color: "#73819B",
+      marginTop: "1px",
+      wordBreak: "break-word",
+      fontSize: "12px",
+      fontStyle: "normal",
+      fontWeight: "400",
+      lineHeight: "16px",
+      textAlign: "left",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
+    theme.message?.textBlock
+  )
 );
 
-export const MessageActionBlock = ({
-  theme,
-  children,
-  ...props
-}: StyledProps) => (
-  <ActionBlock
-    backgroundColor={theme?.brand?.colors?.primary}
-    css={theme?.message?.actionBlock}
-    {...props}
-  >
-    {children}
-  </ActionBlock>
+export const ActionBlock = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      a: {
+        display: "inline-block",
+        cursor: "pointer",
+        border: "none",
+        fontSize: 12,
+        color: "white",
+        backgroundColor: theme?.brand?.colors?.primary ?? "#9121C2",
+        padding: "6px 15px",
+        marginTop: 3,
+        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+        textDecoration: "none",
+        "&:active": {
+          boxShadow: "none",
+        },
+
+        "&:hover": {
+          color: "#73819B",
+          background: "rgb(0 0 0 / 10%)",
+        },
+
+        borderRadius: 4,
+      },
+    },
+    theme?.message?.actionBlock
+  )
 );
 
 export const TimeAgo = styled.div(({ theme }) =>
@@ -92,6 +115,19 @@ export const TimeAgo = styled.div(({ theme }) =>
   )
 );
 
+const iconStyles = ({ theme }) =>
+  deepExtend(
+    {
+      height: 25,
+      width: 25,
+      flexShrink: "0",
+      path: {
+        fill: theme?.brand?.colors?.primary ?? "#9121c2",
+      },
+    },
+    theme.message?.icon
+  );
+
 export const UnreadIndicator = styled.div(({ theme }) =>
   deepExtend(
     {
@@ -106,13 +142,8 @@ export const UnreadIndicator = styled.div(({ theme }) =>
   )
 );
 
-export const MessageIcon = ({ theme, ...props }: StyledProps) => (
-  <Icon
-    fill={theme?.brand?.colors?.primary}
-    css={theme.message?.icon}
-    {...props}
-  />
-);
+export const Icon = styled.img(iconStyles);
+const CourierIcon = styled(CourierSvg)(iconStyles);
 
 export const getIcon = (icon?: false | string) => {
   return useMemo(() => {
@@ -121,9 +152,9 @@ export const getIcon = (icon?: false | string) => {
     }
 
     if (icon && typeof icon === "string") {
-      return <MessageIcon src={icon} />;
+      return <Icon src={icon} />;
     }
 
-    return <icons.CourierIcon />;
+    return <CourierIcon />;
   }, [icon]);
 };
