@@ -3,7 +3,7 @@
   "version": "1.16.0",
   "description": "Shareable components for each Courier package",
   "author": "Drew Youngwerth <drew@youngwerth.com>",
-  "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-shared#readme",
+  "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-elements#readme",
   "license": "ISC",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",

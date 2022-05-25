@@ -13,5 +13,8 @@
     "./src/**/*.tsx",
     "./src/**/*.ts"
   ],
-  "references": [{ "path": "../react-shared" }, { "path": "../react-provider" }]
+  "references": [
+    { "path": "../react-elements" },
+    { "path": "../react-provider" }
+  ]
 }
