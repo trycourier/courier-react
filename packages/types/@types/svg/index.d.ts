@@ -1,7 +1,10 @@
 declare module "*.svg" {
-  const CourierTextLogoSvg: React.FunctionComponent<{
-    width?: string;
-    height?: string;
+  export type SvgComponent = React.FunctionComponent<{
+    width?: string | number;
+    height?: string | number;
+    preserveAspectRatio?: string;
+    viewBox?: string;
   }>;
-  export default CourierTextLogoSvg;
+  const Svg: SvgComponent;
+  export default Svg;
 }
