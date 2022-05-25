@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 
 import { CourierProvider, WSOptions } from "@trycourier/react-provider";
-import { CourierComponents, SetCourierConfig } from "./components";
+import { CourierComponents } from "./components";
 
 declare global {
   interface Window {
@@ -64,7 +64,6 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       userSignature={userSignature}
       wsOptions={wsOptions}
     >
-      <SetCourierConfig />
       <CourierComponents />
     </CourierProvider>,
     courierRoot

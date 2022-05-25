@@ -66,6 +66,7 @@ export const QUERY_MESSAGES = `
           }
           data
           trackingIds {
+            archiveTrackingId
             clickTrackingId
             deliverTrackingId
             readTrackingId

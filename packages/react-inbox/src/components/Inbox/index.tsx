@@ -98,8 +98,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const { clientKey, userId } = courierContext;
   const {
     brand,
-    currentTab,
-    fetchMessages,
     getMessageCount,
     init,
     isOpen: isOpenState,
@@ -186,20 +184,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     [isOpen, setView, setCurrentTab]
   );
 
-  const handleBellOnMouseEnter = useCallback(
-    (event: React.MouseEvent) => {
-      event.preventDefault();
-      if (isOpen) {
-        return;
-      }
-
-      fetchMessages({
-        params: currentTab?.filters,
-      });
-    },
-    [isOpen, fetchMessages, currentTab]
-  );
-
   const handleClickOutside = useCallback(
     (event) => {
       if (!isOpen || event.target.closest(".inbox-bell")) {
@@ -229,7 +213,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         className={`inbox-bell ${props.className ?? ""}`}
         isOpen={isOpen ?? false}
         onClick={handleIconOnClick}
-        onMouseEnter={handleBellOnMouseEnter}
         role="button"
         tabIndex={0}
       >
@@ -258,7 +241,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         )}
       </Bell>
     );
-  }, [props, brand, isOpen, handleIconOnClick, handleBellOnMouseEnter]);
+  }, [props, brand, isOpen, handleIconOnClick]);
 
   useClickOutside(ref, handleClickOutside);
 
@@ -274,7 +257,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           className: `inbox-bell ${props.className ?? ""}`,
           isOpen: isOpen ?? false,
           onClick: handleIconOnClick,
-          onMouseEnter: handleBellOnMouseEnter,
         }) ?? bell
       : bell;
   };
