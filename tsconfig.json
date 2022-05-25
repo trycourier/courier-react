@@ -6,7 +6,7 @@
     { "path": "packages/react-inbox" },
     { "path": "packages/react-preferences" },
     { "path": "packages/react-provider" },
-    { "path": "packages/react-shared" },
+    { "path": "packages/react-elements" },
     { "path": "packages/react-toast" }
   ]
 }
