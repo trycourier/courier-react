@@ -1,6 +1,4 @@
-import styled from "styled-components";
 import CourierSvg from "./assets/courier.svg";
-import { genIconStyles } from "./styles";
-import { IconProps } from "./types";
+import { makeIcon } from "./make-icon";
 
-export const Courier = styled(CourierSvg)<IconProps>(genIconStyles);
+export const Courier = makeIcon(CourierSvg);

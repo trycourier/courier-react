@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "rootDir": "./stories",
+    "outDir": "./dist",
+    "declarationDir": "./typings",
+    "paths": {
+      "~/*": ["./stories/*"]
+    }
+  },
+  "references": [
+    { "path": "../react-provider" },
+    { "path": "../react-elements" },
+    { "path": "../react-toast" },
+    { "path": "../react-inbox" }
+  ],
+  "include": [
+    "../types/@types/*/index.d.ts",
+    "./stories/**/*.tsx",
+    "./stories/**/*.ts"
+  ]
+}
