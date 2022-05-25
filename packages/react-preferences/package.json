@@ -11,7 +11,7 @@
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
-    "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+    "types": "tsc --build"
   },
   "peerDependencies": {
     "react": "^17.0.1",

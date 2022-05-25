@@ -1,0 +1,47 @@
+{
+  "name": "@trycourier/react-elements",
+  "version": "1.16.0",
+  "description": "Shareable components for each Courier package",
+  "author": "Drew Youngwerth <drew@youngwerth.com>",
+  "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-elements#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "typings/index.d.ts",
+  "files": [
+    "dist/",
+    "typings/"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trycourier/courier-react.git"
+  },
+  "scripts": {
+    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
+    "build:watch": "yarn babel --watch",
+    "build": "rimraf dist && yarn babel",
+    "clean": "rimraf dist",
+    "test": "jest -c jest.config.js --runInBand --silent",
+    "type-check": "tsc --noEmit",
+    "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
+    "types": "tsc --build"
+  },
+  "bugs": {
+    "url": "https://github.com/trycourier/courier-react/issues"
+  },
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.25",
+    "styled-components": "5.x"
+  },
+  "peerDependencies": {
+    "deep-extend": "0.6.x",
+    "react": "^18.x",
+    "react-dom": "^18.x",
+    "styled-components": "5.x"
+  }
+}

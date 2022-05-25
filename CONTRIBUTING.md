@@ -17,13 +17,17 @@ After running step #4, we will start a storybook instance and this is where you 
 
 This is a monorepo using [Lerna](https://www.lerna.com) and contains many packages that are installed separately while depending on each other. All packages are versioned together.
 
----
+## Adding a New Package
 
-### Development
+1. New packages belongs in a subdirectory of the `packages` directory.
+2. Copy the root structure of any existing package with a `tsconfig.json`.
+3. Add the package to the root `tsconfig.json` file references.
+
+## Development
 
 All commands in a monorepo are run in the `root` of the project. You should never have to navigate into any of the sub-packages to do any development.
 
-### Commands
+## Commands
 
 - `yarn`
 
@@ -51,5 +55,3 @@ All commands in a monorepo are run in the `root` of the project. You should neve
 - `yarn clean`
 
   Cleans all `node_modules` from each package and deletes the root `node_modules`. Sometimes useful if packages have gotten out of date.
-
----
