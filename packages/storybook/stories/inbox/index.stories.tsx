@@ -8,7 +8,6 @@ import hooksMd from "@trycourier/react-inbox/docs/3.hooks.md";
 import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
 
-// @ts-ignore
 import customComponentsString from "!raw-loader!./custom-components.tsx";
 import customHeaderString from "!raw-loader!./custom-header.tsx";
 

@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/client-graphql",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -11,7 +11,7 @@
     "clean": "rimraf dist",
     "test": "jest -c jest.config.js --runInBand",
     "type-check": "tsc --noEmit",
-    "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+    "types": "tsc --build"
   },
   "license": "ISC",
   "dependencies": {

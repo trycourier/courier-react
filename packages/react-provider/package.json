@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-provider",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -12,11 +12,11 @@
     "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
-    "types": "tsc --declaration --outDir typings/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false"
+    "types": "tsc --build"
   },
   "license": "ISC",
   "dependencies": {
-    "@trycourier/client-graphql": "^1.16.0",
+    "@trycourier/client-graphql": "^1.17.0",
     "buffer": "^6.0.3",
     "graphql": "^15.5.0",
     "react-use": "^17.2.1",
