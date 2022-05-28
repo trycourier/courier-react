@@ -2,10 +2,10 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandDesignerHeader } from "./brand-designer-header";
 import { BrandDesignerPreview } from "./brand-designer-preview";
-import { BrandOptions, BrandOptionsParams } from "./brand-options";
+import { BrandControls, BrandControlsOpts } from "./brand-controls";
 
 export const BrandDesigner = () => {
-  const [options, setOptions] = React.useState<BrandOptionsParams["options"]>({
+  const [config, setConfig] = React.useState<BrandControlsOpts["config"]>({
     colors: {
       primary: "#22C3C6",
       secondary: "#FBB03B",
@@ -16,8 +16,8 @@ export const BrandDesigner = () => {
     <BrandDesignerContainer>
       <BrandDesignerHeader />
       <BrandDesignerBody>
-        <BrandOptions options={options} onChange={(opts) => setOptions(opts)} />
-        <BrandDesignerPreview colors={options.colors} />
+        <BrandControls config={config} onChange={(conf) => setConfig(conf)} />
+        <BrandDesignerPreview config={config} />
       </BrandDesignerBody>
     </BrandDesignerContainer>
   );

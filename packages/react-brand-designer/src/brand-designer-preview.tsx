@@ -1,16 +1,14 @@
 import { Button, CourierElement } from "@trycourier/react-elements";
 import React from "react";
 import styled, { CSSObject } from "styled-components";
+import { BrandConfig } from "./types";
 
 export type BrandDesignerPreviewOpts = {
-  colors: {
-    primary: string;
-    secondary: string;
-  };
+  config: BrandConfig;
 };
 
 export const BrandDesignerPreview: CourierElement<BrandDesignerPreviewOpts> = ({
-  colors,
+  config,
 }) => {
   return (
     <BrandDesignerPreviewContainer>
@@ -25,7 +23,7 @@ export const BrandDesignerPreview: CourierElement<BrandDesignerPreviewOpts> = ({
         </BrandDesignerEmailSubject>
         <BrandDesignerEmailBodyContainer>
           <BrandDesignerEmailBody>
-            <TopBar color={colors.primary} />
+            <TopBar color={config.colors.primary} />
             <div className="email-content">
               <h3>This is a branded email</h3>
               <p>
@@ -33,7 +31,7 @@ export const BrandDesignerPreview: CourierElement<BrandDesignerPreviewOpts> = ({
                 designer. You can adjust more details of this email in the
                 advanced settings.
               </p>
-              <EmailActionButton color={colors.secondary}>
+              <EmailActionButton color={config.colors.secondary}>
                 Example CTA
               </EmailActionButton>
               <p>

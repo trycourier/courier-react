@@ -3,44 +3,39 @@ import styled, { CSSObject } from "styled-components";
 import { Title, Button, CourierElement } from "@trycourier/react-elements";
 import { BrandColor } from "./brand-color";
 import { Description } from "./description";
+import { BrandConfig } from "./types";
 
-export type BrandOptionsParams = {
-  options: {
-    colors: {
-      primary: string;
-      secondary: string;
-      [key: string]: string;
-    };
-  };
-  onChange: (options: BrandOptionsParams["options"]) => void;
+export type BrandControlsOpts = {
+  config: BrandConfig;
+  onChange: (config: BrandConfig) => void;
 };
 
-export const BrandOptions: CourierElement<BrandOptionsParams> = (opts) => {
-  const { options, onChange } = opts;
+export const BrandControls: CourierElement<BrandControlsOpts> = (opts) => {
+  const { config, onChange } = opts;
 
   const setColor = (key: string) => (color: string) => {
     onChange({
-      ...options,
+      ...config,
       colors: {
-        ...options.colors,
+        ...config.colors,
         [key]: color,
       },
     });
   };
 
   return (
-    <BrandOptionsContainer>
+    <BrandControlsContainer>
       <Title style={{ margin: "0 0 14px 0" }} level={3}>
         Brand colors
       </Title>
       <BrandColorInputsContainer>
         <BrandColor
-          value={options.colors.primary}
+          value={config.colors.primary}
           label="Primary"
           onChange={setColor("primary")}
         />
         <BrandColor
-          value={options.colors.secondary}
+          value={config.colors.secondary}
           label="Secondary"
           onChange={setColor("secondary")}
         />
@@ -50,11 +45,11 @@ export const BrandOptions: CourierElement<BrandOptionsParams> = (opts) => {
       </Title>
       <Description>PNG or JPG with a width of 140px or more</Description>
       <ChooseFileButton>Choose file</ChooseFileButton>
-    </BrandOptionsContainer>
+    </BrandControlsContainer>
   );
 };
 
-const BrandOptionsContainer = styled.div(
+const BrandControlsContainer = styled.div(
   (): CSSObject => ({
     padding: "32px",
     boxSizing: "border-box",
