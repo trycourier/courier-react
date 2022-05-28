@@ -2,6 +2,7 @@ import { getAttrsAsJson } from "../lib/get-attrs-as-json";
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import { CourierSdk } from "./CourierSdk";
+import { BrandDesigner } from "@trycourier/react-brand-designer";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
@@ -99,6 +100,7 @@ export const CourierComponents: React.FunctionComponent = () => {
           </Suspense>,
           toastElement
         )}
+      <BrandDesigner />
     </CourierSdk>
   );
 };

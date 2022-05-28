@@ -21,6 +21,7 @@
     "@trycourier/react-preferences": "^1.17.0",
     "@trycourier/react-provider": "^1.17.0",
     "@trycourier/react-toast": "^1.17.0",
+    "@trycourier/react-brand-designer": "^1.17.0",
     "babel-loader": "^8.0.6",
     "babel-preset-preact": "^2.0.0",
     "camel-case": "^4.1.2",
