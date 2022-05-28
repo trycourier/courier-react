@@ -153,11 +153,9 @@ const EmailActionButton = styled(Button)<{ color: string }>(
   ({ color }): CSSObject => ({
     background: color,
     height: "21.64px",
-    padding: "4px 24px",
+    padding: "4px 17px",
     fontFamily: "'Nunito Sans', sans-serif",
     fontWeight: 600,
     fontSize: "9.7px",
-    lineHeight: "13.23px",
-    textAlign: "center",
   })
 );

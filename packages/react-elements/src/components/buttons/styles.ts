@@ -16,12 +16,13 @@ export const genButtonStyles = ({
     width: "auto",
     color: textColor ?? "white",
     backgroundColor: color ?? "#9121C2",
-    boxSizing: "content-box",
     padding: "4px 15px",
     textDecoration: "none",
+    boxSizing: "border-box",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-
+    lineHeight: "1",
     "&:hover": {
       color: "#73819B",
       background: "rgb(0 0 0 / 10%)",
