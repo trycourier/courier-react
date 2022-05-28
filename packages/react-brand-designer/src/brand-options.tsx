@@ -78,10 +78,7 @@ const BrandColorInputsContainer = styled.div(
 
 const ChooseFileButton = styled(Button)(
   (): CSSObject => ({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "93.7px",
+    padding: "4px 24px",
     height: "24.59px",
     margin: "14px 0 0 0",
     backgroundColor: "#F0F0F0",

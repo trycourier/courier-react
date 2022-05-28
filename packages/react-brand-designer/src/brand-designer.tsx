@@ -17,7 +17,7 @@ export const BrandDesigner = () => {
       <BrandDesignerHeader />
       <BrandDesignerBody>
         <BrandOptions options={options} onChange={(opts) => setOptions(opts)} />
-        <BrandDesignerPreview />
+        <BrandDesignerPreview colors={options.colors} />
       </BrandDesignerBody>
     </BrandDesignerContainer>
   );

@@ -20,9 +20,7 @@ export const genButtonStyles = ({
     padding: "4px 15px",
     textDecoration: "none",
     alignItems: "center",
-    "&:active": {
-      boxShadow: "none",
-    },
+    justifyContent: "center",
 
     "&:hover": {
       color: "#73819B",

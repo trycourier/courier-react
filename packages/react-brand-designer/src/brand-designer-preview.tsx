@@ -1,7 +1,17 @@
+import { Button, CourierElement } from "@trycourier/react-elements";
 import React from "react";
 import styled, { CSSObject } from "styled-components";
 
-export const BrandDesignerPreview = () => {
+export type BrandDesignerPreviewOpts = {
+  colors: {
+    primary: string;
+    secondary: string;
+  };
+};
+
+export const BrandDesignerPreview: CourierElement<BrandDesignerPreviewOpts> = ({
+  colors,
+}) => {
   return (
     <BrandDesignerPreviewContainer>
       <BrandDesignerEmail>
@@ -13,6 +23,27 @@ export const BrandDesignerPreview = () => {
             <h4>From: noreply@courier.com</h4>
           </div>
         </BrandDesignerEmailSubject>
+        <BrandDesignerEmailBodyContainer>
+          <BrandDesignerEmailBody>
+            <TopBar color={colors.primary} />
+            <div className="email-content">
+              <h3>This is a branded email</h3>
+              <p>
+                You’ll always able to adjust the specifics of this email in the
+                designer. You can adjust more details of this email in the
+                advanced settings.
+              </p>
+              <EmailActionButton color={colors.secondary}>
+                Example CTA
+              </EmailActionButton>
+              <p>
+                Cheers,
+                <br />
+                <strong>The Courier Team</strong>
+              </p>
+            </div>
+          </BrandDesignerEmailBody>
+        </BrandDesignerEmailBodyContainer>
       </BrandDesignerEmail>
     </BrandDesignerPreviewContainer>
   );
@@ -38,6 +69,7 @@ const BrandDesignerEmail = styled.div(
     display: "flex",
     flexDirection: "column",
     borderRadius: "2.99px",
+    boxShadow: "0px 2.98532px 18.6583px rgba(0, 0, 0, 0.2)",
   })
 );
 
@@ -60,11 +92,72 @@ const BrandDesignerEmailSubject = styled.div(
     },
     h4: {
       margin: 0,
+      marginTop: "2.31px",
       fontWeight: 400,
       fontFamily: "Helvetica, sans-serif",
       color: "#73819B",
       fontSize: "7.46px",
       lineHeight: "9px",
     },
+  })
+);
+
+const BrandDesignerEmailBodyContainer = styled.div(
+  (): CSSObject => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  })
+);
+
+const BrandDesignerEmailBody = styled.div(
+  (): CSSObject => ({
+    background: "#FFF",
+    overflow: "hidden",
+    width: "328px",
+    height: "204px",
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "2.99px",
+    "div.email-content": {
+      padding: "19px",
+      boxSizing: "border-box",
+      h3: {
+        marginTop: "0px",
+        fontFamily: "Helvetica, sans-serif",
+        fontSize: "18px",
+        lineHeight: "21px",
+      },
+      p: {
+        fontFamily: "Helvetica, sans-serif",
+        fontWeight: 400,
+        fontSize: "9.75px",
+        lineHeight: "13px",
+        color: "#344563",
+      },
+    },
+  })
+);
+
+const TopBar = styled.div<{ color: string }>(
+  ({ color }): CSSObject => ({
+    background: color,
+    width: "100%",
+    flexBasis: "2.56px",
+  })
+);
+
+const EmailActionButton = styled(Button)<{ color: string }>(
+  ({ color }): CSSObject => ({
+    background: color,
+    height: "21.64px",
+    padding: "4px 24px",
+    fontFamily: "'Nunito Sans', sans-serif",
+    fontWeight: 600,
+    fontSize: "9.7px",
+    lineHeight: "13.23px",
+    textAlign: "center",
   })
 );
