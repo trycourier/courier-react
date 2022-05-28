@@ -17,7 +17,7 @@ const HeaderContainer = styled.div(
 
 export const BrandDesignerHeader: React.FunctionComponent = () => {
   return (
-    <HeaderContainer>
+    <HeaderContainer style={{ margin: 0 }}>
       <Title>Configure your brand</Title>
     </HeaderContainer>
   );

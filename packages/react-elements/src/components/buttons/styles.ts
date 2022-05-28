@@ -1,4 +1,3 @@
-import deepExtend from "deep-extend";
 import { CSSObject } from "styled-components";
 import { ButtonProps } from "./types";
 
@@ -6,37 +5,32 @@ export const genButtonStyles = ({
   size = "sm",
   color,
   textColor,
-  css,
 }: ButtonProps): CSSObject => {
   const { height, fontSize } = getButtonSize(size);
-  return deepExtend(
-    {
-      display: "inline-flex",
-      cursor: "pointer",
-      border: "none",
-      fontSize,
-      height,
-      width: "auto",
-      color: textColor ?? "white",
-      backgroundColor: color ?? "#9121C2",
-      boxSizing: "content-box",
-      padding: "4px 15px",
-      boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-      textDecoration: "none",
-      alignItems: "center",
-      "&:active": {
-        boxShadow: "none",
-      },
-
-      "&:hover": {
-        color: "#73819B",
-        background: "rgb(0 0 0 / 10%)",
-      },
-
-      borderRadius: 4,
+  return {
+    display: "inline-flex",
+    cursor: "pointer",
+    border: "none",
+    fontSize,
+    height,
+    width: "auto",
+    color: textColor ?? "white",
+    backgroundColor: color ?? "#9121C2",
+    boxSizing: "content-box",
+    padding: "4px 15px",
+    textDecoration: "none",
+    alignItems: "center",
+    "&:active": {
+      boxShadow: "none",
     },
-    css ?? {}
-  );
+
+    "&:hover": {
+      color: "#73819B",
+      background: "rgb(0 0 0 / 10%)",
+    },
+
+    borderRadius: 4,
+  };
 };
 
 function getButtonSize(

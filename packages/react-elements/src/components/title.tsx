@@ -2,7 +2,7 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import { CourierElement } from "../types";
 
-export type TitleOpts = {
+export type TitleParams = {
   /** heading level. Defaults to two. */
   level?: number;
   color?: string;
@@ -12,7 +12,7 @@ export type TitleOpts = {
   children?: React.ReactNode;
 };
 
-const getTitleStyles = ({ size, weight, color }: TitleOpts): CSSObject => ({
+const getTitleStyles = ({ size, weight, color }: TitleParams): CSSObject => ({
   fontSize: size ?? "16px",
   fontStyle: "normal",
   fontWeight: (weight ?? 800) as any,
@@ -25,15 +25,15 @@ const getTitleStyles = ({ size, weight, color }: TitleOpts): CSSObject => ({
   color: color ?? "#24324B",
 });
 
-const headings: Record<string, CourierElement<TitleOpts>> = {
-  H1: styled.h1<TitleOpts>(getTitleStyles),
-  H2: styled.h2<TitleOpts>(getTitleStyles),
-  H3: styled.h3<TitleOpts>(getTitleStyles),
-  H4: styled.h4<TitleOpts>(getTitleStyles),
-  H5: styled.h5<TitleOpts>(getTitleStyles),
+const headings: Record<string, CourierElement<TitleParams>> = {
+  H1: styled.h1<TitleParams>(getTitleStyles),
+  H2: styled.h2<TitleParams>(getTitleStyles),
+  H3: styled.h3<TitleParams>(getTitleStyles),
+  H4: styled.h4<TitleParams>(getTitleStyles),
+  H5: styled.h5<TitleParams>(getTitleStyles),
 };
 
-export const Title: CourierElement<TitleOpts> = (opts: TitleOpts) => {
+export const Title: CourierElement<TitleParams> = (opts: TitleParams) => {
   const { level = 2, ...rest } = opts;
   const Heading = headings[`H${level}`] ?? headings.H2;
   const index = Math.min(Math.max(level - 1, 0), 4);
