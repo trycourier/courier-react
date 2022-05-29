@@ -1,17 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandPreview } from "./brand-preview";
 import { BrandControls } from "./brand-controls";
 import { BrandDesignerOpts } from "./types";
-import { CourierElement } from "@trycourier/react-elements";
 
-export const BrandDesigner: CourierElement<BrandDesignerOpts> = (opts) => {
-  const { config, onConfigChange: onChange, onSave } = opts;
+export const BrandDesigner: FC<BrandDesignerOpts> = (opts) => {
+  const { config, onChange, onSave } = opts;
   const headerOpts = {
     title: opts.title,
-    saveDate: opts.saveDate,
-    saveDatePrefix: opts.saveDatePrefix,
+    saveDate: config.updated,
+    saveDatePrefix: opts.dateUpdatedPrefix,
     saveButtonText: opts.saveButtonText,
     disableSaveButton: opts.disableSaveButton,
     onSave: () => onSave(config),

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 import styled, { CSSObject } from "styled-components";
 import {
   Title,
   Button,
-  CourierElement,
   Description,
   MediumColorPicker,
 } from "@trycourier/react-elements";
@@ -14,7 +13,7 @@ export type BrandControlsOpts = {
   onChange: BrandHandler;
 };
 
-export const BrandControls: CourierElement<BrandControlsOpts> = (opts) => {
+export const BrandControls: FC<BrandControlsOpts> = (opts) => {
   const { config, onChange } = opts;
 
   const setColor = (key: string) => (color: string) => {

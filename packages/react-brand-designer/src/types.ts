@@ -8,18 +8,19 @@ export type BrandConfig = {
     src: string | File;
     href?: string;
   };
+  created?: string | number | Date;
+  updated?: string | number | Date;
 };
 
 export type BrandDesignerOpts = {
   config: BrandConfig;
   /** Save / Publish button was clicked */
   onSave: BrandHandler;
-  onConfigChange: BrandHandler;
+  onChange: BrandHandler;
   isLoading?: boolean;
   isLogoLoading?: boolean;
   saveButtonText?: string;
-  saveDate?: string;
-  saveDatePrefix?: string;
+  dateUpdatedPrefix?: string;
   disableSaveButton?: boolean;
   title?: string;
 };
