@@ -2,6 +2,18 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import { Button, PrettyDate, Title } from "@trycourier/react-elements";
 
+export const BrandDesignerHeader: React.FunctionComponent = () => {
+  return (
+    <HeaderContainer style={{ margin: 0 }}>
+      <Title>Configure your brand</Title>
+      <div className="publish">
+        <PrettyDate prefix="Last published " />
+        <SaveButton>Publish Changes</SaveButton>
+      </div>
+    </HeaderContainer>
+  );
+};
+
 const HeaderContainer = styled.div(
   (): CSSObject => ({
     flexBasis: "48px",
@@ -24,19 +36,7 @@ const HeaderContainer = styled.div(
   })
 );
 
-export const BrandDesignerHeader: React.FunctionComponent = () => {
-  return (
-    <HeaderContainer style={{ margin: 0 }}>
-      <Title>Configure your brand</Title>
-      <div className="publish">
-        <PrettyDate prefix="Last published " />
-        <PublishButton>Publish Changes</PublishButton>
-      </div>
-    </HeaderContainer>
-  );
-};
-
-const PublishButton = styled(Button)(
+const SaveButton = styled(Button)(
   (): CSSObject => ({
     padding: "10px 24px",
     maxHeight: "32px",

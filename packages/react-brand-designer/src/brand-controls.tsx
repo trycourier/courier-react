@@ -1,8 +1,12 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import { Title, Button, CourierElement } from "@trycourier/react-elements";
-import { BrandColor } from "./brand-color";
-import { Description } from "./description";
+import {
+  Title,
+  Button,
+  CourierElement,
+  Description,
+  MediumColorPicker,
+} from "@trycourier/react-elements";
 import { BrandConfig } from "./types";
 
 export type BrandControlsOpts = {
@@ -29,12 +33,12 @@ export const BrandControls: CourierElement<BrandControlsOpts> = (opts) => {
         Brand colors
       </Title>
       <BrandColorInputsContainer>
-        <BrandColor
+        <MediumColorPicker
           value={config.colors.primary}
           label="Primary"
           onChange={setColor("primary")}
         />
-        <BrandColor
+        <MediumColorPicker
           value={config.colors.secondary}
           label="Secondary"
           onChange={setColor("secondary")}

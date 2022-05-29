@@ -8,5 +8,10 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["../types/@types/*/index.d.ts", "./src/**/*.tsx", "./src/**/*.ts"]
+  "include": [
+    "../types/@types/*/index.d.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "src/components/color-pickers"
+  ]
 }

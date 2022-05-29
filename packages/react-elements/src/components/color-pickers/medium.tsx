@@ -1,17 +1,17 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import { Description } from "./description";
+import { Description } from "../description";
 
-export const BrandColor: React.FunctionComponent<{
+export const MediumColorPicker: React.FunctionComponent<{
   value: string;
   label: string;
   onChange: (value: string) => void;
 }> = ({ value, label, onChange }) => {
   return (
-    <BrandColorContainer>
-      <BrandColorPreview color={value} />
+    <ColorPickerContainer>
+      <ColorPreview color={value} />
       <Description>{label}</Description>
-      <BrandColorHex color={value}>{value.toUpperCase()}</BrandColorHex>
+      <ColorHex color={value}>{value.toUpperCase()}</ColorHex>
       <input
         type="color"
         name={label}
@@ -19,13 +19,13 @@ export const BrandColor: React.FunctionComponent<{
         style={{ display: "none" }}
         onChange={(e) => onChange(e.target.value)}
       />
-    </BrandColorContainer>
+    </ColorPickerContainer>
   );
 };
 
-const BrandColorContainer = styled.label((): CSSObject => ({}));
+const ColorPickerContainer = styled.label((): CSSObject => ({}));
 
-const BrandColorPreview = styled.div<{ color: string }>(
+const ColorPreview = styled.div<{ color: string }>(
   ({ color }): CSSObject => ({
     backgroundColor: color,
     borderRadius: "100%",
@@ -33,7 +33,8 @@ const BrandColorPreview = styled.div<{ color: string }>(
     height: "35px",
   })
 );
-const BrandColorHex = styled.p<{ color: string }>(
+
+const ColorHex = styled.p<{ color: string }>(
   ({ color }): CSSObject => ({
     fontFamily: "'Nunito Sans', sans-serif",
     fontWeight: 600,

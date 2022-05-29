@@ -3,27 +3,25 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandConfig } from "./types";
 
-export type BrandDesignerPreviewOpts = {
+export type BrandPreviewOpts = {
   config: BrandConfig;
 };
 
-export const BrandDesignerPreview: CourierElement<BrandDesignerPreviewOpts> = ({
-  config,
-}) => {
+export const BrandPreview: CourierElement<BrandPreviewOpts> = ({ config }) => {
   return (
-    <BrandDesignerPreviewContainer>
-      <BrandDesignerEmail>
-        <BrandDesignerEmailSubject>
+    <PreviewContainer>
+      <EmailPreview>
+        <EmailSubject>
           <div>
             <h3>
               Subject: <strong>Hi, {"{First name}"}! 👋</strong>
             </h3>
             <h4>From: noreply@courier.com</h4>
           </div>
-        </BrandDesignerEmailSubject>
-        <BrandDesignerEmailBodyContainer>
-          <BrandDesignerEmailBody>
-            <TopBar color={config.colors.primary} />
+        </EmailSubject>
+        <EmailBodyContainer>
+          <EmailBody>
+            <EmailTopBar color={config.colors.primary} />
             <div className="email-content">
               <h3>This is a branded email</h3>
               <p>
@@ -40,14 +38,14 @@ export const BrandDesignerPreview: CourierElement<BrandDesignerPreviewOpts> = ({
                 <strong>The Courier Team</strong>
               </p>
             </div>
-          </BrandDesignerEmailBody>
-        </BrandDesignerEmailBodyContainer>
-      </BrandDesignerEmail>
-    </BrandDesignerPreviewContainer>
+          </EmailBody>
+        </EmailBodyContainer>
+      </EmailPreview>
+    </PreviewContainer>
   );
 };
 
-const BrandDesignerPreviewContainer = styled.div(
+const PreviewContainer = styled.div(
   (): CSSObject => ({
     display: "flex",
     flexDirection: "column",
@@ -59,7 +57,7 @@ const BrandDesignerPreviewContainer = styled.div(
   })
 );
 
-const BrandDesignerEmail = styled.div(
+const EmailPreview = styled.div(
   (): CSSObject => ({
     width: "356px",
     height: "278px",
@@ -71,7 +69,7 @@ const BrandDesignerEmail = styled.div(
   })
 );
 
-const BrandDesignerEmailSubject = styled.div(
+const EmailSubject = styled.div(
   (): CSSObject => ({
     background: "#FFF",
     boxSizing: "border-box",
@@ -100,7 +98,7 @@ const BrandDesignerEmailSubject = styled.div(
   })
 );
 
-const BrandDesignerEmailBodyContainer = styled.div(
+const EmailBodyContainer = styled.div(
   (): CSSObject => ({
     display: "flex",
     flexDirection: "column",
@@ -110,7 +108,7 @@ const BrandDesignerEmailBodyContainer = styled.div(
   })
 );
 
-const BrandDesignerEmailBody = styled.div(
+const EmailBody = styled.div(
   (): CSSObject => ({
     background: "#FFF",
     overflow: "hidden",
@@ -139,7 +137,7 @@ const BrandDesignerEmailBody = styled.div(
   })
 );
 
-const TopBar = styled.div<{ color: string }>(
+const EmailTopBar = styled.div<{ color: string }>(
   ({ color }): CSSObject => ({
     background: color,
     width: "100%",

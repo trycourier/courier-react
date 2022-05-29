@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import { BrandDesignerHeader } from "./brand-designer-header";
-import { BrandDesignerPreview } from "./brand-designer-preview";
+import { BrandDesignerHeader } from "./designer-header";
+import { BrandPreview } from "./brand-preview";
 import { BrandControls, BrandControlsOpts } from "./brand-controls";
 
 export const BrandDesigner = () => {
@@ -17,7 +17,7 @@ export const BrandDesigner = () => {
       <BrandDesignerHeader />
       <BrandDesignerBody>
         <BrandControls config={config} onChange={(conf) => setConfig(conf)} />
-        <BrandDesignerPreview config={config} />
+        <BrandPreview config={config} />
       </BrandDesignerBody>
     </BrandDesignerContainer>
   );

@@ -11,7 +11,8 @@
   "include": [
     "../types/@types/*/index.d.ts",
     "./src/**/*.tsx",
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "../react-elements/src/components/description.tsx"
   ],
   "references": [
     { "path": "../react-elements" },
