@@ -3,7 +3,7 @@ import styled, { CSSObject } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandPreview } from "./brand-preview";
 import { BrandControls } from "./brand-controls";
-import { BrandDesignerOpts } from "./types";
+import { BrandDesignerOpts } from "../types";
 
 export const BrandDesigner: FC<BrandDesignerOpts> = (opts) => {
   const { config, onChange, onSave } = opts;

@@ -1,7 +1,7 @@
 import React from "react";
 import { CourierElement } from "@trycourier/react-elements";
 import { BrandConfig } from "./types";
-import { BrandDesigner } from "./brand-designer";
+import { BrandDesigner } from "./brand-designer/brand-designer";
 
 /** Copy's Brand Config to Clipboard */
 export const ClipboardBrandDesigner: CourierElement = () => {

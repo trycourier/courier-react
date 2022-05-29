@@ -6,7 +6,7 @@ import {
   Description,
   MediumColorPicker,
 } from "@trycourier/react-elements";
-import { BrandConfig, BrandHandler } from "./types";
+import { BrandConfig, BrandHandler } from "../types";
 
 export type BrandControlsOpts = {
   config: BrandConfig;

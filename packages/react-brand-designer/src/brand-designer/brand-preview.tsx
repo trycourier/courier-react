@@ -1,7 +1,7 @@
 import { Button, CourierElement } from "@trycourier/react-elements";
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import { BrandConfig } from "./types";
+import { BrandConfig } from "../types";
 
 export type BrandPreviewOpts = {
   config: BrandConfig;
