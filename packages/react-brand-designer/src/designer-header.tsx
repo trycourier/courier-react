@@ -1,14 +1,37 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import { Button, PrettyDate, Title } from "@trycourier/react-elements";
+import {
+  Button,
+  CourierElement,
+  PrettyDate,
+  Title,
+} from "@trycourier/react-elements";
 
-export const BrandDesignerHeader: React.FunctionComponent = () => {
+export type DesignerHeaderOpts = {
+  title?: string;
+  saveDate?: string | number | Date;
+  saveDatePrefix?: string;
+  saveButtonText?: string;
+  disableSaveButton?: boolean;
+  onSave: () => void;
+};
+
+export const BrandDesignerHeader: CourierElement<DesignerHeaderOpts> = ({
+  title,
+  saveDate: date,
+  saveDatePrefix: datePrefix,
+  saveButtonText,
+  disableSaveButton,
+  onSave,
+}) => {
   return (
     <HeaderContainer style={{ margin: 0 }}>
-      <Title>Configure your brand</Title>
+      <Title>{title ?? "Configure your brand"}</Title>
       <div className="publish">
-        <PrettyDate prefix="Last published " />
-        <SaveButton>Publish Changes</SaveButton>
+        {date && <PrettyDate prefix={datePrefix ?? "Last published "} />}
+        <SaveButton onClick={onSave} disabled={disableSaveButton}>
+          {saveButtonText ?? "Publish Changes"}
+        </SaveButton>
       </div>
     </HeaderContainer>
   );

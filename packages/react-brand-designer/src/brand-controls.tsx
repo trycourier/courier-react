@@ -7,11 +7,11 @@ import {
   Description,
   MediumColorPicker,
 } from "@trycourier/react-elements";
-import { BrandConfig } from "./types";
+import { BrandConfig, BrandHandler } from "./types";
 
 export type BrandControlsOpts = {
   config: BrandConfig;
-  onChange: (config: BrandConfig) => void;
+  onChange: BrandHandler;
 };
 
 export const BrandControls: CourierElement<BrandControlsOpts> = (opts) => {

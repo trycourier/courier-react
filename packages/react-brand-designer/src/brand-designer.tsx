@@ -2,21 +2,26 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandPreview } from "./brand-preview";
-import { BrandControls, BrandControlsOpts } from "./brand-controls";
+import { BrandControls } from "./brand-controls";
+import { BrandDesignerOpts } from "./types";
+import { CourierElement } from "@trycourier/react-elements";
 
-export const BrandDesigner = () => {
-  const [config, setConfig] = React.useState<BrandControlsOpts["config"]>({
-    colors: {
-      primary: "#22C3C6",
-      secondary: "#FBB03B",
-    },
-  });
+export const BrandDesigner: CourierElement<BrandDesignerOpts> = (opts) => {
+  const { config, onConfigChange: onChange, onSave } = opts;
+  const headerOpts = {
+    title: opts.title,
+    saveDate: opts.saveDate,
+    saveDatePrefix: opts.saveDatePrefix,
+    saveButtonText: opts.saveButtonText,
+    disableSaveButton: opts.disableSaveButton,
+    onSave: () => onSave(config),
+  };
 
   return (
     <BrandDesignerContainer>
-      <BrandDesignerHeader />
+      <BrandDesignerHeader {...headerOpts} />
       <BrandDesignerBody>
-        <BrandControls config={config} onChange={(conf) => setConfig(conf)} />
+        <BrandControls config={config} onChange={onChange} />
         <BrandPreview config={config} />
       </BrandDesignerBody>
     </BrandDesignerContainer>

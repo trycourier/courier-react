@@ -27,6 +27,10 @@ export const genButtonStyles = ({
       color: "#73819B",
       background: "rgb(0 0 0 / 10%)",
     },
+    "&:disabled": {
+      color: "#73819B",
+      background: "rgb(0 0 0 / 10%)",
+    },
 
     borderRadius: 4,
   };
