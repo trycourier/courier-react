@@ -7,7 +7,7 @@ import {
   Title,
 } from "@trycourier/react-elements";
 
-export type DesignerHeaderOpts = {
+export type DesignerHeaderProps = {
   title?: string;
   saveDate?: string | number | Date;
   saveDatePrefix?: string;
@@ -16,7 +16,7 @@ export type DesignerHeaderOpts = {
   onSave: () => void;
 };
 
-export const BrandDesignerHeader: CourierElement<DesignerHeaderOpts> = ({
+export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
   title,
   saveDate: date,
   saveDatePrefix: datePrefix,

@@ -3,11 +3,11 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandConfig } from "../types";
 
-export type BrandPreviewOpts = {
+export type BrandPreviewProps = {
   config: BrandConfig;
 };
 
-export const BrandPreview: CourierElement<BrandPreviewOpts> = ({ config }) => {
+export const BrandPreview: CourierElement<BrandPreviewProps> = ({ config }) => {
   return (
     <PreviewContainer>
       <EmailPreview>

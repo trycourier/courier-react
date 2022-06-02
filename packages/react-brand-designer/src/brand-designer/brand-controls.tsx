@@ -7,14 +7,16 @@ import {
   MediumColorPicker,
 } from "@trycourier/react-elements";
 import { BrandConfig, BrandHandler } from "../types";
+import { LogoModal } from "./logo-modal";
 
-export type BrandControlsOpts = {
+export type BrandControlsProps = {
   config: BrandConfig;
   onChange: BrandHandler;
 };
 
-export const BrandControls: FC<BrandControlsOpts> = (opts) => {
+export const BrandControls: FC<BrandControlsProps> = (opts) => {
   const { config, onChange } = opts;
+  const [isLogoModalOpen, setIsLogoModalOpen] = React.useState(false);
 
   const setColor = (key: string) => (color: string) => {
     onChange({
@@ -23,6 +25,12 @@ export const BrandControls: FC<BrandControlsOpts> = (opts) => {
         ...config.colors,
         [key]: color,
       },
+    });
+  };
+  const setLogo = (logo: BrandConfig["logo"]) => {
+    onChange({
+      ...config,
+      logo,
     });
   };
 
@@ -44,10 +52,17 @@ export const BrandControls: FC<BrandControlsOpts> = (opts) => {
         />
       </BrandColorInputsContainer>
       <Title style={{ margin: "0 0 7px 0" }} level={3}>
-        Upload logo
+        Brand logo
       </Title>
       <Description>PNG or JPG with a width of 140px or more</Description>
-      <ChooseFileButton>Choose file</ChooseFileButton>
+      <ChooseFileButton onClick={() => setIsLogoModalOpen(true)}>
+        Upload logo
+      </ChooseFileButton>
+      <LogoModal
+        isOpen={isLogoModalOpen}
+        onSave={setLogo}
+        onClose={() => setIsLogoModalOpen(false)}
+      />
     </BrandControlsContainer>
   );
 };

@@ -3,9 +3,9 @@ import styled, { CSSObject } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandPreview } from "./brand-preview";
 import { BrandControls } from "./brand-controls";
-import { BrandDesignerOpts } from "../types";
+import { BrandDesignerProps } from "../types";
 
-export const BrandDesigner: FC<BrandDesignerOpts> = (opts) => {
+export const BrandDesigner: FC<BrandDesignerProps> = (opts) => {
   const { config, onChange, onSave } = opts;
   const headerOpts = {
     title: opts.title,

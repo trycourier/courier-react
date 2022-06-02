@@ -12,7 +12,7 @@ export type BrandConfig = {
   updated?: string | number | Date;
 };
 
-export type BrandDesignerOpts = {
+export type BrandDesignerProps = {
   config: BrandConfig;
   /** Save / Publish button was clicked */
   onSave: BrandHandler;
