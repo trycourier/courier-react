@@ -23,7 +23,13 @@ export const MediumColorPicker: React.FunctionComponent<{
   );
 };
 
-const ColorPickerContainer = styled.label((): CSSObject => ({}));
+const ColorPickerContainer = styled.label(
+  (): CSSObject => ({
+    "&:hover": {
+      cursor: "pointer",
+    },
+  })
+);
 
 const ColorPreview = styled.div<{ color: string }>(
   ({ color }): CSSObject => ({
