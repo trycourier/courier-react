@@ -86,20 +86,6 @@ export const CourierComponents: React.FunctionComponent = () => {
         toast: Boolean(toastElement),
       }}
     >
-      {inboxElement &&
-        createPortal(
-          <Suspense fallback={<div />}>
-            <Inbox {...inboxConfig} />
-          </Suspense>,
-          inboxElement
-        )}
-      {toastElement &&
-        createPortal(
-          <Suspense fallback={<div />}>
-            <Toast config={toastConfig} />
-          </Suspense>,
-          toastElement
-        )}
       <ClipboardBrandDesigner />
     </CourierSdk>
   );
