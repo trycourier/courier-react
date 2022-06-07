@@ -7,6 +7,7 @@
     { "path": "packages/react-preferences" },
     { "path": "packages/react-provider" },
     { "path": "packages/react-elements" },
-    { "path": "packages/react-toast" }
+    { "path": "packages/react-toast" },
+    { "path": "packages/react-brand-designer" }
   ]
 }
