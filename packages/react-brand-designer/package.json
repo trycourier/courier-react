@@ -1,7 +1,7 @@
 {
   "name": "@trycourier/react-brand-designer",
   "version": "1.17.0",
-  "description": "Emendable brand designer for multi-channel notifications",
+  "description": "Embeddable brand designer for multi-channel notifications",
   "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-elements#readme",
   "license": "ISC",
   "main": "dist/index.js",
