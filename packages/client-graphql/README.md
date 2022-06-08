@@ -14,7 +14,15 @@ You can initialize each module with either an object containing:
 }
 ```
 
-or you can create the client separtly and pass the client in:
+Or alternately, you can use an issued [authorization token](https://www.courier.com/docs/reference/auth/issue-token/).
+
+```
+{
+  authorization: string;
+}
+```
+
+You can also create the client separately and pass the client in:
 
 ```
 import { createCourierClient } from "@trycourier/client-graphql";
@@ -32,11 +40,9 @@ const events = Brands({ events: courierClient })
 
 ```js
 import { Messages } from "@trycourier/client-graphql";
-const messagesApi = Messages({
-  clientKey: "abc123",
-  userId: "@me",
-  userSignature: "SUPER_SECRET",
-});
+
+const messagesApi = Messages({ authorization: "abc123" });
+
 const getMessageCount = async (params?: {
   isRead?: boolean,
   from?: number,
@@ -107,14 +113,11 @@ const getBanners = async (params?: { tags?: string[], locale?: string }) => {
 };
 ```
 
-#### For > 1 user
+#### With JWT (Supports multiple users)
 
 ```js
 import { Banner } from "@trycourier/client-graphql";
-const bannerApi = Banner({
-  clientKey: "abc123",
-  authorization: "MY JWT TOKEN",
-});
+const bannerApi = Banner({ authorization: "MY JWT TOKEN" });
 const getBanners = async (params?: { tags?: string[], locale?: string }) => {
   const myBanners = await bannerApi.getBanners(params);
   return myBanners;
