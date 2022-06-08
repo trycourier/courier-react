@@ -2,7 +2,7 @@ import React from "react";
 import styled, { CSSObject } from "styled-components";
 import {
   CourierElement,
-  Description,
+  LinkButton,
   PrettyDate,
   Title,
 } from "@trycourier/react-elements";
@@ -59,7 +59,7 @@ const HeaderContainer = styled.div(
   })
 );
 
-const CopyButton = styled(Description)(
+const CopyButton = styled(LinkButton)(
   (): CSSObject => ({
     fontWeight: 600,
     fontSize: "12px",
@@ -68,5 +68,9 @@ const CopyButton = styled(Description)(
     textDecorationLine: "underline",
     color: "#24324B",
     cursor: "pointer",
+    background: "none",
+    "&:hover": {
+      background: "none",
+    },
   })
 );
