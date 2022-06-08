@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
 import {
-  Button,
   CourierElement,
+  LinkButton,
   PrettyDate,
   Title,
 } from "@trycourier/react-elements";
@@ -21,7 +21,6 @@ export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
   saveDate: date,
   saveDatePrefix: datePrefix,
   saveButtonText,
-  disableSaveButton,
   onSave,
 }) => {
   return (
@@ -29,9 +28,9 @@ export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
       <Title>{title ?? "Configure your brand"}</Title>
       <div className="publish">
         {date && <PrettyDate prefix={datePrefix ?? "Last published "} />}
-        <SaveButton onClick={onSave} disabled={disableSaveButton}>
+        <CopyButton onClick={onSave}>
           {saveButtonText ?? "Publish Changes"}
-        </SaveButton>
+        </CopyButton>
       </div>
     </HeaderContainer>
   );
@@ -41,6 +40,7 @@ const HeaderContainer = styled.div(
   (): CSSObject => ({
     flexBasis: "48px",
     width: "100%",
+    borderBottom: "2px solid #E1E5E9",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -59,13 +59,18 @@ const HeaderContainer = styled.div(
   })
 );
 
-const SaveButton = styled(Button)(
+const CopyButton = styled(LinkButton)(
   (): CSSObject => ({
-    padding: "10px 24px",
-    maxHeight: "32px",
-    background: "#24324B",
-    borderRadius: "6px",
     fontWeight: 600,
-    fontSize: "14px",
+    fontSize: "12px",
+    lineHeight: "16px",
+    textAlign: "center",
+    textDecorationLine: "underline",
+    color: "#24324B",
+    cursor: "pointer",
+    background: "none",
+    "&:hover": {
+      background: "none",
+    },
   })
 );

@@ -51,7 +51,7 @@ const PreviewContainer = styled.div(
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    background: "#E5E5E5",
+    background: "#F9FAFB",
     height: "100%",
     flexGrow: 1,
   })

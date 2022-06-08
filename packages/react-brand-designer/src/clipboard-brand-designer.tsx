@@ -26,7 +26,7 @@ export const ClipboardBrandDesigner: CourierElement = () => {
       config={config}
       onChange={handleChange}
       onSave={handleSave}
-      saveButtonText={isCopied ? "Copied" : "Copy to Clipboard"}
+      saveButtonText={isCopied ? "Copied" : "Copy Snippet"}
       disableSaveButton={isCopied}
     />
   );
