@@ -21,7 +21,6 @@ export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
   saveDate: date,
   saveDatePrefix: datePrefix,
   saveButtonText,
-  disableSaveButton,
   onSave,
 }) => {
   return (
@@ -29,7 +28,7 @@ export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
       <Title>{title ?? "Configure your brand"}</Title>
       <div className="publish">
         {date && <PrettyDate prefix={datePrefix ?? "Last published "} />}
-        <CopyButton onClick={onSave} disabled={disableSaveButton}>
+        <CopyButton onClick={onSave}>
           {saveButtonText ?? "Publish Changes"}
         </CopyButton>
       </div>
