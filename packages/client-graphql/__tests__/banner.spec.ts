@@ -49,10 +49,7 @@ describe("banner", () => {
 
   test("creates query correctly with jwt", async () => {
     fetchMock.mockImplementation(() => Promise.resolve([]));
-    const bannerApi = Banner({
-      authorization: "abc123",
-      clientKey: "CLIENT_KEY",
-    });
+    const bannerApi = Banner({ authorization: "abc123" });
 
     await bannerApi.getBanners({
       from: 123,
@@ -66,7 +63,6 @@ describe("banner", () => {
     );
     expect(thisCall.headers).toEqual({
       authorization: "Bearer abc123",
-      "x-courier-client-key": "CLIENT_KEY",
       "content-type": "application/json",
     });
     expect(thisCall.method).toBe("POST");
