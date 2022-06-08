@@ -40,6 +40,7 @@ const HeaderContainer = styled.div(
   (): CSSObject => ({
     flexBasis: "48px",
     width: "100%",
+    borderBottom: "2px solid #E1E5E9",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
