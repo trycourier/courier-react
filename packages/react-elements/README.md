@@ -18,6 +18,8 @@ larger components like Inbox and Toast.
 
 This package includes highly reusable components such as buttons, icons, and modals.
 
+Caution: This package is not yet stable. Interfaces are subject to change.
+
 <a name="buttonmd"></a>
 
 ### [Button](#button)
