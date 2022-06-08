@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
 import {
-  Button,
   CourierElement,
+  Description,
   PrettyDate,
   Title,
 } from "@trycourier/react-elements";
@@ -29,9 +29,9 @@ export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
       <Title>{title ?? "Configure your brand"}</Title>
       <div className="publish">
         {date && <PrettyDate prefix={datePrefix ?? "Last published "} />}
-        <SaveButton onClick={onSave} disabled={disableSaveButton}>
+        <CopyButton onClick={onSave} disabled={disableSaveButton}>
           {saveButtonText ?? "Publish Changes"}
-        </SaveButton>
+        </CopyButton>
       </div>
     </HeaderContainer>
   );
@@ -59,13 +59,14 @@ const HeaderContainer = styled.div(
   })
 );
 
-const SaveButton = styled(Button)(
+const CopyButton = styled(Description)(
   (): CSSObject => ({
-    padding: "10px 24px",
-    maxHeight: "32px",
-    background: "#24324B",
-    borderRadius: "6px",
     fontWeight: 600,
-    fontSize: "14px",
+    fontSize: "12px",
+    lineHeight: "16px",
+    textAlign: "center",
+    textDecorationLine: "underline",
+    color: "#24324B",
+    cursor: "pointer",
   })
 );

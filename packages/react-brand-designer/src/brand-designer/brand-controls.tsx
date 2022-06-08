@@ -96,7 +96,7 @@ const ChooseFileButton = styled(Button)(
     margin: "14px 0 0 0",
     backgroundColor: "#F0F0F0",
     color: "#73819B",
-    borderRadius: 0,
+    borderRadius: 4,
     fontSize: "12px",
     fontWeight: 400,
   })

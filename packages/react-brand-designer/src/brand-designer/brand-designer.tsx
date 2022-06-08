@@ -19,8 +19,10 @@ export const BrandDesigner: FC<BrandDesignerProps> = (opts) => {
   return (
     <BrandDesignerContainer>
       <BrandDesignerHeader {...headerOpts} />
+      <HeaderSeparator />
       <BrandDesignerBody>
         <BrandControls config={config} onChange={onChange} />
+        <PreviewSeparator />
         <BrandPreview config={config} />
       </BrandDesignerBody>
     </BrandDesignerContainer>
@@ -44,5 +46,28 @@ const BrandDesignerBody = styled.div(
     display: "flex",
     flexDirection: "row",
     flexBasis: "368px",
+  })
+);
+
+const HeaderSeparator = styled.div(
+  (): CSSObject => ({
+    position: "absolute",
+    width: "766px",
+    height: "0px",
+    left: "32px",
+    top: "160px",
+    border: "1px solid #E1E5E9",
+  })
+);
+
+const PreviewSeparator = styled.div(
+  (): CSSObject => ({
+    position: "absolute",
+    width: "334px",
+    height: "0px",
+    left: "115px",
+    top: "345px",
+    border: "1px solid #E1E5E9",
+    transform: "rotate(90deg)",
   })
 );
