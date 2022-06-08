@@ -2,7 +2,8 @@ import React, { FC } from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandDesignerProps } from "../types";
-import { BrandSidebar } from "./brand-sidebar";
+import { BrandControls } from "./brand-controls";
+import { BrandPreview } from "./brand-preview";
 
 export const BrandDesigner: FC<BrandDesignerProps> = (opts) => {
   const { config, onChange, onSave } = opts;
@@ -18,7 +19,11 @@ export const BrandDesigner: FC<BrandDesignerProps> = (opts) => {
   return (
     <BrandDesignerContainer>
       <BrandDesignerHeader {...headerOpts} />
-      <BrandSidebar config={config} onChange={onChange} />
+      <BrandDesignerBody>
+        <BrandControls config={config} onChange={onChange} />
+        <PreviewSeparator />
+        <BrandPreview config={config} />
+      </BrandDesignerBody>
     </BrandDesignerContainer>
   );
 };
@@ -32,5 +37,23 @@ const BrandDesignerContainer = styled.div(
     borderRadius: "12px",
     overflow: "hidden",
     backgroundColor: "#fff",
+  })
+);
+
+const BrandDesignerBody = styled.div(
+  (): CSSObject => ({
+    display: "flex",
+    flexDirection: "row",
+    flexBasis: "368px",
+    backgroundColor: "#F9FAFB",
+  })
+);
+
+const PreviewSeparator = styled.div(
+  (): CSSObject => ({
+    width: "0px",
+    height: "330px",
+    marginTop: "17.5px",
+    border: "1px solid #E1E5E9",
   })
 );
