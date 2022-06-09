@@ -24,6 +24,7 @@ jobs:
       - run: yarn build:components
       - uses: jakejarvis/s3-sync-action@master
         with:
+          # Do not use --delete flag. We store previous versions in this bucket.
           args: --acl public-read --follow-symlinks
         env:
           AWS_S3_BUCKET: "courier-components-xvdza5"
