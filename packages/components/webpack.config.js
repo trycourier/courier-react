@@ -12,7 +12,7 @@ module.exports = (_env, argv) => {
   const distPath = path.resolve(__dirname, "./dist");
   const version = require("./package.json").version;
   const latestFilename = isStaging ? "staging.js" : "latest.js";
-  const versionedFilePrefix = isStaging ? "staging-" : "";
+  const versionedFilePrefix = isStaging ? "staging-v" : "v";
 
   return {
     mode: argv.mode ? argv.mode : "development",
