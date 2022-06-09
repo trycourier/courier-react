@@ -2,12 +2,17 @@
 
 # Table of Contents
 
-1. [Overview](#overview)
-2. [Initialization](#initialization)
-3. [Config Options](#config-options)
-4. [Async Init](#async-init)
-5. [Courier SDK](#courier-sdk)
-6. [Configuring Components](#config)
+- [Courier Components](#courier-components)
+- [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [What are Courier Components?](#what-are-courier-components)
+  - [Initialization](#initialization)
+  - [Config Option](#config-option)
+  - [Asynchronous Initialization](#asynchronous-initialization)
+  - [Courier SDK](#courier-sdk)
+  - [SDK Actions](#sdk-actions)
+  - [Configuring Components](#configuring-components)
+  - [Updating Component Configs](#updating-component-configs)
 
 ## [Overview](#overview)
 
@@ -37,7 +42,8 @@ Installation is simple. All you need to do is add `<courier>` components to your
       userId: "{{USER_ID}}",
     };
   </script>
-  <script src="https://courier-components-xvdza5.s3.amazonaws.com/latest.js"></script>
+  <!-- Be sure to use the appropriate version (On or after v1.19.1) -->
+  <script src="https://courier-components-xvdza5.s3.amazonaws.com/v1.19.1.js"></script>
 </body>
 ```
 
