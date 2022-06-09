@@ -2,7 +2,6 @@ import { getAttrsAsJson } from "../lib/get-attrs-as-json";
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import { CourierSdk } from "./CourierSdk";
-import { ClipboardBrandDesigner } from "@trycourier/react-brand-designer";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
@@ -86,7 +85,20 @@ export const CourierComponents: React.FunctionComponent = () => {
         toast: Boolean(toastElement),
       }}
     >
-      <ClipboardBrandDesigner />
+      {inboxElement &&
+        createPortal(
+          <Suspense fallback={<div />}>
+            <Inbox {...inboxConfig} />
+          </Suspense>,
+          inboxElement
+        )}
+      {toastElement &&
+        createPortal(
+          <Suspense fallback={<div />}>
+            <Toast config={toastConfig} />
+          </Suspense>,
+          toastElement
+        )}
     </CourierSdk>
   );
 };
