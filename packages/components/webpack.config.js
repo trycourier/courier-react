@@ -10,7 +10,7 @@ module.exports = (_env, argv) => {
   const isProduction = argv.mode === "production";
   const isStaging = process.env.IS_STAGING;
   const distPath = path.resolve(__dirname, "./dist");
-  const version = require("./package.json").version;
+  const version = require(path.resolve(__dirname, "./package.json")).version;
   const latestFilename = isStaging ? "staging.js" : "latest.js";
   const versionedFilePrefix = isStaging ? "staging-v" : "v";
 
