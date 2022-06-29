@@ -20,6 +20,7 @@ export interface InboxProps {
     markAsUnread?: string;
     markAllAsRead?: string;
     backToInbox?: string;
+    emptyState?: string;
   };
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];

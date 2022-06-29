@@ -42,6 +42,7 @@ const Messages: React.ForwardRefExoticComponent<
       renderMessage,
       renderNoMessages,
       renderTabs,
+      labels,
       title = "Inbox",
     },
     ref
@@ -138,7 +139,8 @@ const Messages: React.ForwardRefExoticComponent<
                     renderNoMessages({})
                   ) : (
                     <Empty>
-                      {brand?.inapp?.emptyState?.text ??
+                      {labels?.emptyState ??
+                        brand?.inapp?.emptyState?.text ??
                         "You have no notifications at this time"}
                     </Empty>
                   ))}
