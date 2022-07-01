@@ -33,7 +33,9 @@ const Messages: React.ForwardRefExoticComponent<
   (
     {
       defaultIcon,
+      formatDate,
       isMobile,
+      labels,
       openLinksInNewTab,
       renderBlocks,
       renderContainer,
@@ -42,7 +44,6 @@ const Messages: React.ForwardRefExoticComponent<
       renderMessage,
       renderNoMessages,
       renderTabs,
-      labels,
       title = "Inbox",
     },
     ref
@@ -124,8 +125,9 @@ const Messages: React.ForwardRefExoticComponent<
                     renderMessage(message)
                   ) : (
                     <Message
-                      key={message.messageId}
                       {...message}
+                      key={message.messageId}
+                      formatDate={formatDate}
                       defaultIcon={defaultIcon}
                       openLinksInNewTab={openLinksInNewTab}
                       renderBlocks={renderBlocks}

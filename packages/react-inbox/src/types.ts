@@ -15,6 +15,7 @@ export interface InboxProps {
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
+  formatDate?: (dateTime: number) => string;
   labels?: {
     markAsRead?: string;
     markAsUnread?: string;

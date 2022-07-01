@@ -247,6 +247,7 @@ export const CustomLabels = () => {
         >
           <Inbox
             isOpen={true}
+            formatDate={(date) => String(date)}
             labels={{
               markAsRead: "markey read pwease",
               markAsUnread: "jk, unread me",
