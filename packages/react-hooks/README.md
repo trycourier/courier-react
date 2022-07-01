@@ -33,7 +33,7 @@ interface ITab {
 interface IMessage {
   unread?: number;
   messageId: string;
-  created: number;
+  created: string;
   title: string;
   body: string;
   blocks?: Array<IActionBlock | ITextBlock>;

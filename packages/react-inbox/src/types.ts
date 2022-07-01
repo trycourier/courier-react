@@ -15,7 +15,7 @@ export interface InboxProps {
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
-  formatDate?: (dateTime: number) => string;
+  formatDate?: (isoDate: string) => string;
   labels?: {
     markAsRead?: string;
     markAsUnread?: string;
@@ -81,7 +81,7 @@ export interface InboxProps {
 export interface IMessage {
   unread?: number;
   messageId: string;
-  created: number;
+  created: string;
   title: string;
   body: string;
   blocks?: Array<IActionBlock | ITextBlock>;

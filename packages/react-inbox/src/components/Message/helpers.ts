@@ -2,7 +2,7 @@ import { useCourier } from "@trycourier/react-provider";
 import distanceInWords from "date-fns/formatDistanceStrict";
 import { MESSAGE_LABELS } from "~/constants";
 
-export const getTimeAgo = (created: number) => {
+export const getTimeAgo = (created: string) => {
   return (
     created &&
     distanceInWords(new Date(created).getTime(), Date.now(), {

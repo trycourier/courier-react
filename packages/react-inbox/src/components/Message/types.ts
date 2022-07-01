@@ -3,7 +3,7 @@ import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 export interface IMessageProps {
   blocks?: Array<ITextBlock | IActionBlock>;
   body: string;
-  created: number;
+  created: string;
   icon?: string;
   messageId: string;
   read?: boolean;
