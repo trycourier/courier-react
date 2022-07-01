@@ -21,6 +21,7 @@ import Markdown from "markdown-to-jsx";
 
 const Message: React.FunctionComponent<
   IMessageProps & {
+    formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
     renderBlocks: InboxProps["renderBlocks"];
@@ -31,11 +32,12 @@ const Message: React.FunctionComponent<
   created,
   data,
   defaultIcon,
-  openLinksInNewTab,
-  renderBlocks,
+  formatDate,
   icon,
   messageId,
+  openLinksInNewTab,
   read,
+  renderBlocks,
   title,
   trackingIds = {},
 }) => {
@@ -54,7 +56,7 @@ const Message: React.FunctionComponent<
       ? false
       : (icon || defaultIcon) ?? brand?.inapp?.icons?.message
   );
-  const timeAgo = getTimeAgo(created);
+  const formattedTime = formatDate ? formatDate(created) : getTimeAgo(created);
   const showMarkAsRead = !read && readTrackingId;
   const showMarkAsUnread = read && unreadTrackingId;
 
@@ -140,7 +142,7 @@ const Message: React.FunctionComponent<
           </>
         )}
       </Contents>
-      <TimeAgo>{timeAgo}</TimeAgo>
+      <TimeAgo>{formattedTime}</TimeAgo>
       {messageOptions?.length ? (
         <OptionsDropdown options={messageOptions} />
       ) : undefined}

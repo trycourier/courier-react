@@ -15,11 +15,13 @@ export interface InboxProps {
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
+  formatDate?: (isoDate: string) => string;
   labels?: {
     markAsRead?: string;
     markAsUnread?: string;
     markAllAsRead?: string;
     backToInbox?: string;
+    emptyState?: string;
   };
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
@@ -79,7 +81,7 @@ export interface InboxProps {
 export interface IMessage {
   unread?: number;
   messageId: string;
-  created: number;
+  created: string;
   title: string;
   body: string;
   blocks?: Array<IActionBlock | ITextBlock>;

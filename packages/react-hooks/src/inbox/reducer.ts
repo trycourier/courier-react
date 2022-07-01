@@ -178,7 +178,7 @@ export default (state: IInbox = initialState, action): IInbox => {
         unreadMessageCount: (state?.unreadMessageCount ?? 0) + 1,
         messages: [
           {
-            created: new Date().getTime(),
+            created: new Date().toISOString(),
             messageId: action.payload.messageId ?? new Date().getTime(),
             title: action.payload.title,
             body: action.payload.body,

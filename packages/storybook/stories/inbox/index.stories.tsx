@@ -31,7 +31,6 @@ import mockMiddleware from "./mock-middleware";
 const API_URL = process.env.API_URL || "";
 const CLIENT_KEY = process.env.CLIENT_KEY || "";
 const USER_ID = process.env.USER_ID || "";
-const WS_URL = process.env.WS_URL || "";
 
 export default {
   title: "Inbox",
@@ -247,6 +246,7 @@ export const CustomLabels = () => {
         >
           <Inbox
             isOpen={true}
+            formatDate={(date) => String(date)}
             labels={{
               markAsRead: "markey read pwease",
               markAsUnread: "jk, unread me",
