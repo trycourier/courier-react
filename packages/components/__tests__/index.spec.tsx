@@ -16,6 +16,10 @@ import {
 import { graphql, rest } from "msw";
 import { setupServer } from "msw/node";
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 const server = setupServer(
   rest.get(
     "https://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production/",
@@ -74,7 +78,7 @@ afterAll(() => {
   server.close();
 });
 
-test("will render an inbox", async () => {
+test("will render an inbox and can change labels", async () => {
   const inbox = document.createElement("courier-inbox");
   document.body.appendChild(inbox);
   render(
@@ -108,5 +112,44 @@ test("will render an inbox", async () => {
   });
 
   fireEvent.click(screen.getByRole("button"));
+  expect(await screen.findByText("NO MESSAGES")).toBeInTheDocument();
+});
+
+test("will render nothing and then render an inbox when the element is inserted", async () => {
+  document.body.innerHTML = "";
+  render(
+    <CourierProvider
+      clientKey="MOCK_CLIENT_KEY"
+      userId="MOCK_USER_ID"
+      wsOptions={{
+        url: "ws://localhost:1234",
+      }}
+    >
+      <CourierComponents />
+    </CourierProvider>
+  );
+
+  const inbox = document.createElement("courier-inbox");
+  document.body.appendChild(inbox);
+
+  act(() => {
+    inbox.setAttribute("is-open", "true");
+  });
+
+  expect(
+    await screen.findByText("You have no notifications at this time")
+  ).toBeInTheDocument();
+
+  act(() => {
+    inbox.setAttribute(
+      "labels",
+      JSON.stringify({
+        emptyState: "NO MESSAGES",
+      })
+    );
+  });
+
+  await wait(100);
+
   expect(await screen.findByText("NO MESSAGES")).toBeInTheDocument();
 });

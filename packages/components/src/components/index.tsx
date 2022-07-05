@@ -59,15 +59,16 @@ export const CourierComponents: React.FunctionComponent = () => {
         switch (mutation.type) {
           case "attributes": {
             const element = mutation.target as Element;
-            const attrs = getAttrsAsJson(mutation.target as Element);
 
             switch (element.tagName.toLowerCase()) {
               case "courier-inbox": {
+                const attrs = getAttrsAsJson(mutation.target as Element);
                 setInboxConfig(deepExtend({}, inboxConfig, attrs));
                 return;
               }
 
               case "courier-toast": {
+                const attrs = getAttrsAsJson(mutation.target as Element);
                 setToastConfig(deepExtend({}, toastConfig, attrs));
                 return;
               }
