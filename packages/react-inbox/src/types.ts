@@ -17,11 +17,12 @@ export interface InboxProps {
   isOpen?: boolean;
   formatDate?: (isoDate: string) => string;
   labels?: {
-    markAsRead?: string;
-    markAsUnread?: string;
-    markAllAsRead?: string;
     backToInbox?: string;
     emptyState?: string;
+    markAllAsRead?: string;
+    markAsRead?: string;
+    markAsUnread?: string;
+    tabs?: string[];
   };
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
