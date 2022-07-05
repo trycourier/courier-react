@@ -90,6 +90,20 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   props = useMemo(() => {
     return {
       openLinksInNewTab: true,
+      tabs: props.tabs ?? [
+        {
+          id: "unread",
+          label: "Unread",
+          filters: {
+            isRead: false,
+          },
+        },
+        {
+          id: "all",
+          label: "All Messages",
+          filters: {},
+        },
+      ],
       ...props,
     };
   }, [props]);

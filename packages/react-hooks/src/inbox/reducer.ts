@@ -1,20 +1,5 @@
 import { IMessage, IInbox } from "./types";
 
-export const DEFAULT_TABS = [
-  {
-    id: "unread",
-    label: "Unread",
-    filters: {
-      isRead: false,
-    },
-  },
-  {
-    id: "all",
-    label: "All Messages",
-    filters: {},
-  },
-];
-
 const makeMessage = (message): IMessage => ({
   blocks: message?.content?.blocks,
   body: message?.content?.body,
@@ -31,8 +16,6 @@ const initialState: IInbox = {
   messages: [],
   view: "messages",
   unreadMessageCount: 0,
-  tabs: DEFAULT_TABS,
-  currentTab: DEFAULT_TABS[0],
 };
 
 export default (state: IInbox = initialState, action): IInbox => {
@@ -62,8 +45,7 @@ export default (state: IInbox = initialState, action): IInbox => {
     case "inbox/SET_CURRENT_TAB": {
       return {
         ...state,
-        messages:
-          state.currentTab?.id !== action.payload?.id ? [] : state.messages,
+        messages: state.currentTab !== action.payload ? [] : state.messages,
         currentTab: action.payload,
       };
     }

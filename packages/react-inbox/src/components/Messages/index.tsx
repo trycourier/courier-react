@@ -44,6 +44,7 @@ const Messages: React.ForwardRefExoticComponent<
       renderMessage,
       renderNoMessages,
       renderTabs,
+      tabs,
       title = "Inbox",
     },
     ref
@@ -58,7 +59,6 @@ const Messages: React.ForwardRefExoticComponent<
       markAllAsRead,
       messages = [],
       startCursor,
-      tabs,
       toggleInbox,
       unreadMessageCount,
       view,
@@ -116,7 +116,11 @@ const Messages: React.ForwardRefExoticComponent<
           )}
           {view === "messages" ? (
             <>
-              {renderTabs ? renderTabs({ tabs, currentTab }) : <TabList />}
+              {renderTabs ? (
+                renderTabs({ tabs, currentTab })
+              ) : (
+                <TabList labels={labels} tabs={tabs} currentTab={currentTab} />
+              )}
               <MessageList
                 ref={messageListRef}
                 isMobile={isMobile}
