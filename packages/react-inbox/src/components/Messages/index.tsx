@@ -98,18 +98,20 @@ const Messages: React.ForwardRefExoticComponent<
           {renderHeader ? (
             renderHeader({
               currentTab,
-              title,
-              unreadMessageCount,
+              labels,
               markAllAsRead,
               messages,
+              title,
+              unreadMessageCount,
             })
           ) : (
             <Header
               currentTab={currentTab}
-              title={title}
-              unreadMessageCount={unreadMessageCount}
+              labels={labels}
               markAllAsRead={markAllAsRead}
               messages={messages}
+              title={title}
+              unreadMessageCount={unreadMessageCount}
             />
           )}
           {view === "messages" ? (
@@ -126,9 +128,10 @@ const Messages: React.ForwardRefExoticComponent<
                   ) : (
                     <Message
                       {...message}
-                      key={message.messageId}
-                      formatDate={formatDate}
                       defaultIcon={defaultIcon}
+                      formatDate={formatDate}
+                      key={message.messageId}
+                      labels={labels}
                       openLinksInNewTab={openLinksInNewTab}
                       renderBlocks={renderBlocks}
                     />

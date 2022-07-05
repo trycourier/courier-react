@@ -1,7 +1,8 @@
-import { getAttrsAsJson } from "../lib/get-attrs-as-json";
-import React, { useState, useEffect, Suspense, lazy } from "react";
-import { createPortal } from "react-dom";
 import { CourierSdk } from "./CourierSdk";
+import { createPortal } from "react-dom";
+import { getAttrsAsJson } from "../lib/get-attrs-as-json";
+import deepExtend from "deep-extend";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
@@ -19,56 +20,97 @@ export const CourierComponents: React.FunctionComponent = () => {
   const initialInbox = querySelector(window?.document?.body, "courier-inbox");
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
 
-  const inboxConfig = {
+  const [inboxConfig, setInboxConfig] = useState({
     ...componentConfigs?.inbox,
     ...getAttrsAsJson(inboxElement),
-  };
+  });
 
   const initialToast = querySelector(window?.document?.body, "courier-toast");
   const [toastElement, setToastElement] = useState(initialToast ?? undefined);
 
-  const toastConfig = {
+  const [toastConfig, setToastConfig] = useState({
     ...componentConfigs?.toast,
     ...getAttrsAsJson(toastElement),
-  };
+  });
+
+  useEffect(() => {
+    if (inboxElement) {
+      window.courier.inbox = {
+        ...window.courier.inbox,
+        setConfig: setInboxConfig,
+        mergeConfig: (newConfig) =>
+          setInboxConfig(deepExtend({}, inboxConfig, newConfig)),
+      };
+    }
+
+    if (toastElement) {
+      window.courier.toast = {
+        ...window.courier.toast,
+        mergeConfig: (newConfig) =>
+          setToastConfig(deepExtend({}, toastConfig, newConfig)),
+        setConfig: setToastConfig,
+      };
+    }
+  }, [toastConfig, inboxConfig, inboxElement, toastElement]);
 
   useEffect(() => {
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
-        if (mutation.type !== "childList") {
-          return;
-        }
+        switch (mutation.type) {
+          case "attributes": {
+            const element = mutation.target as Element;
+            const attrs = getAttrsAsJson(mutation.target as Element);
 
-        mutation.addedNodes.forEach((component) => {
-          const element = component as HTMLElement;
-          const tagName = element?.tagName?.toLowerCase();
-
-          switch (tagName) {
-            case "courier-inbox":
-              setInboxElement(element);
-              return;
-
-            case "courier-toast":
-              setToastElement(element);
-              return;
-
-            default: {
-              const childInbox = querySelector(element, "courier-inbox");
-              if (childInbox) {
-                setInboxElement(childInbox);
+            switch (element.tagName.toLowerCase()) {
+              case "courier-inbox": {
+                setInboxConfig(deepExtend({}, inboxConfig, attrs));
+                return;
               }
-              const childToast = querySelector(element, "courier-toast");
-              if (childToast) {
-                setToastElement(childToast);
+
+              case "courier-toast": {
+                setToastConfig(deepExtend({}, toastConfig, attrs));
+                return;
               }
             }
+
+            break;
           }
-        });
+
+          case "childList": {
+            mutation.addedNodes.forEach((component) => {
+              const element = component as HTMLElement;
+              const tagName = element?.tagName?.toLowerCase();
+
+              switch (tagName) {
+                case "courier-inbox":
+                  setInboxElement(element);
+                  return;
+
+                case "courier-toast":
+                  setToastElement(element);
+                  return;
+
+                default: {
+                  const childInbox = querySelector(element, "courier-inbox");
+                  if (childInbox) {
+                    setInboxElement(childInbox);
+                  }
+                  const childToast = querySelector(element, "courier-toast");
+                  if (childToast) {
+                    setToastElement(childToast);
+                  }
+
+                  return;
+                }
+              }
+            });
+          }
+        }
       }
     });
 
     observer.observe(document.body, {
-      attributes: false,
+      attributes: true,
       childList: true,
       subtree: true,
     });
@@ -76,7 +118,7 @@ export const CourierComponents: React.FunctionComponent = () => {
     return () => {
       observer.disconnect();
     };
-  }, [inboxElement, toastElement]);
+  }, [inboxConfig, toastConfig]);
 
   return (
     <CourierSdk

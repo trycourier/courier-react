@@ -3,6 +3,8 @@ import { render } from "react-dom";
 
 import { CourierProvider, WSOptions } from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
+import { InboxProps } from "@trycourier/react-inbox";
+import { IToastConfig } from "@trycourier/react-toast/typings/types";
 
 declare global {
   interface Window {
@@ -11,11 +13,13 @@ declare global {
         [action: string]: Array<() => void>;
       };
       toast?: {
-        setConfig?: (config: any) => void;
+        mergeConfig?: (config: IToastConfig) => void;
+        setConfig?: (config: IToastConfig) => void;
         add?: (message: { title: string; body: string }) => void;
       };
       inbox?: {
-        setConfig?: (config: any) => void;
+        mergeConfig?: (config: InboxProps) => void;
+        setConfig?: (config: InboxProps) => void;
         config?: any;
       };
       transport?: any;

@@ -25,13 +25,14 @@ export const SettingsIconButton = styled.button`
 `;
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
-  title,
-  unreadMessageCount,
   currentTab,
+  labels,
   markAllAsRead,
   messages = [],
+  title,
+  unreadMessageCount,
 }) => {
-  const { inbox, brand } = useCourier();
+  const { brand } = useCourier();
   const { view, setView } = useInbox();
   const handleSetView = (newView) => (event: React.MouseEvent) => {
     event.preventDefault();
@@ -51,7 +52,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <div className="actions">
         {currentTab?.filters?.isRead === false && messages.length > 0 && (
           <MarkAllAsRead onClick={markAllAsRead} style={{ cursor: "pointer" }}>
-            {inbox?.labels?.markAllAsRead ?? "Mark all as read"}
+            {labels?.markAllAsRead ?? "Mark all as read"}
           </MarkAllAsRead>
         )}
         {brand?.preferenceTemplates?.length > 0 && (
@@ -66,7 +67,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <Heading flexDirection="column">
         Preferences
         <PreferenceSubHeader onClick={handleSetView("messages")}>
-          {`◀ ${inbox?.labels?.backToInbox ?? "Back to Inbox"}`}
+          {`◀ ${labels?.backToInbox ?? "Back to Inbox"}`}
         </PreferenceSubHeader>
       </Heading>
       <SettingsIconButton onClick={handleSetView("messages")}>

@@ -21,6 +21,7 @@ import Markdown from "markdown-to-jsx";
 
 const Message: React.FunctionComponent<
   IMessageProps & {
+    labels: InboxProps["labels"];
     formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
@@ -34,6 +35,7 @@ const Message: React.FunctionComponent<
   defaultIcon,
   formatDate,
   icon,
+  labels,
   messageId,
   openLinksInNewTab,
   read,
@@ -61,12 +63,13 @@ const Message: React.FunctionComponent<
   const showMarkAsUnread = read && unreadTrackingId;
 
   const messageOptions = useMessageOptions({
-    showMarkAsRead,
-    showMarkAsUnread,
+    labels,
     markMessageRead,
     markMessageUnread,
     messageId,
     readTrackingId,
+    showMarkAsRead,
+    showMarkAsUnread,
     unreadTrackingId,
   });
 
