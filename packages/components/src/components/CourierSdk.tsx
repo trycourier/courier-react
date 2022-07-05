@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useInbox } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
 
 export const CourierSdk: React.FunctionComponent<{
@@ -9,9 +8,9 @@ export const CourierSdk: React.FunctionComponent<{
   };
 }> = ({ activeComponents, children }) => {
   const courier = useCourier();
-  const inbox = useInbox();
 
-  if (!window.courier.transport) {
+  if (!window?.courier?.transport) {
+    window.courier = window.courier ?? {};
     window.courier.transport = courier.transport;
   }
 
@@ -23,26 +22,8 @@ export const CourierSdk: React.FunctionComponent<{
         continue;
       }
 
-      switch (typedComponent) {
-        case "inbox": {
-          window.courier.inbox = {
-            ...inbox,
-            setConfig: courier.initInbox,
-          };
-          break;
-        }
-
-        case "toast": {
-          window.courier.toast = {
-            ...courier.toast,
-            setConfig: courier.initToast,
-          };
-          break;
-        }
-      }
-
       const initActions =
-        window.courier.__actions[`${typedComponent}/init`] ?? [];
+        window?.courier?.__actions?.[`${typedComponent}/init`] ?? [];
       for (const initAction of initActions) {
         initAction();
       }

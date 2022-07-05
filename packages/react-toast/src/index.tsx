@@ -9,6 +9,7 @@ import deepExtend from "deep-extend";
 export { useToast } from "./hooks";
 export { Toast };
 export { ToastBody } from "./components";
+export type ToastProps = IToastConfig;
 
 export const ToastProvider: React.FunctionComponent<
   ICourierContext & {

@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
-import { ICourierToastMessage } from "../Toast/types";
 import {
   Container,
   Message,
@@ -11,18 +10,14 @@ import {
 } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, ICourierMessage } from "@trycourier/react-provider";
 import Markdown from "markdown-to-jsx";
 
-const Body: React.FunctionComponent<Partial<ICourierToastMessage>> = ({
-  title,
-  body,
-  blocks,
-  icon,
-  data,
-  onClick,
-  ...props
-}) => {
+const Body: React.FunctionComponent<
+  ICourierMessage & {
+    onClick?: (event: React.MouseEvent) => void;
+  }
+> = ({ title, body, blocks, icon, data, onClick, ...props }) => {
   const { toastProps } = props as { toastProps: any };
   const [, { config }] = useToast();
   const { brand: courierBrand } = useCourier();

@@ -2,7 +2,7 @@ import { camelCase } from "camel-case";
 
 export const getAttrsAsJson = (element?: Element) => {
   if (!element) {
-    return;
+    return {};
   }
 
   return Array.from(element.attributes).reduce(
