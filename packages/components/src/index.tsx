@@ -4,7 +4,7 @@ import { render } from "react-dom";
 import { CourierProvider, WSOptions } from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
-import { IToastConfig } from "@trycourier/react-toast/typings/types";
+import { ToastProps } from "@trycourier/react-toast";
 
 declare global {
   interface Window {
@@ -13,8 +13,8 @@ declare global {
         [action: string]: Array<() => void>;
       };
       toast?: {
-        mergeConfig?: (config: IToastConfig) => void;
-        setConfig?: (config: IToastConfig) => void;
+        mergeConfig?: (config: ToastProps) => void;
+        setConfig?: (config: ToastProps) => void;
         add?: (message: { title: string; body: string }) => void;
       };
       inbox?: {
