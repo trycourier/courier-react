@@ -9,7 +9,6 @@
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
-    "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
     "types": "tsc --build"
   },

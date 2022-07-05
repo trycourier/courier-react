@@ -23,6 +23,7 @@
     "start": "lerna run build:watch --stream --parallel & yarn types & lerna run storybook --stream",
     "test:components": "lerna run test --scope @trycourier/components --stream",
     "test:gql": "lerna run test --scope @trycourier/client-graphql --stream",
+    "test": "lerna run test --stream --parallel",
     "type-check": "lerna run type-check --parallel --stream",
     "type-coverage:detail": "type-coverage --strict --detail",
     "type-coverage": "type-coverage --strict --at-least 92",

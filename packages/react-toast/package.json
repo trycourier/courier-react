@@ -15,7 +15,6 @@
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",
-    "test": "jest -c jest.config.js --runInBand --silent",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --build"
