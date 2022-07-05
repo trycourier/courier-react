@@ -45,7 +45,8 @@ export default (state: IInbox = initialState, action): IInbox => {
     case "inbox/SET_CURRENT_TAB": {
       return {
         ...state,
-        messages: state.currentTab !== action.payload ? [] : state.messages,
+        messages:
+          state.currentTab?.id !== action.payload?.id ? [] : state.messages,
         currentTab: action.payload,
       };
     }

@@ -90,7 +90,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   props = useMemo(() => {
     return {
       openLinksInNewTab: true,
-      tabs: props.tabs ?? [
+      tabs: [
         {
           id: "unread",
           label: "Unread",
