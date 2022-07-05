@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { toast } from "react-toastify";
-import { ICourierToastMessage } from "../Toast/types";
 import {
   Container,
   Message,

@@ -2,13 +2,16 @@ import React, { useCallback, useEffect } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { toast } from "react-toastify";
 
-import { useCourier, registerReducer } from "@trycourier/react-provider";
+import {
+  useCourier,
+  registerReducer,
+  ICourierMessage,
+} from "@trycourier/react-provider";
 
 import toastCss from "react-toastify/dist/ReactToastify.css";
 import { getTransition } from "../../lib";
 import { ToastStyled } from "./styled";
 import reducer from "~/reducer";
-import { ICourierToastMessage } from "~/components/Toast/types";
 import { IToastConfig } from "~/types";
 import { useListenForTransportEvent } from "~/hooks";
 import Body from "~/components/Body";
@@ -37,13 +40,13 @@ export const Toast: React.FunctionComponent<
   const brand = config?.brand ?? courierBrand;
 
   const handleToast = useCallback(
-    (message: ICourierToastMessage | string) => {
+    (message: ICourierMessage | string) => {
       message =
         typeof message === "string"
           ? ({
               body: message,
               icon: undefined,
-            } as ICourierToastMessage)
+            } as ICourierMessage)
           : message;
 
       toast(<Body {...message} icon={message?.icon ?? config?.defaultIcon} />, {
