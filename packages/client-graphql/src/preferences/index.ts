@@ -3,7 +3,7 @@ import { ICourierClientBasicParams } from "../types";
 import { createCourierClient } from "../client";
 
 const RECIPIENT_PREFERENCES = `
-  query {
+  query GetRecipientPreferences {
     recipientPreferences {
       nodes {
         templateId
@@ -26,7 +26,7 @@ export const getRecipientPreferences = (
 };
 
 const UPDATE_RECIPIENT_PREFERENCES = `
-  mutation($id: String!, $preferences: PreferencesInput!) {
+  mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!) {
     updatePreferences(templateId: $id preferences: $preferences)
   }
 `;

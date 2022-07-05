@@ -16,5 +16,4 @@ module.exports = {
     "@babel/preset-env",
     "@babel/preset-react",
   ],
-  ignore: ["src/__tests__", "src/__mocks__"],
 };

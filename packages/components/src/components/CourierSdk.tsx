@@ -9,7 +9,8 @@ export const CourierSdk: React.FunctionComponent<{
 }> = ({ activeComponents, children }) => {
   const courier = useCourier();
 
-  if (!window.courier.transport) {
+  if (!window?.courier?.transport) {
+    window.courier = window.courier ?? {};
     window.courier.transport = courier.transport;
   }
 
@@ -22,7 +23,7 @@ export const CourierSdk: React.FunctionComponent<{
       }
 
       const initActions =
-        window.courier.__actions[`${typedComponent}/init`] ?? [];
+        window?.courier?.__actions?.[`${typedComponent}/init`] ?? [];
       for (const initAction of initActions) {
         initAction();
       }

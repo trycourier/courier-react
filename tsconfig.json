@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "packages/components" },
     { "path": "packages/client-graphql" },
     { "path": "packages/react-hooks" },
     { "path": "packages/react-inbox" },
