@@ -9,7 +9,6 @@ export type PreferenceItemComponentFn = React.FunctionComponent<{
 export type ChannelClassification = "direct_message" | "email" | "push";
 
 export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
-export type RoutingOptions = "direct_message" | "email" | "push";
 
 export type SnoozePreference = {
   start?: string;
@@ -32,5 +31,5 @@ export interface IRecipientPreference {
   templateId: string;
   status: PreferenceStatus;
   hasCustomRouting: boolean;
-  routingPreferences: Array<RoutingOptions>;
+  routingPreferences: Array<ChannelClassification>;
 }
