@@ -29,27 +29,29 @@ export const PreferenceList: React.FunctionComponent<{
   }, []);
 
   return (
-    <ThemeProvider
-      theme={{
-        ...props.theme,
-        brand,
-      }}
-    >
-      <StyledList>
-        {preferences?.isLoading || !brand?.preferenceTemplates?.length ? (
-          <></>
-        ) : (
-          brand?.preferenceTemplates?.map((template) => (
-            <PreferenceTemplate
-              key={template.templateId}
-              preferenceTemplate={template}
-              recipientPreference={preferences?.recipientPreferences?.find(
-                (preference) => preference.templateId === template.templateId
-              )}
-            ></PreferenceTemplate>
-          ))
-        )}
-      </StyledList>
-    </ThemeProvider>
+    <>
+      <ThemeProvider
+        theme={{
+          ...props.theme,
+          brand,
+        }}
+      >
+        <StyledList>
+          {preferences?.isLoading || !brand?.preferenceTemplates?.length ? (
+            <></>
+          ) : (
+            brand?.preferenceTemplates?.map((template) => (
+              <PreferenceTemplate
+                key={template.templateId}
+                preferenceTemplate={template}
+                recipientPreference={preferences?.recipientPreferences?.find(
+                  (preference) => preference.templateId === template.templateId
+                )}
+              ></PreferenceTemplate>
+            ))
+          )}
+        </StyledList>
+      </ThemeProvider>
+    </>
   );
 };
