@@ -1,7 +1,7 @@
 import { useCourier } from "@trycourier/react-provider";
 import React, { useState } from "react";
 import styled from "styled-components";
-// import { PreferenceItemComponentFn } from "../types";
+import { ChannelClassification, IRecipientPreference } from "~/types";
 import Checkmark from "../assets/checkmark-small.svg";
 
 const StyledItem = styled.div`
@@ -36,7 +36,7 @@ const ChannelOption = styled.div`
   width: 64px;
   height: 20px;
 
-  background: #1e4637;
+  background: #9122c2;
   border-radius: 12px;
   color: white;
 
@@ -73,17 +73,11 @@ const Channel = styled.label`
   user-select: none;
 `;
 
-const DisplayChannel = (channel) => {
-  switch (channel) {
-    case "email":
-      return "Email";
-      break;
-    case "push":
-      return "Push";
-      break;
-    case "direct_message":
-      return "SMS";
-      break;
+const DisplayChannel = (channel: ChannelClassification) => {
+  if (channel === "direct_message") {
+    return "SMS";
+  } else {
+    return channel.toUpperCase();
   }
 };
 
@@ -106,19 +100,18 @@ const DeliveryChannel = ({ channel, handleRouting, checked }) => {
   );
 };
 
-type ChannelPreferencesProps = {
-  onPreferenceChange: any;
+export const ChannelPreferences: React.FC<{
+  onPreferenceChange: (IRecipientPreference) => void;
   templateId: string;
-};
-
-export const ChannelPreferences: React.FC<ChannelPreferencesProps> = ({
-  onPreferenceChange,
-  templateId,
-}) => {
+}> = ({ onPreferenceChange, templateId }) => {
   const { preferences } = useCourier();
 
+  if (!preferences) {
+    return null;
+  }
+
   const filteredPreference = preferences?.recipientPreferences.filter(
-    (p) => p.templateId === templateId
+    (p: IRecipientPreference) => p.templateId === templateId
   )[0];
 
   const initialState = filteredPreference?.hasCustomRouting ?? false;
@@ -140,7 +133,7 @@ export const ChannelPreferences: React.FC<ChannelPreferencesProps> = ({
 
   const handleRouting = (newChannel) => {
     const newRouting = initialRouting.includes(newChannel)
-      ? initialRouting?.filter((c) => c !== newChannel)
+      ? initialRouting?.filter((c: ChannelClassification) => c !== newChannel)
       : initialRouting.concat(newChannel);
 
     onPreferenceChange({
@@ -151,10 +144,6 @@ export const ChannelPreferences: React.FC<ChannelPreferencesProps> = ({
 
     setRouting(newRouting);
   };
-
-  if (!preferences) {
-    return null;
-  }
 
   return (
     <>
