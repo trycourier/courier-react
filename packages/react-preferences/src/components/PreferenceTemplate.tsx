@@ -49,8 +49,8 @@ export const PreferenceTemplate: React.FunctionComponent<{
             ? "REQUIRED"
             : recipientPreference?.status ?? preferenceTemplate?.defaultStatus
         }
-        hasCustomRouting={recipientPreference?.hasCustomRouting}
         onPreferenceChange={handleOnPreferenceChange}
+        templateId={preferenceTemplate.templateId}
       />
     </StyledItem>
   );

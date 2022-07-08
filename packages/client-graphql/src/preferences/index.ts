@@ -24,7 +24,6 @@ export const getRecipientPreferences = (
   }
 
   const results = await client.query(RECIPIENT_PREFERENCES).toPromise();
-  console.log(results.data?.recipientPreferences.nodes);
   return results.data?.recipientPreferences.nodes;
 };
 

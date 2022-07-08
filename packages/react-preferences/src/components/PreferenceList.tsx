@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useCourier, registerReducer } from "@trycourier/react-provider";
-
 import { PreferenceTemplate } from "./PreferenceTemplate";
 import reducer from "~/reducer";
 import usePreferenceActions from "~/hooks/use-preferences-actions";

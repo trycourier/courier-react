@@ -5,6 +5,7 @@ export type PreferenceItemComponentFn = React.FunctionComponent<{
   value: PreferenceStatus | ChannelClassification[] | SnoozePreference;
   hasCustomRouting?: boolean;
   onPreferenceChange: (changes: Partial<IPreference>) => void;
+  templateId: string;
 }>;
 
 export type ChannelClassification = "direct_message" | "email" | "push";
