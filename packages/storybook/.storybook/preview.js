@@ -1,9 +1,8 @@
 import React from "react";
 
 import { Normalize } from "styled-normalize";
-import { addParameters, addDecorator } from "@storybook/react";
+import { addDecorator } from "@storybook/react";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
-import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
 import githubCss from "./github.css";
 import styled from "styled-components";
 
@@ -15,13 +14,6 @@ const Styled = styled.div`
     max-width: 100%;
   }
 `;
-
-addParameters({
-  docs: {
-    container: DocsContainer,
-    page: DocsPage,
-  },
-});
 
 addDecorator((storyFn) =>
   React.createElement(() => (

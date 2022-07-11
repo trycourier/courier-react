@@ -1,31 +1,3 @@
-module.exports = {
-  sourceType: "unambiguous",
-  plugins: [
-    "inline-react-svg",
-    "@babel/transform-runtime",
-    "transform-inline-environment-variables",
-    "babel-plugin-styled-components",
-    "transform-class-properties",
-    [
-      "babel-plugin-inline-import",
-      {
-        extensions: [".css"],
-      },
-    ],
-    ["babel-plugin-react-remove-properties", { properties: ["data-testid"] }],
-    [
-      "babel-plugin-root-import",
-      {
-        root: __dirname,
-        rootPathSuffix: "./src",
-        rootPathPrefix: "~/",
-      },
-    ],
-  ].filter(Boolean),
-  presets: [
-    "@babel/preset-typescript",
-    "@babel/preset-env",
-    "@babel/preset-react",
-  ],
-  ignore: ["src/__tests__", "src/__mocks__"],
-};
+/* eslint-disable @typescript-eslint/no-var-requires */
+const babelConfig = require("../../babel.config.react");
+module.exports = babelConfig(__dirname);
