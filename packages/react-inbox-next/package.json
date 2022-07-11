@@ -2,6 +2,7 @@
   "name": "@trycourier/react-inbox-next",
   "version": "1.21.1",
   "description": "",
+  "private": true,
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {
