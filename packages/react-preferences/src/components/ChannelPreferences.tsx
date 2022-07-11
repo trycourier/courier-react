@@ -1,90 +1,35 @@
-import { useCourier } from "@trycourier/react-provider";
 import React, { useState } from "react";
-import styled from "styled-components";
+import { useCourier } from "@trycourier/react-provider";
 import { ChannelClassification, IRecipientPreference } from "~/types";
-import Checkmark from "../assets/checkmark-small.svg";
-
-const StyledItem = styled.div`
-  display: flex;
-  align-items: center;
-  text-align-center;
-  background: rgba(213, 221, 228, 0.4);
-  border-radius: 15px;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 16px;
-
-  padding: 5px;
-
-  div {
-    margin-right: 7px;
-    white-space: nowrap;
-  }
-
-  input {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-  }
-
-  margin-top: 5px;
-`;
-
-const ChannelOption = styled.div`
-  display: flex;
-  width: 64px;
-  height: 20px;
-
-  background: #9122c2;
-  border-radius: 12px;
-  color: white;
-
-  font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 16px;
-
-  justify-content: center;
-  align-items: center;
-  margin: 0 1px 0 1px;
-
-  svg {
-    display: normal;
-    margin-right: 3px;
-  }
-`;
-
-const Input = styled.input`
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-`;
-
-const Channel = styled.label`
-  display: block;
-  position: relative;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-`;
+import {
+  Channel,
+  ChannelCustomizationToggle,
+  ChannelOption,
+  Check,
+  Input,
+  StyledItem,
+} from "./ChannelPreferenceStyles";
 
 const DisplayChannel = (channel: ChannelClassification) => {
   if (channel === "direct_message") {
     return "SMS";
   } else {
-    return channel.toUpperCase();
+    return channel.charAt(0).toUpperCase() + channel.slice(1);
   }
+};
+
+const Checkmark = () => {
+  return (
+    <Check viewBox="0 0 9 8">
+      <path d="M3.0005 7.09954C2.84689 7.09954 2.69328 7.04074 2.57567 6.92433L0.175512 4.52417C-0.0585039 4.29015 -0.0585039 3.90973 0.175512 3.67571C0.409527 3.4417 0.789953 3.4417 1.02397 3.67571L3.0005 5.65104L7.97603 0.675512C8.21005 0.441496 8.59047 0.441496 8.82449 0.675512C9.0585 0.909527 9.0585 1.28995 8.82449 1.52397L3.42413 6.92433C3.30772 7.04074 3.15411 7.09954 3.0005 7.09954Z" />
+    </Check>
+  );
 };
 
 const DeliveryChannel = ({ channel, handleRouting, checked }) => {
   return (
     <Channel>
-      <ChannelOption>
+      <label>
         <Input
           type="checkbox"
           onChange={() => {
@@ -92,10 +37,11 @@ const DeliveryChannel = ({ channel, handleRouting, checked }) => {
           }}
           checked={checked}
         />
-
-        {checked && <Checkmark />}
-        <div>{DisplayChannel(channel)}</div>
-      </ChannelOption>
+        <ChannelOption>
+          {checked && <Checkmark />}
+          <div>{DisplayChannel(channel)}</div>
+        </ChannelOption>
+      </label>
     </Channel>
   );
 };
@@ -132,9 +78,9 @@ export const ChannelPreferences: React.FC<{
   };
 
   const handleRouting = (newChannel) => {
-    const newRouting = initialRouting.includes(newChannel)
-      ? initialRouting?.filter((c: ChannelClassification) => c !== newChannel)
-      : initialRouting.concat(newChannel);
+    const newRouting = routing.includes(newChannel)
+      ? routing?.filter((c: ChannelClassification) => c !== newChannel)
+      : routing.concat(newChannel);
 
     onPreferenceChange({
       routingPreferences: newRouting,
@@ -146,23 +92,24 @@ export const ChannelPreferences: React.FC<{
   };
 
   return (
-    <>
-      <StyledItem>
-        <input
-          type="radio"
+    <StyledItem>
+      <ChannelCustomizationToggle>
+        <Input
+          type="checkbox"
           checked={checked}
           onClick={handleDeliveryChannels}
         />
-        <div>Customize Delivery Channel</div>
-        {checked &&
-          ["direct_message", "email", "push"].map((fixedChannels) => (
-            <DeliveryChannel
-              channel={fixedChannels}
-              handleRouting={handleRouting}
-              checked={routing.includes(fixedChannels)}
-            />
-          ))}
-      </StyledItem>
-    </>
+        <div>{checked && <Checkmark />}</div>
+      </ChannelCustomizationToggle>
+      <div>Customize Delivery Channel</div>
+      {checked &&
+        ["direct_message", "email", "push"].map((fixedChannels) => (
+          <DeliveryChannel
+            channel={fixedChannels}
+            handleRouting={handleRouting}
+            checked={routing.includes(fixedChannels)}
+          />
+        ))}
+    </StyledItem>
   );
 };
