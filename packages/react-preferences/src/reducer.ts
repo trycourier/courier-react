@@ -1,11 +1,13 @@
-import { IPreferenceTemplate } from "./types";
+import { IPreferenceTemplate, IRecipientPreference } from "./types";
 
 export interface PreferenceState {
   preferences?: IPreferenceTemplate[];
+  recipientPreferences?: IRecipientPreference[];
 }
 
 const initialState: PreferenceState = {
   preferences: undefined,
+  recipientPreferences: undefined,
 };
 
 export default (state: PreferenceState = initialState, action) => {
@@ -34,12 +36,12 @@ export default (state: PreferenceState = initialState, action) => {
       return {
         ...state,
         isUpdating: false,
-        recipientPreferences: state.preferences?.map((preference) => {
+        recipientPreferences: state.recipientPreferences?.map((preference) => {
           if (preference.templateId === action?.payload?.templateId) {
             return action?.payload;
+          } else {
+            return preference;
           }
-
-          return preference;
         }),
       };
     }

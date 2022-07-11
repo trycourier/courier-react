@@ -8,6 +8,8 @@ const RECIPIENT_PREFERENCES = `
       nodes {
         templateId
         status
+        hasCustomRouting
+        routingPreferences
       }
     }
   }
@@ -34,6 +36,8 @@ const UPDATE_RECIPIENT_PREFERENCES = `
 type UpdateRecipientPreferences = (payload: {
   templateId: string;
   status: string;
+  hasCustomRouting: boolean;
+  routingPreferences: Array<string>;
 }) => Promise<any>;
 export const updateRecipientPreferences = (
   client: Client | undefined
@@ -45,7 +49,11 @@ export const updateRecipientPreferences = (
   await client
     .mutation(UPDATE_RECIPIENT_PREFERENCES, {
       id: payload.templateId,
-      preferences: { status: payload.status },
+      preferences: {
+        status: payload.status,
+        hasCustomRouting: payload.hasCustomRouting,
+        routingPreferences: payload.routingPreferences,
+      },
     })
     .toPromise();
 

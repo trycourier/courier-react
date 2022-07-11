@@ -3,7 +3,9 @@ export type Preference = "channel_preferences" | "status" | "snooze";
 export type PreferenceItemComponentFn = React.FunctionComponent<{
   label?: string;
   value: PreferenceStatus | ChannelClassification[] | SnoozePreference;
+  hasCustomRouting?: boolean;
   onPreferenceChange: (changes: Partial<IPreference>) => void;
+  templateId: string;
 }>;
 
 export type ChannelClassification = "direct_message" | "email" | "push";
@@ -30,4 +32,6 @@ export interface IPreferenceTemplate {
 export interface IRecipientPreference {
   templateId: string;
   status: PreferenceStatus;
+  hasCustomRouting: boolean;
+  routingPreferences: Array<ChannelClassification>;
 }

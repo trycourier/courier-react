@@ -9,7 +9,7 @@ const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;
   padding: 12px 18px;
   margin-top: 6px;
-  background: #f9fafb;
+  background: white;
   border-radius: 4px;
   color: #333;
 
@@ -50,6 +50,7 @@ export const PreferenceTemplate: React.FunctionComponent<{
             : recipientPreference?.status ?? preferenceTemplate?.defaultStatus
         }
         onPreferenceChange={handleOnPreferenceChange}
+        templateId={preferenceTemplate.templateId}
       />
     </StyledItem>
   );

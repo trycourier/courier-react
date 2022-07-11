@@ -175,6 +175,7 @@ export function MultipleInbox(): React.ReactElement {
       <Toast />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Inbox />
+        <UseInbox />
         <CourierProvider
           wsOptions={{
             url: process.env.WS_URL,
