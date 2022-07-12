@@ -22,6 +22,11 @@ export const StyledItem = styled.div`
   margin-top: 15px;
 `;
 
+export const Channels = styled.div`
+  display: flex;
+  margin-left: 70px;
+`;
+
 export const Input = styled.input`
   position: absolute;
   opacity: 0;
@@ -63,7 +68,6 @@ export const ChannelOption = styled.div`
 `;
 
 export const Channel = styled.div`
-
   label {
     display: block;
     position: relative;
@@ -71,7 +75,7 @@ export const Channel = styled.div`
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none; 
+    user-select: none;
   }
 
   ${Input}:checked ~ ${ChannelOption} {
@@ -101,7 +105,7 @@ export const ChannelCustomizationToggle = styled.label`
     margin: 0 2.5px;
     position: static;
     background-color: !white;
-  
+
     display: flex;
     align-items: center;
   }
@@ -112,6 +116,6 @@ export const ChannelCustomizationToggle = styled.label`
 
   ${Input}:checked ~ div {
     border: 0;
-    background-color: #1E4637;
+    background-color: #1e4637;
   }
 `;
