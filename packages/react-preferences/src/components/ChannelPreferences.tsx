@@ -5,17 +5,14 @@ import {
   Channel,
   ChannelCustomizationToggle,
   ChannelOption,
+  Channels,
   Check,
   Input,
   StyledItem,
 } from "./ChannelPreferenceStyles";
 
 const DisplayChannel = (channel: ChannelClassification) => {
-  if (channel === "direct_message") {
-    return "SMS";
-  } else {
-    return channel.charAt(0).toUpperCase() + channel.slice(1);
-  }
+  return channel.charAt(0).toUpperCase() + channel.slice(1);
 };
 
 const Checkmark = () => {
@@ -70,10 +67,10 @@ export const ChannelPreferences: React.FC<{
     onPreferenceChange({
       hasCustomRouting: !checked,
       status: "OPTED_IN",
-      routingPreferences: !checked ? ["direct_message", "email", "push"] : [],
+      routingPreferences: !checked ? ["email", "push"] : [],
     });
 
-    setRouting(["direct_message", "email", "push"]);
+    setRouting(["email", "push"]);
     setChecked(!checked);
   };
 
@@ -102,14 +99,16 @@ export const ChannelPreferences: React.FC<{
         <div>{checked && <Checkmark />}</div>
       </ChannelCustomizationToggle>
       <div>Customize Delivery Channel</div>
-      {checked &&
-        ["direct_message", "email", "push"].map((fixedChannels) => (
-          <DeliveryChannel
-            channel={fixedChannels}
-            handleRouting={handleRouting}
-            checked={routing.includes(fixedChannels)}
-          />
-        ))}
+      <Channels>
+        {checked &&
+          ["email", "push"].map((fixedChannels) => (
+            <DeliveryChannel
+              channel={fixedChannels}
+              handleRouting={handleRouting}
+              checked={routing.includes(fixedChannels)}
+            />
+          ))}
+      </Channels>
     </StyledItem>
   );
 };
