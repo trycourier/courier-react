@@ -1,9 +1,4 @@
-import { IPreferenceTemplate, IRecipientPreference } from "./types";
-
-export interface PreferenceState {
-  preferences?: IPreferenceTemplate[];
-  recipientPreferences?: IRecipientPreference[];
-}
+import { PreferenceState } from "./types";
 
 const initialState: PreferenceState = {
   preferences: undefined,
@@ -39,9 +34,8 @@ export default (state: PreferenceState = initialState, action) => {
         recipientPreferences: state.recipientPreferences?.map((preference) => {
           if (preference.templateId === action?.payload?.templateId) {
             return action?.payload;
-          } else {
-            return preference;
           }
+          return preference;
         }),
       };
     }

@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { useCourier, registerReducer } from "@trycourier/react-provider";
+import { usePreferences } from "@trycourier/react-hooks";
+import { useCourier } from "@trycourier/react-provider";
 import { PreferenceTemplate } from "./PreferenceTemplate";
-import reducer from "~/reducer";
-import usePreferenceActions from "~/hooks/use-preferences-actions";
 import styled, { ThemeProvider, ThemeProps } from "styled-components";
 
 export const StyledList = styled.div`
@@ -19,12 +18,11 @@ export const PreferenceList: React.FunctionComponent<{
   // TODO: define Preferences theming
   theme?: ThemeProps<any>;
 }> = (props) => {
-  const { brand, preferences } = useCourier();
-  const { fetchRecipientPreferences } = usePreferenceActions();
+  const { brand } = useCourier();
+  const preferences = usePreferences();
 
   useEffect(() => {
-    registerReducer("preferences", reducer);
-    fetchRecipientPreferences();
+    preferences.fetchRecipientPreferences();
   }, []);
 
   return (

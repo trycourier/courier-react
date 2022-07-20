@@ -8,9 +8,10 @@ import useInboxActions from "./use-inbox-actions";
 import { IInbox } from "./types";
 
 const useInbox = () => {
-  const { dispatch, inbox, transport, brand } = useCourier<{
-    inbox: IInbox;
-  }>();
+  const { dispatch, inbox, transport, brand } =
+    useCourier<{
+      inbox: IInbox;
+    }>();
 
   const actions = useInboxActions();
 
