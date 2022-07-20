@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import usePreferenceActions from "~/hooks/use-preferences-actions";
+import { usePreferences } from "@trycourier/react-hooks";
 
 import { StatusPreference } from "./Status";
 import { IPreferenceTemplate, IRecipientPreference } from "../types";
@@ -27,7 +27,7 @@ export const PreferenceTemplate: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
   recipientPreference?: IRecipientPreference;
 }> = ({ preferenceTemplate, recipientPreference }) => {
-  const { updateRecipientPreferences } = usePreferenceActions();
+  const { updateRecipientPreferences } = usePreferences();
 
   const handleOnPreferenceChange = (newPreferences) => {
     updateRecipientPreferences({

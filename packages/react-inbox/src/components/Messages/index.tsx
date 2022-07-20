@@ -1,9 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import {
-  PreferenceList,
-  usePreferencesActions,
-} from "@trycourier/react-preferences";
+import { PreferenceList } from "@trycourier/react-preferences";
 
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import Header from "./Header";
@@ -11,7 +8,7 @@ import Loading from "./loading";
 import Message from "../Message";
 import PaginationEnd from "./PaginationEnd";
 import TabList from "../TabList";
-import { useInbox } from "@trycourier/react-hooks";
+import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
 import { InboxProps } from "../../types";
 import {
@@ -49,7 +46,7 @@ const Messages: React.ForwardRefExoticComponent<
     },
     ref
   ) => {
-    const { fetchRecipientPreferences } = usePreferencesActions();
+    const { fetchRecipientPreferences } = usePreferences();
 
     const {
       brand,

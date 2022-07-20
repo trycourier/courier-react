@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCourier } from "@trycourier/react-provider";
+import { usePreferences } from "@trycourier/react-hooks";
 import { ChannelClassification, IRecipientPreference } from "~/types";
 import {
   Channel,
@@ -47,13 +47,13 @@ export const ChannelPreferences: React.FC<{
   onPreferenceChange: (IRecipientPreference) => void;
   templateId: string;
 }> = ({ onPreferenceChange, templateId }) => {
-  const { preferences } = useCourier();
+  const preferences = usePreferences();
 
   if (!preferences) {
     return null;
   }
 
-  const filteredPreference = preferences?.recipientPreferences.filter(
+  const filteredPreference = preferences?.recipientPreferences?.filter(
     (p: IRecipientPreference) => p.templateId === templateId
   )[0];
 
@@ -88,6 +88,8 @@ export const ChannelPreferences: React.FC<{
     setRouting(newRouting);
   };
 
+  const channels: ChannelClassification[] = ["email", "push"];
+
   return (
     <StyledItem>
       <ChannelCustomizationToggle>
@@ -101,8 +103,9 @@ export const ChannelPreferences: React.FC<{
       <div>Customize Delivery Channel</div>
       <Channels>
         {checked &&
-          ["email", "push"].map((fixedChannels) => (
+          channels.map((fixedChannels) => (
             <DeliveryChannel
+              key={fixedChannels}
               channel={fixedChannels}
               handleRouting={handleRouting}
               checked={routing.includes(fixedChannels)}
