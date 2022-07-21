@@ -16,9 +16,10 @@ export const Modal: CourierElement<ModalProps> = ({
   onClose,
   title,
   children,
+  className,
 }) => {
   return (
-    <>
+    <div className={className}>
       {isOpen && <Backdrop className="modal-backdrop" onClick={onClose} />}
       <Dialog className="modal" open={isOpen}>
         {title && (
@@ -30,7 +31,7 @@ export const Modal: CourierElement<ModalProps> = ({
         )}
         <div className="modal-body">{children}</div>
       </Dialog>
-    </>
+    </div>
   );
 };
 
@@ -43,6 +44,8 @@ const Dialog = styled.dialog(
     color: "white",
     padding: 0,
     width: 400,
+    top: "50%",
+    transform: "translateY(-50%)",
   })
 );
 

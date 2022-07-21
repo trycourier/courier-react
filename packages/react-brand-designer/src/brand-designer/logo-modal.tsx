@@ -48,14 +48,7 @@ export const LogoModal: FC<{
   );
 };
 
-const StyledModal = styled(Modal)(
-  (): CSSObject => ({
-    "div.modal-header": {
-      background: "red !important",
-      height: "300px",
-    },
-  })
-);
+const StyledModal = styled(Modal)((): CSSObject => ({}));
 
 const LogoFormContainer = styled.form(
   (): CSSObject => ({
