@@ -33,155 +33,159 @@ export type {
   ICourierContext,
 };
 
-export const CourierContext = React.createContext<ICourierContext | undefined>(
-  undefined
-);
+export const CourierContext =
+  React.createContext<ICourierContext | undefined>(undefined);
 
-export const CourierProvider: React.FunctionComponent<ICourierProviderProps> = ({
-  apiUrl,
-  brand,
-  brandId,
-  children,
-  clientKey,
-  middleware: _middleware = [],
-  onMessage,
-  transport: _transport,
-  userId,
-  userSignature,
-  wsOptions,
-}) => {
-  const middleware = [..._middleware, ...defaultMiddleware];
-  const useReducer = useCallback(
-    createReducer<any, ICourierContext>(...middleware),
-    [_middleware]
-  );
-
-  const transport = useMemo(() => {
-    if (_transport) {
-      return _transport;
-    }
-
-    if (clientKey && !_transport) {
-      return new CourierTransport({
-        userSignature,
-        clientKey,
-        wsOptions,
-      });
-    }
-  }, [_transport, clientKey, wsOptions, userSignature]);
-
-  const [state, dispatch] = useReducer(reducer, {
+export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
+  ({
     apiUrl,
     brand,
     brandId,
+    children,
     clientKey,
-    transport,
+    middleware: _middleware = [],
+    onMessage,
+    transport: _transport,
     userId,
     userSignature,
-    middleware,
-  });
+    wsOptions,
+  }) => {
+    const middleware = [..._middleware, ...defaultMiddleware];
+    const useReducer = useCallback(
+      createReducer<any, ICourierContext>(...middleware),
+      [_middleware]
+    );
 
-  const actions = useCourierActions(state, dispatch);
+    const transport = useMemo(() => {
+      if (_transport) {
+        return _transport;
+      }
 
-  useEffect(() => {
-    if (_transport) {
-      // this means the transport was passed in and we shouldn't subscribe
-      return;
-    }
+      if (clientKey && !_transport) {
+        return new CourierTransport({
+          userSignature,
+          clientKey,
+          wsOptions,
+        });
+      }
+    }, [_transport, clientKey, wsOptions, userSignature]);
 
-    if (!transport || !userId) {
-      return;
-    }
-
-    const courierTransport = transport as CourierTransport;
-    courierTransport.subscribe(userId);
-
-    if (onMessage) {
-      courierTransport.intercept(onMessage);
-    }
-
-    courierTransport.listen({
-      id: "deliver-tracking",
-      listener: (courierEvent) => {
-        const courierData = courierEvent?.data?.data;
-        if (!courierData?.trackingIds?.deliverTrackingId) {
-          return;
-        }
-
-        actions.createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
-      },
-    });
-
-    return () => {
-      courierTransport.unsubscribe(userId);
-    };
-  }, [transport, userId]);
-
-  useEffect(() => {
-    if (!_transport && (!clientKey || !userId)) {
-      return;
-    }
-
-    actions.init({
+    const [state, dispatch] = useReducer(reducer, {
       apiUrl,
+      brand,
       brandId,
       clientKey,
       transport,
       userId,
       userSignature,
+      middleware,
     });
-  }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
 
-  useEffect(() => {
-    if (brand) {
-      // if we pass in brand, don't fetch it
-      return;
-    }
+    const actions = useCourierActions(state, dispatch);
 
-    actions.getBrand(brandId);
-  }, [brand, brandId]);
-
-  useEffect(() => {
-    if (!state.brand || !clientKey || !userId) {
-      return;
-    }
-
-    localStorage.setItem(
-      `${clientKey}/${userId}/provider`,
-      JSON.stringify({
-        brand: state.brand,
-      })
-    );
-  }, [state.brand, clientKey, userId]);
-
-  useEffect(() => {
-    if (!clientKey || !userId) {
-      return;
-    }
-
-    const localStorageState = localStorage.getItem(
-      `${clientKey}/${userId}/provider`
-    );
-
-    if (localStorageState) {
-      try {
-        const { brand } = JSON.parse(localStorageState);
-        actions.setBrand(brand);
-      } catch (ex) {
-        console.log("error", ex);
+    useEffect(() => {
+      if (_transport) {
+        // this means the transport was passed in and we shouldn't subscribe
+        return;
       }
-    }
-  }, [clientKey, userId]);
 
-  return (
-    <CourierContext.Provider
-      value={{
-        ...(state as any),
-        ...actions,
-        dispatch,
-      }}
-    >
-      {children}
-    </CourierContext.Provider>
-  );
-};
+      if (!transport || !userId) {
+        return;
+      }
+
+      const courierTransport = transport as CourierTransport;
+      courierTransport.subscribe(userId);
+
+      if (onMessage) {
+        courierTransport.intercept(onMessage);
+      }
+
+      courierTransport.listen({
+        id: "deliver-tracking",
+        listener: (courierEvent) => {
+          const courierData = courierEvent?.data?.data;
+          if (!courierData?.trackingIds?.deliverTrackingId) {
+            return;
+          }
+
+          actions.createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
+        },
+      });
+
+      return () => {
+        courierTransport.unsubscribe(userId);
+      };
+    }, [actions, transport, userId]);
+
+    useEffect(() => {
+      if (!_transport && (!clientKey || !userId)) {
+        return;
+      }
+
+      actions.init({
+        apiUrl,
+        brandId,
+        clientKey,
+        transport,
+        userId,
+        userSignature,
+      });
+    }, [actions, apiUrl, clientKey, transport, userId, userSignature, brandId]);
+
+    useEffect(() => {
+      if (brand) {
+        // if we pass in brand, don't fetch it
+        return;
+      }
+
+      if (!clientKey || !userId) {
+        return;
+      }
+
+      actions.getBrand(brandId);
+    }, [actions, brand, brandId, clientKey, userId]);
+
+    useEffect(() => {
+      if (!state.brand || !clientKey || !userId) {
+        return;
+      }
+
+      localStorage.setItem(
+        `${clientKey}/${userId}/provider`,
+        JSON.stringify({
+          brand: state.brand,
+        })
+      );
+    }, [state.brand, clientKey, userId]);
+
+    useEffect(() => {
+      if (!clientKey || !userId) {
+        return;
+      }
+
+      const localStorageState = localStorage.getItem(
+        `${clientKey}/${userId}/provider`
+      );
+
+      if (localStorageState) {
+        try {
+          const { brand } = JSON.parse(localStorageState);
+          actions.setBrand(brand);
+        } catch (ex) {
+          console.log("error", ex);
+        }
+      }
+    }, [clientKey, userId]);
+
+    return (
+      <CourierContext.Provider
+        value={{
+          ...(state as any),
+          ...actions,
+          dispatch,
+        }}
+      >
+        {children}
+      </CourierContext.Provider>
+    );
+  };
