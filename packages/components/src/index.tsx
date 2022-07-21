@@ -31,22 +31,24 @@ declare global {
   }
 }
 interface ICourierConfig {
-  initOnLoad?: boolean;
   apiUrl?: string;
+  brandId?: string;
   clientKey: string;
-  userId?: string;
-  userSignature?: string;
-  wsOptions?: WSOptions;
   components?: {
     inbox?: any;
     toast?: any;
+    preferences?: any;
   };
+  initOnLoad?: boolean;
+  userId?: string;
+  userSignature?: string;
+  wsOptions?: WSOptions;
 }
 
 let hasInit = false;
 
 const initCourier = async (courierConfig?: ICourierConfig) => {
-  const { clientKey, apiUrl, userId, userSignature, wsOptions } =
+  const { clientKey, apiUrl, userId, userSignature, wsOptions, brandId } =
     courierConfig ?? window.courierConfig ?? {};
 
   if (hasInit || typeof document === "undefined") {
@@ -63,6 +65,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
   render(
     <CourierProvider
       apiUrl={apiUrl}
+      brandId={brandId}
       clientKey={clientKey}
       userId={userId}
       userSignature={userSignature}

@@ -6,6 +6,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
+const Preferences = lazy(() => import("./Preferences"));
 
 const querySelector = (element: HTMLElement, selector: string) => {
   if (!element || !selector || !element.querySelector) {
@@ -32,6 +33,14 @@ export const CourierComponents: React.FunctionComponent = () => {
     ...componentConfigs?.toast,
     ...getAttrsAsJson(toastElement),
   });
+
+  const initialPreferences = querySelector(
+    window?.document?.body,
+    "courier-preferences"
+  );
+  const [preferencesElement, setPreferencesElement] = useState(
+    initialPreferences ?? undefined
+  );
 
   useEffect(() => {
     if (inboxElement) {
@@ -90,7 +99,9 @@ export const CourierComponents: React.FunctionComponent = () => {
                 case "courier-toast":
                   setToastElement(element);
                   return;
-
+                case "courier-preferences":
+                  setPreferencesElement(element);
+                  return;
                 default: {
                   const childInbox = querySelector(element, "courier-inbox");
                   if (childInbox) {
@@ -100,7 +111,13 @@ export const CourierComponents: React.FunctionComponent = () => {
                   if (childToast) {
                     setToastElement(childToast);
                   }
-
+                  const childPreferences = querySelector(
+                    element,
+                    "courier-preferences"
+                  );
+                  if (childPreferences) {
+                    setPreferencesElement(childPreferences);
+                  }
                   return;
                 }
               }
@@ -126,6 +143,7 @@ export const CourierComponents: React.FunctionComponent = () => {
       activeComponents={{
         inbox: Boolean(inboxElement),
         toast: Boolean(toastElement),
+        preferences: Boolean(preferencesElement),
       }}
     >
       {inboxElement &&
@@ -141,6 +159,13 @@ export const CourierComponents: React.FunctionComponent = () => {
             <Toast config={toastConfig} />
           </Suspense>,
           toastElement
+        )}
+      {preferencesElement &&
+        createPortal(
+          <Suspense fallback={<div />}>
+            <Preferences />
+          </Suspense>,
+          preferencesElement
         )}
     </CourierSdk>
   );

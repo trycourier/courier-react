@@ -5,6 +5,7 @@ export const CourierSdk: React.FunctionComponent<{
   activeComponents: {
     inbox: boolean;
     toast: boolean;
+    preferences: boolean;
   };
 }> = ({ activeComponents, children }) => {
   const courier = useCourier();
