@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 import { Button, Input, Modal } from "@trycourier/react-elements";
 import { FC } from "react";
 import styled, { CSSObject } from "styled-components";
@@ -48,14 +48,7 @@ export const LogoModal: FC<{
   );
 };
 
-const StyledModal = styled(Modal)(
-  (): CSSObject => ({
-    "div.modal-header": {
-      background: "red !important",
-      height: "300px",
-    },
-  })
-);
+const StyledModal = styled(Modal)((): CSSObject => ({}));
 
 const LogoFormContainer = styled.form(
   (): CSSObject => ({
@@ -88,7 +81,7 @@ const LogoControlsContainer = styled.div(
   })
 );
 
-const LogoButton = styled(Button)(
+const LogoButtonWrapper = styled(Button)(
   (): CSSObject => ({
     width: "fit-content",
     background: "none",
@@ -98,4 +91,10 @@ const LogoButton = styled(Button)(
       border: "none",
     },
   })
+);
+
+const LogoButton: FC<ComponentPropsWithoutRef<"button">> = (props) => (
+  <LogoButtonWrapper type="button" {...props}>
+    {props.children}
+  </LogoButtonWrapper>
 );

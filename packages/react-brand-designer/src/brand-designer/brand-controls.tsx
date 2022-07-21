@@ -27,6 +27,7 @@ export const BrandControls: FC<BrandControlsProps> = (opts) => {
       },
     });
   };
+
   const setLogo = (logo: BrandConfig["logo"]) => {
     onChange({
       ...config,
