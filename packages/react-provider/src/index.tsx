@@ -115,7 +115,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       return () => {
         courierTransport.unsubscribe(userId);
       };
-    }, [transport, userId]);
+    }, [actions, transport, userId]);
 
     useEffect(() => {
       if (!_transport && (!clientKey || !userId)) {
@@ -130,7 +130,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         userId,
         userSignature,
       });
-    }, [apiUrl, clientKey, transport, userId, userSignature, brandId]);
+    }, [actions, apiUrl, clientKey, transport, userId, userSignature, brandId]);
 
     useEffect(() => {
       if (brand) {
