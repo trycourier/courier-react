@@ -23,6 +23,7 @@ export const BrandPreview: CourierElement<BrandPreviewProps> = ({ config }) => {
           <EmailBody>
             <EmailTopBar color={config.colors.primary} />
             <div className="email-content">
+              <LogoPreview logo={config.logo} />
               <h3>This is a branded email</h3>
               <p>
                 You’ll always able to adjust the specifics of this email in the
@@ -44,6 +45,28 @@ export const BrandPreview: CourierElement<BrandPreviewProps> = ({ config }) => {
     </PreviewContainer>
   );
 };
+
+const LogoPreview: CourierElement<{ logo?: BrandConfig["logo"] }> = ({
+  logo,
+  className,
+}) => {
+  if (!logo || typeof logo.src !== "string") {
+    return null;
+  }
+
+  const image = <LogoPreviewImg src={logo.src} className={className} />;
+
+  if (logo.href) {
+    return <a href={logo.href}>{image}</a>;
+  }
+
+  return image;
+};
+
+const LogoPreviewImg = styled.img`
+  max-width: 100px;
+  margin-top: 0.8em;
+`;
 
 const PreviewContainer = styled.div(
   (): CSSObject => ({
@@ -118,10 +141,12 @@ const EmailBody = styled.div(
     flexDirection: "column",
     borderRadius: "2.99px",
     "div.email-content": {
-      padding: "19px",
+      padding: "1.2em",
+      paddingTop: "0em",
       boxSizing: "border-box",
+      overflow: "scroll",
       h3: {
-        marginTop: "0px",
+        marginTop: "0.7em",
         fontFamily: "Helvetica, sans-serif",
         fontSize: "18px",
         lineHeight: "21px",
@@ -141,7 +166,8 @@ const EmailTopBar = styled.div<{ color: string }>(
   ({ color }): CSSObject => ({
     background: color,
     width: "100%",
-    flexBasis: "2.56px",
+    minHeight: "0.15em",
+    // position: "fixed",
   })
 );
 

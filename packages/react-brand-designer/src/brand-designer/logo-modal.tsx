@@ -1,5 +1,10 @@
-import React, { ComponentPropsWithoutRef } from "react";
-import { Button, Input, Modal } from "@trycourier/react-elements";
+import React from "react";
+import {
+  Button,
+  CourierElement,
+  Input,
+  Modal,
+} from "@trycourier/react-elements";
 import { FC } from "react";
 import styled, { CSSObject } from "styled-components";
 import { BrandConfig } from "~/types";
@@ -48,7 +53,7 @@ export const LogoModal: FC<{
   );
 };
 
-const StyledModal = styled(Modal)((): CSSObject => ({}));
+const StyledModal = styled(Modal)``;
 
 const LogoFormContainer = styled.form(
   (): CSSObject => ({
@@ -93,7 +98,7 @@ const LogoButtonWrapper = styled(Button)(
   })
 );
 
-const LogoButton: FC<ComponentPropsWithoutRef<"button">> = (props) => (
+const LogoButton: CourierElement = (props) => (
   <LogoButtonWrapper type="button" {...props}>
     {props.children}
   </LogoButtonWrapper>
