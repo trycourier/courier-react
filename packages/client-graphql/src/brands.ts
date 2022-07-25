@@ -1,6 +1,6 @@
-import { ICourierClientBasicParams } from "./../types";
+import { ICourierClientBasicParams } from "./types";
 import { Client } from "urql";
-import { createCourierClient } from "../client";
+import { createCourierClient } from "./client";
 
 const brandProps = `
 settings {
@@ -61,9 +61,7 @@ query GetInAppBrand {
 }
 `;
 
-type GetBrand = (
-  brandId?: string
-) => Promise<
+type GetBrand = (brandId?: string) => Promise<
   | {
       colors: any;
       inapp: any;
@@ -72,32 +70,34 @@ type GetBrand = (
   | undefined
 >;
 
-export const getBrand = (client?: Client): GetBrand => async (brandId) => {
-  if (!client) {
-    return Promise.resolve(undefined);
-  }
+export const getBrand =
+  (client?: Client): GetBrand =>
+  async (brandId) => {
+    if (!client) {
+      return Promise.resolve(undefined);
+    }
 
-  const results = brandId
-    ? await client
-        .query(GET_BRAND, {
-          brandId,
-        })
-        .toPromise()
-    : await client.query(GET_INAPP_BRAND).toPromise();
+    const results = brandId
+      ? await client
+          .query(GET_BRAND, {
+            brandId,
+          })
+          .toPromise()
+      : await client.query(GET_INAPP_BRAND).toPromise();
 
-  const brandProp = brandId ? "brand" : "inAppBrand";
-  const brand = results?.data?.[brandProp];
+    const brandProp = brandId ? "brand" : "inAppBrand";
+    const brand = results?.data?.[brandProp];
 
-  const colors = brand?.settings?.colors;
-  const inapp = brand?.settings?.inapp;
-  const preferenceTemplates = brand?.preferenceTemplates?.nodes;
+    const colors = brand?.settings?.colors;
+    const inapp = brand?.settings?.inapp;
+    const preferenceTemplates = brand?.preferenceTemplates?.nodes;
 
-  return {
-    colors,
-    inapp,
-    preferenceTemplates,
+    return {
+      colors,
+      inapp,
+      preferenceTemplates,
+    };
   };
-};
 
 export default (
   params: ICourierClientBasicParams | { client?: Client }

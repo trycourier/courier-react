@@ -1,6 +1,6 @@
 import { Client } from "urql";
-import { ICourierClientBasicParams } from "../types";
-import { createCourierClient } from "../client";
+import { ICourierClientBasicParams } from "./types";
+import { createCourierClient } from "./client";
 
 export const GET_MESSAGE_COUNT = `
   query MessageCount($params: FilterParamsInput) {

@@ -1,6 +1,6 @@
 import { Client } from "urql";
-import { ICourierClientParams } from "../types";
-import { createCourierClient } from "../client";
+import { ICourierClientParams } from "./types";
+import { createCourierClient } from "./client";
 
 export interface IGetBannerParams {
   from?: number;
@@ -55,27 +55,26 @@ type GetBanners = (
   | undefined
 >;
 
-export const getBanners = (client?: Client): GetBanners => async (
-  params?: IGetBannerParams,
-  after?: string
-) => {
-  if (!client) {
-    return Promise.resolve(undefined);
-  }
+export const getBanners =
+  (client?: Client): GetBanners =>
+  async (params?: IGetBannerParams, after?: string) => {
+    if (!client) {
+      return Promise.resolve(undefined);
+    }
 
-  const { limit, ...restParams } = params ?? {};
-  const results = await client
-    .query(QUERY_BANNER, { after, limit, params: restParams })
-    .toPromise();
+    const { limit, ...restParams } = params ?? {};
+    const results = await client
+      .query(QUERY_BANNER, { after, limit, params: restParams })
+      .toPromise();
 
-  const banners = results?.data?.banners?.nodes;
-  const startCursor = results?.data?.banners?.pageInfo?.startCursor;
+    const banners = results?.data?.banners?.nodes;
+    const startCursor = results?.data?.banners?.pageInfo?.startCursor;
 
-  return {
-    banners,
-    startCursor,
+    return {
+      banners,
+      startCursor,
+    };
   };
-};
 
 export default (
   params: ICourierClientParams | { client: Client }

@@ -10,7 +10,7 @@ import {
 import {
   IGetMessagesParams,
   IMessageCountParams,
-} from "@trycourier/client-graphql/typings/messages";
+} from "@trycourier/client-graphql/typings/messages/messages";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -31,14 +31,8 @@ interface IInboxActions {
 }
 
 const useInboxActions = (): IInboxActions => {
-  const {
-    apiUrl,
-    clientKey,
-    dispatch,
-    inbox,
-    userId,
-    userSignature,
-  } = useCourier();
+  const { apiUrl, clientKey, dispatch, inbox, userId, userSignature } =
+    useCourier();
 
   const courierClient = createCourierClient({
     apiUrl,
