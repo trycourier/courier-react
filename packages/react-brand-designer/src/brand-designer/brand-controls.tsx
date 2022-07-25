@@ -113,7 +113,7 @@ const ChangeLogoButton: CourierElement<{ src: string }> = ({
 }) => {
   return (
     <ChangeLogoButtonContainer {...props}>
-      <img className="logo-img" src={src} />
+      <img className="logo-img" src={src} alt="logo" />
       <div className="logo-overlay">
         <p>Change Logo</p>
       </div>
