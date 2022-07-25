@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { getAttrsAsJson } from "../lib/get-attrs-as-json";
 import deepExtend from "deep-extend";
 import React, { useState, useEffect, Suspense, lazy } from "react";
-import { ClipboardBrandDesigner } from "@trycourier/react-brand-designer";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
@@ -147,7 +146,7 @@ export const CourierComponents: React.FunctionComponent = () => {
         preferences: Boolean(preferencesElement),
       }}
     >
-      {/* {inboxElement &&
+      {inboxElement &&
         createPortal(
           <Suspense fallback={<div />}>
             <Inbox {...inboxConfig} />
@@ -168,8 +167,6 @@ export const CourierComponents: React.FunctionComponent = () => {
           </Suspense>,
           preferencesElement
         )}
-        )} */}
-      <ClipboardBrandDesigner />
     </CourierSdk>
   );
 };
