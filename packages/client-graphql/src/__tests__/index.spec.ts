@@ -1,7 +1,7 @@
 global.fetch = jest.fn();
 
 const fetchMock = global.fetch as jest.Mock;
-import Messages from "../src/messages";
+import Messages from "../messages";
 
 describe("getMessages", () => {
   afterEach(() => {

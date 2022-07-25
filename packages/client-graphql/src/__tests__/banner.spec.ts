@@ -2,7 +2,7 @@ global.fetch = jest.fn();
 require("isomorphic-fetch");
 
 const fetchMock = global.fetch as jest.Mock;
-import Banner from "../src/banner";
+import Banner from "../banner";
 
 describe("banner", () => {
   afterEach(() => {
