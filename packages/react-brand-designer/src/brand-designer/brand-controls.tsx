@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import styled, { CSSObject } from "styled-components";
 import {
   Title,
@@ -96,12 +96,13 @@ const UploadLogoControls: CourierElement<{ logo?: BrandConfig["logo"] }> = ({
   logo,
   onClick,
 }) => {
-  const button =
-    !logo || typeof logo.src !== "string" ? (
-      <UploadLogoButton onClick={onClick}>Upload logo</UploadLogoButton>
-    ) : (
-      <ChangeLogoButton src={logo.src} onClick={onClick} />
-    );
+  const button = useMemo(() => {
+    if (!logo || typeof logo.src !== "string") {
+      return <UploadLogoButton onClick={onClick}>Upload logo</UploadLogoButton>;
+    }
+
+    return <ChangeLogoButton src={logo.src} onClick={onClick} />;
+  }, [logo]);
 
   return <UploadLogoControlsContainer>{button}</UploadLogoControlsContainer>;
 };
