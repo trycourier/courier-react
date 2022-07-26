@@ -1,6 +1,6 @@
 import { Client } from "urql";
-import { ICourierClientBasicParams } from "../types";
-import { createCourierClient } from "../client";
+import { ICourierClientBasicParams } from "./types";
+import { createCourierClient } from "./client";
 
 export const GET_MESSAGE_COUNT = `
   query MessageCount($params: FilterParamsInput) {
@@ -14,20 +14,20 @@ export interface IMessageCountParams {
   isRead?: boolean;
 }
 type GetMessageCount = (params?: IMessageCountParams) => Promise<number>;
-export const getMessageCount = (client?: Client): GetMessageCount => async (
-  params
-) => {
-  if (!client) {
-    return Promise.resolve();
-  }
+export const getMessageCount =
+  (client?: Client): GetMessageCount =>
+  async (params) => {
+    if (!client) {
+      return Promise.resolve();
+    }
 
-  const results = await client
-    .query(GET_MESSAGE_COUNT, {
-      params,
-    })
-    .toPromise();
-  return results?.data?.messageCount;
-};
+    const results = await client
+      .query(GET_MESSAGE_COUNT, {
+        params,
+      })
+      .toPromise();
+    return results?.data?.messageCount;
+  };
 
 export interface IGetMessagesParams {
   from?: number;
@@ -90,28 +90,27 @@ type GetMessages = (
   | undefined
 >;
 
-export const getMessages = (client?: Client): GetMessages => async (
-  params?: IGetMessagesParams,
-  after?: string
-) => {
-  if (!client) {
-    return Promise.resolve(undefined);
-  }
+export const getMessages =
+  (client?: Client): GetMessages =>
+  async (params?: IGetMessagesParams, after?: string) => {
+    if (!client) {
+      return Promise.resolve(undefined);
+    }
 
-  const { limit, ...restParams } = params ?? {};
-  const results = await client
-    .query(QUERY_MESSAGES, { after, limit, params: restParams })
-    .toPromise();
+    const { limit, ...restParams } = params ?? {};
+    const results = await client
+      .query(QUERY_MESSAGES, { after, limit, params: restParams })
+      .toPromise();
 
-  const messages = results?.data?.messages?.nodes;
-  const startCursor = results?.data?.messages?.pageInfo?.startCursor;
+    const messages = results?.data?.messages?.nodes;
+    const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
-  return {
-    appendMessages: Boolean(after),
-    messages,
-    startCursor,
+    return {
+      appendMessages: Boolean(after),
+      messages,
+      startCursor,
+    };
   };
-};
 
 export default (
   params: ICourierClientBasicParams | { client?: Client }

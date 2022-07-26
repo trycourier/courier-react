@@ -12,5 +12,4 @@ module.exports = {
     ],
   ].filter(Boolean),
   presets: ["@babel/preset-typescript", "@babel/preset-env"],
-  ignore: ["src/__tests__", "src/__mocks__"],
 };

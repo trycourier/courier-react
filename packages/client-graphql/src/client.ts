@@ -13,7 +13,10 @@ export const createCourierClient = (
     | {
         client?: Client;
         apiUrl?: string;
-      }
+      },
+  defaults?: {
+    apiUrl?: string;
+  }
 ): Client | undefined => {
   if ("client" in params) {
     return params.client;
@@ -26,11 +29,8 @@ export const createCourierClient = (
       authorization: `Bearer ${params.authorization}`,
     } as CourierJWTHeaders;
   } else {
-    const {
-      clientKey,
-      userId,
-      userSignature,
-    } = params as ICourierClientBasicParams;
+    const { clientKey, userId, userSignature } =
+      params as ICourierClientBasicParams;
 
     headers = {
       "x-courier-client-key": clientKey,
@@ -47,9 +47,11 @@ export const createCourierClient = (
   }
 
   return createClient({
-    url: `${
-      params.apiUrl || process.env.API_URL || `https://api.courier.com`
-    }/client/q`,
+    url:
+      defaults?.apiUrl ||
+      `${
+        params.apiUrl || process.env.API_URL || `https://api.courier.com`
+      }/client/q`,
     requestPolicy: "network-only",
     fetchOptions: () => {
       return {

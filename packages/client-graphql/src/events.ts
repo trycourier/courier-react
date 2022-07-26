@@ -1,6 +1,6 @@
 import { Client } from "urql";
-import { ICourierClientBasicParams } from "../types";
-import { createCourierClient } from "../client";
+import { ICourierClientBasicParams } from "./types";
+import { createCourierClient } from "./client";
 
 const TRACK_EVENT = `
   mutation TrackEvent($trackingId: String!) {
@@ -10,19 +10,19 @@ const TRACK_EVENT = `
   }
 `;
 export type TrackEvent = (trackingId: string) => Promise<void>;
-export const trackEvent = (client?: Client): TrackEvent => async (
-  trackingId
-) => {
-  if (!client) {
-    return Promise.resolve(undefined);
-  }
+export const trackEvent =
+  (client?: Client): TrackEvent =>
+  async (trackingId) => {
+    if (!client) {
+      return Promise.resolve(undefined);
+    }
 
-  await client
-    .mutation(TRACK_EVENT, {
-      trackingId,
-    })
-    .toPromise();
-};
+    await client
+      .mutation(TRACK_EVENT, {
+        trackingId,
+      })
+      .toPromise();
+  };
 
 const TRACK_EVENT_BATCH = `
   mutation BatchTrackEvent($eventType: String!) {
@@ -32,19 +32,19 @@ const TRACK_EVENT_BATCH = `
   }
 `;
 export type TrackEventBatch = (eventType: string) => Promise<void>;
-export const trackEventBatch = (client?: Client): TrackEventBatch => async (
-  eventType
-) => {
-  if (!client) {
-    return Promise.resolve(undefined);
-  }
+export const trackEventBatch =
+  (client?: Client): TrackEventBatch =>
+  async (eventType) => {
+    if (!client) {
+      return Promise.resolve(undefined);
+    }
 
-  await client
-    .mutation(TRACK_EVENT_BATCH, {
-      eventType,
-    })
-    .toPromise();
-};
+    await client
+      .mutation(TRACK_EVENT_BATCH, {
+        eventType,
+      })
+      .toPromise();
+  };
 
 export default (
   params: ICourierClientBasicParams | { client?: Client }
