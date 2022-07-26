@@ -10,7 +10,7 @@ import {
 import {
   IGetMessagesParams,
   IMessageCountParams,
-} from "@trycourier/client-graphql/typings/messages/messages";
+} from "@trycourier/client-graphql/typings/messages";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
