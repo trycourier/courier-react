@@ -44,7 +44,8 @@ const BrandDesignerBody = styled.div(
   (): CSSObject => ({
     display: "flex",
     flexDirection: "row",
-    flexBasis: "368px",
+    flexGrow: 1,
+    minHeight: 0,
     backgroundColor: "#F9FAFB",
   })
 );
