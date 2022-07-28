@@ -45,20 +45,6 @@ describe("getInboxCount", () => {
       tags: ["abc", "123"],
     });
 
-    expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
-        Object {
-          "body": "{\\"query\\":\\"query GetInboxCount($params: FilterParamsInput) {\\\\n  count(params: $params)\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxCount\\",\\"variables\\":{\\"params\\":{\\"status\\":\\"read\\",\\"tags\\":[\\"abc\\",\\"123\\"]}}}",
-          "headers": Object {
-            "content-type": "application/json",
-            "x-courier-client-key": "CLIENT_KEY",
-            "x-courier-user-id": "USER_ID",
-          },
-          "method": "POST",
-          "signal": AbortSignal {},
-        },
-      ]
-    `);
+    expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot();
   });
 });

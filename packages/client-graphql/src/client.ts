@@ -48,10 +48,9 @@ export const createCourierClient = (
 
   return createClient({
     url:
+      params.apiUrl ||
       defaults?.apiUrl ||
-      `${
-        params.apiUrl || process.env.API_URL || `https://api.courier.com`
-      }/client/q`,
+      `${process.env.API_URL || `https://api.courier.com`}/client/q`,
     requestPolicy: "network-only",
     fetchOptions: () => {
       return {

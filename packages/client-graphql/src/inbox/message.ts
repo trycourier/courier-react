@@ -5,7 +5,9 @@ export const GET_INBOX_MESSAGE = `
     message(messageId: $messageId) {
       created
       messageId
+      read
       content {
+        html
         elemental {
           ... on TextElement {
             type
@@ -22,9 +24,28 @@ export const GET_INBOX_MESSAGE = `
   }
 `;
 
+export interface ITextElemental {
+  type: "text";
+  content: string;
+}
+export interface IActionElemental {
+  type: "text";
+  content: string;
+  href: string;
+}
+export interface IInboxMessage {
+  messageId: string;
+  read?: string;
+  created?: string;
+  content: {
+    html?: string;
+    elemental?: Array<ITextElemental | IActionElemental>;
+  };
+}
+
 export type GetInboxMessage = (messageId: string) => Promise<
   | {
-      message: any;
+      message: IInboxMessage;
     }
   | undefined
 >;
