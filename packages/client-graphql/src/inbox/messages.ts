@@ -18,12 +18,18 @@ export const GET_INBOX_MESSAGES = `
         preview
         messageId
         read
-        archived
         created
       }
     }
   }
 `;
+
+export interface IInboxMessagePreview {
+  preview?: string;
+  messageId: string;
+  read?: string;
+  created?: string;
+}
 
 export type GetInboxMessages = (
   params?: IGetInboxMessagesParams,
@@ -32,7 +38,7 @@ export type GetInboxMessages = (
   | {
       appendMessages: boolean;
       startCursor: string;
-      messages: any[];
+      messages: IInboxMessagePreview[];
     }
   | undefined
 >;

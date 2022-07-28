@@ -3,17 +3,20 @@ import { ICourierClientBasicParams } from "../types";
 import { createCourierClient } from "../client";
 
 import { GetInboxCount, getInboxCount } from "./count";
-import { GetInboxMessage, getInboxMessage } from "./message";
-import { GetInboxMessages, getInboxMessages } from "./messages";
+import * as message from "./message";
+import * as messages from "./messages";
 import { MarkAllRead, markAllRead } from "./mark-all-read";
 import { TrackEvent, trackEvent } from "./track-event";
+
+export type IInboxMessagePreview = messages.IInboxMessagePreview;
+export type IInboxMessage = message.IInboxMessage;
 
 export default (
   params: ICourierClientBasicParams | { client?: Client }
 ): {
   getInboxCount: GetInboxCount;
-  getMessage: GetInboxMessage;
-  getMessages: GetInboxMessages;
+  getMessage: message.GetInboxMessage;
+  getMessages: messages.GetInboxMessages;
   markAllRead: MarkAllRead;
   markArchive: TrackEvent;
   markRead: TrackEvent;
@@ -26,8 +29,8 @@ export default (
 
   return {
     getInboxCount: getInboxCount(client),
-    getMessage: getInboxMessage(client),
-    getMessages: getInboxMessages(client),
+    getMessage: message.getInboxMessage(client),
+    getMessages: messages.getInboxMessages(client),
     markAllRead: markAllRead(client),
     markArchive: trackEvent(client)("archive"),
     markRead: trackEvent(client)("read"),
