@@ -7,10 +7,7 @@ import {
   Messages,
 } from "@trycourier/client-graphql";
 
-import {
-  IGetMessagesParams,
-  IMessageCountParams,
-} from "@trycourier/client-graphql/typings/messages";
+import { IGetMessagesParams } from "@trycourier/client-graphql/typings/messages";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -19,7 +16,7 @@ export interface IFetchMessagesParams {
 
 interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
-  getMessageCount: (params?: IGetMessagesParams) => void;
+  getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
@@ -111,10 +108,14 @@ const useInboxActions = (): IInboxActions => {
         meta: payload,
       });
     },
-    getMessageCount: (params?: IMessageCountParams) => {
+    getUnreadMessageCount: () => {
       dispatch({
         type: "inbox/SET_UNREAD_MESSAGE_COUNT",
-        payload: () => messages.getMessageCount(params),
+        payload: () =>
+          messages.getMessageCount({
+            from: inbox?.from,
+            isRead: false,
+          }),
       });
     },
     markMessageRead: async (messageId: string, trackingId: string) => {
