@@ -8,9 +8,8 @@ export const MyCustomInbox: React.FunctionComponent = () => {
     isLoading,
     messages = [],
     unreadMessageCount,
-    getMessageCount,
+    getUnreadMessageCount,
     setCurrentTab,
-    tabs,
   } = useInbox();
 
   const handleOnClickTab = (newTab: ITab) => (event: React.MouseEvent) => {
@@ -19,7 +18,7 @@ export const MyCustomInbox: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    getMessageCount();
+    getUnreadMessageCount();
     fetchMessages();
   }, []);
 
@@ -36,7 +35,20 @@ export const MyCustomInbox: React.FunctionComponent = () => {
       <h3>My Inbox</h3>
       <div>Unread Messages: {unreadMessageCount}</div>
       <div>Current Tab: {currentTab?.id}</div>
-      {tabs?.map((tab) => (
+      {[
+        {
+          id: "unread",
+          label: "Unread",
+          filters: {
+            isRead: false,
+          },
+        },
+        {
+          id: "all",
+          label: "All Messages",
+          filters: {},
+        },
+      ]?.map((tab) => (
         <button key={tab.id} onClick={handleOnClickTab(tab)}>
           {tab.label}
         </button>

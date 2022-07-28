@@ -112,7 +112,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const { clientKey, userId } = courierContext;
   const {
     brand,
-    getMessageCount,
+    getUnreadMessageCount,
     init,
     isOpen: isOpenState,
     messages,
@@ -135,7 +135,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return;
     }
 
-    getMessageCount({ from: props.from, isRead: false });
+    getUnreadMessageCount();
   }, [userId, clientKey, props.from]);
 
   useEffect(() => {
@@ -147,9 +147,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
       if (localStorageState) {
         try {
-          const { messages, unreadMessageCount } = JSON.parse(
-            localStorageState
-          );
+          const { messages, unreadMessageCount } =
+            JSON.parse(localStorageState);
           init({
             messages,
             unreadMessageCount,
