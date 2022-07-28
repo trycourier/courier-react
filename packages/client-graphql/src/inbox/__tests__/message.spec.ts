@@ -20,7 +20,7 @@ describe("getMessage", () => {
       Array [
         "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
         Object {
-          "body": "{\\"query\\":\\"query GetInboxMessage($messageId: String!) {\\\\n  message(messageId: $messageId) {\\\\n    created\\\\n    messageId\\\\n    content {\\\\n      elemental {\\\\n        ... on TextElement {\\\\n          type\\\\n          content\\\\n          __typename\\\\n        }\\\\n        ... on ActionElement {\\\\n          type\\\\n          content\\\\n          href\\\\n          __typename\\\\n        }\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessage\\",\\"variables\\":{\\"messageId\\":\\"mockMessageId\\"}}",
+          "body": "{\\"query\\":\\"query GetInboxMessage($messageId: String!) {\\\\n  message(messageId: $messageId) {\\\\n    created\\\\n    messageId\\\\n    read\\\\n    content {\\\\n      html\\\\n      elemental {\\\\n        ... on TextElement {\\\\n          type\\\\n          content\\\\n          __typename\\\\n        }\\\\n        ... on ActionElement {\\\\n          type\\\\n          content\\\\n          href\\\\n          __typename\\\\n        }\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessage\\",\\"variables\\":{\\"messageId\\":\\"mockMessageId\\"}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
