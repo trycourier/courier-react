@@ -5,6 +5,7 @@ import {
   CourierBasicHeaders,
   CourierJWTHeaders,
 } from "./types";
+import packageJson from "../package.json";
 
 export const createCourierClient = (
   params:
@@ -26,6 +27,8 @@ export const createCourierClient = (
 
   if ("authorization" in params) {
     headers = {
+      "x-courier-client-platform": "nodejs",
+      "x-courier-client-version": packageJson.version,
       authorization: `Bearer ${params.authorization}`,
     } as CourierJWTHeaders;
   } else {
@@ -34,6 +37,8 @@ export const createCourierClient = (
 
     headers = {
       "x-courier-client-key": clientKey,
+      "x-courier-client-platform": "nodejs",
+      "x-courier-client-version": packageJson.version,
       "x-courier-user-id": userId,
     } as CourierBasicHeaders;
 
