@@ -7,7 +7,7 @@ import {
   Messages,
 } from "@trycourier/client-graphql";
 
-import { IGetMessagesParams } from "@trycourier/client-graphql/typings/messages";
+import { IGetMessagesParams } from "@trycourier/client-graphql";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;

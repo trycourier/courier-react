@@ -3,6 +3,7 @@ require("isomorphic-fetch");
 
 const fetchMock = global.fetch as jest.Mock;
 import Banner from "../banner";
+import packageJson from "../../package.json";
 
 describe("banner", () => {
   afterEach(() => {
@@ -25,6 +26,8 @@ describe("banner", () => {
     expect(thisCall.headers).toEqual({
       "content-type": "application/json",
       "x-courier-client-key": "CLIENT_KEY",
+      "x-courier-client-platform": "nodejs",
+      "x-courier-client-version": packageJson.version,
       "x-courier-user-id": "USER_ID",
     });
     expect(thisCall.method).toBe("POST");
@@ -62,8 +65,10 @@ describe("banner", () => {
       `"{\\"query\\":\\"query GetBanners($params: BannerParamsInput, $limit: Int = 10, $after: String) {\\\\n  banners(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      id\\\\n      userId\\\\n      messageId\\\\n      created\\\\n      tags\\\\n      content {\\\\n        title\\\\n        body\\\\n        blocks {\\\\n          ... on TextBlock {\\\\n            type\\\\n            text\\\\n            __typename\\\\n          }\\\\n          ... on ActionBlock {\\\\n            type\\\\n            text\\\\n            url\\\\n            __typename\\\\n          }\\\\n          __typename\\\\n        }\\\\n        data\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetBanners\\",\\"variables\\":{\\"params\\":{\\"from\\":123,\\"locale\\":\\"eu-fr\\",\\"tags\\":[\\"abc\\"]}}}"`
     );
     expect(thisCall.headers).toEqual({
-      authorization: "Bearer abc123",
       "content-type": "application/json",
+      "x-courier-client-platform": "nodejs",
+      "x-courier-client-version": packageJson.version,
+      authorization: "Bearer abc123",
     });
     expect(thisCall.method).toBe("POST");
   });

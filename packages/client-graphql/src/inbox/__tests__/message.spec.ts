@@ -2,6 +2,7 @@ global.fetch = jest.fn();
 
 const fetchMock = global.fetch as jest.Mock;
 import Inbox from "../index";
+import packageJson from "../../../package.json";
 
 describe("getMessage", () => {
   afterEach(() => {
@@ -24,6 +25,8 @@ describe("getMessage", () => {
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
+            "x-courier-client-platform": "nodejs",
+            "x-courier-client-version": "${packageJson.version}",
             "x-courier-user-id": "USER_ID",
           },
           "method": "POST",

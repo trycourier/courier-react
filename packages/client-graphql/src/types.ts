@@ -22,13 +22,15 @@ export type ICourierClientParams =
 
 export type CourierBasicHeaders = RequestInit["headers"] & {
   "x-courier-client-key": string;
+  "x-courier-client-platform": string;
+  "x-courier-client-version": string;
   "x-courier-user-id": string;
   "x-courier-user-signature"?: string;
 };
 
 export type CourierJWTHeaders = RequestInit["headers"] & {
+  "x-courier-client-key"?: string /** @deprecated (Not needed for JWT auth) */;
+  "x-courier-client-platform": string;
+  "x-courier-client-version": string;
   authorization: string;
-
-  /** @deprecated (Not needed for JWT auth) */
-  "x-courier-client-key"?: string;
 };
