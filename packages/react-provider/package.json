@@ -18,6 +18,7 @@
     "@trycourier/client-graphql": "^1.26.0",
     "buffer": "^6.0.3",
     "graphql": "^15.5.0",
+    "localstorage-polyfill": "^1.0.1",
     "react-use": "^17.2.1",
     "reconnecting-websocket": "^4.4.0",
     "rimraf": "^3.0.2",

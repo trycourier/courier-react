@@ -5,6 +5,10 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
+if (!global?.localStorage) {
+  require("localstorage-polyfill");
+}
+
 import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import {
