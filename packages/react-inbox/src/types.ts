@@ -27,7 +27,7 @@ export interface InboxProps {
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
-  tabs?: Array<ITab>;
+  tabs?: Array<ITab> | false;
   theme?: {
     container?: React.CSSProperties;
     footer?: React.CSSProperties;
