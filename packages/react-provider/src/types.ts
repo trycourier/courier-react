@@ -52,6 +52,6 @@ export interface ICourierProviderProps {
   wsOptions?: WSOptions;
 }
 export interface ICourierContext extends ICourierProviderProps {
-  dispatch?: (action: { type: string; payload: any }) => void;
+  dispatch: (action: { type: string; payload?: any; meta?: any }) => void;
   graphQLClient?: any;
 }

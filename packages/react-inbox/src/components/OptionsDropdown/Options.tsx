@@ -38,8 +38,8 @@ function Options({ options, onClose }) {
       {options.map(({ label, onClick }) => {
         const handleOnClick = (event: React.MouseEvent) => {
           event.preventDefault();
-          onClick();
           onClose();
+          onClick();
         };
 
         return (

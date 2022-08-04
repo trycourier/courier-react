@@ -90,20 +90,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   props = useMemo(() => {
     return {
       openLinksInNewTab: true,
-      tabs: [
-        {
-          id: "unread",
-          label: "Unread",
-          filters: {
-            isRead: false,
-          },
-        },
-        {
-          id: "all",
-          label: "All Messages",
-          filters: {},
-        },
-      ],
+      tabs: DEFAULT_TABS,
       ...props,
     };
   }, [props]);
@@ -154,6 +141,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             unreadMessageCount,
             brand: props.brand,
             isOpen: props.isOpen,
+            currentTab: props.tabs?.[0],
           });
           didInit = true;
         } catch (ex) {
@@ -166,6 +154,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       init({
         brand: props.brand,
         isOpen: props.isOpen,
+        currentTab: props.tabs?.[0],
       });
     }
   }, [props, clientKey, userId]);
@@ -189,7 +178,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       event.preventDefault();
       if (!isOpen) {
         setView("messages");
-        setCurrentTab(DEFAULT_TABS[0]);
+        setCurrentTab(props?.tabs?.[0] ?? DEFAULT_TABS[1]);
       }
 
       toggleInbox();
