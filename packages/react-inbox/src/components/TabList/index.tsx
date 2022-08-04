@@ -16,6 +16,10 @@ const TabList: React.FunctionComponent<{
     setCurrentTab(newTab);
   };
 
+  if (!tabs?.length) {
+    return null;
+  }
+
   return (
     <Container>
       {tabs?.map((tab, index) => (

@@ -37,14 +37,16 @@
       };*/
       window.courierConfig = {
         apiUrl:
-          "https://yubmnstah4.execute-api.us-east-1.amazonaws.com/staging",
-        brandId: "YYBVRK524Y42DEJDMYNMAPNTSCJ6",
-        wsUrl: "wss://icnrz8ttcf.execute-api.us-east-1.amazonaws.com/staging",
-        clientKey: "YWZiZWViNGItMjAyMS00MzgwLTlkZDUtZWI0Y2MzNzEwNmMw",
-        userId: "bc976f74-7978-41c6-9d26-77b630986fd8",
+          "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q",
+        wsOptions: {
+          url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+        },
+        clientKey: "NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4",
+        userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
 
         components: {
           inbox: {
+            tabs: undefined,
             formatDate: (date) => "foobar",
             labels: {
               emptyState: "EMPTY",

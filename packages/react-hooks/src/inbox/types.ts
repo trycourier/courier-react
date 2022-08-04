@@ -30,9 +30,10 @@ export interface IMessage {
 
 export interface IInbox {
   brand?: Brand;
-  isOpen?: boolean;
   currentTab?: ITab;
+  from?: string;
   isLoading?: boolean;
+  isOpen?: boolean;
   messages?: Array<IMessage>;
   startCursor?: string;
   unreadMessageCount?: number;

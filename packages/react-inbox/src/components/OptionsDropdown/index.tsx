@@ -36,7 +36,6 @@ const tippyProps: TippyProps = {
 
 function OptionsDropdown({ options }) {
   const ref = useRef(null);
-
   const [showOptions, setShowOptions] = useState(false);
 
   const handleShowOptions = (event: React.MouseEvent) => {
@@ -46,25 +45,26 @@ function OptionsDropdown({ options }) {
 
   const handleClickOutside: EventListener = (event) => {
     event?.preventDefault();
+    if (!showOptions) {
+      return;
+    }
     setShowOptions(false);
   };
 
   useClickOutside(ref, handleClickOutside);
 
   return (
-    <StyledTippy
-      {...tippyProps}
-      visible={showOptions}
-      content={
-        <span ref={ref}>
-          <Options options={options} onClose={handleShowOptions} />{" "}
-        </span>
-      }
-    >
-      <OptionsIconButton onClick={handleShowOptions}>
-        <OptionsIcon />
-      </OptionsIconButton>
-    </StyledTippy>
+    <span ref={ref}>
+      <StyledTippy
+        {...tippyProps}
+        visible={showOptions}
+        content={<Options options={options} onClose={handleShowOptions} />}
+      >
+        <OptionsIconButton onClick={handleShowOptions}>
+          <OptionsIcon />
+        </OptionsIconButton>
+      </StyledTippy>
+    </span>
   );
 }
 

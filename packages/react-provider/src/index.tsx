@@ -56,7 +56,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
   }) => {
     const middleware = [..._middleware, ...defaultMiddleware];
     const useReducer = useCallback(
-      createReducer<any, ICourierContext>(...middleware),
+      createReducer<any, Partial<ICourierContext>>(...middleware),
       [_middleware]
     );
 

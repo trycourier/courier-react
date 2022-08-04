@@ -29,7 +29,9 @@ interface IInboxActions {
 
 const useInboxActions = (): IInboxActions => {
   const { apiUrl, clientKey, dispatch, inbox, userId, userSignature } =
-    useCourier();
+    useCourier<{
+      inbox: IInbox;
+    }>();
 
   const courierClient = createCourierClient({
     apiUrl,
@@ -50,6 +52,7 @@ const useInboxActions = (): IInboxActions => {
 
       if (payload.isOpen) {
         const meta = {
+          ...inbox?.currentTab?.filters,
           from: inbox?.from,
         };
 
