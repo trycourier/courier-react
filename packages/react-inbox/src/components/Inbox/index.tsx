@@ -95,6 +95,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     };
   }, [props]);
 
+  const tabs = props.tabs == false ? undefined : props.tabs;
+
   const windowSize = useWindowSize();
   const { clientKey, userId } = courierContext;
   const {
@@ -137,11 +139,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           const { messages, unreadMessageCount } =
             JSON.parse(localStorageState);
           init({
-            messages,
-            unreadMessageCount,
             brand: props.brand,
-            isOpen: props.isOpen,
             currentTab: props.tabs?.[0],
+            isOpen: props.isOpen,
+            messages,
+            tabs,
+            unreadMessageCount,
           });
           didInit = true;
         } catch (ex) {
@@ -154,6 +157,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       init({
         brand: props.brand,
         isOpen: props.isOpen,
+        tabs,
         currentTab: props.tabs?.[0],
       });
     }
@@ -178,7 +182,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       event.preventDefault();
       if (!isOpen) {
         setView("messages");
-        setCurrentTab(props?.tabs?.[0] ?? DEFAULT_TABS[1]);
+        setCurrentTab(tabs?.[0] ?? DEFAULT_TABS[1]);
       }
 
       toggleInbox();

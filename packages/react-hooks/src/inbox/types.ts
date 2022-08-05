@@ -6,6 +6,10 @@ export interface ITab {
   };
   label: string;
   id: string;
+  state?: {
+    messages?: IMessage[];
+    startCursor?: string;
+  };
 }
 
 export interface IMessage {
@@ -36,6 +40,7 @@ export interface IInbox {
   isOpen?: boolean;
   messages?: Array<IMessage>;
   startCursor?: string;
+  tabs?: ITab[];
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
 }

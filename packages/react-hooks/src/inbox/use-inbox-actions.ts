@@ -52,14 +52,17 @@ const useInboxActions = (): IInboxActions => {
 
       if (payload.isOpen) {
         const meta = {
-          ...inbox?.currentTab?.filters,
-          from: inbox?.from,
+          tabId: inbox?.currentTab?.id,
+          searchParams: {
+            ...inbox?.currentTab?.filters,
+            from: inbox?.from,
+          },
         };
 
         dispatch({
           type: "inbox/FETCH_MESSAGES",
           meta,
-          payload: () => messages.getMessages(meta),
+          payload: () => messages.getMessages(meta.searchParams),
         });
       }
     },
@@ -81,23 +84,22 @@ const useInboxActions = (): IInboxActions => {
         payload: newTab,
       });
 
+      if (newTab.state) {
+        return;
+      }
+
       const meta = {
-        from: inbox?.from,
-        ...newTab?.filters,
+        tabId: newTab.id,
+        searchParams: {
+          from: inbox?.from,
+          ...newTab?.filters,
+        },
       };
 
       dispatch({
-        type: "inbox/SET_UNREAD_MESSAGE_COUNT",
-        payload: () =>
-          messages.getMessageCount({
-            from: inbox?.from,
-            isRead: false,
-          }),
-      });
-      dispatch({
         type: "inbox/FETCH_MESSAGES",
         meta,
-        payload: () => messages.getMessages(meta),
+        payload: () => messages.getMessages(meta.searchParams),
       });
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {
