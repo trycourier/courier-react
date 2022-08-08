@@ -31,7 +31,7 @@ export interface IMessage {
 export interface IInbox {
   brand?: Brand;
   currentTab?: ITab;
-  from?: string;
+  from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
   messages?: Array<IMessage>;
