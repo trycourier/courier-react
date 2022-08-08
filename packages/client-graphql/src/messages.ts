@@ -91,8 +91,8 @@ interface IActionBlock {
 export interface IGraphMessageResponse {
   id: string;
   messageId: string;
-  created: number;
-  read?: number;
+  created: string;
+  read?: boolean;
   tags?: string[];
   content: {
     title: string;

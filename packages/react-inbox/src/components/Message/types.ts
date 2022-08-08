@@ -14,7 +14,7 @@ export interface IMessageProps {
   };
   trackingIds?: {
     clickTrackingId: string;
-    deliveredTrackingId: string;
+    deliverTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

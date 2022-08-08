@@ -183,7 +183,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
             if (message.messageId === action.payload.messageId) {
               return {
                 ...message,
-                read: new Date().getTime(),
+                read: true,
               };
             }
 
@@ -207,7 +207,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
-            read: new Date().getTime(),
+            read: true,
           };
         }
 
@@ -234,7 +234,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
           if (message.messageId === action.payload.messageId) {
             return {
               ...message,
-              read: new Date().getTime(),
+              read: true,
             };
           }
 
@@ -322,8 +322,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_NEW_MESSAGE: {
       const newMessage = {
         ...action.payload,
-        created: new Date().getTime(),
-        messageId: action.payload.messageId ?? new Date().toISOString(),
+        created: new Date().toISOString(),
       };
 
       const newMessages = [newMessage, ...(state.messages ?? [])];
@@ -338,13 +337,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
           return tab;
         }
 
-        if (tab.filters.isRead === false) {
-          tab.state.messages = [newMessage, ...(tab.state.messages ?? [])];
-          return tab;
-        }
-
-        tab.state.messages = newMessages;
-
+        tab.state.messages = [newMessage, ...(tab.state.messages ?? [])];
         return tab;
       });
 
@@ -379,7 +372,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
           tab.state.messages = tab.state.messages?.map((message) => {
             return {
               ...message,
-              read: new Date().getTime(),
+              read: true,
             };
           });
 
@@ -398,7 +391,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       const newMessages = state.messages?.map((message) => {
         return {
           ...message,
-          read: new Date().getTime(),
+          read: true,
         };
       });
 
@@ -420,7 +413,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         tab.state.messages = tab.state.messages?.map((message) => {
           return {
             ...message,
-            read: new Date().getTime(),
+            read: true,
           };
         });
 

@@ -46,7 +46,7 @@ const mockTab: ITab = {
 const mockStartCursor = "mockStartCursor";
 const mockMessage: IMessage = {
   messageId: "mockMessageId",
-  created: new Date().getTime(),
+  created: new Date().toISOString(),
   title: "mockTitle",
   body: "mockBody",
 };
@@ -54,7 +54,7 @@ const mockMessage: IMessage = {
 const mockGraphMessage: IGraphMessageResponse = {
   id: "mockId",
   messageId: "mockMessageId",
-  created: new Date().getTime(),
+  created: new Date().toISOString(),
   content: {
     title: "mockTitle",
     body: "mockBody",
@@ -77,7 +77,7 @@ const mockGraphMessage: IGraphMessageResponse = {
 const mockGraphMessage2: IGraphMessageResponse = {
   id: "mockId2",
   messageId: "mockMessageId2",
-  created: new Date().getTime(),
+  created: new Date().toISOString(),
   content: {
     title: "mockTitle2",
     body: "mockBody2",
@@ -492,7 +492,7 @@ describe("inbox reducer", () => {
   describe(`action ${INBOX_MARK_MESSAGE_UNREAD}`, () => {
     const mappedReadMessage = mapMessage({
       ...mockGraphMessage,
-      read: new Date().getTime(),
+      read: true,
     });
     const mappedMessage2 = mapMessage(mockGraphMessage2);
 
