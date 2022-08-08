@@ -2,28 +2,27 @@ import { IGraphMessageResponse } from "@trycourier/client-graphql";
 
 export const INBOX_FETCH_MESSAGES = "inbox/INBOX_FETCH_MESSAGES";
 
-export const INBOX_FETCH_MESSAGES_PENDING =
-  "inbox/INBOX_FETCH_MESSAGES/PENDING";
+export const INBOX_FETCH_MESSAGES_PENDING = "inbox/FETCH_MESSAGES/PENDING";
 
 export type FetchMessagesPending = {
-  type: "inbox/INBOX_FETCH_MESSAGES/PENDING";
+  type: "inbox/FETCH_MESSAGES/PENDING";
 };
 
 export const fetchMessagesPending = (): FetchMessagesPending => ({
   type: INBOX_FETCH_MESSAGES_PENDING,
 });
 
-export const INBOX_FETCH_MESSAGES_ERROR = "inbox/INBOX_FETCH_MESSAGES/ERROR";
+export const INBOX_FETCH_MESSAGES_ERROR = "inbox/FETCH_MESSAGES/ERROR";
 
 export type FetchMessagesError = {
-  type: "inbox/INBOX_FETCH_MESSAGES/ERROR";
+  type: "inbox/FETCH_MESSAGES/ERROR";
 };
 
 export const fetchMessagesError = (): FetchMessagesError => ({
   type: INBOX_FETCH_MESSAGES_ERROR,
 });
 
-export const INBOX_FETCH_MESSAGES_DONE = "inbox/INBOX_FETCH_MESSAGES/DONE";
+export const INBOX_FETCH_MESSAGES_DONE = "inbox/FETCH_MESSAGES/DONE";
 
 interface FetchMessagesDonePayload {
   messages: IGraphMessageResponse[];
@@ -32,7 +31,7 @@ interface FetchMessagesDonePayload {
 }
 
 export type FetchMessagesDone = {
-  type: "inbox/INBOX_FETCH_MESSAGES/DONE";
+  type: "inbox/FETCH_MESSAGES/DONE";
   payload: FetchMessagesDonePayload;
 };
 

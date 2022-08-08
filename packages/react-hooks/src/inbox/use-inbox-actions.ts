@@ -8,6 +8,14 @@ import {
 } from "@trycourier/client-graphql";
 
 import { IGetMessagesParams } from "@trycourier/client-graphql";
+import { initInbox } from "./actions/init";
+import { toggleInbox } from "./actions/toggle-inbox";
+import { setView } from "./actions/set-view";
+import { setCurrentTab } from "./actions/set-current-tab";
+import { markMessageRead } from "./actions/mark-message-read";
+import { markAllRead } from "./actions/mark-all-read";
+import { markMessageUnread } from "./actions/mark-message-unread";
+import { markMessageArchived } from "./actions/mark-message-archived";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -45,10 +53,7 @@ const useInboxActions = (): IInboxActions => {
 
   return {
     init: (payload) => {
-      dispatch({
-        type: "inbox/INIT",
-        payload,
-      });
+      dispatch(initInbox(payload));
 
       if (payload.isOpen) {
         const meta = {
@@ -67,22 +72,13 @@ const useInboxActions = (): IInboxActions => {
       }
     },
     toggleInbox: (isOpen?: boolean) => {
-      dispatch({
-        type: "inbox/TOGGLE_INBOX",
-        payload: isOpen,
-      });
+      dispatch(toggleInbox(isOpen));
     },
     setView: (view: "messages" | "preferences") => {
-      dispatch({
-        type: "inbox/SET_VIEW",
-        payload: view,
-      });
+      dispatch(setView(view));
     },
     setCurrentTab: (newTab: ITab) => {
-      dispatch({
-        type: "inbox/SET_CURRENT_TAB",
-        payload: newTab,
-      });
+      dispatch(setCurrentTab(newTab));
 
       if (newTab.state) {
         return;
@@ -124,36 +120,19 @@ const useInboxActions = (): IInboxActions => {
       });
     },
     markMessageRead: async (messageId: string, trackingId: string) => {
-      dispatch({
-        type: "inbox/MARK_MESSAGE_READ",
-        payload: {
-          messageId,
-        },
-      });
+      dispatch(markMessageRead(messageId));
       await events.trackEvent(trackingId);
     },
     markAllAsRead: async () => {
-      dispatch({
-        type: "inbox/MARK_ALL_AS_READ",
-      });
+      dispatch(markAllRead());
       await events.trackEventBatch("read");
     },
     markMessageUnread: async (messageId: string, trackingId: string) => {
-      dispatch({
-        type: "inbox/MARK_MESSAGE_UNREAD",
-        payload: {
-          messageId,
-        },
-      });
+      dispatch(markMessageUnread(messageId));
       await events.trackEvent(trackingId);
     },
     markMessageArchived: async (messageId: string, trackingId: string) => {
-      dispatch({
-        type: "inbox/MARK_MESSAGE_ARCHIVED",
-        payload: {
-          messageId,
-        },
-      });
+      dispatch(markMessageArchived(messageId));
       await events.trackEvent(trackingId);
     },
   };
