@@ -10,7 +10,7 @@ export const GET_MESSAGE_COUNT = `
 
 export interface IMessageCountParams {
   tags?: string[];
-  from?: number;
+  from?: string;
   isRead?: boolean;
 }
 type GetMessageCount = (params?: IMessageCountParams) => Promise<number>;
@@ -30,7 +30,7 @@ export const getMessageCount =
   };
 
 export interface IGetMessagesParams {
-  from?: number;
+  from?: string;
   isRead?: boolean;
   limit?: number;
   tags?: string[];
