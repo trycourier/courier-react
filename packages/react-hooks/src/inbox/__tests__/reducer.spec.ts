@@ -378,7 +378,7 @@ describe("inbox reducer", () => {
 
       const readMessage = {
         ...mappedMessage,
-        read: mockDate,
+        read: true,
       };
 
       expect(state).toEqual({
@@ -423,7 +423,7 @@ describe("inbox reducer", () => {
               messages: [
                 {
                   ...mappedMessage,
-                  read: mockDate,
+                  read: true,
                 },
                 mappedMessage2,
               ],
@@ -451,7 +451,7 @@ describe("inbox reducer", () => {
 
       const readMessage = {
         ...mappedMessage,
-        read: mockDate,
+        read: true,
       };
 
       expect(state).toEqual({
@@ -477,7 +477,7 @@ describe("inbox reducer", () => {
               messages: [
                 {
                   ...mappedMessage,
-                  read: mockDate,
+                  read: true,
                 },
                 mappedMessage2,
               ],
@@ -613,11 +613,11 @@ describe("inbox reducer", () => {
         messages: [
           {
             ...mappedMessage,
-            read: mockDate,
+            read: true,
           },
           {
             ...mappedMessage2,
-            read: mockDate,
+            read: true,
           },
         ],
       });
@@ -681,11 +681,11 @@ describe("inbox reducer", () => {
               messages: [
                 {
                   ...mappedMessage,
-                  read: mockDate,
+                  read: true,
                 },
                 {
                   ...mappedMessage2,
-                  read: mockDate,
+                  read: true,
                 },
               ],
             },
@@ -732,11 +732,11 @@ describe("inbox reducer", () => {
       const readMessages = [
         {
           ...mappedMessage,
-          read: mockDate,
+          read: true,
         },
         {
           ...mappedMessage2,
-          read: mockDate,
+          read: true,
         },
       ];
 
@@ -763,11 +763,11 @@ describe("inbox reducer", () => {
               messages: [
                 {
                   ...mappedMessage,
-                  read: mockDate,
+                  read: true,
                 },
                 {
                   ...mappedMessage2,
-                  read: mockDate,
+                  read: true,
                 },
               ],
             },
