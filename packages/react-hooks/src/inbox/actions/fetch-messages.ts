@@ -1,6 +1,6 @@
 import { IGraphMessageResponse } from "@trycourier/client-graphql";
 
-export const INBOX_FETCH_MESSAGES = "inbox/INBOX_FETCH_MESSAGES";
+export const INBOX_FETCH_MESSAGES = "inbox/FETCH_MESSAGES";
 
 export const INBOX_FETCH_MESSAGES_PENDING = "inbox/FETCH_MESSAGES/PENDING";
 
