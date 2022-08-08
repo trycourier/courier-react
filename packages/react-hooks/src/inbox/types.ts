@@ -15,18 +15,19 @@ export interface ITab {
 export interface IMessage {
   unread?: number;
   messageId: string;
-  created: string;
+  created: number;
   title: string;
   body: string;
   blocks?: Array<IActionBlock | ITextBlock>;
   icon?: string;
-  read?: boolean;
+  read?: number;
   data?: {
     clickAction: string;
   };
   trackingIds?: {
+    archiveTrackingId: string;
     clickTrackingId: string;
-    deliveredTrackingId: string;
+    deliverTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

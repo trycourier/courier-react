@@ -115,7 +115,7 @@ const useInboxActions = (): IInboxActions => {
     },
     getUnreadMessageCount: () => {
       dispatch({
-        type: "inbox/SET_UNREAD_MESSAGE_COUNT",
+        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
           messages.getMessageCount({
             from: inbox?.from,

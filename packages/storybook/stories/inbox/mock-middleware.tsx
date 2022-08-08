@@ -10,7 +10,7 @@ export default () => (next) => (action) => {
     return;
   }
 
-  if (action.type === "inbox/SET_UNREAD_MESSAGE_COUNT") {
+  if (action.type === "inbox/FETCH_UNREAD_MESSAGE_COUNT") {
     next({
       type: action.type + "/DONE",
       payload: 2,
@@ -91,8 +91,7 @@ export default () => (next) => (action) => {
                 blocks: [
                   {
                     type: "text",
-                    text:
-                      "I can understand *markdown* **woooo** [click here](https://www.courier.com)",
+                    text: "I can understand *markdown* **woooo** [click here](https://www.courier.com)",
                   },
                 ],
               },

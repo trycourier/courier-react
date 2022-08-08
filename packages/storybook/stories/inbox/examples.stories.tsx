@@ -32,7 +32,7 @@ const middleware = () => (next) => (action) => {
     return;
   }
 
-  if (action.type === "inbox/SET_UNREAD_MESSAGE_COUNT") {
+  if (action.type === "inbox/FETCH_UNREAD_MESSAGE_COUNT") {
     next({
       type: action.type + "/DONE",
       payload: 1,

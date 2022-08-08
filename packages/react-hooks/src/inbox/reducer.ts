@@ -1,40 +1,90 @@
+import { IGraphMessageResponse } from "@trycourier/client-graphql";
 import { IMessage, IInbox, ITab } from "./types";
 
-const makeMessage = (message): IMessage => ({
-  blocks: message?.content?.blocks,
-  body: message?.content?.body,
+import { InboxInit, INBOX_INIT } from "./actions/init";
+import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
+import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
+import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
+import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
+import {
+  MarkMessageArchived,
+  INBOX_MARK_MESSAGE_ARCHIVED,
+} from "./actions/mark-message-archived";
+import {
+  MarkMessageRead,
+  INBOX_MARK_MESSAGE_READ,
+} from "./actions/mark-message-read";
+import {
+  MarkMessageUnread,
+  INBOX_MARK_MESSAGE_UNREAD,
+} from "./actions/mark-message-unread";
+import {
+  FetchUnreadMessageCountDone,
+  INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE,
+} from "./actions/fetch-unread-message-count";
+import {
+  FetchMessagesDone,
+  FetchMessagesError,
+  FetchMessagesPending,
+  INBOX_FETCH_MESSAGES_DONE,
+  INBOX_FETCH_MESSAGES_ERROR,
+  INBOX_FETCH_MESSAGES_PENDING,
+} from "./actions/fetch-messages";
+import {
+  SetCurrentTab,
+  INBOX_SET_CURRENT_TAB,
+} from "./actions/set-current-tab";
+
+export const mapMessage = (message: IGraphMessageResponse): IMessage => ({
+  blocks: message.content.blocks,
+  body: message.content.body,
   created: message.created,
-  data: message?.content?.data,
+  data: message.content.data,
   messageId: message.messageId,
-  read: message?.read,
-  title: message?.content?.title,
-  trackingIds: message?.content?.trackingIds,
+  read: message.read,
+  title: message.content.title,
+  trackingIds: message.content.trackingIds,
 });
 
-const initialState: IInbox = {
+export const initialState: IInbox = {
   isOpen: false,
   messages: [],
   view: "messages",
   unreadMessageCount: 0,
 };
 
-export default (state: IInbox = initialState, action): IInbox => {
-  switch (action.type) {
-    case "inbox/INIT": {
+type InboxAction =
+  | FetchMessagesDone
+  | FetchMessagesError
+  | FetchMessagesPending
+  | FetchUnreadMessageCountDone
+  | InboxInit
+  | InboxSetView
+  | MarkAllRead
+  | MarkMessageArchived
+  | MarkMessageRead
+  | MarkMessageUnread
+  | NewMessage
+  | SetCurrentTab
+  | ToggleInbox;
+
+export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
+  switch (action?.type) {
+    case INBOX_INIT: {
       return {
         ...state,
         ...action.payload,
       };
     }
 
-    case "inbox/SET_VIEW": {
+    case INBOX_SET_VIEW: {
       return {
         ...state,
         view: action.payload,
       };
     }
 
-    case "inbox/TOGGLE_INBOX": {
+    case INBOX_TOGGLE: {
       return {
         ...state,
         isOpen:
@@ -42,42 +92,56 @@ export default (state: IInbox = initialState, action): IInbox => {
       };
     }
 
-    case "inbox/SET_CURRENT_TAB": {
+    case INBOX_SET_CURRENT_TAB: {
       const newTab: ITab = action.payload;
+
+      if (newTab.state) {
+        return {
+          ...state,
+          ...newTab.state,
+          currentTab: action.payload,
+        };
+      }
 
       return {
         ...state,
-        ...newTab?.state,
         currentTab: action.payload,
       };
     }
 
-    case "inbox/SET_UNREAD_MESSAGE_COUNT/DONE": {
+    case INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE: {
       return {
         ...state,
         unreadMessageCount: action.payload,
       };
     }
 
-    case "inbox/FETCH_MESSAGES/PENDING": {
+    case INBOX_FETCH_MESSAGES_PENDING: {
       return {
         ...state,
         isLoading: true,
       };
     }
 
-    case "inbox/FETCH_MESSAGES/DONE": {
-      const mappedMessages = action?.payload?.messages?.map(makeMessage);
+    case INBOX_FETCH_MESSAGES_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    }
 
-      const newMessages = action?.payload?.appendMessages
-        ? [...(state?.messages ?? []), ...mappedMessages]
+    case INBOX_FETCH_MESSAGES_DONE: {
+      const mappedMessages = action.payload.messages.map(mapMessage);
+
+      const newMessages = action.payload.appendMessages
+        ? [...(state.messages ?? []), ...mappedMessages]
         : mappedMessages;
 
       const currentTab = state.currentTab;
       if (currentTab) {
         currentTab.state = {
           messages: newMessages,
-          startCursor: action?.payload?.startCursor,
+          startCursor: action.payload.startCursor,
         };
       }
 
@@ -86,27 +150,133 @@ export default (state: IInbox = initialState, action): IInbox => {
         currentTab,
         isLoading: false,
         messages: newMessages,
-        startCursor: action?.payload?.startCursor,
+        startCursor: action.payload.startCursor,
       };
     }
 
-    case "inbox/MARK_MESSAGE_UNREAD": {
-      const unreadMessageCount = (state.unreadMessageCount ?? 0) + 1;
+    case INBOX_MARK_MESSAGE_READ: {
+      const unreadMessageCount = Math.max(
+        (state.unreadMessageCount ?? 0) - 1,
+        0
+      );
 
-      let messageToUnread: IMessage;
-      const newMessages = state?.messages?.map((message) => {
+      const currentTab = state.currentTab;
+      if (currentTab?.filters?.isRead === false) {
+        const newMessages = state.messages?.filter(
+          (message) => message.messageId !== action.payload.messageId
+        );
+
+        currentTab.state = currentTab.state ?? {};
+        currentTab.state.messages = newMessages;
+
+        const tabs = state.tabs?.map((tab) => {
+          if (!tab.state) {
+            return tab;
+          }
+
+          if (tab.filters.isRead === false) {
+            tab.state.messages = newMessages;
+            return tab;
+          }
+
+          tab.state.messages = tab.state.messages?.map((message) => {
+            if (message.messageId === action.payload.messageId) {
+              return {
+                ...message,
+                read: new Date().getTime(),
+              };
+            }
+
+            return message;
+          });
+
+          return tab;
+        });
+
+        return {
+          ...state,
+          currentTab,
+          messages: newMessages,
+          tabs,
+          unreadMessageCount,
+        };
+      }
+
+      // not on unread tab
+      const newMessages = state.messages?.map((message) => {
         if (message.messageId === action.payload.messageId) {
-          const newMessage = {
+          return {
             ...message,
-            read: false,
+            read: new Date().getTime(),
           };
-
-          messageToUnread = newMessage;
-          return newMessage;
         }
 
         return message;
       });
+
+      if (currentTab) {
+        currentTab.state = currentTab.state ?? {};
+        currentTab.state.messages = newMessages;
+      }
+
+      const tabs = state.tabs?.map((tab) => {
+        if (!tab.state) {
+          return tab;
+        }
+
+        if (tab.filters.isRead === false) {
+          tab.state.messages = tab.state.messages?.filter(
+            (message) => message.messageId !== action.payload.messageId
+          );
+          return tab;
+        }
+
+        tab.state.messages = tab.state.messages?.map((message) => {
+          if (message.messageId === action.payload.messageId) {
+            return {
+              ...message,
+              read: new Date().getTime(),
+            };
+          }
+
+          return message;
+        });
+
+        return tab;
+      });
+
+      return {
+        ...state,
+        currentTab,
+        messages: newMessages,
+        tabs,
+        unreadMessageCount,
+      };
+    }
+
+    case INBOX_MARK_MESSAGE_UNREAD: {
+      const unreadMessageCount = (state.unreadMessageCount ?? 0) + 1;
+
+      let messageToUnread: IMessage;
+      const currentTab = state.currentTab;
+      const newMessages = state.messages?.map((message) => {
+        if (message.messageId !== action.payload.messageId) {
+          return message;
+        }
+
+        const newMessage = {
+          ...message,
+          read: undefined,
+        };
+
+        messageToUnread = newMessage;
+        return newMessage;
+      });
+
+      if (currentTab) {
+        currentTab.state = currentTab.state ?? {};
+        currentTab.state.messages = newMessages;
+      }
 
       const tabs = state.tabs?.map((tab) => {
         if (!tab.state) {
@@ -125,105 +295,17 @@ export default (state: IInbox = initialState, action): IInbox => {
 
       return {
         ...state,
+        currentTab,
         messages: newMessages,
         tabs,
         unreadMessageCount,
       };
     }
 
-    case "inbox/MARK_MESSAGE_READ": {
-      const unreadMessageCount = Math.max(
-        (state.unreadMessageCount ?? 0) - 1,
-        0
-      );
-
-      if (state.currentTab?.filters?.isRead === false) {
-        const newMessages = state?.messages?.filter(
-          (message) => message.messageId !== action.payload.messageId
-        );
-
-        const tabs = state.tabs?.map((tab) => {
-          if (!tab.state) {
-            return tab;
-          }
-
-          if (tab.filters.isRead === false) {
-            tab.state.messages = newMessages;
-            return tab;
-          }
-
-          tab.state.messages = tab.state.messages?.map((message) => {
-            if (message.messageId === action.payload.messageId) {
-              return {
-                ...message,
-                read: true,
-              };
-            }
-
-            return message;
-          });
-
-          return tab;
-        });
-
-        return {
-          ...state,
-          tabs,
-          messages: newMessages,
-          unreadMessageCount,
-        };
-      }
-
-      // not on unread tab
-      const newMessages = state?.messages?.map((message) => {
-        if (message.messageId === action.payload.messageId) {
-          return {
-            ...message,
-            read: true,
-          };
-        }
-
-        return message;
-      });
-
-      const tabs = state.tabs?.map((tab) => {
-        if (!tab.state) {
-          return tab;
-        }
-
-        if (tab.filters.isRead === false) {
-          tab.state.messages = tab.state.messages?.filter(
-            (message) => message.messageId !== action.payload.messageId
-          );
-          return tab;
-        }
-
-        tab.state.messages = tab.state.messages?.map((message) => {
-          if (message.messageId === action.payload.messageId) {
-            return {
-              ...message,
-              read: true,
-            };
-          }
-
-          return message;
-        });
-
-        return tab;
-      });
-
-      return {
-        ...state,
-        tabs,
-        messages: newMessages,
-        unreadMessageCount,
-      };
-    }
-
-    case "inbox/MARK_MESSAGE_ARCHIVED": {
+    case INBOX_MARK_MESSAGE_ARCHIVED: {
       let unreadMessageCount = state.unreadMessageCount ?? 0;
 
-      const newMessages = state?.messages?.filter((message) => {
+      const newMessages = state.messages?.filter((message) => {
         const isMatching = message.messageId === action.payload.messageId;
         if (isMatching && !message.read) {
           unreadMessageCount = Math.max(unreadMessageCount - 1, 0);
@@ -239,33 +321,26 @@ export default (state: IInbox = initialState, action): IInbox => {
       };
     }
 
-    case "inbox/FETCH_MESSAGES/ERROR": {
+    case INBOX_NEW_MESSAGE: {
       return {
         ...state,
-        isLoading: false,
-      };
-    }
-
-    case "inbox/NEW_MESSAGE": {
-      return {
-        ...state,
-        unreadMessageCount: (state?.unreadMessageCount ?? 0) + 1,
+        unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
         messages: [
           {
-            created: new Date().toISOString(),
-            messageId: action.payload.messageId ?? new Date().getTime(),
+            created: new Date().getTime(),
+            messageId: action.payload.messageId ?? new Date().toISOString(),
             title: action.payload.title,
             body: action.payload.body,
             blocks: action.payload.blocks,
             data: action.payload.data,
-            trackingIds: action.payload.data?.trackingIds,
+            trackingIds: action.payload?.trackingIds,
           },
           ...(state.messages || []),
         ],
       };
     }
 
-    case "inbox/MARK_ALL_AS_READ": {
+    case INBOX_MARK_ALL_READ: {
       const unreadMessageCount = 0;
 
       if (state.currentTab?.filters?.isRead === false) {
@@ -278,10 +353,10 @@ export default (state: IInbox = initialState, action): IInbox => {
 
       return {
         ...state,
-        messages: state?.messages?.map((message) => {
+        messages: state.messages?.map((message) => {
           return {
             ...message,
-            read: true,
+            read: new Date().getTime(),
           };
         }),
         unreadMessageCount,

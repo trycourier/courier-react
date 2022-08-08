@@ -1,4 +1,15 @@
 module.exports = (babelConfig) => ({
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "!**/__mocks__/**",
+    "!**/__smoke_tests__/**",
+    "!**/__tests__/**",
+    "!**/@types/**",
+    "!**/*.d.ts",
+    "!**/*.spec.ts",
+    "**/src/**/*.{js,ts}",
+  ],
+  coverageReporters: ["text", "text-summary", "html", "json"],
   // The root of your source code, typically /src
   // `<rootDir>` is a token Jest substitutes
   roots: ["<rootDir>"],
