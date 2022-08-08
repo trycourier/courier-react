@@ -32,6 +32,9 @@ import {
 } from "../actions/mark-message-unread";
 
 import { ITab } from "../types";
+import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
+
+import { INBOX_MARK_ALL_READ, markAllRead } from "../actions/mark-all-read";
 
 const mockTab: ITab = {
   id: "my-mock-tab",
@@ -182,6 +185,70 @@ describe("inbox reducer", () => {
     expect(state).toEqual({
       ...initialState,
       unreadMessageCount: 100,
+    });
+  });
+
+  describe(`action ${INBOX_NEW_MESSAGE}`, () => {
+    const mappedMessage = mapMessage(mockGraphMessage);
+
+    it("will prepend the new message to the state", () => {
+      const state = reducer(initialState, newMessage(mappedMessage));
+
+      expect(state).toEqual({
+        ...initialState,
+        unreadMessageCount: 1,
+        messages: [mappedMessage],
+      });
+    });
+
+    it("will prepend the new message to the state and update current tab if it exists", () => {
+      const unreadTab = {
+        id: "unread",
+        label: "Unread",
+        filters: {
+          isRead: false,
+        },
+        state: {},
+      };
+
+      const allMessages = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+          currentTab: unreadTab,
+          tabs: [unreadTab, allMessages],
+        },
+        newMessage(mappedMessage)
+      );
+
+      const newCurrentTab = {
+        ...unreadTab,
+        state: {
+          messages: [mappedMessage],
+        },
+      };
+
+      expect(state).toEqual({
+        ...initialState,
+        unreadMessageCount: 1,
+        currentTab: newCurrentTab,
+        tabs: [
+          newCurrentTab,
+          {
+            ...allMessages,
+            state: {
+              messages: [mappedMessage],
+            },
+          },
+        ],
+        messages: [mappedMessage],
+      });
     });
   });
 
@@ -521,6 +588,190 @@ describe("inbox reducer", () => {
             },
           },
           randomTab,
+        ],
+      });
+    });
+  });
+
+  describe(`action ${INBOX_MARK_ALL_READ}`, () => {
+    it("will mark all read without tabs", () => {
+      const mappedMessage = mapMessage(mockGraphMessage);
+      const mappedMessage2 = mapMessage(mockGraphMessage2);
+
+      const state = reducer(
+        {
+          ...initialState,
+          unreadMessageCount: 2,
+          messages: [mappedMessage, mappedMessage2],
+        },
+        markAllRead()
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        unreadMessageCount: 0,
+        messages: [
+          {
+            ...mappedMessage,
+            read: mockDate,
+          },
+          {
+            ...mappedMessage2,
+            read: mockDate,
+          },
+        ],
+      });
+    });
+
+    it("will mark all as read on UNREAD tab", () => {
+      const mappedMessage = mapMessage(mockGraphMessage);
+      const mappedMessage2 = mapMessage(mockGraphMessage2);
+
+      const unreadTab = {
+        id: "unread",
+        label: "Unread",
+        filters: {
+          isRead: false,
+        },
+        state: {
+          messages: [mappedMessage, mappedMessage2],
+        },
+      };
+
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {
+          messages: [mappedMessage, mappedMessage2],
+        },
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+          currentTab: unreadTab,
+          tabs: [unreadTab, allMessagesTab],
+          unreadMessageCount: 2,
+          messages: [mappedMessage, mappedMessage2],
+        },
+        markAllRead()
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        currentTab: {
+          ...unreadTab,
+          state: {
+            messages: [],
+          },
+        },
+        unreadMessageCount: 0,
+        messages: [],
+        tabs: [
+          {
+            ...unreadTab,
+            state: {
+              messages: [],
+            },
+          },
+          {
+            ...allMessagesTab,
+            state: {
+              messages: [
+                {
+                  ...mappedMessage,
+                  read: mockDate,
+                },
+                {
+                  ...mappedMessage2,
+                  read: mockDate,
+                },
+              ],
+            },
+          },
+        ],
+      });
+    });
+
+    it("will mark all as read on ALL tab", () => {
+      const mappedMessage = mapMessage(mockGraphMessage);
+      const mappedMessage2 = mapMessage(mockGraphMessage2);
+
+      const unreadTab = {
+        id: "unread",
+        label: "Unread",
+        filters: {
+          isRead: false,
+        },
+        state: {
+          messages: [mappedMessage, mappedMessage2],
+        },
+      };
+
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {
+          messages: [mappedMessage, mappedMessage2],
+        },
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+          currentTab: allMessagesTab,
+          tabs: [unreadTab, allMessagesTab],
+          unreadMessageCount: 2,
+          messages: [mappedMessage, mappedMessage2],
+        },
+        markAllRead()
+      );
+
+      const readMessages = [
+        {
+          ...mappedMessage,
+          read: mockDate,
+        },
+        {
+          ...mappedMessage2,
+          read: mockDate,
+        },
+      ];
+
+      expect(state).toEqual({
+        ...initialState,
+        currentTab: {
+          ...allMessagesTab,
+          state: {
+            messages: readMessages,
+          },
+        },
+        unreadMessageCount: 0,
+        messages: readMessages,
+        tabs: [
+          {
+            ...unreadTab,
+            state: {
+              messages: [],
+            },
+          },
+          {
+            ...allMessagesTab,
+            state: {
+              messages: [
+                {
+                  ...mappedMessage,
+                  read: mockDate,
+                },
+                {
+                  ...mappedMessage2,
+                  read: mockDate,
+                },
+              ],
+            },
+          },
         ],
       });
     });

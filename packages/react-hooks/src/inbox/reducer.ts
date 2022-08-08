@@ -214,8 +214,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return message;
       });
 
-      if (currentTab) {
-        currentTab.state = currentTab.state ?? {};
+      if (currentTab?.state) {
         currentTab.state.messages = newMessages;
       }
 
@@ -273,8 +272,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return newMessage;
       });
 
-      if (currentTab) {
-        currentTab.state = currentTab.state ?? {};
+      if (currentTab?.state) {
         currentTab.state.messages = newMessages;
       }
 
@@ -322,21 +320,40 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_NEW_MESSAGE: {
+      const newMessage = {
+        ...action.payload,
+        created: new Date().getTime(),
+        messageId: action.payload.messageId ?? new Date().toISOString(),
+      };
+
+      const newMessages = [newMessage, ...(state.messages ?? [])];
+      const currentTab = state?.currentTab;
+
+      if (currentTab?.filters?.isRead === false && currentTab?.state) {
+        currentTab.state.messages = newMessages;
+      }
+
+      const tabs = state.tabs?.map((tab) => {
+        if (!tab.state || tab.id === currentTab?.id) {
+          return tab;
+        }
+
+        if (tab.filters.isRead === false) {
+          tab.state.messages = [newMessage, ...(tab.state.messages ?? [])];
+          return tab;
+        }
+
+        tab.state.messages = newMessages;
+
+        return tab;
+      });
+
       return {
         ...state,
+        currentTab,
+        tabs,
         unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
-        messages: [
-          {
-            created: new Date().getTime(),
-            messageId: action.payload.messageId ?? new Date().toISOString(),
-            title: action.payload.title,
-            body: action.payload.body,
-            blocks: action.payload.blocks,
-            data: action.payload.data,
-            trackingIds: action.payload?.trackingIds,
-          },
-          ...(state.messages || []),
-        ],
+        messages: newMessages,
       };
     }
 
@@ -344,21 +361,77 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       const unreadMessageCount = 0;
 
       if (state.currentTab?.filters?.isRead === false) {
+        const currentTab = state?.currentTab;
+        if (currentTab?.filters?.isRead === false && currentTab?.state) {
+          currentTab.state.messages = [];
+        }
+
+        const tabs = state.tabs?.map((tab) => {
+          if (!tab.state || tab.id === currentTab?.id) {
+            return tab;
+          }
+
+          if (tab.filters.isRead === false) {
+            tab.state.messages = [];
+            return tab;
+          }
+
+          tab.state.messages = tab.state.messages?.map((message) => {
+            return {
+              ...message,
+              read: new Date().getTime(),
+            };
+          });
+
+          return tab;
+        });
+
         return {
           ...state,
+          currentTab,
           messages: [],
+          tabs,
           unreadMessageCount,
         };
       }
 
-      return {
-        ...state,
-        messages: state.messages?.map((message) => {
+      const newMessages = state.messages?.map((message) => {
+        return {
+          ...message,
+          read: new Date().getTime(),
+        };
+      });
+
+      const currentTab = state?.currentTab;
+      if (currentTab?.state) {
+        currentTab.state.messages = newMessages;
+      }
+
+      const tabs = state.tabs?.map((tab) => {
+        if (!tab.state || tab.id === currentTab?.id) {
+          return tab;
+        }
+
+        if (tab.filters.isRead === false) {
+          tab.state.messages = [];
+          return tab;
+        }
+
+        tab.state.messages = tab.state.messages?.map((message) => {
           return {
             ...message,
             read: new Date().getTime(),
           };
-        }),
+        });
+
+        return tab;
+      });
+
+      return {
+        ...state,
+        currentTab,
+        messages: newMessages,
+        tabs,
         unreadMessageCount,
       };
     }
