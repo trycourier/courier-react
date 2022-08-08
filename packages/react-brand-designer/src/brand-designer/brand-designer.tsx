@@ -6,23 +6,21 @@ import { BrandControls } from "./brand-controls";
 import { BrandPreview } from "./brand-preview";
 
 export const BrandDesigner: FC<BrandDesignerProps> = (opts) => {
-  const { config, onChange, onSave } = opts;
+  const { brand, onChange, saveButton } = opts;
   const headerOpts = {
     title: opts.title,
-    saveDate: config.updated,
+    saveDate: brand.updated,
     saveDatePrefix: opts.dateUpdatedPrefix,
-    saveButtonText: opts.saveButtonText,
-    disableSaveButton: opts.disableSaveButton,
-    onSave: () => onSave(config),
+    saveButton,
   };
 
   return (
     <BrandDesignerContainer>
       <BrandDesignerHeader {...headerOpts} />
       <BrandDesignerBody>
-        <BrandControls config={config} onChange={onChange} />
+        <BrandControls config={brand} onChange={onChange} />
         <PreviewSeparator />
-        <BrandPreview config={config} />
+        <BrandPreview config={brand} />
       </BrandDesignerBody>
     </BrandDesignerContainer>
   );

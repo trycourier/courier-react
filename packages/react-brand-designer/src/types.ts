@@ -1,4 +1,6 @@
-export type BrandConfig = {
+import React from "react";
+
+export interface BrandConfig {
   colors: {
     primary: string;
     secondary: string;
@@ -10,19 +12,19 @@ export type BrandConfig = {
   };
   created?: string | number | Date;
   updated?: string | number | Date;
-};
+}
 
-export type BrandDesignerProps = {
-  config: BrandConfig;
-  /** Save / Publish button was clicked */
-  onSave: BrandHandler;
+export interface BrandDesignerProps {
+  brand: BrandConfig;
   onChange: BrandHandler;
-  isLoading?: boolean;
-  isLogoLoading?: boolean;
-  saveButtonText?: string;
+  saveButton: React.ReactNode;
   dateUpdatedPrefix?: string;
-  disableSaveButton?: boolean;
   title?: string;
-};
+}
 
 export type BrandHandler = (config: BrandConfig) => void;
+
+export interface BrandDesignerTheme {
+  headerBackgroundColor?: string;
+  backgroundColor?: string;
+}
