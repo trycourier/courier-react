@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import styled, { CSSObject, ThemeProvider } from "styled-components";
+import styled, { CSSObject, ThemeProvider, useTheme } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandDesignerProps } from "../types";
 import { BrandControls } from "./brand-controls";
@@ -7,16 +7,17 @@ import { BrandPreview } from "./brand-preview";
 import { defaultBrandDesignerTheme } from "./default-theme";
 
 export const BrandDesigner: FC<BrandDesignerProps> = (props) => {
-  const { brand, onChange, saveButton, options, theme } = props;
+  const { brand, onChange, saveButton, options } = props;
   const headerOpts = {
     title: options?.title,
     saveDate: brand.updated,
     saveDatePrefix: options?.dateUpdatedPrefix,
     saveButton,
   };
+  const theme = props.theme ?? useTheme() ?? defaultBrandDesignerTheme;
 
   return (
-    <ThemeProvider theme={theme ?? {}}>
+    <ThemeProvider theme={theme}>
       <BrandDesignerContainer>
         <BrandDesignerHeader {...headerOpts} />
         <BrandDesignerBody>
@@ -41,8 +42,6 @@ const BrandDesignerContainer = styled.div(
     fontFamily: theme?.fontFamily,
   })
 );
-
-BrandDesigner.defaultProps = { theme: defaultBrandDesignerTheme };
 
 const BrandDesignerBody = styled.div(
   ({ theme }): CSSObject => ({
