@@ -1,12 +1,14 @@
 import { CourierSdk } from "./CourierSdk";
-import { createPortal } from "react-dom";
+// import { createPortal } from "react-dom";
 import { getAttrsAsJson } from "../lib/get-attrs-as-json";
 import deepExtend from "deep-extend";
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState, useEffect } from "react";
+import { ClipboardBrandDesigner } from "@trycourier/react-brand-designer";
+import { ThemeProvider } from "styled-components";
 
-const Toast = lazy(() => import("./Toast"));
-const Inbox = lazy(() => import("./Inbox"));
-const Preferences = lazy(() => import("./Preferences"));
+// const Toast = lazy(() => import("./Toast"));
+// const Inbox = lazy(() => import("./Inbox"));
+// const Preferences = lazy(() => import("./Preferences"));
 
 const querySelector = (element: HTMLElement, selector: string) => {
   if (!element || !selector || !element.querySelector) {
@@ -146,7 +148,7 @@ export const CourierComponents: React.FunctionComponent = () => {
         preferences: Boolean(preferencesElement),
       }}
     >
-      {inboxElement &&
+      {/* {inboxElement &&
         createPortal(
           <Suspense fallback={<div />}>
             <Inbox {...inboxConfig} />
@@ -166,7 +168,10 @@ export const CourierComponents: React.FunctionComponent = () => {
             <Preferences />
           </Suspense>,
           preferencesElement
-        )}
+        )} */}
+      <ThemeProvider theme={{ headerBackgroundColor: "blue" }}>
+        <ClipboardBrandDesigner />
+      </ThemeProvider>
     </CourierSdk>
   );
 };

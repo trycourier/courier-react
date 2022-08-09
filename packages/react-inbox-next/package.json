@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox-next",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "description": "",
   "private": true,
   "main": "dist/index.js",
@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "@tippyjs/react": "^4.2.3",
-    "@trycourier/react-elements": "^1.28.0",
-    "@trycourier/react-hooks": "^1.28.0",
-    "@trycourier/react-provider": "^1.28.0",
+    "@trycourier/react-elements": "^1.29.0",
+    "@trycourier/react-hooks": "^1.29.0",
+    "@trycourier/react-provider": "^1.29.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
