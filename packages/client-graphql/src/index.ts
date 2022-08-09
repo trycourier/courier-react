@@ -3,5 +3,9 @@ export { default as Banner } from "./banner";
 export { default as Brands } from "./brands";
 export { default as Events } from "./events";
 export { default as Inbox, IInboxMessagePreview, IInboxMessage } from "./inbox";
-export { default as Messages, IGetMessagesParams } from "./messages";
+export {
+  default as Messages,
+  IGetMessagesParams,
+  IGraphMessageResponse,
+} from "./messages";
 export { default as Preferences } from "./preferences";

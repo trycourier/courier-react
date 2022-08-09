@@ -78,6 +78,37 @@ export const QUERY_MESSAGES = `
   }
 `;
 
+interface ITextBlock {
+  type: "text";
+  text: string;
+}
+
+interface IActionBlock {
+  type: "action";
+  text: string;
+  url: string;
+}
+export interface IGraphMessageResponse {
+  id: string;
+  messageId: string;
+  created: string;
+  read?: boolean;
+  tags?: string[];
+  content: {
+    title: string;
+    body: string;
+    blocks: Array<ITextBlock | IActionBlock>;
+    data?: any;
+    trackingIds: {
+      archiveTrackingId: string;
+      clickTrackingId: string;
+      deliverTrackingId: string;
+      readTrackingId: string;
+      unreadTrackingId: string;
+    };
+  };
+}
+
 type GetMessages = (
   params?: IGetMessagesParams,
   after?: string
@@ -85,7 +116,7 @@ type GetMessages = (
   | {
       appendMessages: boolean;
       startCursor: string;
-      messages: any[];
+      messages: IGraphMessageResponse[];
     }
   | undefined
 >;

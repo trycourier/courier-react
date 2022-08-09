@@ -92,8 +92,9 @@ export interface IMessage {
     clickAction: string;
   };
   trackingIds?: {
+    archiveTrackingId: string;
     clickTrackingId: string;
-    deliveredTrackingId: string;
+    deliverTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };
