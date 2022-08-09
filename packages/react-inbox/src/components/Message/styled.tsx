@@ -20,7 +20,6 @@ export const Container = styled.div(({ theme }) =>
       "&:not(.read):hover": {
         background: "#EDE4ED",
       },
-      scrollSnapAlign: "start",
     },
     theme.message?.container ?? {}
   )

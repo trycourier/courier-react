@@ -79,7 +79,6 @@ export const MessageList = styled.div<{ isMobile?: boolean }>(
         maxHeight: height,
         flexDirection: "column",
         borderTop: "1px solid rgba(203,213,224,.5)",
-        scrollSnapType: "y proximity",
       },
       theme?.messageList?.container
     );
