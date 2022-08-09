@@ -1,33 +1,36 @@
 import React, { FC } from "react";
-import styled, { CSSObject } from "styled-components";
+import styled, { CSSObject, ThemeProvider } from "styled-components";
 import { BrandDesignerHeader } from "./designer-header";
 import { BrandDesignerProps } from "../types";
 import { BrandControls } from "./brand-controls";
 import { BrandPreview } from "./brand-preview";
+import { defaultBrandDesignerTheme } from "./default-theme";
 
-export const BrandDesigner: FC<BrandDesignerProps> = (opts) => {
-  const { brand, onChange, saveButton } = opts;
+export const BrandDesigner: FC<BrandDesignerProps> = (props) => {
+  const { brand, onChange, saveButton, options, theme } = props;
   const headerOpts = {
-    title: opts.title,
+    title: options?.title,
     saveDate: brand.updated,
-    saveDatePrefix: opts.dateUpdatedPrefix,
+    saveDatePrefix: options?.dateUpdatedPrefix,
     saveButton,
   };
 
   return (
-    <BrandDesignerContainer>
-      <BrandDesignerHeader {...headerOpts} />
-      <BrandDesignerBody>
-        <BrandControls config={brand} onChange={onChange} />
-        <PreviewSeparator />
-        <BrandPreview config={brand} />
-      </BrandDesignerBody>
-    </BrandDesignerContainer>
+    <ThemeProvider theme={theme ?? {}}>
+      <BrandDesignerContainer>
+        <BrandDesignerHeader {...headerOpts} />
+        <BrandDesignerBody>
+          <BrandControls config={brand} onChange={onChange} />
+          <PreviewSeparator />
+          <BrandPreview brand={brand} options={options?.preview} />
+        </BrandDesignerBody>
+      </BrandDesignerContainer>
+    </ThemeProvider>
   );
 };
 
 const BrandDesignerContainer = styled.div(
-  (): CSSObject => ({
+  ({ theme }): CSSObject => ({
     display: "flex",
     flexDirection: "column",
     width: "768px",
@@ -35,16 +38,19 @@ const BrandDesignerContainer = styled.div(
     borderRadius: "12px",
     overflow: "hidden",
     backgroundColor: "#fff",
+    fontFamily: theme?.fontFamily,
   })
 );
 
+BrandDesigner.defaultProps = { theme: defaultBrandDesignerTheme };
+
 const BrandDesignerBody = styled.div(
-  (): CSSObject => ({
+  ({ theme }): CSSObject => ({
     display: "flex",
     flexDirection: "row",
     flexGrow: 1,
     minHeight: 0,
-    backgroundColor: "#F9FAFB",
+    background: theme?.background,
   })
 );
 

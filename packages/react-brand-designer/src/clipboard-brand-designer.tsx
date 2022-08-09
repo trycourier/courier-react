@@ -3,6 +3,7 @@ import { CourierElement, LinkButton } from "@trycourier/react-elements";
 import { BrandConfig } from "./types";
 import { BrandDesigner } from "./brand-designer/brand-designer";
 import styled, { CSSObject } from "styled-components";
+import deepExtend from "deep-extend";
 
 /** Copy's Brand Config to Clipboard */
 export const ClipboardBrandDesigner: CourierElement = () => {
@@ -39,17 +40,21 @@ export const ClipboardBrandDesigner: CourierElement = () => {
 };
 
 const CopyButton = styled(LinkButton)(
-  (): CSSObject => ({
-    fontWeight: 600,
-    fontSize: "12px",
-    lineHeight: "16px",
-    textAlign: "center",
-    textDecorationLine: "underline",
-    color: "#24324B",
-    cursor: "pointer",
-    background: "none",
-    "&:hover": {
-      background: "none",
-    },
-  })
+  ({ theme }): CSSObject =>
+    deepExtend(
+      {
+        fontWeight: 600,
+        fontSize: "12px",
+        lineHeight: "16px",
+        textAlign: "center",
+        textDecorationLine: "underline",
+        color: "#24324B",
+        cursor: "pointer",
+        background: "none",
+        "&:hover": {
+          background: "none",
+        },
+      },
+      theme?.copyButtonCSS ?? {}
+    )
 );

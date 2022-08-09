@@ -1,42 +1,51 @@
 import { Button, CourierElement } from "@trycourier/react-elements";
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import { BrandConfig } from "../types";
+import { BrandConfig, BrandDesignerOptions } from "../types";
 
 export type BrandPreviewProps = {
-  config: BrandConfig;
+  brand: BrandConfig;
+  options?: BrandDesignerOptions["preview"];
 };
 
-export const BrandPreview: CourierElement<BrandPreviewProps> = ({ config }) => {
+export const BrandPreview: CourierElement<BrandPreviewProps> = ({
+  brand,
+  options,
+}) => {
   return (
     <PreviewContainer>
       <EmailPreview>
         <EmailSubject>
           <div>
             <h3>
-              Subject: <strong>Hi, {"{First name}"}! 👋</strong>
+              Subject:{" "}
+              <strong>{options?.subject ?? "Hi, {First name}! 👋"}</strong>
             </h3>
-            <h4>From: noreply@courier.com</h4>
+            <h4>From: {options?.from ?? "noreply@courier.com"}</h4>
           </div>
         </EmailSubject>
         <EmailBodyContainer>
           <EmailBody>
-            <EmailTopBar color={config.colors.primary} />
+            <EmailTopBar color={brand.colors.primary} />
             <div className="email-content">
-              <LogoPreview logo={config.logo} />
-              <h3>This is a branded email</h3>
-              <p>
-                You’ll always able to adjust the specifics of this email in the
-                designer. You can adjust more details of this email in the
-                advanced settings.
-              </p>
-              <EmailActionButton color={config.colors.secondary}>
-                Example CTA
+              <LogoPreview logo={brand.logo} />
+              <h3>{options?.title ?? "This is a branded email"}</h3>
+              {options?.body ? (
+                <p>{options.body}</p>
+              ) : (
+                <p>
+                  You&#39;ll always able to adjust the specifics of this email
+                  in the designer. You can adjust more details of this email in
+                  the advanced settings.
+                </p>
+              )}
+              <EmailActionButton color={brand.colors.secondary}>
+                {options?.buttonText ?? "Example CTA"}
               </EmailActionButton>
               <p>
-                Cheers,
+                {options?.signaturePrefix ?? "Cheers,"}
                 <br />
-                <strong>The Courier Team</strong>
+                <strong>{options?.signature ?? "The Courier Team"}</strong>
               </p>
             </div>
           </EmailBody>
@@ -69,22 +78,22 @@ const LogoPreviewImg = styled.img`
 `;
 
 const PreviewContainer = styled.div(
-  (): CSSObject => ({
+  ({ theme }): CSSObject => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    background: "#F9FAFB",
+    background: theme?.background ?? "#F9FAFB",
     height: "100%",
     flexGrow: 1,
   })
 );
 
 const EmailPreview = styled.div(
-  (): CSSObject => ({
+  ({ theme }): CSSObject => ({
     width: "356px",
     height: "278px",
-    background: "#F0F0F0",
+    background: theme?.preview?.background ?? "#F0F0F0",
     display: "flex",
     flexDirection: "column",
     borderRadius: "2.99px",
@@ -93,8 +102,8 @@ const EmailPreview = styled.div(
 );
 
 const EmailSubject = styled.div(
-  (): CSSObject => ({
-    background: "#FFF",
+  ({ theme }): CSSObject => ({
+    background: theme?.preview?.subjectHeaderBackground ?? "#FFF",
     boxSizing: "border-box",
     padding: "11.33px 14.62px",
     flexBasis: 45.7,
@@ -105,18 +114,19 @@ const EmailSubject = styled.div(
     h3: {
       margin: 0,
       fontWeight: 400,
-      fontFamily: "Helvetica, sans-serif",
+      fontFamily: theme?.preview?.fontFamily ?? "Helvetica, sans-serif",
       fontSize: "10.45px",
       lineHeight: "12px",
+      color: theme?.preview?.subjectHeaderTextColor,
     },
     h4: {
       margin: 0,
       marginTop: "2.31px",
       fontWeight: 400,
-      fontFamily: "Helvetica, sans-serif",
-      color: "#73819B",
+      fontFamily: theme?.preview?.fontFamily ?? "Helvetica, sans-serif",
       fontSize: "7.46px",
       lineHeight: "9px",
+      color: theme?.preview?.fromTextColor ?? "#73819B",
     },
   })
 );
@@ -132,8 +142,8 @@ const EmailBodyContainer = styled.div(
 );
 
 const EmailBody = styled.div(
-  (): CSSObject => ({
-    background: "#FFF",
+  ({ theme }): CSSObject => ({
+    background: theme?.preview?.background ?? "#FFF",
     overflow: "hidden",
     width: "328px",
     height: "204px",
@@ -147,16 +157,17 @@ const EmailBody = styled.div(
       overflow: "scroll",
       h3: {
         marginTop: "0.7em",
-        fontFamily: "Helvetica, sans-serif",
+        fontFamily: theme?.preview?.fontFamily ?? "Helvetica, sans-serif",
         fontSize: "18px",
         lineHeight: "21px",
+        color: theme?.preview?.emailTitleColor,
       },
       p: {
-        fontFamily: "Helvetica, sans-serif",
+        fontFamily: theme?.preview?.fontFamily ?? "Helvetica, sans-serif",
         fontWeight: 400,
         fontSize: "9.75px",
         lineHeight: "13px",
-        color: "#344563",
+        color: theme?.preview?.emailTextColor ?? "#344563",
       },
     },
   })
@@ -172,12 +183,13 @@ const EmailTopBar = styled.div<{ color: string }>(
 );
 
 const EmailActionButton = styled(Button)<{ color: string }>(
-  ({ color }): CSSObject => ({
+  ({ color, theme }): CSSObject => ({
     background: color,
     height: "21.64px",
     padding: "4px 17px",
-    fontFamily: "'Nunito Sans', sans-serif",
+    fontFamily: theme?.preview?.fontFamily ?? "'Nunito Sans', sans-serif",
     fontWeight: 600,
     fontSize: "9.7px",
+    color: theme?.preview?.buttonTextColor ?? "#fff",
   })
 );
