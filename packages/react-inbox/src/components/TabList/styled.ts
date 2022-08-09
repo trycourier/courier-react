@@ -12,7 +12,7 @@ export const Container = styled.div(({ theme }) =>
   )
 );
 
-export const Tab = styled.div(({ theme }) =>
+export const Tab = styled.button(({ theme }) =>
   deepExtend(
     {
       backgroundColor: "#F9FAFB",

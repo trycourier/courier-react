@@ -10,7 +10,6 @@ export const StyledList = styled.div`
   height: 433px;
   flex-direction: column;
   border-top: 1px solid rgba(203, 213, 224, 0.5);
-  scroll-snap-type: "y proximity";
   background: rgba(255, 255, 255, 0.2);
 `;
 

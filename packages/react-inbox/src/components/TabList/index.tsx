@@ -5,10 +5,11 @@ import { useInbox } from "@trycourier/react-hooks";
 import { InboxProps, ITab } from "~/types";
 
 const TabList: React.FunctionComponent<{
-  tabs?: ITab[];
   currentTab?: ITab;
+  isLoading?: boolean;
   labels?: InboxProps["labels"];
-}> = ({ tabs, currentTab, labels }) => {
+  tabs?: ITab[];
+}> = ({ isLoading, tabs, currentTab, labels }) => {
   const { setCurrentTab } = useInbox();
 
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
@@ -28,6 +29,7 @@ const TabList: React.FunctionComponent<{
           className={classNames({
             active: currentTab?.id === tab.id,
           })}
+          disabled={isLoading}
           onClick={handleOnChange(tab)}
         >
           {labels?.tabs?.[index] ?? tab.label}

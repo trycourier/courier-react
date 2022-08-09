@@ -6,6 +6,10 @@ export function useAtBottom(ref, cb, deps) {
   const containerElement = ref?.current;
 
   const handleScroll = useCallback(() => {
+    if (!containerElement?.scrollTop) {
+      return;
+    }
+
     if (
       containerElement?.scrollTop + containerElement?.clientHeight + 50 >=
       containerElement?.scrollHeight
