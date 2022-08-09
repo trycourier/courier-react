@@ -1,7 +1,9 @@
 import React from "react";
-import { CourierElement } from "@trycourier/react-elements";
+import { CourierElement, LinkButton } from "@trycourier/react-elements";
 import { BrandConfig } from "./types";
 import { BrandDesigner } from "./brand-designer/brand-designer";
+import styled, { CSSObject } from "styled-components";
+import deepExtend from "deep-extend";
 
 /** Copy's Brand Config to Clipboard */
 export const ClipboardBrandDesigner: CourierElement = () => {
@@ -16,18 +18,43 @@ export const ClipboardBrandDesigner: CourierElement = () => {
     setConfig(config);
     setIsCopied(false);
   };
+
   const handleSave = () => {
     navigator.clipboard.writeText(JSON.stringify(config, undefined, 2));
     setIsCopied(true);
   };
 
+  const saveButton = (
+    <CopyButton onClick={handleSave}>
+      {isCopied ? "Copied" : "Copy Snippet"}
+    </CopyButton>
+  );
+
   return (
     <BrandDesigner
-      config={config}
+      brand={config}
       onChange={handleChange}
-      onSave={handleSave}
-      saveButtonText={isCopied ? "Copied" : "Copy Snippet"}
-      disableSaveButton={isCopied}
+      saveButton={saveButton}
     />
   );
 };
+
+const CopyButton = styled(LinkButton)(
+  ({ theme }): CSSObject =>
+    deepExtend(
+      {
+        fontWeight: 600,
+        fontSize: "12px",
+        lineHeight: "16px",
+        textAlign: "center",
+        textDecorationLine: "underline",
+        color: "#24324B",
+        cursor: "pointer",
+        background: "none",
+        "&:hover": {
+          background: "none",
+        },
+      },
+      theme?.copyButtonCSS ?? {}
+    )
+);

@@ -71,10 +71,10 @@ export const BrandControls: FC<BrandControlsProps> = (opts) => {
 };
 
 const BrandControlsContainer = styled.div(
-  (): CSSObject => ({
+  ({ theme }): CSSObject => ({
     padding: "32px",
     boxSizing: "border-box",
-    backgroundColor: "#F9FAFB",
+    background: theme?.background ?? "#F9FAFB",
     height: "100%",
     overflow: "scroll",
   })

@@ -1,43 +1,33 @@
 import React from "react";
 import styled, { CSSObject } from "styled-components";
-import {
-  CourierElement,
-  LinkButton,
-  PrettyDate,
-  Title,
-} from "@trycourier/react-elements";
+import { CourierElement, PrettyDate, Title } from "@trycourier/react-elements";
 
 export type DesignerHeaderProps = {
   title?: string;
   saveDate?: string | number | Date;
   saveDatePrefix?: string;
-  saveButtonText?: string;
-  disableSaveButton?: boolean;
-  onSave: () => void;
+  saveButton: React.ReactNode;
 };
 
 export const BrandDesignerHeader: CourierElement<DesignerHeaderProps> = ({
   title,
   saveDate: date,
   saveDatePrefix: datePrefix,
-  saveButtonText,
-  onSave,
+  saveButton,
 }) => {
   return (
     <HeaderContainer style={{ margin: 0 }}>
       <Title>{title ?? "Configure your brand"}</Title>
       <div className="publish">
         {date && <PrettyDate prefix={datePrefix ?? "Last published "} />}
-        <CopyButton onClick={onSave}>
-          {saveButtonText ?? "Publish Changes"}
-        </CopyButton>
+        {saveButton}
       </div>
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.div(
-  (): CSSObject => ({
+  ({ theme }): CSSObject => ({
     flexBasis: "48px",
     width: "100%",
     borderBottom: "2px solid #E1E5E9",
@@ -47,6 +37,7 @@ const HeaderContainer = styled.div(
     alignItems: "center",
     padding: "0px 32px",
     boxSizing: "border-box",
+    backgroundColor: theme.headerBackgroundColor ?? "#fff",
     "div.publish": {
       display: "flex",
       flexDirection: "row",
@@ -55,22 +46,6 @@ const HeaderContainer = styled.div(
       ">:not(:last-child)": {
         marginRight: "8px",
       },
-    },
-  })
-);
-
-const CopyButton = styled(LinkButton)(
-  (): CSSObject => ({
-    fontWeight: 600,
-    fontSize: "12px",
-    lineHeight: "16px",
-    textAlign: "center",
-    textDecorationLine: "underline",
-    color: "#24324B",
-    cursor: "pointer",
-    background: "none",
-    "&:hover": {
-      background: "none",
     },
   })
 );
