@@ -192,10 +192,10 @@ export const getMessageLists =
       .query(QUERY, { ...variables, limit })
       .toPromise();
 
-    const response = Object.keys(results?.data).map((list) => {
+    const response = Object.keys(results.data)?.map((listName) => {
       return {
-        messages: results.data[list].nodes,
-        startCursor: results.data[list].pageInfo?.startCurosr,
+        messages: results.data[listName].nodes,
+        startCursor: results.data[listName].pageInfo?.startCursor,
       };
     });
 
