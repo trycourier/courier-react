@@ -96,11 +96,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, [props]);
 
   const tabs = props.tabs == false ? undefined : props.tabs;
+  const currentTab = tabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
   const { clientKey, userId } = courierContext;
   const {
     brand,
+    fetchMessages,
     fetchMessageLists,
     init,
     isOpen: isOpenState,
@@ -133,7 +135,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             JSON.parse(localStorageState);
           init({
             brand: props.brand,
-            currentTab: tabs?.[0] ?? DEFAULT_TABS[0],
+            currentTab,
             isOpen: props.isOpen,
             messages,
             tabs,
@@ -151,7 +153,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         brand: props.brand,
         isOpen: props.isOpen,
         tabs,
-        currentTab: tabs?.[0] ?? DEFAULT_TABS[0],
+        currentTab,
       });
     }
   }, [props, clientKey, userId]);
@@ -173,17 +175,25 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
+      let myCurrentTab = currentTab;
       if (!isOpen) {
         setView("messages");
-        setCurrentTab(tabs?.[0] ?? DEFAULT_TABS[1]);
+        myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
+        setCurrentTab(myCurrentTab);
       }
 
       if (!lastMessagesFetched) {
-        fetchMessageLists(tabs);
+        if (tabs) {
+          fetchMessageLists(tabs);
+        } else {
+          fetchMessages({
+            params: myCurrentTab.filters,
+          });
+        }
       }
       toggleInbox();
     },
-    [isOpen, setView, setCurrentTab]
+    [tabs, isOpen, setView, setCurrentTab]
   );
 
   const handleClickOutside = useCallback(
