@@ -54,7 +54,7 @@ query GetBrand($brandId: String!) {
 `;
 
 const GET_INAPP_BRAND = `
-query GetInppBrand {
+query GetInAppBrand {
   inAppBrand {
     ${brandProps}
   }
