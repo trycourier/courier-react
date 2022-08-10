@@ -9,7 +9,7 @@ if (!global?.localStorage) {
   require("localstorage-polyfill");
 }
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import {
   ICourierProviderProps,
@@ -23,6 +23,8 @@ import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware from "./middleware";
 import useCourierActions from "./hooks/use-courier-actions";
+import useTransport from "./hooks/use-transport";
+
 export * from "./transports";
 export * from "./hooks";
 
@@ -60,19 +62,12 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       [_middleware]
     );
 
-    const transport = useMemo(() => {
-      if (_transport) {
-        return _transport;
-      }
-
-      if (clientKey && !_transport) {
-        return new CourierTransport({
-          userSignature,
-          clientKey,
-          wsOptions,
-        });
-      }
-    }, [_transport, clientKey, wsOptions, userSignature]);
+    const transport = useTransport({
+      transport: _transport,
+      userSignature,
+      clientKey,
+      wsOptions,
+    });
 
     const [state, dispatch] = useReducer(reducer, {
       apiUrl,
@@ -134,20 +129,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         userId,
         userSignature,
       });
-    }, [actions, apiUrl, clientKey, transport, userId, userSignature, brandId]);
-
-    useEffect(() => {
-      if (brand) {
-        // if we pass in brand, don't fetch it
-        return;
-      }
-
-      if (!clientKey || !userId) {
-        return;
-      }
-
-      actions.getBrand(brandId);
-    }, [actions, brand, brandId, clientKey, userId]);
+    }, [actions, apiUrl, brandId, clientKey, transport, userId, userSignature]);
 
     useEffect(() => {
       if (!state.brand || !clientKey || !userId) {
@@ -184,7 +166,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     return (
       <CourierContext.Provider
         value={{
-          ...(state as any),
+          ...state,
           ...actions,
           dispatch,
         }}

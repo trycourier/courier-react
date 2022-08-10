@@ -101,11 +101,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const { clientKey, userId } = courierContext;
   const {
     brand,
-    getUnreadMessageCount,
     init,
     isOpen: isOpenState,
     messages,
     setCurrentTab,
+    fetchMessageLists,
     setView,
     toggleInbox,
     unreadMessageCount = 0,
@@ -120,14 +120,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!userId || !clientKey) {
-      return;
-    }
-
-    getUnreadMessageCount();
-  }, [userId, clientKey, props.from]);
-
-  useEffect(() => {
     let didInit = false;
     if (clientKey && userId) {
       const localStorageState = localStorage.getItem(
@@ -140,7 +132,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             JSON.parse(localStorageState);
           init({
             brand: props.brand,
-            currentTab: props.tabs?.[0],
+            currentTab: tabs?.[0] ?? DEFAULT_TABS[0],
             isOpen: props.isOpen,
             messages,
             tabs,
@@ -158,7 +150,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         brand: props.brand,
         isOpen: props.isOpen,
         tabs,
-        currentTab: props.tabs?.[0],
+        currentTab: tabs?.[0] ?? DEFAULT_TABS[0],
       });
     }
   }, [props, clientKey, userId]);
@@ -185,6 +177,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         setCurrentTab(tabs?.[0] ?? DEFAULT_TABS[1]);
       }
 
+      fetchMessageLists(tabs);
       toggleInbox();
     },
     [isOpen, setView, setCurrentTab]

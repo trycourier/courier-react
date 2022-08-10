@@ -41,12 +41,10 @@ const Messages: React.ForwardRefExoticComponent<
       renderMessage,
       renderNoMessages,
       renderTabs,
-      tabs: _tabs,
       title = "Inbox",
     },
     ref
   ) => {
-    const tabs = Array.isArray(_tabs) ? _tabs : undefined;
     const { fetchRecipientPreferences } = usePreferences();
 
     const {
@@ -57,6 +55,7 @@ const Messages: React.ForwardRefExoticComponent<
       markAllAsRead,
       messages = [],
       startCursor,
+      tabs,
       toggleInbox,
       unreadMessageCount,
       view,
