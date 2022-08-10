@@ -1,19 +1,24 @@
-import React from "react";
-import { CourierElement, LinkButton } from "@trycourier/react-elements";
-import { BrandConfig } from "./types";
+import React, { FC } from "react";
+import { LinkButton } from "@trycourier/react-elements";
+import { BrandConfig, ClipboardBrandDesignerProps } from "./types";
 import { BrandDesigner } from "./brand-designer/brand-designer";
 import styled, { CSSObject } from "styled-components";
 import deepExtend from "deep-extend";
 
 /** Copy's Brand Config to Clipboard */
-export const ClipboardBrandDesigner: CourierElement = () => {
+export const ClipboardBrandDesigner: FC<ClipboardBrandDesignerProps> = ({
+  theme,
+  brand,
+}) => {
   const [isCopied, setIsCopied] = React.useState(false);
-  const [config, setConfig] = React.useState<BrandConfig>({
-    colors: {
-      primary: "#22C3C6",
-      secondary: "#FBB03B",
-    },
-  });
+  const [config, setConfig] = React.useState<BrandConfig>(
+    brand ?? {
+      colors: {
+        primary: "#22C3C6",
+        secondary: "#FBB03B",
+      },
+    }
+  );
   const handleChange = (config: BrandConfig) => {
     setConfig(config);
     setIsCopied(false);
@@ -25,7 +30,7 @@ export const ClipboardBrandDesigner: CourierElement = () => {
   };
 
   const saveButton = (
-    <CopyButton onClick={handleSave}>
+    <CopyButton onClick={handleSave} theme={theme}>
       {isCopied ? "Copied" : "Copy Snippet"}
     </CopyButton>
   );
@@ -35,6 +40,7 @@ export const ClipboardBrandDesigner: CourierElement = () => {
       brand={config}
       onChange={handleChange}
       saveButton={saveButton}
+      theme={theme}
     />
   );
 };
