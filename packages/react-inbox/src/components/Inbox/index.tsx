@@ -95,7 +95,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     };
   }, [props]);
 
-  const tabs = props.tabs == false ? undefined : props.tabs;
+  const tabs = props.tabs === false ? undefined : props.tabs;
   const currentTab = tabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
