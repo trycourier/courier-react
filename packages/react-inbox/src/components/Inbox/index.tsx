@@ -101,11 +101,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const { clientKey, userId } = courierContext;
   const {
     brand,
+    fetchMessageLists,
     init,
     isOpen: isOpenState,
+    lastMessagesFetched,
     messages,
     setCurrentTab,
-    fetchMessageLists,
     setView,
     toggleInbox,
     unreadMessageCount = 0,
@@ -177,7 +178,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         setCurrentTab(tabs?.[0] ?? DEFAULT_TABS[1]);
       }
 
-      fetchMessageLists(tabs);
+      if (!lastMessagesFetched) {
+        fetchMessageLists(tabs);
+      }
       toggleInbox();
     },
     [isOpen, setView, setCurrentTab]

@@ -171,6 +171,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         currentTab,
         isLoading: false,
+        lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         startCursor,
         tabs: newTabs,
