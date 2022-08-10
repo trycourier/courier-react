@@ -41,6 +41,14 @@ This package exports a component called `CourierProvider` which creates a [conte
 
 ---
 
+[react-brand-designer](https://github.com/trycourier/courier-react/tree/main/packages/react-brand-designer)
+
+The "React Brand Designer" package provides components with a slick UI for branding notifications
+delivered with Courier. This enables your own users to personalize their brand-able notifications
+like emails without leaving your app or site.
+
+---
+
 [types](https://github.com/trycourier/courier-react/tree/main/packages/types)
 
 Utility package to share common Typescript types and interfaces shared between packages
