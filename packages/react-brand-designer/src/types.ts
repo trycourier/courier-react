@@ -9,6 +9,12 @@ export interface BrandDesignerProps {
   theme?: BrandDesignerTheme;
 }
 
+export interface ClipboardBrandDesignerProps {
+  /** Override the default clipboard designer brand */
+  brand?: BrandConfig;
+  theme?: BrandDesignerTheme;
+}
+
 export interface BrandConfig {
   colors: {
     primary: string;
@@ -19,7 +25,9 @@ export interface BrandConfig {
     src: string | File;
     href?: string;
   };
+  /** Can be one of ISO 8601 Date | Epoch MS | Javascript Date object */
   created?: string | number | Date;
+  /** Can be one of ISO 8601 Date | Epoch MS | Javascript Date object */
   updated?: string | number | Date;
 }
 
@@ -38,6 +46,7 @@ export interface BrandDesignerOptions {
 }
 
 export interface BrandDesignerTheme {
+  /** Background CSS property. https://developer.mozilla.org/en-US/docs/Web/CSS/background */
   background?: string;
   fontFamily?: string;
   header?: {
@@ -46,12 +55,14 @@ export interface BrandDesignerTheme {
   };
   preview?: {
     fontFamily?: string;
+    /** Background CSS property. https://developer.mozilla.org/en-US/docs/Web/CSS/background */
     background?: string;
     emailTitleColor?: string;
     emailTextColor?: string;
     emailBodyBackground?: string;
     emailButtonTextColor?: string;
     subjectHeaderTextColor?: string;
+    /** Background CSS property. https://developer.mozilla.org/en-US/docs/Web/CSS/background */
     subjectHeaderBackground?: string;
     fromTextColor?: string;
   };
