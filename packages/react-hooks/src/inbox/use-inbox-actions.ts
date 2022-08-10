@@ -24,6 +24,7 @@ export interface IFetchMessagesParams {
 
 interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
+  fetchMessageLists: (tabs?: ITab[]) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
@@ -64,6 +65,16 @@ const useInboxActions = (): IInboxActions => {
           },
         };
 
+        if (payload.tabs) {
+          dispatch({
+            type: "inbox/FETCH_MESSAGE_LISTS",
+            meta,
+            payload: () =>
+              messages.getMessageLists(payload.tabs?.map((tab) => tab.filters)),
+          });
+          return;
+        }
+
         dispatch({
           type: "inbox/FETCH_MESSAGES",
           meta,
@@ -79,24 +90,6 @@ const useInboxActions = (): IInboxActions => {
     },
     setCurrentTab: (newTab: ITab) => {
       dispatch(setCurrentTab(newTab));
-
-      if (newTab.state) {
-        return;
-      }
-
-      const meta = {
-        tabId: newTab.id,
-        searchParams: {
-          from: inbox?.from,
-          ...newTab?.filters,
-        },
-      };
-
-      dispatch({
-        type: "inbox/FETCH_MESSAGES",
-        meta,
-        payload: () => messages.getMessages(meta.searchParams),
-      });
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {
       const params = {
@@ -107,6 +100,22 @@ const useInboxActions = (): IInboxActions => {
         type: "inbox/FETCH_MESSAGES",
         payload: () => messages.getMessages(params, payload?.after),
         meta: payload,
+      });
+    },
+    fetchMessageLists: (tabs?: ITab[]) => {
+      const listParams = tabs?.map((tab) => ({
+        from: inbox.from,
+        ...tab.filters,
+      }));
+
+      if (!listParams) {
+        return;
+      }
+
+      dispatch({
+        type: "inbox/FETCH_MESSAGE_LISTS",
+        meta: listParams,
+        payload: () => messages.getMessageLists(listParams),
       });
     },
     getUnreadMessageCount: () => {

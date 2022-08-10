@@ -2,7 +2,7 @@ import { ICourierClientBasicParams } from "./types";
 import { Client } from "urql";
 import { createCourierClient } from "./client";
 
-const brandProps = `
+export const brandProps = `
 settings {
   colors {
     primary

@@ -31,6 +31,14 @@ import {
   INBOX_FETCH_MESSAGES_PENDING,
 } from "./actions/fetch-messages";
 import {
+  FetchMessageListsDone,
+  FetchMessageListsError,
+  FetchMessageListsPending,
+  INBOX_FETCH_MESSAGE_LISTS_DONE,
+  INBOX_FETCH_MESSAGE_LISTS_ERROR,
+  INBOX_FETCH_MESSAGE_LISTS_PENDING,
+} from "./actions/fetch-message-lists";
+import {
   SetCurrentTab,
   INBOX_SET_CURRENT_TAB,
 } from "./actions/set-current-tab";
@@ -54,6 +62,9 @@ export const initialState: IInbox = {
 };
 
 type InboxAction =
+  | FetchMessageListsDone
+  | FetchMessageListsError
+  | FetchMessageListsPending
   | FetchMessagesDone
   | FetchMessagesError
   | FetchMessagesPending
@@ -116,6 +127,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
+    case INBOX_FETCH_MESSAGE_LISTS_PENDING:
     case INBOX_FETCH_MESSAGES_PENDING: {
       return {
         ...state,
@@ -123,10 +135,46 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
+    case INBOX_FETCH_MESSAGE_LISTS_ERROR:
     case INBOX_FETCH_MESSAGES_ERROR: {
       return {
         ...state,
         isLoading: false,
+      };
+    }
+
+    case INBOX_FETCH_MESSAGE_LISTS_DONE: {
+      const newTabs = state?.tabs?.map((tab, index) => {
+        const listState = action.payload?.[index];
+        return {
+          ...tab,
+          state: {
+            ...listState,
+            messages: listState?.messages?.map(mapMessage),
+          },
+        };
+      });
+
+      const listState = action.payload?.[0];
+      const newMessages = listState?.messages?.map(mapMessage);
+      const startCursor = listState?.startCursor;
+
+      const currentTab = state.currentTab;
+      if (currentTab) {
+        currentTab.state = {
+          startCursor,
+          messages: newMessages,
+        };
+      }
+
+      return {
+        ...state,
+        currentTab,
+        isLoading: false,
+        lastMessagesFetched: new Date().getTime(),
+        messages: newMessages,
+        startCursor,
+        tabs: newTabs,
       };
     }
 
@@ -149,6 +197,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         currentTab,
         isLoading: false,
+        lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         startCursor: action.payload.startCursor,
       };

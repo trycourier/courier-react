@@ -1,5 +1,5 @@
 global.fetch = jest.fn();
-require("isomorphic-fetch");
+//require("isomorphic-fetch");
 
 const fetchMock = global.fetch as jest.Mock;
 import Banner from "../banner";
@@ -9,14 +9,34 @@ describe("banner", () => {
     jest.clearAllMocks();
   });
 
+  beforeEach(() => {
+    fetchMock.mockImplementation(() =>
+      Promise.resolve({
+        json: () => ({
+          data: {
+            banners: {
+              nodes: "mockBanners",
+              pageInfo: {
+                startCursor: "mockStartCursor",
+              },
+            },
+          },
+        }),
+      })
+    );
+  });
+
   test("creates query correctly with hmac", async () => {
-    fetchMock.mockImplementation(() => Promise.resolve([]));
     const bannerApi = Banner({
       clientKey: "CLIENT_KEY",
       userId: "USER_ID",
     });
 
-    await bannerApi.getBanners();
+    const response = await bannerApi.getBanners();
+    expect(response).toEqual({
+      banners: "mockBanners",
+      startCursor: "mockStartCursor",
+    });
 
     const thisCall = fetchMock.mock.calls[0][1];
     expect(thisCall.body).toMatchInlineSnapshot(
@@ -31,14 +51,18 @@ describe("banner", () => {
   });
 
   test("creates query correctly with limit", async () => {
-    fetchMock.mockImplementation(() => Promise.resolve([]));
     const bannerApi = Banner({
       clientKey: "CLIENT_KEY",
       userId: "USER_ID",
     });
 
-    await bannerApi.getBanners({
+    const response = await bannerApi.getBanners({
       limit: 100,
+    });
+
+    expect(response).toEqual({
+      banners: "mockBanners",
+      startCursor: "mockStartCursor",
     });
 
     const thisCall = fetchMock.mock.calls[0][1];
@@ -48,13 +72,17 @@ describe("banner", () => {
   });
 
   test("creates query correctly with jwt", async () => {
-    fetchMock.mockImplementation(() => Promise.resolve([]));
     const bannerApi = Banner({ authorization: "abc123" });
 
-    await bannerApi.getBanners({
+    const response = await bannerApi.getBanners({
       from: 123,
       locale: "eu-fr",
       tags: ["abc"],
+    });
+
+    expect(response).toEqual({
+      banners: "mockBanners",
+      startCursor: "mockStartCursor",
     });
 
     const thisCall = fetchMock.mock.calls[0][1];

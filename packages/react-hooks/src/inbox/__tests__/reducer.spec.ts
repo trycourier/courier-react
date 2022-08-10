@@ -35,6 +35,15 @@ import { ITab } from "../types";
 import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
 
 import { INBOX_MARK_ALL_READ, markAllRead } from "../actions/mark-all-read";
+import {
+  fetchMessageListsPending,
+  fetchMessageListsDone,
+  fetchMessageListsError,
+  INBOX_FETCH_MESSAGE_LISTS,
+  INBOX_FETCH_MESSAGE_LISTS_PENDING,
+  INBOX_FETCH_MESSAGE_LISTS_ERROR,
+  INBOX_FETCH_MESSAGE_LISTS_DONE,
+} from "../actions/fetch-message-lists";
 
 const mockTab: ITab = {
   id: "my-mock-tab",
@@ -282,6 +291,7 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           isLoading: false,
         });
@@ -300,6 +310,7 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           currentTab: {
             ...mockTab,
@@ -326,9 +337,140 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          lastMessagesFetched: mockDate,
           messages: [
             mapMessage(mockGraphMessage),
             mapMessage(mockGraphMessage2),
+          ],
+          isLoading: false,
+        });
+      });
+    });
+  });
+
+  describe(`action ${INBOX_FETCH_MESSAGE_LISTS}`, () => {
+    it(INBOX_FETCH_MESSAGE_LISTS_PENDING, () => {
+      const state = reducer(initialState, fetchMessageListsPending());
+
+      expect(state).toEqual({
+        ...initialState,
+        isLoading: true,
+      });
+    });
+
+    it(INBOX_FETCH_MESSAGE_LISTS_ERROR, () => {
+      const state = reducer(initialState, fetchMessageListsError());
+
+      expect(state).toEqual({
+        ...initialState,
+        isLoading: false,
+      });
+    });
+
+    describe(INBOX_FETCH_MESSAGE_LISTS_DONE, () => {
+      it(`will update messages if no tabs`, () => {
+        const state = reducer(
+          initialState,
+          fetchMessageListsDone([
+            {
+              messages: [mockGraphMessage],
+            },
+          ])
+        );
+
+        expect(state).toEqual({
+          ...initialState,
+          lastMessagesFetched: mockDate,
+          messages: [mapMessage(mockGraphMessage)],
+          isLoading: false,
+        });
+      });
+
+      it(`will update currentTab with new messages`, () => {
+        const state = reducer(
+          {
+            ...initialState,
+            currentTab: mockTab,
+          },
+          fetchMessageListsDone([
+            {
+              messages: [mockGraphMessage],
+            },
+          ])
+        );
+
+        expect(state).toEqual({
+          ...initialState,
+          lastMessagesFetched: mockDate,
+          messages: [mapMessage(mockGraphMessage)],
+          currentTab: {
+            ...mockTab,
+            state: {
+              messages: [mapMessage(mockGraphMessage)],
+            },
+          },
+          isLoading: false,
+        });
+      });
+
+      it(`will update currentTab and tabs with new messages`, () => {
+        const mockTabs: ITab[] = [
+          {
+            filters: {
+              isRead: false,
+            },
+            label: "Unread",
+            id: "unread",
+          },
+          {
+            filters: {},
+            label: "All Messages",
+            id: "all",
+          },
+        ];
+
+        const state = reducer(
+          {
+            ...initialState,
+            currentTab: mockTab,
+            tabs: mockTabs,
+          },
+          fetchMessageListsDone([
+            {
+              messages: [mockGraphMessage],
+            },
+            {
+              messages: [mockGraphMessage, mockGraphMessage2],
+            },
+          ])
+        );
+
+        expect(state).toEqual({
+          ...initialState,
+          lastMessagesFetched: mockDate,
+          messages: [mapMessage(mockGraphMessage)],
+          currentTab: {
+            ...mockTab,
+            state: {
+              messages: [mapMessage(mockGraphMessage)],
+            },
+          },
+          tabs: [
+            {
+              ...mockTabs[0],
+              state: {
+                messages: [mapMessage(mockGraphMessage)],
+              },
+            },
+            {
+              ...mockTabs[1],
+              state: {
+                messages: [
+                  mapMessage(mockGraphMessage),
+                  mapMessage(mockGraphMessage2),
+                ],
+              },
+            },
           ],
           isLoading: false,
         });

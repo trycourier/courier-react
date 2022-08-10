@@ -9,3 +9,4 @@ export {
   IGraphMessageResponse,
 } from "./messages";
 export { default as Preferences } from "./preferences";
+export { default as InitialState } from "./initial-state";

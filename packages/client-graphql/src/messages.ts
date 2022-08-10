@@ -36,45 +36,47 @@ export interface IGetMessagesParams {
   tags?: string[];
 }
 
-export const QUERY_MESSAGES = `
-  query GetMessages($params: FilterParamsInput, $limit: Int = 10, $after: String){
-    messages(params: $params, limit: $limit, after: $after) {
-      totalCount
-      pageInfo {
-        startCursor
-        hasNextPage
-      }
-      nodes {
-        id
-        messageId
-        created
-        read
-        tags
-        content {
-          title
-          body
-          blocks {
-            ... on TextBlock {
-              type
-              text
-            }
-            ... on ActionBlock {
-              type
-              text
-              url
-            }
-          }
-          data
-          trackingIds {
-            archiveTrackingId
-            clickTrackingId
-            deliverTrackingId
-            readTrackingId
-            unreadTrackingId
-          }
+const messagesProps = `{
+  totalCount
+  pageInfo {
+    startCursor
+    hasNextPage
+  }
+  nodes {
+    id
+    messageId
+    created
+    read
+    tags
+    content {
+      title
+      body
+      blocks {
+        ... on TextBlock {
+          type
+          text
+        }
+        ... on ActionBlock {
+          type
+          text
+          url
         }
       }
+      data
+      trackingIds {
+        archiveTrackingId
+        clickTrackingId
+        deliverTrackingId
+        readTrackingId
+        unreadTrackingId
+      }
     }
+  }
+}`;
+
+export const QUERY_MESSAGES = `
+  query GetMessages($params: FilterParamsInput, $limit: Int = 10, $after: String){
+    messages(params: $params, limit: $limit, after: $after) ${messagesProps}
   }
 `;
 
@@ -143,16 +145,75 @@ export const getMessages =
     };
   };
 
+type GetMessageLists = (
+  lists?: IGetMessagesParams[],
+  limit?: number
+) => Promise<
+  | Array<{
+      startCursor: string;
+      messages: IGraphMessageResponse[];
+    }>
+  | undefined
+>;
+
+export const getMessageLists =
+  (client?: Client): GetMessageLists =>
+  async (lists, limit = 10) => {
+    if (!client || !lists) {
+      return Promise.resolve(undefined);
+    }
+
+    const initialReduction: {
+      args: string[];
+      queries: string[];
+      variables: {
+        [key: string]: IGetMessagesParams;
+      };
+    } = {
+      args: [],
+      queries: [],
+      variables: {},
+    };
+
+    const { args, queries, variables } = lists.reduce((acc, cur, index) => {
+      acc.args.push(`$params${index}: FilterParamsInput`);
+      acc.queries.push(
+        `list${index}: messages(params: $params${index}, limit: $limit) ${messagesProps}`
+      );
+      acc.variables[`params${index}`] = cur;
+      return acc;
+    }, initialReduction);
+
+    const QUERY = `query GetMessages(${args}, $limit: Int = 10){
+      ${queries.join("")}
+    }`;
+
+    const results = await client
+      .query(QUERY, { ...variables, limit })
+      .toPromise();
+
+    const response = Object.keys(results.data)?.map((listName) => {
+      return {
+        messages: results.data[listName].nodes,
+        startCursor: results.data[listName].pageInfo?.startCursor,
+      };
+    });
+
+    return response;
+  };
+
 export default (
   params: ICourierClientBasicParams | { client?: Client }
 ): {
   getMessageCount: GetMessageCount;
+  getMessageLists: GetMessageLists;
   getMessages: GetMessages;
 } => {
   const client = createCourierClient(params);
 
   return {
     getMessageCount: getMessageCount(client),
+    getMessageLists: getMessageLists(client),
     getMessages: getMessages(client),
   };
 };

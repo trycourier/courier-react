@@ -95,15 +95,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     };
   }, [props]);
 
-  const tabs = props.tabs == false ? undefined : props.tabs;
+  const tabs = props.tabs === false ? undefined : props.tabs;
+  const currentTab = tabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
   const { clientKey, userId } = courierContext;
   const {
     brand,
-    getUnreadMessageCount,
+    fetchMessages,
+    fetchMessageLists,
     init,
     isOpen: isOpenState,
+    lastMessagesFetched,
     messages,
     setCurrentTab,
     setView,
@@ -120,14 +123,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!userId || !clientKey) {
-      return;
-    }
-
-    getUnreadMessageCount();
-  }, [userId, clientKey, props.from]);
-
-  useEffect(() => {
     let didInit = false;
     if (clientKey && userId) {
       const localStorageState = localStorage.getItem(
@@ -140,7 +135,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             JSON.parse(localStorageState);
           init({
             brand: props.brand,
-            currentTab: props.tabs?.[0],
+            currentTab,
             isOpen: props.isOpen,
             messages,
             tabs,
@@ -158,7 +153,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         brand: props.brand,
         isOpen: props.isOpen,
         tabs,
-        currentTab: props.tabs?.[0],
+        currentTab,
       });
     }
   }, [props, clientKey, userId]);
@@ -180,14 +175,25 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
+      let myCurrentTab = currentTab;
       if (!isOpen) {
         setView("messages");
-        setCurrentTab(tabs?.[0] ?? DEFAULT_TABS[1]);
+        myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
+        setCurrentTab(myCurrentTab);
       }
 
+      if (!lastMessagesFetched) {
+        if (tabs) {
+          fetchMessageLists(tabs);
+        } else {
+          fetchMessages({
+            params: myCurrentTab.filters,
+          });
+        }
+      }
       toggleInbox();
     },
-    [isOpen, setView, setCurrentTab]
+    [tabs, isOpen, setView, setCurrentTab]
   );
 
   const handleClickOutside = useCallback(
