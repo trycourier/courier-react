@@ -52,7 +52,7 @@ interface IMessage {
 
 interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
-  getMessageCount: (params?: IGetMessagesParams) => void;
+  getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageRead: (messageId: string, trackingId: string) => Promise<void>;
@@ -63,12 +63,12 @@ interface IInboxActions {
 }
 
 interface IInbox {
-  isOpen?: boolean;
-  tabs?: ITab[];
   currentTab?: ITab;
   isLoading?: boolean;
+  isOpen?: boolean;
   messages?: Array<IMessage>;
   startCursor?: string;
+  tabs?: ITab[];
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
 }
