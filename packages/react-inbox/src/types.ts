@@ -32,7 +32,10 @@ export interface InboxProps {
     container?: React.CSSProperties;
     footer?: React.CSSProperties;
     header?: React.CSSProperties;
-    icon?: React.CSSProperties;
+    icon?: React.CSSProperties & {
+      open?: string;
+      closed?: string;
+    };
     messageList?: {
       container?: React.CSSProperties;
     };
@@ -64,7 +67,7 @@ export interface InboxProps {
   }>;
   renderBell?: React.FunctionComponent<{
     className?: string;
-    isOpen?: boolean;
+    isOpen: boolean;
     onClick?: (event: React.MouseEvent) => void;
   }>;
   renderBlocks?: {
@@ -74,6 +77,7 @@ export interface InboxProps {
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderIcon?: React.FunctionComponent<{
+    isOpen: boolean;
     unreadMessageCount?: number;
   }>;
   renderMessage?: React.FunctionComponent<IMessage>;

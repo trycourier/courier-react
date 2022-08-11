@@ -232,6 +232,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           <span>
             {props.renderIcon({
               unreadMessageCount,
+              isOpen: isOpen ?? false,
             })}
           </span>
         ) : brand?.inapp?.icons?.bell ? (
