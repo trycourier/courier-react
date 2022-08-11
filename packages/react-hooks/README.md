@@ -26,22 +26,21 @@ interface ITab {
   filters: {
     isRead?: boolean;
   };
-  label: string;
   id: string;
+  label: string;
 }
 
 interface IMessage {
-  unread?: number;
-  messageId: string;
-  created: string;
-  title: string;
-  body: string;
   blocks?: Array<IActionBlock | ITextBlock>;
-  icon?: string;
-  read?: boolean;
+  body: string;
+  created: string;
   data?: {
     clickAction: string;
   };
+  icon?: string;
+  messageId: string;
+  read?: boolean;
+  title: string;
   trackingIds?: {
     archiveTrackingId: string;
     clickTrackingId: string;
@@ -53,7 +52,7 @@ interface IMessage {
 
 interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
-  getUnreadMessageCount: () => void;
+  getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageRead: (messageId: string, trackingId: string) => Promise<void>;

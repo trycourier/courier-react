@@ -14,8 +14,8 @@ const bellStyles = ({ isOpen, theme }) =>
       display: "inline-block",
       path: {
         fill: isOpen
-          ? theme?.brand?.colors?.primary ?? "#9121c2"
-          : theme?.brand?.colors?.secondary ?? "#C1B6DD",
+          ? theme?.icon?.open ?? theme?.brand?.colors?.primary ?? "#9121c2"
+          : theme?.icon?.closed ?? theme?.brand?.colors?.secondary ?? "#C1B6DD",
       },
     },
     theme.icon

@@ -65,6 +65,7 @@ interface InboxProps {
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderIcon?: React.FunctionComponent<{
+    isOpen: boolean;
     unreadMessageCount?: number;
   }>;
   renderMessage?: React.FunctionComponent<IMessage>;
@@ -78,10 +79,12 @@ interface InboxProps {
   title?: string;
   trigger?: "click" | "hover";
 
+  formatDate?: (date: string) => string;
   labels?: {
     backToInbox?: string;
-    markAsRead?: string;
+    emptyState?: string;
     markAllAsRead?: string;
+    markAsRead?: string;
     markAsUnread?: string;
   }
 }
@@ -117,7 +120,10 @@ interface ITheme {
   emptyState?: React.CSSProperties;
   footer?: React.CSSProperties;
   header?: React.CSSProperties;
-  icon?: React.CSSProperties;
+  icon?: React.CSSProperties & {
+    open?: string;
+    closed?: string;
+  };
   messageList?: {
     container?: React.CSSProperties;
   };
@@ -169,6 +175,7 @@ To overrwrite the rendering of each of these you can supply your own react compo
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent;
   renderIcon?: React.FunctionComponent<{
+    isOpen: boolean;
     unreadMessageCount?: number;
   }>;
   renderMessage?: React.FunctionComponent<IMessage>;
