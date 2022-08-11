@@ -63,12 +63,12 @@ interface IInboxActions {
 }
 
 interface IInbox {
-  isOpen?: boolean;
-  tabs?: ITab[];
   currentTab?: ITab;
   isLoading?: boolean;
+  isOpen?: boolean;
   messages?: Array<IMessage>;
   startCursor?: string;
+  tabs?: ITab[];
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
 }
