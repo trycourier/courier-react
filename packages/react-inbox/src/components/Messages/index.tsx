@@ -63,6 +63,14 @@ const Messages: React.ForwardRefExoticComponent<
 
     const messageListRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+      if (!messageListRef?.current) {
+        return;
+      }
+
+      messageListRef.current.scrollTop = 0;
+    }, [currentTab]);
+
     useAtBottom(
       messageListRef,
       () => {

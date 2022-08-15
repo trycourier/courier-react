@@ -99,7 +99,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const currentTab = tabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
-  const { clientKey, userId } = courierContext;
   const {
     brand,
     fetchMessages,
@@ -107,7 +106,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     init,
     isOpen: isOpenState,
     lastMessagesFetched,
-    messages,
     setCurrentTab,
     setView,
     toggleInbox,
@@ -123,54 +121,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   };
 
   useEffect(() => {
-    let didInit = false;
-    if (clientKey && userId) {
-      const localStorageState = localStorage.getItem(
-        `${clientKey}/${userId}/inbox`
-      );
-
-      if (localStorageState) {
-        try {
-          const { messages, unreadMessageCount } =
-            JSON.parse(localStorageState);
-          init({
-            brand: props.brand,
-            currentTab,
-            isOpen: props.isOpen,
-            messages,
-            tabs,
-            unreadMessageCount,
-          });
-          didInit = true;
-        } catch (ex) {
-          console.log("error", ex);
-        }
-      }
-    }
-
-    if (!didInit) {
-      init({
-        brand: props.brand,
-        isOpen: props.isOpen,
-        tabs,
-        currentTab,
-      });
-    }
-  }, [props, clientKey, userId]);
-
-  useEffect(() => {
-    if (!clientKey || !userId) {
-      return;
-    }
-
-    localStorage.setItem(
-      `${clientKey}/${userId}/inbox`,
-      JSON.stringify({
-        messages,
-        unreadMessageCount: unreadMessageCount,
-      })
-    );
-  }, [clientKey, userId, messages, unreadMessageCount]);
+    init({
+      brand: props.brand,
+      isOpen: props.isOpen,
+      tabs,
+    });
+  }, [props.brand, props.isOpen, tabs]);
 
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
