@@ -128,22 +128,21 @@ const Messages: React.ForwardRefExoticComponent<
                 isMobile={isMobile}
                 data-testid="messages"
               >
-                {!isLoading &&
-                  messages?.map((message) =>
-                    renderMessage ? (
-                      renderMessage(message)
-                    ) : (
-                      <Message
-                        {...message}
-                        defaultIcon={defaultIcon}
-                        formatDate={formatDate}
-                        key={message.messageId}
-                        labels={labels}
-                        openLinksInNewTab={openLinksInNewTab}
-                        renderBlocks={renderBlocks}
-                      />
-                    )
-                  )}
+                {messages?.map((message) =>
+                  renderMessage ? (
+                    renderMessage(message)
+                  ) : (
+                    <Message
+                      {...message}
+                      defaultIcon={defaultIcon}
+                      formatDate={formatDate}
+                      key={message.messageId}
+                      labels={labels}
+                      openLinksInNewTab={openLinksInNewTab}
+                      renderBlocks={renderBlocks}
+                    />
+                  )
+                )}
                 {isLoading && <Loading />}
                 {!isLoading &&
                   messages?.length === 0 &&
