@@ -89,6 +89,10 @@ const useInboxActions = (): IInboxActions => {
       dispatch(setView(view));
     },
     setCurrentTab: (newTab: ITab) => {
+      if (newTab?.id === inbox?.currentTab?.id) {
+        return;
+      }
+
       dispatch(setCurrentTab(newTab));
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {
