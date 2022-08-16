@@ -245,8 +245,8 @@ describe("inbox reducer", () => {
 
       expect(state).toEqual({
         ...initialState,
+        currentTab: unreadTab,
         unreadMessageCount: 1,
-        currentTab: newCurrentTab,
         tabs: [
           newCurrentTab,
           {
@@ -312,12 +312,7 @@ describe("inbox reducer", () => {
           ...initialState,
           lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
-          currentTab: {
-            ...mockTab,
-            state: {
-              messages: [mapMessage(mockGraphMessage)],
-            },
-          },
+          currentTab: mockTab,
           isLoading: false,
         });
       });
@@ -403,12 +398,7 @@ describe("inbox reducer", () => {
           ...initialState,
           lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
-          currentTab: {
-            ...mockTab,
-            state: {
-              messages: [mapMessage(mockGraphMessage)],
-            },
-          },
+          currentTab: mockTab,
           isLoading: false,
         });
       });
@@ -447,14 +437,9 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          currentTab: mockTab,
           lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
-          currentTab: {
-            ...mockTab,
-            state: {
-              messages: [mapMessage(mockGraphMessage)],
-            },
-          },
           tabs: [
             {
               ...mockTabs[0],
@@ -802,12 +787,7 @@ describe("inbox reducer", () => {
 
       expect(state).toEqual({
         ...initialState,
-        currentTab: {
-          ...unreadTab,
-          state: {
-            messages: [],
-          },
-        },
+        currentTab: unreadTab,
         unreadMessageCount: 0,
         messages: [],
         tabs: [
@@ -884,12 +864,7 @@ describe("inbox reducer", () => {
 
       expect(state).toEqual({
         ...initialState,
-        currentTab: {
-          ...allMessagesTab,
-          state: {
-            messages: readMessages,
-          },
-        },
+        currentTab: allMessagesTab,
         unreadMessageCount: 0,
         messages: readMessages,
         tabs: [

@@ -33,7 +33,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   unreadMessageCount,
 }) => {
   const { brand } = useCourier();
-  const { view, setView } = useInbox();
+  const { view, setView, tabs } = useInbox();
   const handleSetView = (newView) => (event: React.MouseEvent) => {
     event.preventDefault();
     setView(newView);
@@ -50,7 +50,8 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         ) : undefined}
       </Heading>
       <div className="actions">
-        {currentTab?.filters?.isRead === false && messages.length > 0 && (
+        {((currentTab?.filters?.isRead === false && messages.length > 0) ||
+          tabs === undefined) && (
           <MarkAllAsRead onClick={markAllAsRead} style={{ cursor: "pointer" }}>
             {labels?.markAllAsRead ?? "Mark all as read"}
           </MarkAllAsRead>

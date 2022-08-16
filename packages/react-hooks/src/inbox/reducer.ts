@@ -159,17 +159,8 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       const newMessages = listState?.messages?.map(mapMessage);
       const startCursor = listState?.startCursor;
 
-      const currentTab = state.currentTab;
-      if (currentTab) {
-        currentTab.state = {
-          startCursor,
-          messages: newMessages,
-        };
-      }
-
       return {
         ...state,
-        currentTab,
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
@@ -186,20 +177,30 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         : mappedMessages;
 
       const currentTab = state.currentTab;
+      let tabs = state.tabs;
       if (currentTab) {
-        currentTab.state = {
-          messages: newMessages,
-          startCursor: action.payload.startCursor,
-        };
+        tabs = tabs?.map((tab) => {
+          if (tab.id !== currentTab.id) {
+            return tab;
+          }
+
+          return {
+            ...tab,
+            state: {
+              startCursor: action.payload.startCursor,
+              messages: newMessages,
+            },
+          };
+        });
       }
 
       return {
         ...state,
-        currentTab,
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         startCursor: action.payload.startCursor,
+        tabs,
       };
     }
 
@@ -214,9 +215,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         const newMessages = state.messages?.filter(
           (message) => message.messageId !== action.payload.messageId
         );
-
-        currentTab.state = currentTab.state ?? {};
-        currentTab.state.messages = newMessages;
 
         const tabs = state.tabs?.map((tab) => {
           if (!tab.state) {
@@ -244,7 +242,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
         return {
           ...state,
-          currentTab,
           messages: newMessages,
           tabs,
           unreadMessageCount,
@@ -262,10 +259,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
         return message;
       });
-
-      if (currentTab?.state) {
-        currentTab.state.messages = newMessages;
-      }
 
       const tabs = state.tabs?.map((tab) => {
         if (!tab.state) {
@@ -295,7 +288,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
-        currentTab,
         messages: newMessages,
         tabs,
         unreadMessageCount,
@@ -306,7 +298,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       const unreadMessageCount = (state.unreadMessageCount ?? 0) + 1;
 
       let messageToUnread: IMessage;
-      const currentTab = state.currentTab;
       const newMessages = state.messages?.map((message) => {
         if (message.messageId !== action.payload.messageId) {
           return message;
@@ -320,10 +311,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         messageToUnread = newMessage;
         return newMessage;
       });
-
-      if (currentTab?.state) {
-        currentTab.state.messages = newMessages;
-      }
 
       const tabs = state.tabs?.map((tab) => {
         if (!tab.state) {
@@ -342,7 +329,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
-        currentTab,
         messages: newMessages,
         tabs,
         unreadMessageCount,
@@ -401,15 +387,11 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
     case INBOX_MARK_ALL_READ: {
       const unreadMessageCount = 0;
+      const currentTab = state.currentTab;
 
-      if (state.currentTab?.filters?.isRead === false) {
-        const currentTab = state?.currentTab;
-        if (currentTab?.filters?.isRead === false && currentTab?.state) {
-          currentTab.state.messages = [];
-        }
-
+      if (currentTab?.filters?.isRead === false) {
         const tabs = state.tabs?.map((tab) => {
-          if (!tab.state || tab.id === currentTab?.id) {
+          if (!tab.state) {
             return tab;
           }
 
@@ -430,7 +412,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
         return {
           ...state,
-          currentTab,
           messages: [],
           tabs,
           unreadMessageCount,
@@ -444,13 +425,8 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         };
       });
 
-      const currentTab = state?.currentTab;
-      if (currentTab?.state) {
-        currentTab.state.messages = newMessages;
-      }
-
       const tabs = state.tabs?.map((tab) => {
-        if (!tab.state || tab.id === currentTab?.id) {
+        if (!tab.state) {
           return tab;
         }
 
@@ -471,7 +447,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
-        currentTab,
         messages: newMessages,
         tabs,
         unreadMessageCount,
