@@ -178,6 +178,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     return (
       <Bell
         aria-pressed="false"
+        data-testid="bell"
         className={`inbox-bell ${props.className ?? ""}`}
         isOpen={isOpen ?? false}
         onClick={handleIconOnClick}

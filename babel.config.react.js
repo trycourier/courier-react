@@ -12,7 +12,6 @@ module.exports = (root) => ({
         extensions: [".css"],
       },
     ],
-    ["babel-plugin-react-remove-properties", { properties: ["data-testid"] }],
     [
       "babel-plugin-root-import",
       {

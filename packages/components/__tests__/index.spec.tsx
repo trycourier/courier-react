@@ -27,7 +27,7 @@ const server = setupServer(
       return res(ctx.json({}));
     }
   ),
-  graphql.query("MessageCount", (_, res, ctx) => {
+  graphql.query("InitialState", (_, res, ctx) => {
     return res(
       ctx.data({
         messageCount: 0,
@@ -80,6 +80,7 @@ afterAll(() => {
 
 test("will render an inbox and can change labels", async () => {
   const inbox = document.createElement("courier-inbox");
+  inbox.setAttribute("tabs", "false");
   document.body.appendChild(inbox);
   render(
     <CourierProvider
@@ -94,10 +95,12 @@ test("will render an inbox and can change labels", async () => {
   );
 
   await waitFor(() => {
-    return expect(screen.getByRole("button")).toBeTruthy();
+    return expect(screen.getByTestId("bell")).toBeTruthy();
   });
 
-  fireEvent.click(screen.getByRole("button"));
+  act(() => {
+    fireEvent.click(screen.getByTestId("bell"));
+  });
 
   expect(
     await screen.findByText("You have no notifications at this time")
@@ -111,7 +114,10 @@ test("will render an inbox and can change labels", async () => {
     });
   });
 
-  fireEvent.click(screen.getByRole("button"));
+  act(() => {
+    fireEvent.click(screen.getByTestId("bell"));
+  });
+
   expect(await screen.findByText("NO MESSAGES")).toBeInTheDocument();
 });
 
