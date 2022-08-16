@@ -53,7 +53,7 @@ const Messages: React.ForwardRefExoticComponent<
       fetchMessages,
       isLoading,
       markAllAsRead,
-      messages: _messages,
+      messages = [],
       startCursor,
       tabs,
       toggleInbox,
@@ -95,7 +95,6 @@ const Messages: React.ForwardRefExoticComponent<
       toggleInbox(false);
     };
     const Container = renderContainer ? renderContainer : MessageListContainer;
-    const messages = currentTab?.state?.messages ?? _messages ?? [];
 
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>
