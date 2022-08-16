@@ -61,6 +61,14 @@ const Messages: React.ForwardRefExoticComponent<
       view,
     } = useInbox();
 
+    if ((window as any).DEBUG_COURIER) {
+      console.log(
+        "COURIER_DEBUG:",
+        "tabs - ",
+        JSON.parse(JSON.stringify(tabs))
+      );
+    }
+
     const messageListRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

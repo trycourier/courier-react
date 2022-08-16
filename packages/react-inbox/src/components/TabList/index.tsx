@@ -14,6 +14,15 @@ const TabList: React.FunctionComponent<{
 
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
     event.preventDefault();
+    if ((window as any).DEBUG_COURIER) {
+      console.log("COURIER_DEBUG:", "isLoading - ", isLoading);
+      console.log(
+        "COURIER_DEBUG:",
+        "tab - ",
+        JSON.parse(JSON.stringify(newTab))
+      );
+    }
+
     setCurrentTab(newTab);
   };
 
