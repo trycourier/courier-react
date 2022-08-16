@@ -80,6 +80,7 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
+  console.log("action", action);
   switch (action?.type) {
     case INBOX_INIT: {
       return {
@@ -176,23 +177,19 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ? [...(state.messages ?? []), ...mappedMessages]
         : mappedMessages;
 
-      const currentTab = state.currentTab;
-      let tabs = state.tabs;
-      if (currentTab) {
-        tabs = tabs?.map((tab) => {
-          if (tab.id !== currentTab.id) {
-            return tab;
-          }
+      const tabs = state?.tabs?.map((tab) => {
+        if (tab.id !== state.currentTab?.id) {
+          return tab;
+        }
 
-          return {
-            ...tab,
-            state: {
-              startCursor: action.payload.startCursor,
-              messages: newMessages,
-            },
-          };
-        });
-      }
+        return {
+          ...tab,
+          state: {
+            startCursor: action.payload.startCursor,
+            messages: newMessages,
+          },
+        };
+      });
 
       return {
         ...state,
@@ -318,7 +315,20 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         }
 
         if (tab.filters.isRead === false) {
-          tab.state.messages = [messageToUnread, ...(tab.state.messages ?? [])];
+          tab.state.messages = [
+            messageToUnread,
+            ...(tab.state.messages ?? []),
+          ].sort((a, b) => {
+            if (a.created < b.created) {
+              return 1;
+            }
+
+            if (a.created > b.created) {
+              return -1;
+            }
+
+            return 0;
+          });
           return tab;
         }
 
