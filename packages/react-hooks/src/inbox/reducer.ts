@@ -80,7 +80,6 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
-  console.log("action", action);
   switch (action?.type) {
     case INBOX_INIT: {
       return {
@@ -145,7 +144,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_FETCH_MESSAGE_LISTS_DONE: {
-      const newTabs = state?.tabs?.map((tab, index) => {
+      const newTabs = state.tabs?.map((tab, index) => {
         const listState = action.payload?.[index];
         return {
           ...tab,
@@ -177,7 +176,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ? [...(state.messages ?? []), ...mappedMessages]
         : mappedMessages;
 
-      const tabs = state?.tabs?.map((tab) => {
+      const tabs = state.tabs?.map((tab) => {
         if (tab.id !== state.currentTab?.id) {
           return tab;
         }
@@ -371,7 +370,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
 
       const newMessages = [newMessage, ...(state.messages ?? [])];
-      const currentTab = state?.currentTab;
+      const currentTab = state.currentTab;
 
       if (currentTab?.filters?.isRead === false && currentTab?.state) {
         currentTab.state.messages = newMessages;
