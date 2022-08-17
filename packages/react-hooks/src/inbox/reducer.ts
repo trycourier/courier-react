@@ -137,6 +137,12 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_FETCH_MESSAGE_LISTS_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+        lastMessagesFetched: new Date().getTime(),
+      };
+
     case INBOX_FETCH_MESSAGES_PENDING: {
       return {
         ...state,
@@ -179,7 +185,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
-        lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         startCursor,
         tabs: newTabs,

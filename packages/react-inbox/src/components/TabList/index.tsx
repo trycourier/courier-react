@@ -1,7 +1,6 @@
 import React from "react";
 import classNames from "classnames";
 import { Container, Tab } from "./styled";
-import { useInbox } from "@trycourier/react-hooks";
 import { InboxProps, ITab } from "~/types";
 
 const TabList: React.FunctionComponent<{
@@ -9,9 +8,8 @@ const TabList: React.FunctionComponent<{
   isLoading?: boolean;
   labels?: InboxProps["labels"];
   tabs?: ITab[];
-}> = ({ isLoading, tabs, currentTab, labels }) => {
-  const { setCurrentTab } = useInbox();
-
+  setCurrentTab: (newTab: ITab) => void;
+}> = ({ isLoading, tabs, currentTab, setCurrentTab, labels }) => {
   const handleOnChange = (newTab) => (event: React.MouseEvent) => {
     event.preventDefault();
     if ((window as any).DEBUG_COURIER) {
