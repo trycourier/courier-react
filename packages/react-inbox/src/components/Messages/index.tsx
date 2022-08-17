@@ -10,7 +10,7 @@ import PaginationEnd from "./PaginationEnd";
 import TabList from "../TabList";
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
-import { InboxProps } from "../../types";
+import { InboxProps, ITab } from "../../types";
 import {
   ResponsiveContainer,
   DismissInbox,
@@ -54,6 +54,7 @@ const Messages: React.ForwardRefExoticComponent<
       isLoading,
       markAllAsRead,
       messages = [],
+      setCurrentTab,
       startCursor,
       tabs,
       toggleInbox,
@@ -71,13 +72,14 @@ const Messages: React.ForwardRefExoticComponent<
 
     const messageListRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    const handleSetCurrentTab = (newTab: ITab) => {
       if (!messageListRef?.current) {
         return;
       }
 
       messageListRef.current.scrollTop = 0;
-    }, [currentTab]);
+      setCurrentTab(newTab);
+    };
 
     useAtBottom(
       messageListRef,
@@ -136,6 +138,7 @@ const Messages: React.ForwardRefExoticComponent<
                   isLoading={isLoading}
                   labels={labels}
                   tabs={tabs}
+                  setCurrentTab={handleSetCurrentTab}
                   currentTab={currentTab}
                 />
               )}
