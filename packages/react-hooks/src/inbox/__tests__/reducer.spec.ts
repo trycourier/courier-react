@@ -291,7 +291,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           isLoading: false,
         });
@@ -310,7 +309,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           currentTab: mockTab,
           isLoading: false,
@@ -332,7 +330,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [
             mapMessage(mockGraphMessage),
             mapMessage(mockGraphMessage2),
@@ -349,6 +346,7 @@ describe("inbox reducer", () => {
 
       expect(state).toEqual({
         ...initialState,
+        lastMessagesFetched: mockDate,
         isLoading: true,
       });
     });
@@ -375,7 +373,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           isLoading: false,
         });
@@ -396,7 +393,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           currentTab: mockTab,
           isLoading: false,
@@ -438,7 +434,6 @@ describe("inbox reducer", () => {
         expect(state).toEqual({
           ...initialState,
           currentTab: mockTab,
-          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           tabs: [
             {

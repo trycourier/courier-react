@@ -80,15 +80,6 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
-  if ((window as any).DEBUG_COURIER) {
-    console.log("COURIER_DEBUG:", "action - ", action);
-    console.log(
-      "COURIER_DEBUG:",
-      "state - ",
-      JSON.parse(JSON.stringify(state))
-    );
-  }
-
   switch (action?.type) {
     case INBOX_INIT: {
       return {
@@ -150,7 +141,14 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
-    case INBOX_FETCH_MESSAGE_LISTS_ERROR:
+    case INBOX_FETCH_MESSAGE_LISTS_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        lastMessagesFetched: undefined,
+      };
+    }
+
     case INBOX_FETCH_MESSAGES_ERROR: {
       return {
         ...state,
@@ -174,14 +172,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       const newMessages = listState?.messages?.map(mapMessage);
       const startCursor = listState?.startCursor;
 
-      if ((window as any).DEBUG_COURIER) {
-        console.log(
-          "COURIER_DEBUG:",
-          "INBOX_FETCH_MESSAGE_LISTS_DONE - ",
-          newTabs
-        );
-      }
-
       return {
         ...state,
         isLoading: false,
@@ -198,10 +188,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ? [...(state.messages ?? []), ...mappedMessages]
         : mappedMessages;
 
-      if ((window as any).DEBUG_COURIER) {
-        console.log("COURIER_DEBUG:", "currentTab - ", state.currentTab);
-      }
-
       const tabs = state.tabs?.map((tab) => {
         if (tab.id !== state.currentTab?.id) {
           return tab;
@@ -216,14 +202,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         };
       });
 
-      if ((window as any).DEBUG_COURIER) {
-        console.log("COURIER_DEBUG:", "newTabs - ", tabs);
-      }
-
       return {
         ...state,
         isLoading: false,
-        lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         startCursor: action.payload.startCursor,
         tabs,
