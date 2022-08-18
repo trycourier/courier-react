@@ -17,7 +17,7 @@ import Messages from "../Messages";
 import TippyGlobalStyle from "./TippyGlobalStyle";
 
 import { DEFAULT_TABS } from "~/constants";
-import { InboxProps, ITab } from "../../types";
+import { InboxProps } from "../../types";
 
 const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
   ({ theme, showUnreadMessageCount }) =>
