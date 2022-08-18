@@ -3,12 +3,13 @@ import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
+import { useInbox } from "@trycourier/react-hooks";
 
 import {
-  useInbox,
   useClickOutside,
   useWindowSize,
   useEventListener,
+  useLocalStorageMessages,
 } from "~/hooks";
 import BellSvg, { Bell } from "./Bell";
 import LazyTippy from "./LazyTippy";
@@ -95,19 +96,19 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     };
   }, [props]);
 
-  const tabs = props.tabs === false ? undefined : props.tabs;
-  const currentTab = tabs?.[0] ?? DEFAULT_TABS?.[0];
+  const propTabs = props.tabs === false ? undefined : props.tabs;
+  const currentTab = propTabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
   const {
     brand,
-    fetchMessages,
     fetchMessageLists,
+    fetchMessages,
     init,
     isOpen: isOpenState,
-    lastMessagesFetched,
     setCurrentTab,
     setView,
+    tabs,
     toggleInbox,
     unreadMessageCount = 0,
   } = useInbox();
@@ -124,9 +125,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     init({
       brand: props.brand,
       isOpen: props.isOpen,
-      tabs,
+      tabs: propTabs,
     });
-  }, [props.brand, props.isOpen, tabs]);
+  }, [props.brand, props.isOpen, propTabs]);
+  useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
 
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
@@ -138,15 +140,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         setCurrentTab(myCurrentTab);
       }
 
-      if (!lastMessagesFetched) {
-        if (tabs) {
-          fetchMessageLists(tabs);
-        } else {
-          fetchMessages({
-            params: myCurrentTab.filters,
-          });
-        }
+      if (tabs) {
+        fetchMessageLists(tabs);
+      } else {
+        fetchMessages({
+          params: myCurrentTab.filters,
+        });
       }
+
       toggleInbox();
     },
     [tabs, isOpen, setView, setCurrentTab]

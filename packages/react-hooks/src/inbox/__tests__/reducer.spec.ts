@@ -45,11 +45,17 @@ import {
   INBOX_FETCH_MESSAGE_LISTS_DONE,
 } from "../actions/fetch-message-lists";
 
+import {
+  rehydrateMessages,
+  INBOX_REHYDRATE_MESSAGES,
+} from "../actions/rehydrate-messages";
+
 const mockTab: ITab = {
-  id: "my-mock-tab",
-  label: "My Mock Tab",
-  filters: {},
-  state: undefined,
+  filters: {
+    isRead: false,
+  },
+  label: "Unread",
+  id: "unread",
 };
 
 const mockStartCursor = "mockStartCursor";
@@ -197,6 +203,169 @@ describe("inbox reducer", () => {
     });
   });
 
+  describe(`action ${INBOX_REHYDRATE_MESSAGES}`, () => {
+    const mappedMessage = mapMessage(mockGraphMessage);
+    const mappedMessage2 = mapMessage(mockGraphMessage2);
+
+    it("will rehydrate without tabs", () => {
+      const state = reducer(
+        initialState,
+        rehydrateMessages({
+          messages: [mappedMessage],
+          startCursor: "abc123",
+          unreadMessageCount: 1,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [mappedMessage],
+        startCursor: "abc123",
+        unreadMessageCount: 1,
+      });
+    });
+
+    it("will rehydrate with tabs", () => {
+      const unreadTab = {
+        ...mockTab,
+        state: {
+          messages: [],
+        },
+      };
+
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const expectedTabs = [
+        {
+          ...unreadTab,
+          state: {
+            startCursor: "unreadStartCursor",
+            messages: [mappedMessage],
+          },
+        },
+        {
+          ...allMessagesTab,
+          state: {
+            startCursor: "allMessagesStartCursor",
+            messages: [mappedMessage2],
+          },
+        },
+      ];
+      const state = reducer(
+        {
+          ...initialState,
+          tabs: [unreadTab, allMessagesTab],
+        },
+        rehydrateMessages({
+          messages: [mappedMessage],
+          tabs: expectedTabs,
+          startCursor: "abc123",
+          unreadMessageCount: 13,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [mappedMessage],
+        tabs: expectedTabs,
+        startCursor: "unreadStartCursor",
+        unreadMessageCount: 13,
+      });
+    });
+
+    it("will NOT rehydrate if tabs mismatch", () => {
+      const unreadTab = {
+        ...mockTab,
+        state: {
+          messages: [],
+        },
+      };
+
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+          tabs: [unreadTab, allMessagesTab],
+        },
+        rehydrateMessages({
+          messages: [mappedMessage],
+          tabs: [
+            {
+              id: "badTabId",
+              label: "badTab",
+              filters: {},
+            },
+            {
+              ...allMessagesTab,
+              state: {
+                startCursor: "allMessagesStartCursor",
+                messages: [mappedMessage2],
+              },
+            },
+          ],
+          startCursor: "abc123",
+          unreadMessageCount: 13,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [],
+        tabs: [unreadTab, allMessagesTab],
+        startCursor: undefined,
+        unreadMessageCount: 0,
+      });
+    });
+
+    it("will NOT rehydrate tabs in LS but not passed in", () => {
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+        },
+        rehydrateMessages({
+          messages: [mappedMessage],
+          tabs: [
+            {
+              ...allMessagesTab,
+              state: {
+                startCursor: "allMessagesStartCursor",
+                messages: [mappedMessage2],
+              },
+            },
+          ],
+          startCursor: "abc123",
+          unreadMessageCount: 13,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [],
+        tabs: undefined,
+        startCursor: undefined,
+        unreadMessageCount: 0,
+      });
+    });
+  });
+
   describe(`action ${INBOX_NEW_MESSAGE}`, () => {
     const mappedMessage = mapMessage(mockGraphMessage);
 
@@ -212,12 +381,10 @@ describe("inbox reducer", () => {
 
     it("will prepend the new message to the state and update current tab if it exists", () => {
       const unreadTab = {
-        id: "unread",
-        label: "Unread",
-        filters: {
-          isRead: false,
+        ...mockTab,
+        state: {
+          messages: [],
         },
-        state: {},
       };
 
       const allMessages = {
@@ -346,7 +513,6 @@ describe("inbox reducer", () => {
 
       expect(state).toEqual({
         ...initialState,
-        lastMessagesFetched: mockDate,
         isLoading: true,
       });
     });
@@ -361,53 +527,9 @@ describe("inbox reducer", () => {
     });
 
     describe(INBOX_FETCH_MESSAGE_LISTS_DONE, () => {
-      it(`will update messages if no tabs`, () => {
-        const state = reducer(
-          initialState,
-          fetchMessageListsDone([
-            {
-              messages: [mockGraphMessage],
-            },
-          ])
-        );
-
-        expect(state).toEqual({
-          ...initialState,
-          messages: [mapMessage(mockGraphMessage)],
-          isLoading: false,
-        });
-      });
-
-      it(`will update currentTab with new messages`, () => {
-        const state = reducer(
-          {
-            ...initialState,
-            currentTab: mockTab,
-          },
-          fetchMessageListsDone([
-            {
-              messages: [mockGraphMessage],
-            },
-          ])
-        );
-
-        expect(state).toEqual({
-          ...initialState,
-          messages: [mapMessage(mockGraphMessage)],
-          currentTab: mockTab,
-          isLoading: false,
-        });
-      });
-
       it(`will update currentTab and tabs with new messages`, () => {
         const mockTabs: ITab[] = [
-          {
-            filters: {
-              isRead: false,
-            },
-            label: "Unread",
-            id: "unread",
-          },
+          mockTab,
           {
             filters: {},
             label: "All Messages",
@@ -421,14 +543,14 @@ describe("inbox reducer", () => {
             currentTab: mockTab,
             tabs: mockTabs,
           },
-          fetchMessageListsDone([
-            {
+          fetchMessageListsDone({
+            unread: {
               messages: [mockGraphMessage],
             },
-            {
+            all: {
               messages: [mockGraphMessage, mockGraphMessage2],
             },
-          ])
+          })
         );
 
         expect(state).toEqual({
@@ -463,11 +585,7 @@ describe("inbox reducer", () => {
     const mappedMessage2 = mapMessage(mockGraphMessage2);
 
     const unreadTab = {
-      id: "unread",
-      label: "Unread",
-      filters: {
-        isRead: false,
-      },
+      ...mockTab,
       state: {
         messages: [mappedMessage, mappedMessage2],
       },
@@ -619,11 +737,7 @@ describe("inbox reducer", () => {
     const mappedMessage2 = mapMessage(mockGraphMessage2);
 
     const unreadTab = {
-      id: "unread",
-      label: "Unread",
-      filters: {
-        isRead: false,
-      },
+      ...mockTab,
       state: {
         messages: [],
       },
@@ -750,11 +864,7 @@ describe("inbox reducer", () => {
       const mappedMessage2 = mapMessage(mockGraphMessage2);
 
       const unreadTab = {
-        id: "unread",
-        label: "Unread",
-        filters: {
-          isRead: false,
-        },
+        ...mockTab,
         state: {
           messages: [mappedMessage, mappedMessage2],
         },
@@ -816,11 +926,7 @@ describe("inbox reducer", () => {
       const mappedMessage2 = mapMessage(mockGraphMessage2);
 
       const unreadTab = {
-        id: "unread",
-        label: "Unread",
-        filters: {
-          isRead: false,
-        },
+        ...mockTab,
         state: {
           messages: [mappedMessage, mappedMessage2],
         },

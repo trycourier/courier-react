@@ -26,10 +26,12 @@ export const fetchMessageListsError = (): FetchMessageListsError => ({
 
 export const INBOX_FETCH_MESSAGE_LISTS_DONE = "inbox/FETCH_MESSAGE_LISTS/DONE";
 
-type FetchMessageListsDonePayload = Array<{
-  messages: IGraphMessageResponse[];
-  startCursor?: string;
-}>;
+type FetchMessageListsDonePayload = {
+  [listId: string]: {
+    messages: IGraphMessageResponse[];
+    startCursor?: string;
+  };
+};
 
 export type FetchMessageListsDone = {
   type: "inbox/FETCH_MESSAGE_LISTS/DONE";

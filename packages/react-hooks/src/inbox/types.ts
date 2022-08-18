@@ -34,7 +34,6 @@ export interface IMessage {
 }
 
 export interface IInbox {
-  lastMessagesFetched?: number;
   brand?: Brand;
   currentTab?: ITab;
   from?: number;

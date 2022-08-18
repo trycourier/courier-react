@@ -16,6 +16,10 @@ import { markMessageRead } from "./actions/mark-message-read";
 import { markAllRead } from "./actions/mark-all-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
 import { markMessageArchived } from "./actions/mark-message-archived";
+import {
+  rehydrateMessages,
+  Rehydratemessages,
+} from "./actions/rehydrate-messages";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -23,14 +27,15 @@ export interface IFetchMessagesParams {
 }
 
 interface IInboxActions {
-  fetchMessages: (params?: IFetchMessagesParams) => void;
   fetchMessageLists: (tabs?: ITab[]) => void;
+  fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
   markMessageRead: (messageId: string, trackingId: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
+  rehydrateMessages: (payload: Rehydratemessages["payload"]) => void;
   setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
@@ -69,8 +74,7 @@ const useInboxActions = (): IInboxActions => {
           dispatch({
             type: "inbox/FETCH_MESSAGE_LISTS",
             meta,
-            payload: () =>
-              messages.getMessageLists(payload.tabs?.map((tab) => tab.filters)),
+            payload: () => messages.getMessageLists(payload.tabs),
           });
           return;
         }
@@ -81,6 +85,9 @@ const useInboxActions = (): IInboxActions => {
           payload: () => messages.getMessages(meta.searchParams),
         });
       }
+    },
+    rehydrateMessages: (payload) => {
+      dispatch(rehydrateMessages(payload));
     },
     toggleInbox: (isOpen?: boolean) => {
       dispatch(toggleInbox(isOpen));
@@ -108,8 +115,11 @@ const useInboxActions = (): IInboxActions => {
     },
     fetchMessageLists: (tabs?: ITab[]) => {
       const listParams = tabs?.map((tab) => ({
-        from: inbox.from,
-        ...tab.filters,
+        ...tab,
+        filters: {
+          from: inbox.from,
+          ...tab.filters,
+        },
       }));
 
       if (!listParams) {

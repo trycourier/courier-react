@@ -114,10 +114,10 @@ describe("getMessageLists", () => {
       Promise.resolve({
         json: () => ({
           data: {
-            list0: {
+            unread: {
               nodes: "mockNodes0",
             },
-            list1: {
+            tagged: {
               nodes: "mockNodes1",
               pageInfo: {
                 startCursor: "mockStartCursor",
@@ -135,26 +135,32 @@ describe("getMessageLists", () => {
 
     const response = await messagesApi.getMessageLists([
       {
-        isRead: false,
+        id: "unread",
+        filters: {
+          isRead: false,
+        },
       },
       {
-        tags: ["abc", "123"],
+        id: "tagged",
+        filters: {
+          tags: ["abc", "123"],
+        },
       },
     ]);
 
-    expect(response).toEqual([
-      {
+    expect(response).toEqual({
+      unread: {
         messages: "mockNodes0",
       },
-      {
+      tagged: {
         messages: "mockNodes1",
         startCursor: "mockStartCursor",
       },
-    ]);
+    });
 
     expect(fetchMock.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
-        "body": "{\\"query\\":\\"query GetMessages($params0: FilterParamsInput, $params1: FilterParamsInput, $limit: Int = 10) {\\\\n  list0: messages(params: $params0, limit: $limit) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      id\\\\n      messageId\\\\n      created\\\\n      read\\\\n      tags\\\\n      content {\\\\n        title\\\\n        body\\\\n        blocks {\\\\n          ... on TextBlock {\\\\n            type\\\\n            text\\\\n            __typename\\\\n          }\\\\n          ... on ActionBlock {\\\\n            type\\\\n            text\\\\n            url\\\\n            __typename\\\\n          }\\\\n          __typename\\\\n        }\\\\n        data\\\\n        trackingIds {\\\\n          archiveTrackingId\\\\n          clickTrackingId\\\\n          deliverTrackingId\\\\n          readTrackingId\\\\n          unreadTrackingId\\\\n          __typename\\\\n        }\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n  list1: messages(params: $params1, limit: $limit) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      id\\\\n      messageId\\\\n      created\\\\n      read\\\\n      tags\\\\n      content {\\\\n        title\\\\n        body\\\\n        blocks {\\\\n          ... on TextBlock {\\\\n            type\\\\n            text\\\\n            __typename\\\\n          }\\\\n          ... on ActionBlock {\\\\n            type\\\\n            text\\\\n            url\\\\n            __typename\\\\n          }\\\\n          __typename\\\\n        }\\\\n        data\\\\n        trackingIds {\\\\n          archiveTrackingId\\\\n          clickTrackingId\\\\n          deliverTrackingId\\\\n          readTrackingId\\\\n          unreadTrackingId\\\\n          __typename\\\\n        }\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetMessages\\",\\"variables\\":{\\"params0\\":{\\"isRead\\":false},\\"params1\\":{\\"tags\\":[\\"abc\\",\\"123\\"]},\\"limit\\":10}}",
+        "body": "{\\"query\\":\\"query GetMessageLists($unreadParams: FilterParamsInput, $taggedParams: FilterParamsInput, $limit: Int = 10) {\\\\n  unread: messages(params: $unreadParams, limit: $limit) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      id\\\\n      messageId\\\\n      created\\\\n      read\\\\n      tags\\\\n      content {\\\\n        title\\\\n        body\\\\n        blocks {\\\\n          ... on TextBlock {\\\\n            type\\\\n            text\\\\n            __typename\\\\n          }\\\\n          ... on ActionBlock {\\\\n            type\\\\n            text\\\\n            url\\\\n            __typename\\\\n          }\\\\n          __typename\\\\n        }\\\\n        data\\\\n        trackingIds {\\\\n          archiveTrackingId\\\\n          clickTrackingId\\\\n          deliverTrackingId\\\\n          readTrackingId\\\\n          unreadTrackingId\\\\n          __typename\\\\n        }\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n  tagged: messages(params: $taggedParams, limit: $limit) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      id\\\\n      messageId\\\\n      created\\\\n      read\\\\n      tags\\\\n      content {\\\\n        title\\\\n        body\\\\n        blocks {\\\\n          ... on TextBlock {\\\\n            type\\\\n            text\\\\n            __typename\\\\n          }\\\\n          ... on ActionBlock {\\\\n            type\\\\n            text\\\\n            url\\\\n            __typename\\\\n          }\\\\n          __typename\\\\n        }\\\\n        data\\\\n        trackingIds {\\\\n          archiveTrackingId\\\\n          clickTrackingId\\\\n          deliverTrackingId\\\\n          readTrackingId\\\\n          unreadTrackingId\\\\n          __typename\\\\n        }\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetMessageLists\\",\\"variables\\":{\\"unreadParams\\":{\\"isRead\\":false},\\"taggedParams\\":{\\"tags\\":[\\"abc\\",\\"123\\"]},\\"limit\\":10}}",
         "headers": Object {
           "content-type": "application/json",
           "x-courier-client-key": "CLIENT_KEY",
