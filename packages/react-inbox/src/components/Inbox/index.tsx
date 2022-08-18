@@ -3,12 +3,13 @@ import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
+import { useInbox } from "@trycourier/react-hooks";
 
 import {
-  useInbox,
   useClickOutside,
   useWindowSize,
   useEventListener,
+  useLocalStorageMessages,
 } from "~/hooks";
 import BellSvg, { Bell } from "./Bell";
 import LazyTippy from "./LazyTippy";
@@ -105,7 +106,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     fetchMessageLists,
     init,
     isOpen: isOpenState,
-    lastMessagesFetched,
     setCurrentTab,
     setView,
     toggleInbox,
@@ -127,6 +127,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       tabs,
     });
   }, [props.brand, props.isOpen, tabs]);
+  useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
 
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
@@ -138,15 +139,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         setCurrentTab(myCurrentTab);
       }
 
-      if (!lastMessagesFetched) {
-        if (tabs) {
-          fetchMessageLists(tabs);
-        } else {
-          fetchMessages({
-            params: myCurrentTab.filters,
-          });
-        }
+      if (tabs) {
+        fetchMessageLists(tabs);
+      } else {
+        fetchMessages({
+          params: myCurrentTab.filters,
+        });
       }
+
       toggleInbox();
     },
     [tabs, isOpen, setView, setCurrentTab]

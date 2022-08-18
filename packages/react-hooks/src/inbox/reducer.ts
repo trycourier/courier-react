@@ -7,6 +7,11 @@ import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
 import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
 import {
+  Rehydratemessages,
+  INBOX_REHYDRATE_MESSAGES,
+} from "./actions/rehydrate-messages";
+
+import {
   MarkMessageArchived,
   INBOX_MARK_MESSAGE_ARCHIVED,
 } from "./actions/mark-message-archived";
@@ -72,6 +77,7 @@ type InboxAction =
   | InboxInit
   | InboxSetView
   | MarkAllRead
+  | Rehydratemessages
   | MarkMessageArchived
   | MarkMessageRead
   | MarkMessageUnread
@@ -131,7 +137,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: true,
-        lastMessagesFetched: new Date().getTime(),
       };
 
     case INBOX_FETCH_MESSAGES_PENDING: {
@@ -145,7 +150,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
-        lastMessagesFetched: undefined,
       };
     }
 
@@ -156,9 +160,54 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
+    case INBOX_REHYDRATE_MESSAGES: {
+      let bailOnRehydrate = false;
+
+      // tabs mismatch
+      if (!state.tabs && action.payload.tabs) {
+        return state;
+      }
+
+      // tabs aren't being used
+      if (!state.tabs && action.payload.messages) {
+        return {
+          ...state,
+          isLoading: false,
+          messages: action.payload.messages,
+          startCursor: action.payload.startCursor,
+        };
+      }
+
+      const newTabs = state.tabs?.map((tab) => {
+        const matchingTab = action.payload?.tabs?.find((t) => t.id === tab.id);
+
+        // tabs mismatch
+        if (!matchingTab) {
+          bailOnRehydrate = true;
+          return tab;
+        }
+
+        return {
+          ...tab,
+          state: matchingTab.state,
+        };
+      });
+
+      if (bailOnRehydrate) {
+        return state;
+      }
+
+      return {
+        ...state,
+        ...newTabs?.[0]?.state,
+        isLoading: false,
+        tabs: newTabs,
+      };
+    }
+
     case INBOX_FETCH_MESSAGE_LISTS_DONE: {
-      const newTabs = state.tabs?.map((tab, index) => {
-        const listState = action.payload?.[index];
+      const newTabs = state.tabs?.map((tab) => {
+        const listState = action.payload?.[tab.id];
         return {
           ...tab,
           state: {
@@ -168,15 +217,14 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         };
       });
 
-      const listState = action.payload?.[0];
-      const newMessages = listState?.messages?.map(mapMessage);
-      const startCursor = listState?.startCursor;
+      const currentTab = newTabs?.find(
+        (tab) => tab.id === state.currentTab?.id
+      );
 
       return {
         ...state,
+        ...currentTab?.state,
         isLoading: false,
-        messages: newMessages,
-        startCursor,
         tabs: newTabs,
       };
     }

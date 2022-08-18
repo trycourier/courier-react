@@ -46,10 +46,11 @@ import {
 } from "../actions/fetch-message-lists";
 
 const mockTab: ITab = {
-  id: "my-mock-tab",
-  label: "My Mock Tab",
-  filters: {},
-  state: undefined,
+  filters: {
+    isRead: false,
+  },
+  label: "Unread",
+  id: "unread",
 };
 
 const mockStartCursor = "mockStartCursor";
@@ -212,12 +213,10 @@ describe("inbox reducer", () => {
 
     it("will prepend the new message to the state and update current tab if it exists", () => {
       const unreadTab = {
-        id: "unread",
-        label: "Unread",
-        filters: {
-          isRead: false,
+        ...mockTab,
+        state: {
+          messages: [],
         },
-        state: {},
       };
 
       const allMessages = {
@@ -346,7 +345,6 @@ describe("inbox reducer", () => {
 
       expect(state).toEqual({
         ...initialState,
-        lastMessagesFetched: mockDate,
         isLoading: true,
       });
     });
@@ -361,53 +359,9 @@ describe("inbox reducer", () => {
     });
 
     describe(INBOX_FETCH_MESSAGE_LISTS_DONE, () => {
-      it(`will update messages if no tabs`, () => {
-        const state = reducer(
-          initialState,
-          fetchMessageListsDone([
-            {
-              messages: [mockGraphMessage],
-            },
-          ])
-        );
-
-        expect(state).toEqual({
-          ...initialState,
-          messages: [mapMessage(mockGraphMessage)],
-          isLoading: false,
-        });
-      });
-
-      it(`will update currentTab with new messages`, () => {
-        const state = reducer(
-          {
-            ...initialState,
-            currentTab: mockTab,
-          },
-          fetchMessageListsDone([
-            {
-              messages: [mockGraphMessage],
-            },
-          ])
-        );
-
-        expect(state).toEqual({
-          ...initialState,
-          messages: [mapMessage(mockGraphMessage)],
-          currentTab: mockTab,
-          isLoading: false,
-        });
-      });
-
       it(`will update currentTab and tabs with new messages`, () => {
         const mockTabs: ITab[] = [
-          {
-            filters: {
-              isRead: false,
-            },
-            label: "Unread",
-            id: "unread",
-          },
+          mockTab,
           {
             filters: {},
             label: "All Messages",
@@ -421,14 +375,14 @@ describe("inbox reducer", () => {
             currentTab: mockTab,
             tabs: mockTabs,
           },
-          fetchMessageListsDone([
-            {
+          fetchMessageListsDone({
+            unread: {
               messages: [mockGraphMessage],
             },
-            {
+            all: {
               messages: [mockGraphMessage, mockGraphMessage2],
             },
-          ])
+          })
         );
 
         expect(state).toEqual({
@@ -463,11 +417,7 @@ describe("inbox reducer", () => {
     const mappedMessage2 = mapMessage(mockGraphMessage2);
 
     const unreadTab = {
-      id: "unread",
-      label: "Unread",
-      filters: {
-        isRead: false,
-      },
+      ...mockTab,
       state: {
         messages: [mappedMessage, mappedMessage2],
       },
@@ -619,11 +569,7 @@ describe("inbox reducer", () => {
     const mappedMessage2 = mapMessage(mockGraphMessage2);
 
     const unreadTab = {
-      id: "unread",
-      label: "Unread",
-      filters: {
-        isRead: false,
-      },
+      ...mockTab,
       state: {
         messages: [],
       },
@@ -750,11 +696,7 @@ describe("inbox reducer", () => {
       const mappedMessage2 = mapMessage(mockGraphMessage2);
 
       const unreadTab = {
-        id: "unread",
-        label: "Unread",
-        filters: {
-          isRead: false,
-        },
+        ...mockTab,
         state: {
           messages: [mappedMessage, mappedMessage2],
         },
@@ -816,11 +758,7 @@ describe("inbox reducer", () => {
       const mappedMessage2 = mapMessage(mockGraphMessage2);
 
       const unreadTab = {
-        id: "unread",
-        label: "Unread",
-        filters: {
-          isRead: false,
-        },
+        ...mockTab,
         state: {
           messages: [mappedMessage, mappedMessage2],
         },

@@ -127,7 +127,6 @@ const Messages: React.ForwardRefExoticComponent<
                 renderTabs({ tabs, currentTab })
               ) : (
                 <TabList
-                  isLoading={isLoading}
                   labels={labels}
                   tabs={tabs}
                   setCurrentTab={handleSetCurrentTab}

@@ -146,13 +146,18 @@ export const getMessages =
   };
 
 type GetMessageLists = (
-  lists?: IGetMessagesParams[],
+  lists?: {
+    id: string;
+    filters: IGetMessagesParams;
+  }[],
   limit?: number
 ) => Promise<
-  | Array<{
-      startCursor: string;
-      messages: IGraphMessageResponse[];
-    }>
+  | {
+      [listName: string]: {
+        startCursor: string;
+        messages: IGraphMessageResponse[];
+      };
+    }
   | undefined
 >;
 
@@ -175,16 +180,16 @@ export const getMessageLists =
       variables: {},
     };
 
-    const { args, queries, variables } = lists.reduce((acc, cur, index) => {
-      acc.args.push(`$params${index}: FilterParamsInput`);
+    const { args, queries, variables } = lists.reduce((acc, cur) => {
+      acc.args.push(`$${cur.id}Params: FilterParamsInput`);
       acc.queries.push(
-        `list${index}: messages(params: $params${index}, limit: $limit) ${messagesProps}`
+        `${cur.id}: messages(params: $${cur.id}Params, limit: $limit) ${messagesProps}`
       );
-      acc.variables[`params${index}`] = cur;
+      acc.variables[`${cur.id}Params`] = cur.filters;
       return acc;
     }, initialReduction);
 
-    const QUERY = `query GetMessages(${args}, $limit: Int = 10){
+    const QUERY = `query GetMessageLists(${args}, $limit: Int = 10){
       ${queries.join("")}
     }`;
 
@@ -192,12 +197,13 @@ export const getMessageLists =
       .query(QUERY, { ...variables, limit })
       .toPromise();
 
-    const response = Object.keys(results.data)?.map((listName) => {
-      return {
+    const response = Object.keys(results.data)?.reduce((acc, listName) => {
+      acc[listName] = {
         messages: results.data[listName].nodes,
         startCursor: results.data[listName].pageInfo?.startCursor,
       };
-    });
+      return acc;
+    }, {});
 
     return response;
   };
