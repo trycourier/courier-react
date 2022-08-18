@@ -17,7 +17,7 @@ import Messages from "../Messages";
 import TippyGlobalStyle from "./TippyGlobalStyle";
 
 import { DEFAULT_TABS } from "~/constants";
-import { InboxProps } from "../../types";
+import { InboxProps, ITab } from "../../types";
 
 const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
   ({ theme, showUnreadMessageCount }) =>
@@ -96,18 +96,19 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     };
   }, [props]);
 
-  const tabs = props.tabs === false ? undefined : props.tabs;
-  const currentTab = tabs?.[0] ?? DEFAULT_TABS?.[0];
+  const propTabs = props.tabs === false ? undefined : props.tabs;
+  const currentTab = propTabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
   const {
     brand,
-    fetchMessages,
     fetchMessageLists,
+    fetchMessages,
     init,
     isOpen: isOpenState,
     setCurrentTab,
     setView,
+    tabs,
     toggleInbox,
     unreadMessageCount = 0,
   } = useInbox();
@@ -124,9 +125,9 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     init({
       brand: props.brand,
       isOpen: props.isOpen,
-      tabs,
+      tabs: propTabs,
     });
-  }, [props.brand, props.isOpen, tabs]);
+  }, [props.brand, props.isOpen, propTabs]);
   useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
 
   const handleIconOnClick = useCallback(
