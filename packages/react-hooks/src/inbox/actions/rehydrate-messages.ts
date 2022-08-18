@@ -6,6 +6,7 @@ export type Rehydratemessages = {
     tabs?: ITab[];
     messages?: IMessage[];
     startCursor?: string;
+    unreadMessageCount?: number;
   };
 };
 

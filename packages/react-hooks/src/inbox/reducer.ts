@@ -172,9 +172,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       if (!state.tabs && action.payload.messages) {
         return {
           ...state,
-          isLoading: false,
           messages: action.payload.messages,
           startCursor: action.payload.startCursor,
+          unreadMessageCount: action.payload.unreadMessageCount,
         };
       }
 
@@ -200,8 +200,8 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         ...newTabs?.[0]?.state,
-        isLoading: false,
         tabs: newTabs,
+        unreadMessageCount: action.payload.unreadMessageCount,
       };
     }
 

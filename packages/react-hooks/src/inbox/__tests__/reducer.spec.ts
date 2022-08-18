@@ -45,6 +45,11 @@ import {
   INBOX_FETCH_MESSAGE_LISTS_DONE,
 } from "../actions/fetch-message-lists";
 
+import {
+  rehydrateMessages,
+  INBOX_REHYDRATE_MESSAGES,
+} from "../actions/rehydrate-messages";
+
 const mockTab: ITab = {
   filters: {
     isRead: false,
@@ -195,6 +200,169 @@ describe("inbox reducer", () => {
     expect(state).toEqual({
       ...initialState,
       unreadMessageCount: 100,
+    });
+  });
+
+  describe(`action ${INBOX_REHYDRATE_MESSAGES}`, () => {
+    const mappedMessage = mapMessage(mockGraphMessage);
+    const mappedMessage2 = mapMessage(mockGraphMessage2);
+
+    it("will rehydrate without tabs", () => {
+      const state = reducer(
+        initialState,
+        rehydrateMessages({
+          messages: [mappedMessage],
+          startCursor: "abc123",
+          unreadMessageCount: 1,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [mappedMessage],
+        startCursor: "abc123",
+        unreadMessageCount: 1,
+      });
+    });
+
+    it("will rehydrate with tabs", () => {
+      const unreadTab = {
+        ...mockTab,
+        state: {
+          messages: [],
+        },
+      };
+
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const expectedTabs = [
+        {
+          ...unreadTab,
+          state: {
+            startCursor: "unreadStartCursor",
+            messages: [mappedMessage],
+          },
+        },
+        {
+          ...allMessagesTab,
+          state: {
+            startCursor: "allMessagesStartCursor",
+            messages: [mappedMessage2],
+          },
+        },
+      ];
+      const state = reducer(
+        {
+          ...initialState,
+          tabs: [unreadTab, allMessagesTab],
+        },
+        rehydrateMessages({
+          messages: [mappedMessage],
+          tabs: expectedTabs,
+          startCursor: "abc123",
+          unreadMessageCount: 13,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [mappedMessage],
+        tabs: expectedTabs,
+        startCursor: "unreadStartCursor",
+        unreadMessageCount: 13,
+      });
+    });
+
+    it("will NOT rehydrate if tabs mismatch", () => {
+      const unreadTab = {
+        ...mockTab,
+        state: {
+          messages: [],
+        },
+      };
+
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+          tabs: [unreadTab, allMessagesTab],
+        },
+        rehydrateMessages({
+          messages: [mappedMessage],
+          tabs: [
+            {
+              id: "badTabId",
+              label: "badTab",
+              filters: {},
+            },
+            {
+              ...allMessagesTab,
+              state: {
+                startCursor: "allMessagesStartCursor",
+                messages: [mappedMessage2],
+              },
+            },
+          ],
+          startCursor: "abc123",
+          unreadMessageCount: 13,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [],
+        tabs: [unreadTab, allMessagesTab],
+        startCursor: undefined,
+        unreadMessageCount: 0,
+      });
+    });
+
+    it("will NOT rehydrate tabs in LS but not passed in", () => {
+      const allMessagesTab = {
+        id: "all",
+        label: "All Messages",
+        filters: {},
+        state: {},
+      };
+
+      const state = reducer(
+        {
+          ...initialState,
+        },
+        rehydrateMessages({
+          messages: [mappedMessage],
+          tabs: [
+            {
+              ...allMessagesTab,
+              state: {
+                startCursor: "allMessagesStartCursor",
+                messages: [mappedMessage2],
+              },
+            },
+          ],
+          startCursor: "abc123",
+          unreadMessageCount: 13,
+        })
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [],
+        tabs: undefined,
+        startCursor: undefined,
+        unreadMessageCount: 0,
+      });
     });
   });
 
