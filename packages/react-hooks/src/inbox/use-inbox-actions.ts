@@ -103,14 +103,18 @@ const useInboxActions = (): IInboxActions => {
       dispatch(setCurrentTab(newTab));
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {
-      const params = {
-        from: inbox?.from,
-        ...payload?.params,
+      const meta = {
+        tabId: inbox?.currentTab?.id,
+        searchParams: {
+          ...payload?.params,
+          from: inbox?.from,
+        },
       };
+
       dispatch({
+        meta,
+        payload: () => messages.getMessages(meta.searchParams, payload?.after),
         type: "inbox/FETCH_MESSAGES",
-        payload: () => messages.getMessages(params, payload?.after),
-        meta: payload,
       });
     },
     fetchMessageLists: (tabs?: ITab[]) => {
