@@ -232,14 +232,28 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_FETCH_MESSAGES_DONE: {
       const mappedMessages = action.payload.messages.map(mapMessage);
 
-      const newMessages = action.payload.appendMessages
-        ? [...(state.messages ?? []), ...mappedMessages]
-        : mappedMessages;
+      if (!state.tabs) {
+        const newMessages = action.payload.appendMessages
+          ? [...(state?.messages ?? []), ...mappedMessages]
+          : mappedMessages;
 
+        return {
+          ...state,
+          isLoading: false,
+          startCursor: action.payload.startCursor,
+          messages: newMessages,
+        };
+      }
+
+      let newMessages: IMessage[] = [];
       const tabs = state.tabs?.map((tab) => {
-        if (tab.id !== state.currentTab?.id) {
+        if (tab.id !== action.meta?.tabId) {
           return tab;
         }
+
+        newMessages = action.payload.appendMessages
+          ? [...(tab.state?.messages ?? []), ...mappedMessages]
+          : mappedMessages;
 
         return {
           ...tab,
@@ -249,6 +263,14 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
           },
         };
       });
+
+      if (state.currentTab?.id !== action.meta?.tabId) {
+        return {
+          ...state,
+          isLoading: false,
+          tabs,
+        };
+      }
 
       return {
         ...state,

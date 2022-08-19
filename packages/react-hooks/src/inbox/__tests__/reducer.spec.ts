@@ -451,9 +451,16 @@ describe("inbox reducer", () => {
       it(`will not append if appendMessages === false`, () => {
         const state = reducer(
           initialState,
-          fetchMessagesDone({
-            messages: [mockGraphMessage],
-          })
+          fetchMessagesDone(
+            {
+              messages: [mockGraphMessage],
+            },
+            {
+              searchParams: {
+                filters: {},
+              },
+            }
+          )
         );
 
         expect(state).toEqual({
@@ -469,9 +476,17 @@ describe("inbox reducer", () => {
             ...initialState,
             currentTab: mockTab,
           },
-          fetchMessagesDone({
-            messages: [mockGraphMessage],
-          })
+          fetchMessagesDone(
+            {
+              messages: [mockGraphMessage],
+            },
+            {
+              tabId: mockTab.id,
+              searchParams: {
+                filters: {},
+              },
+            }
+          )
         );
 
         expect(state).toEqual({
@@ -489,10 +504,17 @@ describe("inbox reducer", () => {
             messages: [mapMessage(mockGraphMessage)],
             isLoading: true,
           },
-          fetchMessagesDone({
-            appendMessages: true,
-            messages: [mockGraphMessage2],
-          })
+          fetchMessagesDone(
+            {
+              appendMessages: true,
+              messages: [mockGraphMessage2],
+            },
+            {
+              searchParams: {
+                filters: {},
+              },
+            }
+          )
         );
 
         expect(state).toEqual({
@@ -501,6 +523,55 @@ describe("inbox reducer", () => {
             mapMessage(mockGraphMessage),
             mapMessage(mockGraphMessage2),
           ],
+          isLoading: false,
+        });
+      });
+
+      it(`will append messages to the right tab if the currentTab isn't the tab dispatched`, () => {
+        const mockTabs: ITab[] = [
+          mockTab,
+          {
+            filters: {},
+            label: "All Messages",
+            id: "all",
+          },
+        ];
+
+        const state = reducer(
+          {
+            ...initialState,
+            currentTab: mockTabs[0],
+            tabs: mockTabs,
+            messages: [mapMessage(mockGraphMessage)],
+            isLoading: true,
+          },
+          fetchMessagesDone(
+            {
+              appendMessages: true,
+              messages: [mockGraphMessage2],
+            },
+            {
+              tabId: "all",
+              searchParams: {
+                filters: {},
+              },
+            }
+          )
+        );
+
+        expect(state).toEqual({
+          ...initialState,
+          currentTab: mockTabs[0],
+          tabs: [
+            mockTab,
+            {
+              ...mockTabs[1],
+              state: {
+                messages: [mapMessage(mockGraphMessage2)],
+              },
+            },
+          ],
+          messages: [mapMessage(mockGraphMessage)],
           isLoading: false,
         });
       });

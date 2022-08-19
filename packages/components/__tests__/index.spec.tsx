@@ -43,6 +43,19 @@ const server = setupServer(
       })
     );
   }),
+  graphql.query("GetMessageLists", (_, res, ctx) => {
+    return res(
+      ctx.data({
+        unread: {
+          messages: "mockNodes0",
+        },
+        tagged: {
+          messages: "mockNodes1",
+          startCursor: "mockStartCursor",
+        },
+      })
+    );
+  }),
   graphql.query("GetRecipientPreferences", (_, res, ctx) => {
     return res(
       ctx.data({
