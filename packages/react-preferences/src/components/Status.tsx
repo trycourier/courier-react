@@ -9,6 +9,7 @@ export const StatusPreference: PreferenceItemComponentFn = ({
   value,
   onPreferenceChange,
   templateId,
+  routingOptions,
 }) => {
   const [checked, setChecked] = useState(
     ["REQUIRED", "OPTED_IN"].includes(value as PreferenceStatus)
@@ -36,6 +37,7 @@ export const StatusPreference: PreferenceItemComponentFn = ({
         <ChannelPreferences
           onPreferenceChange={onPreferenceChange}
           templateId={templateId}
+          routingOptions={routingOptions}
         />
       )}
     </div>

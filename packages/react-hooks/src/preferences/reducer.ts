@@ -19,11 +19,25 @@ export default (state: PreferenceState = initialState, action) => {
         isUpdating: true,
       };
 
+    case "preferences/FETCH_PREFERENCE_SECTION/PENDING":
+      return {
+        ...state,
+        isUpdating: true,
+      };
+
     case "preferences/FETCH_RECIPIENT_PREFERENCES/DONE": {
       return {
         ...state,
         isLoading: false,
         recipientPreferences: action?.payload,
+      };
+    }
+
+    case "preferences/FETCH_PREFERENCE_SECTION/DONE": {
+      return {
+        ...state,
+        isLoading: false,
+        preferenceSections: action?.payload,
       };
     }
 

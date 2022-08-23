@@ -21,6 +21,13 @@ const usePreferencesActions = () => {
       });
     },
 
+    fetchPreferenceSections: () => {
+      dispatch({
+        type: "preferences/FETCH_PREFERENCE_SECTION",
+        payload: () => preferences.getPreferenceSections(),
+      });
+    },
+
     updateRecipientPreferences: async (payload) => {
       dispatch({
         type: "preferences/UPDATE_RECIPIENT_PREFERENCES",

@@ -15,6 +15,24 @@ const RECIPIENT_PREFERENCES = `
   }
 `;
 
+const PREFERENCE_SECTIONS = `
+  query GetPreferenceSections {
+    preferenceSections {
+      nodes {
+        name
+        sectionId
+        routingOptions
+        preferenceGroups {
+          nodes {
+            templateName
+            templateId
+          }
+        }
+      }
+    }
+  }
+`;
+
 type GetRecipientPreferences = () => Promise<any>;
 export const getRecipientPreferences =
   (client: Client | undefined): GetRecipientPreferences =>
@@ -25,6 +43,18 @@ export const getRecipientPreferences =
 
     const results = await client.query(RECIPIENT_PREFERENCES).toPromise();
     return results.data?.recipientPreferences.nodes;
+  };
+
+type GetPreferenceSections = () => Promise<any>;
+export const getPreferenceSections =
+  (client: Client | undefined): GetPreferenceSections =>
+  async () => {
+    if (!client) {
+      return;
+    }
+
+    const results = await client.query(PREFERENCE_SECTIONS).toPromise();
+    return results.data?.preferenceSections.nodes;
   };
 
 const UPDATE_RECIPIENT_PREFERENCES = `
@@ -64,12 +94,14 @@ export default (
   params: ICourierClientBasicParams | { client?: Client }
 ): {
   getRecipientPreferences: GetRecipientPreferences;
+  getPreferenceSections: GetPreferenceSections;
   updateRecipientPreferences: UpdateRecipientPreferences;
 } => {
   const client = createCourierClient(params);
 
   return {
     getRecipientPreferences: getRecipientPreferences(client),
+    getPreferenceSections: getPreferenceSections(client),
     updateRecipientPreferences: updateRecipientPreferences(client),
   };
 };

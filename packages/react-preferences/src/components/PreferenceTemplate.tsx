@@ -3,11 +3,15 @@ import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 
 import { StatusPreference } from "./Status";
-import { IPreferenceTemplate, IRecipientPreference } from "../types";
+import {
+  ChannelClassification,
+  IPreferenceTemplate,
+  IRecipientPreference,
+} from "../types";
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;
-  padding: 12px 18px;
+  padding: 10px;
   margin-top: 6px;
   background: white;
   border-radius: 4px;
@@ -26,7 +30,8 @@ const StyledItem = styled.div`
 export const PreferenceTemplate: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
   recipientPreference?: IRecipientPreference;
-}> = ({ preferenceTemplate, recipientPreference }) => {
+  routingOptions: Array<ChannelClassification>;
+}> = ({ preferenceTemplate, recipientPreference, routingOptions }) => {
   const { updateRecipientPreferences } = usePreferences();
 
   const handleOnPreferenceChange = (newPreferences) => {
@@ -51,6 +56,7 @@ export const PreferenceTemplate: React.FunctionComponent<{
         }
         onPreferenceChange={handleOnPreferenceChange}
         templateId={preferenceTemplate.templateId}
+        routingOptions={routingOptions}
       />
     </StyledItem>
   );
