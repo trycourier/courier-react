@@ -81,6 +81,7 @@ export const PreferenceList: React.FunctionComponent<{
       });
     }
 
+    // TODO: Handle Backfilled preferences. (https://linear.app/trycourier/issue/C-6836/cleanup-react-preference-section-template-renderer-after-backfill)
     if (preferences.preferenceSections?.length < 1) {
       return brand?.preferenceTemplates?.map((template) => (
         <PreferenceTemplate

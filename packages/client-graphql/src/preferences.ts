@@ -16,21 +16,21 @@ const RECIPIENT_PREFERENCES = `
 `;
 
 const PREFERENCE_SECTIONS = `
-query GetPreferenceSections{
-	preferenceSections {
-		nodes {
-			name
-			sectionId
-			routingOptions
-			preferenceGroups {
-				nodes {
-					templateName
-					templateId
-				}
-			}
-		}
-	}
-}
+  query GetPreferenceSections {
+    preferenceSections {
+      nodes {
+        name
+        sectionId
+        routingOptions
+        preferenceGroups {
+          nodes {
+            templateName
+            templateId
+          }
+        }
+      }
+    }
+  }
 `;
 
 type GetRecipientPreferences = () => Promise<any>;
