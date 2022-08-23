@@ -19,12 +19,13 @@ export const StyledItem = styled.div`
 
   padding: 5px;
 
-  margin-top: 15px;
+  margin-top: 7.5px;
 `;
 
 export const Channels = styled.div`
   display: flex;
-  margin-left: 70px;
+  width: 100%;
+  justify-content: end;
 `;
 
 export const Input = styled.input`
@@ -44,7 +45,7 @@ export const Check = styled.svg`
 
 export const ChannelOption = styled.div`
   display: flex;
-  width: 64px;
+  width: 55px;
   height: 20px;
 
   background: transparent;
@@ -54,7 +55,7 @@ export const ChannelOption = styled.div`
 
   font-style: normal;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 16px;
 
   justify-content: center;

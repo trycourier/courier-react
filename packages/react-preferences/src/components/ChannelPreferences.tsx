@@ -12,6 +12,9 @@ import {
 } from "./ChannelPreferenceStyles";
 
 const DisplayChannel = (channel: ChannelClassification) => {
+  if (channel === "direct_message") {
+    return "SMS";
+  }
   return channel.charAt(0).toUpperCase() + channel.slice(1);
 };
 
@@ -46,7 +49,8 @@ const DeliveryChannel = ({ channel, handleRouting, checked }) => {
 export const ChannelPreferences: React.FC<{
   onPreferenceChange: (IRecipientPreference) => void;
   templateId: string;
-}> = ({ onPreferenceChange, templateId }) => {
+  routingOptions: Array<ChannelClassification>;
+}> = ({ onPreferenceChange, templateId, routingOptions }) => {
   const preferences = usePreferences();
 
   if (!preferences) {
@@ -67,10 +71,10 @@ export const ChannelPreferences: React.FC<{
     onPreferenceChange({
       hasCustomRouting: !checked,
       status: "OPTED_IN",
-      routingPreferences: !checked ? ["email", "push"] : [],
+      routingPreferences: !checked ? ["email", "push", "direct_message"] : [],
     });
 
-    setRouting(["email", "push"]);
+    setRouting(["email", "push", "direct_message"]);
     setChecked(!checked);
   };
 
@@ -88,7 +92,7 @@ export const ChannelPreferences: React.FC<{
     setRouting(newRouting);
   };
 
-  const channels: ChannelClassification[] = ["email", "push"];
+  const channels: ChannelClassification[] = routingOptions;
 
   return (
     <StyledItem>

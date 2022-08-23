@@ -13,6 +13,50 @@ export const StyledList = styled.div`
   background: rgba(255, 255, 255, 0.2);
 `;
 
+const PreferenceSectionWrapper = styled.div`
+  background: white;
+  margin: 10px;
+  padding: 10px;
+  text: black;
+`;
+
+const SectionHeader = styled.h1`
+  margin: 0;
+  color: black;
+`;
+
+const LineBreak = styled.div`
+  height: 1px;
+  background-color: black;
+  widht: 100%;
+  opacity: 0.3;
+  margin: 8px 0;
+`;
+
+const PreferenceSection: React.FunctionComponent<{
+  section: any;
+  preferences: any;
+}> = ({ section, preferences }) => {
+  return (
+    <PreferenceSectionWrapper>
+      <SectionHeader>{section.name}</SectionHeader>
+      {section.preferenceGroups.nodes.map((template) => (
+        <>
+          <PreferenceTemplate
+            key={template.templateId}
+            preferenceTemplate={template}
+            recipientPreference={preferences?.recipientPreferences?.find(
+              (preference) => preference.templateId === template.templateId
+            )}
+            routingOptions={section.routingOptions}
+          />
+          <LineBreak />
+        </>
+      ))}
+    </PreferenceSectionWrapper>
+  );
+};
+
 export const PreferenceList: React.FunctionComponent<{
   // TODO: define Preferences theming
   theme?: ThemeProps<any>;
@@ -20,8 +64,40 @@ export const PreferenceList: React.FunctionComponent<{
   const { brand } = useCourier();
   const preferences = usePreferences();
 
+  const renderPreferences = () => {
+    if (preferences?.isLoading) {
+      return <></>;
+    }
+
+    if (preferences.preferenceSections?.length > 0) {
+      return preferences.preferenceSections.map((section, key) => {
+        return (
+          <PreferenceSection
+            section={section}
+            preferences={preferences}
+            key={key}
+          />
+        );
+      });
+    }
+
+    if (preferences.preferenceSections?.length < 1) {
+      return brand?.preferenceTemplates?.map((template) => (
+        <PreferenceTemplate
+          key={template.templateId}
+          preferenceTemplate={template}
+          recipientPreference={preferences?.recipientPreferences?.find(
+            (preference) => preference.templateId === template.templateId
+          )}
+          routingOptions={["direct_message", "email", "push"]}
+        />
+      ));
+    }
+  };
+
   useEffect(() => {
     preferences.fetchRecipientPreferences();
+    preferences.fetchPreferenceSections();
   }, []);
 
   return (
@@ -32,21 +108,7 @@ export const PreferenceList: React.FunctionComponent<{
           brand,
         }}
       >
-        <StyledList>
-          {preferences?.isLoading || !brand?.preferenceTemplates?.length ? (
-            <></>
-          ) : (
-            brand?.preferenceTemplates?.map((template) => (
-              <PreferenceTemplate
-                key={template.templateId}
-                preferenceTemplate={template}
-                recipientPreference={preferences?.recipientPreferences?.find(
-                  (preference) => preference.templateId === template.templateId
-                )}
-              ></PreferenceTemplate>
-            ))
-          )}
-        </StyledList>
+        <StyledList>{renderPreferences()}</StyledList>
       </ThemeProvider>
     </>
   );

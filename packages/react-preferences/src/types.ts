@@ -1,14 +1,15 @@
 export type Preference = "channel_preferences" | "status" | "snooze";
 
+export type ChannelClassification = "email" | "push" | "direct_message";
+
 export type PreferenceItemComponentFn = React.FunctionComponent<{
   label?: string;
   value: PreferenceStatus | ChannelClassification[] | SnoozePreference;
   hasCustomRouting?: boolean;
   onPreferenceChange: (changes: Partial<IPreference>) => void;
   templateId: string;
+  routingOptions: Array<ChannelClassification>;
 }>;
-
-export type ChannelClassification = "email" | "push";
 
 export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
 
