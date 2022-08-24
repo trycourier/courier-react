@@ -97,8 +97,6 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
     setView(newView);
   };
 
-  console.log("unreadMessageCount", unreadMessageCount);
-
   return view === "messages" ? (
     <Container data-testid="header">
       <Settings

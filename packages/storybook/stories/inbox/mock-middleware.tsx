@@ -1,6 +1,4 @@
 export default () => (next) => (action) => {
-  console.log("action", action);
-
   if (action.type === "inbox/INIT") {
     next({
       ...action,
