@@ -3,6 +3,7 @@ import { PreferenceState } from "./types";
 const initialState: PreferenceState = {
   preferences: undefined,
   recipientPreferences: undefined,
+  preferenceSections: undefined,
 };
 
 export default (state: PreferenceState = initialState, action) => {

@@ -3,8 +3,9 @@ export interface PreferenceState {
   isUpdating?: boolean;
   preferences?: IPreferenceTemplate[];
   recipientPreferences?: IRecipientPreference[];
+  preferenceSections?: Array<any>;
 }
-export type ChannelClassification = "email" | "push";
+export type ChannelClassification = "email" | "push" | "direct_message";
 
 export type SnoozePreference = {
   start?: string;
