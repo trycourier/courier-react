@@ -3,7 +3,6 @@ import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
 import { PreferenceTemplate } from "./PreferenceTemplate";
 import styled, { ThemeProvider, ThemeProps } from "styled-components";
-import { Footer } from "@trycourier/react-footer";
 
 export const StyledList = styled.div`
   overflow: scroll;
@@ -118,7 +117,6 @@ export const PreferenceList: React.FunctionComponent<{
         }}
       >
         <StyledList>{renderPreferences()}</StyledList>
-        <Footer />
       </ThemeProvider>
     </>
   );
