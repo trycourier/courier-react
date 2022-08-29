@@ -49,7 +49,6 @@ const useElementalInboxActions = (): IInboxActions => {
       if (payload.isOpen) {
         dispatch({
           type: "inbox/FETCH_MESSAGES",
-          meta,
           payload: () => messages.getMessages(),
         });
       }
