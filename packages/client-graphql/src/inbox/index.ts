@@ -8,8 +8,8 @@ import * as messages from "./messages";
 import { MarkAllRead, markAllRead } from "./mark-all-read";
 import { TrackEvent, trackEvent } from "./track-event";
 
-export type IInboxMessagePreview = messages.IInboxMessagePreview;
-export type IInboxMessage = message.IInboxMessage;
+export { IInboxMessage } from "./message";
+export { IInboxMessagePreview, IGetInboxMessagesParams } from "./messages";
 
 export default (
   params: ICourierClientBasicParams | { client?: Client }

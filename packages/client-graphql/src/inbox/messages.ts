@@ -15,6 +15,7 @@ export const GET_INBOX_MESSAGES = `
         hasNextPage
       }
       nodes {
+        title
         preview
         messageId
         read
@@ -25,10 +26,12 @@ export const GET_INBOX_MESSAGES = `
 `;
 
 export interface IInboxMessagePreview {
-  preview?: string;
-  messageId: string;
-  read?: string;
   created?: string;
+  messageId: string;
+  preview?: string;
+  /** ISO 8601 date the message was read */
+  read?: string;
+  title?: string;
 }
 
 export type GetInboxMessages = (
