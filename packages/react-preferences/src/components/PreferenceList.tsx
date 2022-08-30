@@ -63,14 +63,21 @@ export const PreferenceList: React.FunctionComponent<{
 }> = (props) => {
   const { brand } = useCourier();
   const preferences = usePreferences();
+  useEffect(() => {
+    preferences.fetchRecipientPreferences();
+    preferences.fetchPreferenceSections();
+  }, []);
 
   const renderPreferences = () => {
     if (preferences?.isLoading) {
       return <></>;
     }
 
-    if (preferences.preferenceSections?.length > 0) {
-      return preferences.preferenceSections.map((section, key) => {
+    if (
+      preferences.preferenceSections &&
+      preferences.preferenceSections?.length > 0
+    ) {
+      return preferences.preferenceSections?.map((section, key) => {
         return (
           <PreferenceSection
             section={section}
@@ -82,7 +89,10 @@ export const PreferenceList: React.FunctionComponent<{
     }
 
     // TODO: Handle Backfilled preferences. (https://linear.app/trycourier/issue/C-6836/cleanup-react-preference-section-template-renderer-after-backfill)
-    if (preferences.preferenceSections?.length < 1) {
+    if (
+      !preferences.preferenceSections ||
+      preferences.preferenceSections?.length < 1
+    ) {
       return brand?.preferenceTemplates?.map((template) => (
         <PreferenceTemplate
           key={template.templateId}
@@ -95,11 +105,6 @@ export const PreferenceList: React.FunctionComponent<{
       ));
     }
   };
-
-  useEffect(() => {
-    preferences.fetchRecipientPreferences();
-    preferences.fetchPreferenceSections();
-  }, []);
 
   return (
     <>
