@@ -68,8 +68,6 @@ export const PreferenceList: React.FunctionComponent<{
     preferences.fetchPreferenceSections();
   }, []);
 
-  console.log(preferences.preferenceSections);
-
   const renderPreferences = () => {
     if (preferences?.isLoading) {
       return <></>;
