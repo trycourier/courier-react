@@ -22,7 +22,6 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@trycourier/react-footer": "^1.36.0",
     "react-toggle": "^4.1.2"
   }
 }

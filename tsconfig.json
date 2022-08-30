@@ -10,7 +10,6 @@
     { "path": "packages/react-provider" },
     { "path": "packages/react-elements" },
     { "path": "packages/react-toast" },
-    { "path": "packages/react-brand-designer" },
-    { "path": "packages/react-footer" }
+    { "path": "packages/react-brand-designer" }
   ]
 }
