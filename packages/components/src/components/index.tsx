@@ -6,6 +6,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
+const Footer = lazy(() => import("./Footer"));
 const Preferences = lazy(() => import("./Preferences"));
 
 const querySelector = (element: HTMLElement, selector: string) => {
@@ -40,6 +41,11 @@ export const CourierComponents: React.FunctionComponent = () => {
   );
   const [preferencesElement, setPreferencesElement] = useState(
     initialPreferences ?? undefined
+  );
+
+  const initialFooter = querySelector(window?.document?.body, "courier-footer");
+  const [preferenceFooter, setPreferenceFooter] = useState(
+    initialFooter ?? undefined
   );
 
   useEffect(() => {
@@ -102,6 +108,9 @@ export const CourierComponents: React.FunctionComponent = () => {
                 case "courier-preferences":
                   setPreferencesElement(element);
                   return;
+                case "courier-footer":
+                  setPreferenceFooter(element);
+                  return;
                 default: {
                   const childInbox = querySelector(element, "courier-inbox");
                   if (childInbox) {
@@ -117,6 +126,10 @@ export const CourierComponents: React.FunctionComponent = () => {
                   );
                   if (childPreferences) {
                     setPreferencesElement(childPreferences);
+                  }
+                  const childFooter = querySelector(element, "courier-footer");
+                  if (childFooter) {
+                    setPreferenceFooter(childFooter);
                   }
                   return;
                 }
@@ -166,6 +179,13 @@ export const CourierComponents: React.FunctionComponent = () => {
             <Preferences />
           </Suspense>,
           preferencesElement
+        )}
+      {preferenceFooter &&
+        createPortal(
+          <Suspense fallback={<div />}>
+            <Footer />
+          </Suspense>,
+          preferenceFooter
         )}
     </CourierSdk>
   );
