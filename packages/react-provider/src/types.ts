@@ -47,6 +47,8 @@ export interface ICourierProviderProps {
   middleware?: any;
   onMessage?: Interceptor;
   transport?: Transport;
+  /** Set to true to disable websockets */
+  disableTransport?: boolean;
   userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;

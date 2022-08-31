@@ -34,7 +34,9 @@ const useElementalInboxActions = (): IInboxActions => {
     }>();
 
   const courierClient = createCourierClient({
-    apiUrl,
+    apiUrl:
+      apiUrl ??
+      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
     clientKey,
     userId,
     userSignature,
