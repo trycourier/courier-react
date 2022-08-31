@@ -1,13 +1,11 @@
 import { useCourier, registerReducer } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import reducer from "./reducer";
-
 import deepExtend from "deep-extend";
-
 import useElementalInboxActions from "./use-inbox-actions";
 import { IElementalInbox } from "./types";
 
-const useInbox = () => {
+export const useElementalInbox = () => {
   const { dispatch, inbox, transport, brand } =
     useCourier<{
       inbox: IElementalInbox;
@@ -41,5 +39,3 @@ const useInbox = () => {
 
   return { ...inbox, ...actions };
 };
-
-export default useInbox;

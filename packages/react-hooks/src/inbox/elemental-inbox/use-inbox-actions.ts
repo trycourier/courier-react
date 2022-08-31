@@ -40,7 +40,7 @@ const useElementalInboxActions = (): IInboxActions => {
     userSignature,
   });
 
-  const messages = Inbox({ client: courierClient });
+  const inboxClient = Inbox({ client: courierClient });
 
   return {
     init: (payload) => {
@@ -49,7 +49,7 @@ const useElementalInboxActions = (): IInboxActions => {
       if (payload.isOpen) {
         dispatch({
           type: "inbox/FETCH_MESSAGES",
-          payload: () => messages.getMessages(),
+          payload: () => inboxClient.getMessages(),
         });
       }
     },
@@ -66,7 +66,7 @@ const useElementalInboxActions = (): IInboxActions => {
       };
       dispatch({
         type: "inbox/FETCH_MESSAGES",
-        payload: () => messages.getMessages(params, payload?.after),
+        payload: () => inboxClient.getMessages(params, payload?.after),
         meta: payload,
       });
     },
@@ -74,7 +74,7 @@ const useElementalInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
-          messages.getInboxCount({
+          inboxClient.getInboxCount({
             tags: [],
             status: "unread",
           }),
@@ -82,19 +82,19 @@ const useElementalInboxActions = (): IInboxActions => {
     },
     markMessageRead: async (messageId: string) => {
       dispatch(markMessageRead(messageId));
-      await messages.markRead(messageId);
+      await inboxClient.markRead(messageId);
     },
     markAllAsRead: async () => {
       dispatch(markAllRead());
-      await messages.markAllRead();
+      await inboxClient.markAllRead();
     },
     markMessageUnread: async (messageId: string) => {
       dispatch(markMessageUnread(messageId));
-      await messages.markUnread(messageId);
+      await inboxClient.markUnread(messageId);
     },
     markMessageArchived: async (messageId: string) => {
       dispatch(markMessageArchived(messageId));
-      await messages.markArchive(messageId);
+      await inboxClient.markArchive(messageId);
     },
   };
 };
