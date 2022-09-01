@@ -20,7 +20,7 @@ describe("getMessages", () => {
       Array [
         "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
         Object {
-          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      preview\\\\n      messageId\\\\n      read\\\\n      created\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{}}}",
+          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      title\\\\n      preview\\\\n      messageId\\\\n      read\\\\n      created\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{}}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
@@ -49,7 +49,7 @@ describe("getMessages", () => {
       Array [
         "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
         Object {
-          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      preview\\\\n      messageId\\\\n      read\\\\n      created\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{\\"status\\":\\"read\\",\\"tags\\":[\\"abc\\",\\"123\\"]}}}",
+          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      title\\\\n      preview\\\\n      messageId\\\\n      read\\\\n      created\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{\\"status\\":\\"read\\",\\"tags\\":[\\"abc\\",\\"123\\"]}}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
