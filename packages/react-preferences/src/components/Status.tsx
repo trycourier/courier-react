@@ -10,6 +10,7 @@ export const StatusPreference: PreferenceItemComponentFn = ({
   onPreferenceChange,
   templateId,
   routingOptions,
+  customizeDeliveryChannel = true,
 }) => {
   const [checked, setChecked] = useState(
     ["REQUIRED", "OPTED_IN"].includes(value as PreferenceStatus)
@@ -33,7 +34,7 @@ export const StatusPreference: PreferenceItemComponentFn = ({
           onChange={onToggleStatusChange}
         />
       </StyledToggle>
-      {checked && (
+      {checked && customizeDeliveryChannel && (
         <ChannelPreferences
           onPreferenceChange={onPreferenceChange}
           templateId={templateId}

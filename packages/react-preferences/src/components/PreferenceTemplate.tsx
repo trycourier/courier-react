@@ -31,7 +31,13 @@ export const PreferenceTemplate: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
   recipientPreference?: IRecipientPreference;
   routingOptions: Array<ChannelClassification>;
-}> = ({ preferenceTemplate, recipientPreference, routingOptions }) => {
+  customizeDeliveryChannel?: boolean;
+}> = ({
+  preferenceTemplate,
+  recipientPreference,
+  routingOptions,
+  customizeDeliveryChannel,
+}) => {
   const { updateRecipientPreferences } = usePreferences();
 
   const handleOnPreferenceChange = (newPreferences) => {
@@ -57,6 +63,7 @@ export const PreferenceTemplate: React.FunctionComponent<{
         onPreferenceChange={handleOnPreferenceChange}
         templateId={preferenceTemplate.templateId}
         routingOptions={routingOptions}
+        customizeDeliveryChannel={customizeDeliveryChannel}
       />
     </StyledItem>
   );
