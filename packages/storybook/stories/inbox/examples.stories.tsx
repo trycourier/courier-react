@@ -10,6 +10,7 @@ import {
   color,
   select,
 } from "@storybook/addon-knobs";
+import { BusinessFooter } from "@trycourier/react-preferences";
 
 export default {
   title: "Inbox/Examples",
@@ -164,37 +165,38 @@ export function Branded(): React.ReactElement {
 
 export function MultipleInbox(): React.ReactElement {
   return (
-    <CourierProvider
-      wsOptions={{
-        url: process.env.WS_URL,
-      }}
-      apiUrl={API_URL}
-      clientKey={CLIENT_KEY}
-      userId={USER_ID}
-    >
-      <Toast />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Inbox />
-        <UseInbox />
-        <CourierProvider
-          wsOptions={{
-            url: process.env.WS_URL,
-          }}
-          apiUrl={API_URL}
-          clientKey={CLIENT_KEY}
-          userId={USER_ID}
-        >
-          <Inbox
-            brand={{
-              colors: {
-                primary: "red",
-                secondary: "pink",
-                tertiary: "orange",
-              },
-            }}
-          />
-        </CourierProvider>
-      </div>
-    </CourierProvider>
+    // <CourierProvider
+    //   wsOptions={{
+    //     url: process.env.WS_URL,
+    //   }}
+    //   apiUrl={API_URL}
+    //   clientKey={CLIENT_KEY}
+    //   userId={USER_ID}
+    // >
+    //   <Toast />
+    //   <div style={{ display: "flex", justifyContent: "space-between" }}>
+    //     <Inbox />
+    //     <UseInbox />
+    //     <CourierProvider
+    //       wsOptions={{
+    //         url: process.env.WS_URL,
+    //       }}
+    //       apiUrl={API_URL}
+    //       clientKey={CLIENT_KEY}
+    //       userId={USER_ID}
+    //     >
+    //       <Inbox
+    //         brand={{
+    //           colors: {
+    //             primary: "red",
+    //             secondary: "pink",
+    //             tertiary: "orange",
+    //           },
+    //         }}
+    //       />
+    //     </CourierProvider>
+    //   </div>
+    // </CourierProvider>
+    <BusinessFooter />
   );
 }
