@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { CourierTransport } from "~/transports/courier";
+import { Transport, CourierTransport } from "~/transports";
 
 const useCourierTransport = ({
   transport,
   clientKey,
   userSignature,
   wsOptions,
-}) => {
+}): Transport => {
   return useMemo(() => {
     if (transport) {
       return transport;
