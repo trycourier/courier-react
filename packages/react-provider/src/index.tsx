@@ -52,6 +52,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     middleware: _middleware = [],
     onMessage,
     transport: _transport,
+    disableTransport, // Note: For now, disable transport also means disable non push-provider-bound requests
     userId,
     userSignature,
     wsOptions,
@@ -62,12 +63,14 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       [_middleware]
     );
 
-    const transport = useTransport({
-      transport: _transport,
-      userSignature,
-      clientKey,
-      wsOptions,
-    });
+    const transport = disableTransport
+      ? undefined
+      : useTransport({
+          transport: _transport,
+          userSignature,
+          clientKey,
+          wsOptions,
+        });
 
     const [state, dispatch] = useReducer(reducer, {
       apiUrl,
@@ -121,6 +124,10 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         return;
       }
 
+      if (disableTransport) {
+        return;
+      }
+
       actions.init({
         apiUrl,
         brandId,
@@ -129,7 +136,16 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         userId,
         userSignature,
       });
-    }, [actions, apiUrl, brandId, clientKey, transport, userId, userSignature]);
+    }, [
+      actions,
+      apiUrl,
+      brandId,
+      clientKey,
+      transport,
+      userId,
+      userSignature,
+      disableTransport,
+    ]);
 
     useEffect(() => {
       if (!state.brand || !clientKey || !userId) {
@@ -145,7 +161,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     }, [state.brand, clientKey, userId]);
 
     useEffect(() => {
-      if (!clientKey || !userId) {
+      if (!clientKey || !userId || disableTransport) {
         return;
       }
 
