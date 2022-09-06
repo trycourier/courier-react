@@ -9,6 +9,7 @@ export type PreferenceItemComponentFn = React.FunctionComponent<{
   onPreferenceChange: (changes: Partial<IPreference>) => void;
   templateId: string;
   routingOptions: Array<ChannelClassification>;
+  customizeDeliveryChannel?: boolean;
 }>;
 
 export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";

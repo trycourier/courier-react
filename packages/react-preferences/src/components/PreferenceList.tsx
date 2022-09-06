@@ -49,6 +49,7 @@ const PreferenceSection: React.FunctionComponent<{
               (preference) => preference.templateId === template.templateId
             )}
             routingOptions={section.routingOptions}
+            customizeDeliveryChannel={section.hasCustomRouting}
           />
           <LineBreak />
         </>

@@ -22,10 +22,12 @@ const PREFERENCE_SECTIONS = `
         name
         sectionId
         routingOptions
+        hasCustomRouting
         preferenceGroups {
           nodes {
             templateName
             templateId
+            defaultStatus
           }
         }
       }
