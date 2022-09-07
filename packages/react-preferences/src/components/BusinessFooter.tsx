@@ -72,23 +72,6 @@ export const BusinessFooter: React.FunctionComponent = () => {
         <Medium />
         <Twitter />
       </SVGWrapper>
-      <Button href="/">
-        <p>Home page</p>
-        <svg
-          width="6"
-          height="9"
-          viewBox="0 0 6 9"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M1.0392 7.69575L4.5096 4.54163L1.0392 1.37009C0.570225 0.95186 1.33934 0.23739 1.80831 0.673043L5.76644 4.24539C5.93527 4.40222 5.93527 4.66361 5.76644 4.80302L1.80831 8.41022C1.33934 8.82845 0.570226 8.11398 1.0392 7.69575Z"
-            fill="#F9FAFB"
-          />
-        </svg>
-      </Button>
     </FooterWrapper>
   );
 };
