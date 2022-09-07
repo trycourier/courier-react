@@ -10,7 +10,7 @@ import {
   color,
   select,
 } from "@storybook/addon-knobs";
-import { BusinessFooter } from "@trycourier/react-preferences";
+import { Footer } from "@trycourier/react-preferences";
 
 export default {
   title: "Inbox/Examples",
@@ -196,7 +196,7 @@ export function MultipleInbox(): React.ReactElement {
           />
         </CourierProvider>
       </div> */}
-      <BusinessFooter />
+      <Footer />
     </CourierProvider>
   );
 }

@@ -1,5 +1,4 @@
-import { usePreferences } from "@trycourier/react-hooks";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Facbebook from "../assets/social-icons/icon-social-facebook.svg";
 import Instagram from "../assets/social-icons/icon-social-instagram.svg";
@@ -63,18 +62,9 @@ const SVGWrapper = styled.div`
   }
 `;
 
-export const BusinessFooter: React.FunctionComponent = () => {
-  const preferences = usePreferences();
-  useEffect(() => {
-    preferences.fetchPreferencePage();
-  }, []);
-
-  const links = preferences.preferencePage?.brand.links;
-
-  if (preferences.isLoading || !links) {
-    return null;
-  }
-
+export const BusinessFooter: React.FunctionComponent<{ links: any }> = ({
+  links,
+}) => {
   return (
     <FooterWrapper>
       <SVGWrapper>
