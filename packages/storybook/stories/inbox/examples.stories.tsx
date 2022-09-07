@@ -10,6 +10,7 @@ import {
   color,
   select,
 } from "@storybook/addon-knobs";
+import { Footer } from "@trycourier/react-preferences";
 
 export default {
   title: "Inbox/Examples",
@@ -172,7 +173,7 @@ export function MultipleInbox(): React.ReactElement {
       clientKey={CLIENT_KEY}
       userId={USER_ID}
     >
-      <Toast />
+      {/* <Toast />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Inbox />
         <UseInbox />
@@ -194,7 +195,8 @@ export function MultipleInbox(): React.ReactElement {
             }}
           />
         </CourierProvider>
-      </div>
+      </div> */}
+      <Footer />
     </CourierProvider>
   );
 }
