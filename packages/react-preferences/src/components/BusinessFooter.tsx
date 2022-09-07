@@ -1,4 +1,5 @@
-import React from "react";
+import { usePreferences } from "@trycourier/react-hooks";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Facbebook from "../assets/social-icons/icon-social-facebook.svg";
 import Instagram from "../assets/social-icons/icon-social-instagram.svg";
@@ -63,6 +64,14 @@ const SVGWrapper = styled.div`
 `;
 
 export const BusinessFooter: React.FunctionComponent = () => {
+  const preferences = usePreferences();
+  useEffect(() => {
+    preferences.fetchRecipientPreferences();
+    preferences.fetchPreferencePage();
+  }, []);
+
+  console.log(preferences);
+
   return (
     <FooterWrapper>
       <SVGWrapper>

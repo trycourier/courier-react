@@ -27,7 +27,12 @@ const usePreferencesActions = () => {
         payload: () => preferences.getPreferenceSections(),
       });
     },
-
+    fetchPreferencePage: () => {
+      dispatch({
+        type: "preferences/FETCH_PREFERENCE_PAGE",
+        payload: () => preferences.getPreferencePage(),
+      });
+    },
     updateRecipientPreferences: async (payload) => {
       dispatch({
         type: "preferences/UPDATE_RECIPIENT_PREFERENCES",

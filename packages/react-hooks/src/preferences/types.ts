@@ -4,6 +4,7 @@ export interface PreferenceState {
   preferences?: IPreferenceTemplate[];
   recipientPreferences?: IRecipientPreference[];
   preferenceSections?: Array<any>;
+  preferencePage?: any;
 }
 export type ChannelClassification = "email" | "push" | "direct_message";
 
