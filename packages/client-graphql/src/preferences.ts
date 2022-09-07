@@ -35,6 +35,35 @@ const PREFERENCE_SECTIONS = `
   }
 `;
 
+const PREFERENCE_PAGE = `
+  query {
+    preferencePage {
+      showCourierFooter
+      brand {
+        settings {
+          colors {
+            primary
+          }
+        }
+        links
+      }
+      sections {
+        nodes {
+          name
+          sectionId
+          routingOptions
+          topics {
+            nodes {
+              templateName
+              templateId
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 type GetRecipientPreferences = () => Promise<any>;
 export const getRecipientPreferences =
   (client: Client | undefined): GetRecipientPreferences =>
@@ -57,6 +86,18 @@ export const getPreferenceSections =
 
     const results = await client.query(PREFERENCE_SECTIONS).toPromise();
     return results.data?.preferenceSections.nodes;
+  };
+
+type GetPreferencePage = () => Promise<any>;
+export const getPreferencePage =
+  (client: Client | undefined): GetPreferencePage =>
+  async () => {
+    if (!client) {
+      return;
+    }
+
+    const results = await client.query(PREFERENCE_PAGE).toPromise();
+    return results.data?.preferencePage;
   };
 
 const UPDATE_RECIPIENT_PREFERENCES = `
@@ -97,6 +138,7 @@ export default (
 ): {
   getRecipientPreferences: GetRecipientPreferences;
   getPreferenceSections: GetPreferenceSections;
+  getPreferencePage: GetPreferencePage;
   updateRecipientPreferences: UpdateRecipientPreferences;
 } => {
   const client = createCourierClient(params);
@@ -104,6 +146,7 @@ export default (
   return {
     getRecipientPreferences: getRecipientPreferences(client),
     getPreferenceSections: getPreferenceSections(client),
+    getPreferencePage: getPreferencePage(client),
     updateRecipientPreferences: updateRecipientPreferences(client),
   };
 };

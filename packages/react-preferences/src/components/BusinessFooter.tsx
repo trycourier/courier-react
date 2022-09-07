@@ -31,25 +31,6 @@ const FooterWrapper = styled.div`
   }
 `;
 
-const Button = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  gap: 2.5px;
-  padding: 5px 50px;
-  border: 0.5px solid #ffffff;
-  border-radius: 5px;
-  :hover {
-    cursor: pointer;
-  }
-  p {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-  }
-`;
-
 const SVGWrapper = styled.div`
   margin: 20px;
   display: flex;
@@ -57,20 +38,42 @@ const SVGWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  > svg {
+  svg {
     width: 20px;
   }
 `;
 
-export const BusinessFooter: React.FunctionComponent = () => {
+export const BusinessFooter: React.FunctionComponent<{ links: any }> = ({
+  links,
+}) => {
   return (
     <FooterWrapper>
       <SVGWrapper>
-        <Facbebook />
-        <Instagram />
-        <LinkedIn />
-        <Medium />
-        <Twitter />
+        {links?.facebook?.url && (
+          <a href={links.facebook.url}>
+            <Facbebook />
+          </a>
+        )}
+        {links?.instagram?.url && (
+          <a href={links.instagram.url}>
+            <Instagram />
+          </a>
+        )}
+        {links?.linkedin?.url && (
+          <a href={links.linkedin.url}>
+            <LinkedIn />
+          </a>
+        )}
+        {links?.medium?.url && (
+          <a href={links.medium.url}>
+            <Medium />
+          </a>
+        )}
+        {links?.twitter?.url && (
+          <a href={links.twitter.url}>
+            <Twitter />
+          </a>
+        )}
       </SVGWrapper>
     </FooterWrapper>
   );
