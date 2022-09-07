@@ -48,6 +48,14 @@ export const CourierComponents: React.FunctionComponent = () => {
     initialFooter ?? undefined
   );
 
+  const initialPreferencePage = querySelector(
+    window?.document?.body,
+    "courier-preference-page"
+  );
+  const [preferencePage, setPreferencePage] = useState(
+    initialPreferencePage ?? undefined
+  );
+
   useEffect(() => {
     if (inboxElement) {
       window.courier.inbox = {
@@ -110,6 +118,9 @@ export const CourierComponents: React.FunctionComponent = () => {
                   return;
                 case "courier-footer":
                   setPreferenceFooter(element);
+                  return;
+                case "courier-preference-page":
+                  setPreferencePage(element);
                   return;
                 default: {
                   const childInbox = querySelector(element, "courier-inbox");
@@ -186,6 +197,16 @@ export const CourierComponents: React.FunctionComponent = () => {
             <Footer />
           </Suspense>,
           preferenceFooter
+        )}
+      {preferencePage &&
+        createPortal(
+          <Suspense fallback={<div />}>
+            <>
+              <Preferences />
+              <Footer />
+            </>
+          </Suspense>,
+          preferencePage
         )}
     </CourierSdk>
   );
