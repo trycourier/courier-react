@@ -31,25 +31,6 @@ const FooterWrapper = styled.div`
   }
 `;
 
-const Button = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  gap: 2.5px;
-  padding: 5px 50px;
-  border: 0.5px solid #ffffff;
-  border-radius: 5px;
-  :hover {
-    cursor: pointer;
-  }
-  p {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-  }
-`;
-
 const SVGWrapper = styled.div`
   margin: 20px;
   display: flex;
