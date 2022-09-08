@@ -79,7 +79,7 @@ const Message: React.FunctionComponent<{
   formattedTime?: string;
   read?: boolean;
   renderedIcon: ReactNode;
-  renderTextBlock: React.FunctionComponent<ITextBlock> | undefined;
+  renderTextBlock?: React.FunctionComponent<ITextBlock>;
   textBlocks: ITextBlock[];
   title?: string;
   messageOptions: IMessageOption[];
