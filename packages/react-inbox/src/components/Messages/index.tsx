@@ -41,7 +41,7 @@ const Messages: React.ForwardRefExoticComponent<
       renderMessage,
       renderNoMessages,
       renderTabs,
-      title = "Inbox",
+      title,
     },
     ref
   ) => {

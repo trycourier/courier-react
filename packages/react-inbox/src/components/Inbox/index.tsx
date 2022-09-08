@@ -14,6 +14,8 @@ import {
 import BellSvg, { Bell } from "./Bell";
 import LazyTippy from "./LazyTippy";
 import Messages from "../Messages";
+import Messages2 from "../Messages2.0";
+
 import TippyGlobalStyle from "./TippyGlobalStyle";
 
 import { DEFAULT_TABS } from "~/constants";
@@ -56,10 +58,13 @@ const StyledTippy = styled(LazyTippy)<{
     {
       fontFamily: `'Nunito Sans', sans-serif`,
       boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
-      width: "483px",
+      width: theme.name === "2.0" ? "396px" : "483px",
       maxWidth: "initial !important",
 
-      borderRadius: theme?.brand?.inapp?.borderRadius ?? "24px",
+      borderRadius:
+        theme?.brand?.inapp?.borderRadius ?? theme.name === "2.0"
+          ? "12px"
+          : "24px",
       outline: "none",
       overflow: "hidden",
       margin: ["left", "right"].includes(String(placement))
@@ -89,9 +94,27 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   // set defaults
   props = useMemo(() => {
+    if (props.theme?.name === "2.0") {
+      return deepExtend(
+        {},
+        {
+          openLinksInNewTab: true,
+          title: "Notifications",
+          theme: {
+            brand: {
+              colors: {
+                primary: "#9121c2",
+              },
+            },
+          },
+        },
+        props
+      );
+    }
     return {
       openLinksInNewTab: true,
       tabs: DEFAULT_TABS,
+      title: "Inbox",
       ...props,
     };
   }, [props]);
@@ -216,10 +239,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useClickOutside(ref, handleClickOutside);
 
-  if (!courierContext?.inbox) {
-    return null;
-  }
-
   const isMobile = windowSize?.width ? windowSize?.width <= 480 : false;
 
   const BellWrapper = () => {
@@ -232,14 +251,25 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       : bell;
   };
 
+  const MessageList = useMemo(() => {
+    if (props.theme?.name === "2.0") {
+      return Messages2;
+    }
+
+    return Messages;
+  }, [props.theme?.name]);
+
+  if (!courierContext?.inbox) {
+    return null;
+  }
+
   return (
     <>
       <TippyGlobalStyle />
       <ThemeProvider
-        theme={{
-          ...props.theme,
+        theme={deepExtend({}, props.theme ?? {}, {
           brand,
-        }}
+        })}
       >
         {tippyProps.visible ? (
           <>
@@ -248,7 +278,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             ) : (
               <StyledTippy
                 {...tippyProps}
-                content={<Messages ref={ref} {...props} />}
+                content={<MessageList ref={ref} {...props} />}
               >
                 {BellWrapper()}
               </StyledTippy>

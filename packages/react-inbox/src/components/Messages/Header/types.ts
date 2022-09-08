@@ -6,6 +6,6 @@ export interface IHeaderProps {
   labels: InboxProps["labels"];
   markAllAsRead?: () => any;
   messages: IMessage[];
-  title: string;
+  title?: string;
   unreadMessageCount?: number;
 }

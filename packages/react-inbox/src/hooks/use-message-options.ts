@@ -1,26 +1,21 @@
-import distanceInWords from "date-fns/formatDistanceStrict";
+import { useInbox } from "@trycourier/react-hooks";
 import { MESSAGE_LABELS } from "~/constants";
 
-export const getTimeAgo = (created: string) => {
-  return (
-    created &&
-    distanceInWords(new Date(created).getTime(), Date.now(), {
-      addSuffix: true,
-      roundingMethod: "floor",
-    })
-  );
-};
+export interface IMessageOption {
+  label: string;
+  onClick: (event: React.MouseEvent) => void;
+}
 
-export const useMessageOptions = ({
+const useMessageOptions = ({
   labels,
-  markMessageRead,
-  markMessageUnread,
   messageId,
   readTrackingId,
   showMarkAsRead,
   showMarkAsUnread,
   unreadTrackingId,
-}) => {
+}): Array<IMessageOption> => {
+  const { markMessageRead, markMessageUnread } = useInbox();
+
   return [
     showMarkAsRead && {
       label: labels?.markAsRead ?? MESSAGE_LABELS.MARK_AS_READ,
@@ -37,3 +32,5 @@ export const useMessageOptions = ({
     },
   ].filter(Boolean);
 };
+
+export default useMessageOptions;

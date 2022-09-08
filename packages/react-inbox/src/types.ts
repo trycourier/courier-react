@@ -29,6 +29,7 @@ export interface InboxProps {
   showUnreadMessageCount?: boolean;
   tabs?: Array<ITab> | false;
   theme?: {
+    name?: "classic" | "2.0" | undefined;
     container?: React.CSSProperties;
     footer?: React.CSSProperties;
     header?: React.CSSProperties;

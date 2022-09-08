@@ -5,6 +5,7 @@ import OptionsIcon from "~/assets/options.svg";
 import { OptionsIconButton } from "./styled";
 import Options from "./Options";
 import { useClickOutside } from "~/hooks";
+import { IMessageOption } from "~/hooks/use-message-options";
 
 const StyledTippy = styled(Tippy)`
   transform: translateX(-1px);
@@ -34,7 +35,9 @@ const tippyProps: TippyProps = {
   offset: [0, -8],
 };
 
-function OptionsDropdown({ options }) {
+const OptionsDropdown: React.FunctionComponent<{
+  options: IMessageOption[];
+}> = ({ options }) => {
   const ref = useRef(null);
   const [showOptions, setShowOptions] = useState(false);
 
@@ -66,6 +69,6 @@ function OptionsDropdown({ options }) {
       </StyledTippy>
     </span>
   );
-}
+};
 
 export default OptionsDropdown;
