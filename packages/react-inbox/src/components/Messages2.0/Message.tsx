@@ -48,8 +48,10 @@ const containerStyles = ({ theme }) => {
       borderBottom: "1px solid rgba(203,213,224,.5)",
       "&.read": {
         background: "#F2F6F9",
+        filter: "grayscale(100%)",
+        zIndex: 1,
       },
-      "&:not(.read):hover": {
+      "&:not(.read).clickable:hover": {
         background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
           0.2
         )} 0%, ${tcPrimaryColor.setAlpha(0.08)} 100%);`,
@@ -62,7 +64,7 @@ const containerStyles = ({ theme }) => {
 const DefaultContainer = styled.div(containerStyles);
 const ClickableContainer = styled.a(containerStyles);
 
-const Contents = styled.a(({ theme }) => ({
+const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
   textAlign: "left",
   ...theme.message?.contents,
@@ -231,6 +233,7 @@ const MessageContainer: React.FunctionComponent<
   };
 
   if (clickAction) {
+    containerProps.className = `${containerProps.className} clickable`;
     containerProps.href = clickAction;
 
     if (openLinksInNewTab) {

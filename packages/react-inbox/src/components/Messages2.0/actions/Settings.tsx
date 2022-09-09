@@ -1,28 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledButton = styled.button<{ visible: boolean }>(
-  ({ theme, visible }) => ({
-    cursor: "pointer",
-    border: "none",
-    background: "transparent",
-    visibility: visible ? "visible" : "hidden",
-    path: {
-      fill: theme?.brand?.colors?.primary,
-    },
+const StyledButton = styled.button(({ theme }) => ({
+  cursor: "pointer",
+  border: "none",
+  background: "transparent",
+  path: {
+    fill: theme?.brand?.colors?.primary,
+  },
 
-    "&:hover": {
-      backgroundImage: `linear-gradient(180deg, ${theme?.brand?.colors?.primary}, 10%, transparent 100%)`,
-    },
-  })
-);
+  "&:hover": {
+    backgroundImage: `linear-gradient(180deg, ${theme?.brand?.colors?.primary}, 10%, transparent 100%)`,
+  },
+}));
 
 const Settings: React.FunctionComponent<{
-  visible: boolean;
   onClick: React.MouseEventHandler;
-}> = ({ onClick, visible }) => {
+}> = ({ onClick }) => {
   return (
-    <StyledButton visible={visible} onClick={onClick}>
+    <StyledButton onClick={onClick}>
       <svg
         width="24"
         height="24"

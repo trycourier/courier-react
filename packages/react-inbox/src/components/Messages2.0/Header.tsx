@@ -5,7 +5,6 @@ import styled from "styled-components";
 import deepExtend from "deep-extend";
 
 import { IMessage, ITab, InboxProps } from "~/types";
-import Settings from "./actions/Settings";
 import MarkAllRead from "./actions/MarkAllRead";
 import tinycolor2 from "tinycolor2";
 
@@ -25,6 +24,7 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       padding: "6px",
       userSelect: "none",
       display: "flex",
+      position: "relative",
       justifyContent: "space-between",
       alignItems: "center",
       fontSize: 16,
@@ -40,32 +40,23 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
   )
 );
 
-const HeadingDropdownButton = styled.button<{
-  flexDirection?: "column";
-  alignItems?: "center";
-}>(({ theme, flexDirection, alignItems }) => {
+const DropdownOptionButton = styled.button(({ theme, disabled }) => {
   const primaryColor = theme.brand?.colors?.primary;
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   return {
-    display: "flex",
-    cursor: "pointer",
-    border: "none",
-    padding: 6,
-    color: "rgba(28, 39, 58, 1)",
-    fontWeight: 700,
-    fontSize: "16px",
     background: "transparent",
-    flexDirection,
-    alignItems,
-    borderRadius: 6,
+    border: "none",
+    cursor: disabled ? "default" : "pointer",
+    padding: "6px",
+    color: "rgba(28, 39, 58, 1)",
+    fontweight: 700,
+    fontsize: "16px",
+    display: "flex",
+    alignItems: "center",
 
-    "&:hover": {
-      background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-        0.2
-      )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-        0.08
-      )} 100%)`,
+    svg: {
+      marginLeft: "3px",
     },
 
     ".message-count": {
@@ -83,25 +74,65 @@ const HeadingDropdownButton = styled.button<{
       padding: "0 6px",
       minWidth: 28,
     },
+  };
+});
+
+const HeadingDropdownButtonContainer = styled.div<{
+  flexDirection?: "column";
+  alignItems?: "center";
+  hasDropdownOptions?: boolean;
+}>(({ theme, flexDirection, alignItems, hasDropdownOptions }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  const styles = {
+    display: "flex",
+    flexDirection,
+    alignItems,
+    borderRadius: 6,
 
     "svg path": {
       fill: theme.brand?.colors?.primary,
     },
   };
+
+  if (hasDropdownOptions) {
+    styles["&:hover"] = {
+      background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
+        0.2
+      )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
+        0.08
+      )} 100%)`,
+    };
+  }
+
+  return styles;
 });
 
-export const SettingsIconButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  outline: none;
-  border: none;
-  padding: 0;
-  background: transparent;
-  margin-right: -15px;
-  padding: 0 12px;
-  cursor: pointer;
-`;
+const HeadingDropdownOptions = styled.div(({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  return {
+    position: "absolute",
+    top: "42px",
+    left: 0,
+    background: "#f2f6f9",
+    width: "100%",
+    zIndex: 2,
+
+    [DropdownOptionButton]: {
+      width: "100%",
+      "&:hover": {
+        background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
+          0.2
+        )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
+          0.08
+        )} 100%)`,
+      },
+    },
+  };
+});
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
   currentTab,
@@ -118,6 +149,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
     (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
       setView(newView);
+      setShowDropdown(false);
     };
 
   const handleShowDropdown = (event: React.MouseEvent) => {
@@ -129,49 +161,90 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
     return [
       {
         id: "messages",
-        component: () => (
-          <>
+        Component: ({
+          onClick,
+          disabled,
+        }: {
+          onClick?: React.MouseEventHandler;
+          disabled?: boolean;
+        }) => (
+          <DropdownOptionButton
+            disabled={disabled}
+            onClick={onClick ?? handleSetView("messages")}
+          >
             {title}
             {unreadMessageCount ? (
               <span className="message-count">
                 {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
               </span>
             ) : undefined}
-          </>
+            {onClick && !disabled && (
+              <svg
+                width="8"
+                height="5"
+                viewBox="0 0 8 5"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
+              </svg>
+            )}
+          </DropdownOptionButton>
         ),
       },
-      {
+      brand?.preferenceTemplates?.length && {
         id: "preferences",
-        component: () => (
-          <Settings
-            visible={brand?.preferenceTemplates?.length}
-            onClick={handleSetView("preferences")}
-          />
+        Component: ({ onClick }: { onClick?: React.MouseEventHandler }) => (
+          <DropdownOptionButton
+            onClick={onClick ?? handleSetView("preferences")}
+          >
+            Preferences
+            {onClick && (
+              <svg
+                width="8"
+                height="5"
+                viewBox="0 0 8 5"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
+              </svg>
+            )}
+          </DropdownOptionButton>
         ),
       },
-    ];
-  }, []);
+    ].filter(Boolean);
+  }, [brand?.preferenceTemplates?.length, title, unreadMessageCount]);
 
-  const ActiveOption = options?.find((o) => o.id === view)?.component;
+  const ActiveOption = options?.find((o) => o.id === view)?.Component;
+  const hasDropdownOptions = options?.length > 1;
 
   return (
     <Container data-testid="header">
-      <HeadingDropdownButton
+      <HeadingDropdownButtonContainer
         alignItems="center"
-        onClick={handleShowDropdown}
-        disabled={showDropdown}
+        hasDropdownOptions={hasDropdownOptions}
       >
-        {ActiveOption && <ActiveOption />}
-        <svg
-          width="8"
-          height="5"
-          viewBox="0 0 8 5"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
-        </svg>
-      </HeadingDropdownButton>
+        {ActiveOption && (
+          <ActiveOption
+            disabled={!hasDropdownOptions}
+            onClick={handleShowDropdown}
+          />
+        )}
+      </HeadingDropdownButtonContainer>
+      {showDropdown && (
+        <HeadingDropdownOptions>
+          {options
+            .map((o) => {
+              if (o.id === view) {
+                return null;
+              }
+
+              return <o.Component key={o.id} />;
+            })
+            .filter(Boolean)}
+        </HeadingDropdownOptions>
+      )}
       <div className="actions">
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
           tabs === undefined) && <MarkAllRead onClick={markAllAsRead} />}

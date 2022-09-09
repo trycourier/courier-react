@@ -10,9 +10,9 @@ export default () => (next) => (action) => {
     return;
   }
 
-  if (action.type === "inbox/FETCH_UNREAD_MESSAGE_COUNT") {
+  if (action.type === "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE") {
     next({
-      type: action.type + "/DONE",
+      type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
       payload: 2,
     });
     return;
