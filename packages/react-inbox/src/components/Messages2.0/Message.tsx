@@ -13,6 +13,7 @@ import deepExtend from "deep-extend";
 import styled from "styled-components";
 import useMessageOptions, { IMessageOption } from "~/hooks/use-message-options";
 import OptionsDropdown from "../OptionsDropdown";
+import tinycolor2 from "tinycolor2";
 
 export interface IMessageProps {
   blocks?: Array<ITextBlock | IActionBlock>;
@@ -33,8 +34,11 @@ export interface IMessageProps {
   };
 }
 
-const containerStyles = ({ theme }) =>
-  deepExtend(
+const containerStyles = ({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  return deepExtend(
     {
       display: "flex",
       position: "relative",
@@ -43,21 +47,24 @@ const containerStyles = ({ theme }) =>
       alignItems: "center",
       borderBottom: "1px solid rgba(203,213,224,.5)",
       "&.read": {
-        filter: "grayscale(60%)",
         background: "#F2F6F9",
+        filter: "grayscale(100%)",
+        zIndex: 1,
       },
-      "&:not(.read):hover": {
-        background:
-          "linear-gradient(180deg, rgba(33, 150, 243, 0.24) 0%, rgba(33, 150, 243, 0.096) 100%)",
+      "&:not(.read).clickable:hover": {
+        background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
+          0.2
+        )} 0%, ${tcPrimaryColor.setAlpha(0.08)} 100%);`,
       },
     },
     theme.message?.container ?? {}
   );
+};
 
 const DefaultContainer = styled.div(containerStyles);
 const ClickableContainer = styled.a(containerStyles);
 
-const Contents = styled.a(({ theme }) => ({
+const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
   textAlign: "left",
   ...theme.message?.contents,
@@ -226,6 +233,7 @@ const MessageContainer: React.FunctionComponent<
   };
 
   if (clickAction) {
+    containerProps.className = `${containerProps.className} clickable`;
     containerProps.href = clickAction;
 
     if (openLinksInNewTab) {
