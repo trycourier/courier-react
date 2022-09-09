@@ -13,15 +13,13 @@ const Option = styled.button`
   height: 25px;
   font-size: 12px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 16px;
   letter-spacing: 0em;
   text-align: center;
   color: white;
   cursor: pointer;
-  display: flex;
   padding-left: 10px;
-  align-items: center;
   background: transparent;
   border: none;
   outline: none;

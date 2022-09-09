@@ -28,7 +28,9 @@ const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
               width: "100vw",
               height: "100vh",
             }
-          : {}),
+          : {
+              background: "white",
+            }),
       },
       theme?.container
     )
