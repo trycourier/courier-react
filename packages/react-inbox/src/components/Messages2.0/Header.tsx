@@ -50,8 +50,8 @@ const DropdownOptionButton = styled.button(({ theme, disabled }) => {
     cursor: disabled ? "default" : "pointer",
     padding: "6px",
     color: "rgba(28, 39, 58, 1)",
-    fontweight: 700,
-    fontsize: "16px",
+    fontWeight: 700,
+    fontSize: "16px",
     display: "flex",
     alignItems: "center",
 
