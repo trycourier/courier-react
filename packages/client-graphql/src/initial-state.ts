@@ -35,6 +35,7 @@ const buildQuery = ({
         brand(brandId: $brandId) {
           ${brandProps}
         }
+      }
     `;
   }
 
@@ -56,7 +57,6 @@ export const getInitialState =
     }
 
     const QUERY = buildQuery({ skipFetchBrand, brandId });
-
     const results = await client
       .query(QUERY, {
         brandId,
