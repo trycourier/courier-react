@@ -9,6 +9,8 @@ export interface ITab {
   id: string;
 }
 
+type IView = ITab;
+
 export interface InboxProps {
   brand?: Brand;
   className?: string;
@@ -17,6 +19,7 @@ export interface InboxProps {
   isOpen?: boolean;
   formatDate?: (isoDate: string) => string;
   labels?: {
+    archiveMessage?: string;
     backToInbox?: string;
     emptyState?: string;
     markAllAsRead?: string;
@@ -28,6 +31,7 @@ export interface InboxProps {
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
   tabs?: Array<ITab> | false;
+  views?: Array<IView>;
   theme?: {
     name?: "classic" | "2.0" | undefined;
     container?: React.CSSProperties;

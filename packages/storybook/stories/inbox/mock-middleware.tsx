@@ -35,6 +35,7 @@ export default () => (next) => (action) => {
               read: false,
               content: {
                 trackingIds: {
+                  archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
                 },
@@ -48,6 +49,7 @@ export default () => (next) => (action) => {
               read: true,
               content: {
                 trackingIds: {
+                  archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
                 },
@@ -61,6 +63,7 @@ export default () => (next) => (action) => {
               read: false,
               content: {
                 trackingIds: {
+                  archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
                 },
@@ -84,6 +87,7 @@ export default () => (next) => (action) => {
               read: false,
               content: {
                 trackingIds: {
+                  archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
                 },
