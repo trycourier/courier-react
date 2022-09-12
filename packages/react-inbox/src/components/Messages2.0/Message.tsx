@@ -27,6 +27,7 @@ export interface IMessageProps {
     clickAction: string;
   };
   trackingIds?: {
+    archiveTrackingId: string;
     clickTrackingId: string;
     deliverTrackingId: string;
     readTrackingId: string;
@@ -67,21 +68,28 @@ const ClickableContainer = styled.a(containerStyles);
 const Contents = styled.div(({ theme }) => ({
   marginRight: "auto",
   textAlign: "left",
+  marginLeft: 6,
   ...theme.message?.contents,
 }));
 
-const UnreadIndicator = styled.div(({ theme }) =>
-  deepExtend(
+const UnreadIndicator = styled.div(({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  return deepExtend(
     {
       height: "100%",
       width: 2,
-      backgroundColor: theme?.brand?.colors?.primary ?? "#9121c2",
+      background: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
+        0.4
+      )} 100%)`,
       position: "absolute",
       left: "1px",
     },
     theme?.message?.unreadIndicator
-  )
-);
+  );
+});
+
 const Message: React.FunctionComponent<{
   formattedTime?: string;
   read?: boolean;
@@ -163,18 +171,19 @@ const MessageContainer: React.FunctionComponent<
       ? false
       : (icon || defaultIcon) ?? brand?.inapp?.icons?.message
   );
+
   const formattedTime = formatDate ? formatDate(created) : getTimeAgo(created);
 
-  const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const showMarkAsRead = !read && readTrackingId;
-  const showMarkAsUnread = read && unreadTrackingId;
+  const { readTrackingId, unreadTrackingId, archiveTrackingId } =
+    trackingIds || {};
 
   const messageOptions = useMessageOptions({
+    archiveTrackingId,
     labels,
     messageId,
+    read,
     readTrackingId,
-    showMarkAsRead,
-    showMarkAsUnread,
+    showArchived: true,
     unreadTrackingId,
   });
 

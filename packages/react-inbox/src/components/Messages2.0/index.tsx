@@ -12,7 +12,7 @@ import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
 import { InboxProps, ITab } from "../../types";
 
-import CourierLogo from "~/assets/courier_logo_text.svg";
+import CourierLogo from "~/assets/courier-text-logo2.svg";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
@@ -112,19 +112,20 @@ export const Footer = styled.div(({ theme }) =>
       fontStyle: "normal",
       position: "relative",
       zIndex: 1,
-      boxShadow: "0 14px 11px 18px #3445632e",
       fontWeight: "700",
-      height: 45,
+      lineHeight: "14px",
+      height: 36,
       justifyContent: "center",
       paddingRight: 18,
       svg: {
-        marginTop: 2,
         marginLeft: -1,
+        marginTop: "-4px",
       },
 
       a: {
-        display: "inherit",
-        color: "#B9C0CD",
+        display: "flex",
+        alignItems: "center",
+        color: "rgba(86, 96, 116, 0.8)",
       },
     },
     theme?.footer
@@ -285,7 +286,7 @@ const Messages: React.ForwardRefExoticComponent<
           : !brand?.inapp?.disableCourierFooter && (
               <Footer>
                 <a href="https://www.courier.com">
-                  Powered by&nbsp;&nbsp;
+                  POWERED BY&nbsp;&nbsp;
                   <CourierLogo />
                 </a>
               </Footer>

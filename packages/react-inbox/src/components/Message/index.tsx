@@ -60,16 +60,14 @@ const Message: React.FunctionComponent<
       ? false
       : (icon || defaultIcon) ?? brand?.inapp?.icons?.message
   );
+
   const formattedTime = formatDate ? formatDate(created) : getTimeAgo(created);
-  const showMarkAsRead = !read && readTrackingId;
-  const showMarkAsUnread = read && unreadTrackingId;
 
   const messageOptions = useMessageOptions({
+    read,
     labels,
     messageId,
     readTrackingId,
-    showMarkAsRead,
-    showMarkAsUnread,
     unreadTrackingId,
   });
 

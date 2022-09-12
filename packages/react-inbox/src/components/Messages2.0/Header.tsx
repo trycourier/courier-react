@@ -6,6 +6,8 @@ import deepExtend from "deep-extend";
 
 import { IMessage, ITab, InboxProps } from "~/types";
 import MarkAllRead from "./actions/MarkAllRead";
+import CloseInbox from "./actions/CloseInbox";
+
 import tinycolor2 from "tinycolor2";
 
 export type InboxView = "settings" | "messages";
@@ -144,7 +146,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
-  const { view, setView, tabs } = useInbox();
+  const { view, setView, tabs, toggleInbox } = useInbox();
   const handleSetView =
     (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
@@ -155,6 +157,11 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   const handleShowDropdown = (event: React.MouseEvent) => {
     event.preventDefault();
     setShowDropdown(!showDropdown);
+  };
+
+  const handleCloseInbox = (event: React.MouseEvent) => {
+    event.preventDefault();
+    toggleInbox(false);
   };
 
   const options = useMemo(() => {
@@ -248,6 +255,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <div className="actions">
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
           tabs === undefined) && <MarkAllRead onClick={markAllAsRead} />}
+        <CloseInbox onClick={handleCloseInbox} />
       </div>
     </Container>
   );
