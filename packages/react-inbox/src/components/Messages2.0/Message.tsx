@@ -47,10 +47,12 @@ const containerStyles = ({ theme }) => {
       backgroundColor: "#F9FAFB",
       alignItems: "center",
       borderBottom: "1px solid rgba(203,213,224,.5)",
+      "&:hover.read": {
+        zIndex: 1,
+      },
       "&.read": {
         background: "#F2F6F9",
         filter: "grayscale(100%)",
-        zIndex: 1,
       },
       "&:not(.read).clickable:hover": {
         background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
@@ -210,10 +212,6 @@ const MessageContainer: React.FunctionComponent<
     );
   }, [blocks]);
 
-  const handleMessageOnClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   const clickAction = useMemo(() => {
     if (data?.clickAction) {
       return data.clickAction;
@@ -232,9 +230,7 @@ const MessageContainer: React.FunctionComponent<
     rel?: string;
     "data-testid": string;
     className: string;
-    onClick: (event: React.MouseEvent) => void;
   } = {
-    onClick: handleMessageOnClick,
     "data-testid": "inbox-message",
     className: classNames({
       read,
