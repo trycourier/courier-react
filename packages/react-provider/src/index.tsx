@@ -63,14 +63,15 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       [_middleware]
     );
 
-    const transport = disableTransport
-      ? undefined
-      : useTransport({
-          transport: _transport,
-          userSignature,
-          clientKey,
-          wsOptions,
-        });
+    const transport =
+      disableTransport || typeof window === "undefined"
+        ? undefined
+        : useTransport({
+            transport: _transport,
+            userSignature,
+            clientKey,
+            wsOptions,
+          });
 
     const [state, dispatch] = useReducer(reducer, {
       apiUrl,
