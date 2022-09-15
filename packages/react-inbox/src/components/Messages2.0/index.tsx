@@ -4,13 +4,15 @@ import { PreferenceList } from "@trycourier/react-preferences";
 
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import Header from "./Header";
-import Loading from "../Messages/loading";
+import Loading from "./Loading";
+import LoadingMore from "./LoadingMore";
+
 import Message from "./Message";
-import PaginationEnd from "../Messages/PaginationEnd";
-import TabList from "../TabList";
+import PaginationEnd from "./PaginationEnd";
+import NoMessages from "./NoMessages";
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
-import { InboxProps, ITab } from "../../types";
+import { InboxProps } from "../../types";
 
 import CourierLogo from "~/assets/courier-text-logo2.svg";
 import styled from "styled-components";
@@ -29,7 +31,7 @@ const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
               height: "100vh",
             }
           : {
-              background: "white",
+              background: "#F2F6F9",
             }),
       },
       theme?.container
@@ -86,22 +88,6 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
   }
 );
 
-const Empty = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      fontSize: "18px",
-      fontStyle: "normal",
-      fontWeight: 700,
-      lineHeight: "25px",
-      letterSpacing: "0em",
-      textAlign: "center",
-      color: theme?.brand?.inapp?.emptyState?.textColor ?? "white",
-      margin: "auto",
-    },
-    theme?.emptyState
-  )
-);
-
 export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
@@ -150,7 +136,6 @@ const Messages: React.ForwardRefExoticComponent<
       renderHeader,
       renderMessage,
       renderNoMessages,
-      renderTabs,
       title,
     },
     ref
@@ -164,24 +149,13 @@ const Messages: React.ForwardRefExoticComponent<
       isLoading,
       markAllAsRead,
       messages = [],
-      setCurrentTab,
       startCursor,
-      tabs,
       toggleInbox,
       unreadMessageCount,
       view,
     } = useInbox();
 
     const messageListRef = useRef<HTMLDivElement>(null);
-
-    const handleSetCurrentTab = (newTab: ITab) => {
-      if (!messageListRef?.current) {
-        return;
-      }
-
-      messageListRef.current.scrollTop = 0;
-      setCurrentTab(newTab);
-    };
 
     useAtBottom(
       messageListRef,
@@ -230,54 +204,39 @@ const Messages: React.ForwardRefExoticComponent<
           />
         )}
         {view === "messages" ? (
-          <>
-            {renderTabs ? (
-              renderTabs({ tabs, currentTab })
-            ) : (
-              <TabList
-                labels={labels}
-                tabs={tabs}
-                setCurrentTab={handleSetCurrentTab}
-                currentTab={currentTab}
-              />
+          <MessageList
+            ref={messageListRef}
+            isMobile={isMobile}
+            data-testid="messages"
+          >
+            {messages?.map((message) =>
+              renderMessage ? (
+                renderMessage(message)
+              ) : (
+                <Message
+                  {...message}
+                  defaultIcon={defaultIcon}
+                  formatDate={formatDate}
+                  key={message.messageId}
+                  labels={labels}
+                  openLinksInNewTab={openLinksInNewTab}
+                  renderBlocks={renderBlocks}
+                />
+              )
             )}
-            <MessageList
-              ref={messageListRef}
-              isMobile={isMobile}
-              data-testid="messages"
-            >
-              {messages?.map((message) =>
-                renderMessage ? (
-                  renderMessage(message)
-                ) : (
-                  <Message
-                    {...message}
-                    defaultIcon={defaultIcon}
-                    formatDate={formatDate}
-                    key={message.messageId}
-                    labels={labels}
-                    openLinksInNewTab={openLinksInNewTab}
-                    renderBlocks={renderBlocks}
-                  />
-                )
-              )}
-              {isLoading && <Loading />}
-              {!isLoading &&
-                messages?.length === 0 &&
-                (renderNoMessages ? (
-                  renderNoMessages({})
-                ) : (
-                  <Empty>
-                    {labels?.emptyState ??
-                      brand?.inapp?.emptyState?.text ??
-                      "You have no notifications at this time"}
-                  </Empty>
-                ))}
-              {!isLoading && messages?.length > 5 && !startCursor && (
-                <PaginationEnd title="End Of The Road" />
-              )}
-            </MessageList>
-          </>
+            {isLoading && messages?.length === 0 && <Loading />}
+            {isLoading && messages?.length !== 0 && <LoadingMore />}
+            {!isLoading &&
+              messages?.length === 0 &&
+              (renderNoMessages ? (
+                renderNoMessages({})
+              ) : (
+                <NoMessages labels={labels} />
+              ))}
+            {!isLoading && messages?.length > 5 && !startCursor && (
+              <PaginationEnd />
+            )}
+          </MessageList>
         ) : (
           <PreferenceList />
         )}
