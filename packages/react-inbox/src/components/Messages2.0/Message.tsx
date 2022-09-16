@@ -6,7 +6,7 @@ import { useInbox } from "@trycourier/react-hooks";
 import { TextBlock, getIcon, TimeAgo, Title } from "../Message/styled";
 import { InboxProps } from "../../types";
 
-import { getTimeAgo } from "~/lib";
+import { getTimeAgoShort } from "~/lib";
 import Markdown from "markdown-to-jsx";
 
 import deepExtend from "deep-extend";
@@ -74,7 +74,7 @@ const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-const UnreadIndicator = styled.div(({ theme }) => {
+const UnreadIndicator = styled.div<{ read?: boolean }>(({ theme, read }) => {
   const primaryColor = theme.brand?.colors?.primary;
   const tcPrimaryColor = tinycolor2(primaryColor);
 
@@ -82,9 +82,11 @@ const UnreadIndicator = styled.div(({ theme }) => {
     {
       height: "100%",
       width: 2,
-      background: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
-        0.4
-      )} 100%)`,
+      background: read
+        ? "linear-gradient(180deg, rgba(86, 96, 116, 0.3) 0%, rgba(86, 96, 116, 0.12) 100%)"
+        : `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
+            0.4
+          )} 100%)`,
       position: "absolute",
       left: "1px",
     },
@@ -111,7 +113,7 @@ const Message: React.FunctionComponent<{
 }) => {
   return (
     <>
-      {!read && <UnreadIndicator />}
+      <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents>
         <Title>{title}</Title>
@@ -174,7 +176,9 @@ const MessageContainer: React.FunctionComponent<
       : (icon || defaultIcon) ?? brand?.inapp?.icons?.message
   );
 
-  const formattedTime = formatDate ? formatDate(created) : getTimeAgo(created);
+  const formattedTime = formatDate
+    ? formatDate(created)
+    : getTimeAgoShort(created);
 
   const { readTrackingId, unreadTrackingId, archiveTrackingId } =
     trackingIds || {};

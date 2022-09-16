@@ -101,7 +101,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           openLinksInNewTab: true,
           title: "Notifications",
           theme: {
-            brand: {
+            brand: props.brand ?? {
               colors: {
                 primary: "#9121c2",
               },

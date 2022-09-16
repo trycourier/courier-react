@@ -37,6 +37,9 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
 
       borderTopLeftRadius: "12px",
       borderTopRightRadius: "12px",
+      ".actions": {
+        paddingTop: 6,
+      },
     },
     theme?.header
   )
