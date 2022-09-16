@@ -41,6 +41,7 @@ export const Version2 = () => {
           userId={USER_ID}
         >
           <Inbox
+            autoMarkAsRead={true}
             isOpen={true}
             theme={{
               name: "2.0",
@@ -205,6 +206,7 @@ export const PaginationEnd = () => {
               next({
                 type: "inbox/INIT",
                 payload: {
+                  autoMarkAsRead: false,
                   isLoading: false,
                   messages: [
                     {

@@ -106,6 +106,7 @@ export const TimeAgo = styled.div(({ theme }) =>
       fontWeight: "400",
       lineHeight: "14px",
       whiteSpace: "nowrap",
+      paddingRight: 6,
       maxWidth: "65px",
       textOverflow: "ellipsis",
       overflow: "hidden",
