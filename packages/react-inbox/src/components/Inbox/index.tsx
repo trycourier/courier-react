@@ -98,6 +98,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return deepExtend(
         {},
         {
+          autoMarkAsRead: true,
           openLinksInNewTab: true,
           title: "Notifications",
           theme: {
@@ -146,6 +147,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useEffect(() => {
     init({
+      autoMarkAsRead: props.autoMarkAsRead,
       brand: props.brand,
       isOpen: props.isOpen,
       tabs: propTabs,

@@ -205,6 +205,7 @@ export const PaginationEnd = () => {
               next({
                 type: "inbox/INIT",
                 payload: {
+                  autoMarkAsRead: true,
                   isLoading: false,
                   messages: [
                     {

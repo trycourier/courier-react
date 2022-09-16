@@ -34,6 +34,7 @@ export interface IMessage {
 }
 
 export interface IInbox {
+  autoMarkAsRead?: boolean;
   brand?: Brand;
   currentTab?: ITab;
   from?: number;

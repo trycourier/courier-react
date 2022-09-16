@@ -22,8 +22,8 @@ export const getTimeAgoShort = (created: string) => {
     .replace(" days ago", "d")
     .replace(" hour ago", "h")
     .replace(" hours ago", "h")
-    .replace(" minute ago", "mi")
-    .replace(" minutes ago", "mi")
+    .replace(" minute ago", "m")
+    .replace(" minutes ago", "m")
     .replace(" second ago", "s")
     .replace(" seconds ago", "s");
 };
