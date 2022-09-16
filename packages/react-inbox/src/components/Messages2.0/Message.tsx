@@ -170,7 +170,7 @@ const Message: React.FunctionComponent<{
         })}
       </Contents>
       <div className="actions">
-        {isHovered && archiveTrackingId ? (
+        {autoMarkAsRead && isHovered && archiveTrackingId ? (
           <CloseInbox
             size="small"
             onClick={handleArchiveMessage}
@@ -179,9 +179,9 @@ const Message: React.FunctionComponent<{
         ) : (
           <>
             <TimeAgo>{formattedTime}</TimeAgo>
-            {autoMarkAsRead && read && (
+            {read && (
               <svg
-                width="15"
+                width="12"
                 height="12"
                 viewBox="0 0 12 12"
                 fill="none"
@@ -194,12 +194,12 @@ const Message: React.FunctionComponent<{
                 />
               </svg>
             )}
+            {!autoMarkAsRead && messageOptions?.length ? (
+              <OptionsDropdown options={messageOptions} />
+            ) : undefined}
           </>
         )}
       </div>
-      {!autoMarkAsRead && messageOptions?.length ? (
-        <OptionsDropdown options={messageOptions} />
-      ) : undefined}
     </MessageContainer>
   );
 };
