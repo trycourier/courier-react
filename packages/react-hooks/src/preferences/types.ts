@@ -1,11 +1,49 @@
+export type PreferencePage = {
+  showCourierFooter: boolean;
+  brand: {
+    settings: {
+      colors: {
+        primary: string;
+      };
+    };
+    links: {
+      facebook: {
+        url: string;
+      };
+      instagram: {
+        url: string;
+      };
+      linkedin: {
+        url: string;
+      };
+      medium: {
+        url: string;
+      };
+      twitter: {
+        url: string;
+      };
+    };
+  };
+  sections: PreferenceSection;
+};
+
+export type PreferenceSection = {
+  nodes: Array<{
+    name: string;
+    sectionId: string;
+    routingOptions: Array<ChannelClassification>;
+    topics: Array<IPreferenceTemplate>;
+  }>;
+};
+
 export interface PreferenceState {
   isLoading?: boolean;
   isUpdating?: boolean;
   preferences?: IPreferenceTemplate[];
   recipientPreferences?: IRecipientPreference[];
-  preferenceSections?: Array<any>;
-  preferencePage?: any;
+  preferencePage?: PreferencePage;
 }
+
 export type ChannelClassification = "email" | "push" | "direct_message";
 
 export type SnoozePreference = {
