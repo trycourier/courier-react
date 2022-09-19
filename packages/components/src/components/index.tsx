@@ -43,11 +43,6 @@ export const CourierComponents: React.FunctionComponent = () => {
     initialPreferences ?? undefined
   );
 
-  const initialFooter = querySelector(window?.document?.body, "courier-footer");
-  const [preferenceFooter, setPreferenceFooter] = useState(
-    initialFooter ?? undefined
-  );
-
   const initialPreferencePage = querySelector(
     window?.document?.body,
     "courier-preference-page"
@@ -116,9 +111,6 @@ export const CourierComponents: React.FunctionComponent = () => {
                 case "courier-preferences":
                   setPreferencesElement(element);
                   return;
-                case "courier-footer":
-                  setPreferenceFooter(element);
-                  return;
                 case "courier-preference-page":
                   setPreferencePage(element);
                   return;
@@ -137,10 +129,6 @@ export const CourierComponents: React.FunctionComponent = () => {
                   );
                   if (childPreferences) {
                     setPreferencesElement(childPreferences);
-                  }
-                  const childFooter = querySelector(element, "courier-footer");
-                  if (childFooter) {
-                    setPreferenceFooter(childFooter);
                   }
                   return;
                 }
@@ -190,13 +178,6 @@ export const CourierComponents: React.FunctionComponent = () => {
             <Preferences />
           </Suspense>,
           preferencesElement
-        )}
-      {preferenceFooter &&
-        createPortal(
-          <Suspense fallback={<div />}>
-            <Footer />
-          </Suspense>,
-          preferenceFooter
         )}
       {preferencePage &&
         createPortal(
