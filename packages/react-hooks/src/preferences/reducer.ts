@@ -3,7 +3,6 @@ import { PreferenceState } from "./types";
 const initialState: PreferenceState = {
   preferences: undefined,
   recipientPreferences: undefined,
-  preferenceSections: undefined,
   preferencePage: undefined,
 };
 
@@ -21,12 +20,6 @@ export default (state: PreferenceState = initialState, action) => {
         isUpdating: true,
       };
 
-    case "preferences/FETCH_PREFERENCE_SECTION/PENDING":
-      return {
-        ...state,
-        isUpdating: true,
-      };
-
     case "preferences/FETCH_PREFERENCE_PAGE/PENDING":
       return {
         ...state,
@@ -38,14 +31,6 @@ export default (state: PreferenceState = initialState, action) => {
         ...state,
         isLoading: false,
         recipientPreferences: action?.payload,
-      };
-    }
-
-    case "preferences/FETCH_PREFERENCE_SECTION/DONE": {
-      return {
-        ...state,
-        isLoading: false,
-        preferenceSections: action?.payload,
       };
     }
 

@@ -20,13 +20,6 @@ const usePreferencesActions = () => {
         payload: () => preferences.getRecipientPreferences(),
       });
     },
-
-    fetchPreferenceSections: () => {
-      dispatch({
-        type: "preferences/FETCH_PREFERENCE_SECTION",
-        payload: () => preferences.getPreferenceSections(),
-      });
-    },
     fetchPreferencePage: () => {
       dispatch({
         type: "preferences/FETCH_PREFERENCE_PAGE",
