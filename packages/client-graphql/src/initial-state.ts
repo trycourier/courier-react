@@ -25,6 +25,7 @@ const buildQuery = ({
     return `
       query InitialState($params: FilterParamsInput) {
         messageCount(params: $params)
+      }
     `;
   }
 

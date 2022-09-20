@@ -73,7 +73,7 @@ const useInboxActions = (): IInboxActions => {
       dispatch(initInbox(payload));
 
       const response = await initialState.getInitialState({
-        brandId: brandId,
+        brandId,
         skipFetchBrand: Boolean(brand),
       });
 

@@ -115,9 +115,11 @@ test("will render an inbox and can change labels", async () => {
     fireEvent.click(screen.getByTestId("bell"));
   });
 
-  expect(
-    await screen.findByText("You have no notifications at this time")
-  ).toBeInTheDocument();
+  const noMessagesElement = await screen.findByText(
+    "You have no notifications at this time"
+  );
+
+  expect(noMessagesElement).toBeVisible();
 
   act(() => {
     (window as any).courier.inbox.setConfig({
@@ -155,9 +157,11 @@ test("will render nothing and then render an inbox when the element is inserted"
     inbox.setAttribute("is-open", "true");
   });
 
-  expect(
-    await screen.findByText("You have no notifications at this time")
-  ).toBeInTheDocument();
+  const noMessagesElement = await screen.findByText(
+    "You have no notifications at this time"
+  );
+
+  expect(noMessagesElement).toBeVisible();
 
   act(() => {
     inbox.setAttribute(
