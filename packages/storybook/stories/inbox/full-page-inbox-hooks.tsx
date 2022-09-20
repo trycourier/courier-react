@@ -10,8 +10,6 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
     getUnreadMessageCount,
   } = useElementalInbox();
 
-  console.log(isLoading, messages, unreadMessageCount);
-
   useEffect(() => {
     getUnreadMessageCount();
     fetchMessages();

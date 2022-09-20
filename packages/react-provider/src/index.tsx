@@ -45,6 +45,7 @@ export const CourierContext =
 export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
   ({
     apiUrl,
+    authorization,
     brand,
     brandId,
     children,
@@ -75,13 +76,14 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
 
     const [state, dispatch] = useReducer(reducer, {
       apiUrl,
+      authorization,
       brand,
       brandId,
       clientKey,
+      middleware,
       transport,
       userId,
       userSignature,
-      middleware,
     });
 
     const actions = useCourierActions(state, dispatch);
