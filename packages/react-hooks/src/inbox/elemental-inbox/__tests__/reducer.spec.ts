@@ -94,7 +94,12 @@ describe("inbox reducer", () => {
   });
 
   it(`action ${INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE}`, () => {
-    const state = reducer(initialState, fetchUnreadMessageCountDone(100));
+    const state = reducer(
+      initialState,
+      fetchUnreadMessageCountDone({
+        count: 100,
+      })
+    );
 
     expect(state).toEqual({
       ...initialState,
