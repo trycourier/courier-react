@@ -11,7 +11,7 @@ const CLIENT_KEY = process.env.CLIENT_KEY || "";
 const USER_ID = process.env.USER_ID || "";
 
 export default {
-  title: "Inbox2",
+  title: "Inbox Redesign",
 };
 
 export const Version2 = () => {

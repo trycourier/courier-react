@@ -80,7 +80,7 @@ export default (
     case INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE: {
       return {
         ...state,
-        unreadMessageCount: action.payload,
+        unreadMessageCount: action.payload.count ?? 0,
       };
     }
 
