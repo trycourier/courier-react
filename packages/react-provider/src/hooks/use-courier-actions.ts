@@ -4,7 +4,6 @@ import {
   createCourierClient,
   Brands,
   Events,
-  InitialState,
 } from "@trycourier/client-graphql";
 import { Brand } from "..";
 import { ICourierProviderProps } from "~/types";
@@ -13,12 +12,12 @@ const useCourierActions = (state, dispatch) => {
   return useMemo(() => {
     const courierClient = createCourierClient({
       apiUrl: state.apiUrl,
+      authorization: state.authorization,
       clientKey: state.clientKey,
       userId: state.userId,
       userSignature: state.userSignature,
     });
 
-    const initialState = InitialState({ client: courierClient });
     const brands = Brands({ client: courierClient });
     const events = Events({ client: courierClient });
 
@@ -27,23 +26,6 @@ const useCourierActions = (state, dispatch) => {
         dispatch({
           type: "root/INIT",
           payload,
-        });
-
-        const response = await initialState.getInitialState({
-          brandId: payload.brandId,
-          skipFetchBrand: Boolean(payload.brand),
-        });
-
-        if (response?.brand) {
-          dispatch({
-            type: "root/GET_BRAND/DONE",
-            payload: response.brand,
-          });
-        }
-
-        dispatch({
-          type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
-          payload: response?.unreadMessageCount,
         });
       },
       initToast: (payload) => {
@@ -83,7 +65,13 @@ const useCourierActions = (state, dispatch) => {
         });
       },
     };
-  }, [state.apiUrl, state.clientKey, state.userId, state.userSignature]);
+  }, [
+    state.apiUrl,
+    state.authentication,
+    state.clientKey,
+    state.userId,
+    state.userSignature,
+  ]);
 };
 
 export default useCourierActions;

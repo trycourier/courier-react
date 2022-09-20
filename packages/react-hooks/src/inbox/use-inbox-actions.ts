@@ -4,6 +4,7 @@ import { IInbox, ITab } from "./types";
 import {
   createCourierClient,
   Events,
+  InitialState,
   Messages,
 } from "@trycourier/client-graphql";
 
@@ -42,7 +43,16 @@ interface IInboxActions {
 }
 
 const useInboxActions = (): IInboxActions => {
-  const { apiUrl, clientKey, dispatch, inbox, userId, userSignature } =
+  const {
+    apiUrl,
+    clientKey,
+    dispatch,
+    inbox,
+    userId,
+    userSignature,
+    brandId,
+    brand,
+  } =
     useCourier<{
       inbox: IInbox;
     }>();
@@ -56,10 +66,28 @@ const useInboxActions = (): IInboxActions => {
 
   const events = Events({ client: courierClient });
   const messages = Messages({ client: courierClient });
+  const initialState = InitialState({ client: courierClient });
 
   return {
-    init: (payload) => {
+    init: async (payload) => {
       dispatch(initInbox(payload));
+
+      const response = await initialState.getInitialState({
+        brandId,
+        skipFetchBrand: Boolean(brand),
+      });
+
+      if (response?.brand) {
+        dispatch({
+          type: "root/GET_BRAND/DONE",
+          payload: response.brand,
+        });
+      }
+
+      dispatch({
+        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
+        payload: response?.unreadMessageCount,
+      });
 
       if (payload.isOpen) {
         const meta = {

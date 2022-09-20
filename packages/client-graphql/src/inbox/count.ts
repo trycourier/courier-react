@@ -8,7 +8,7 @@ export const GET_INBOX_COUNT = `
 
 export interface IInboxCountParams {
   status: "read" | "unread";
-  tags: string[];
+  tags?: string[];
 }
 export type GetInboxCount = (
   params?: IInboxCountParams

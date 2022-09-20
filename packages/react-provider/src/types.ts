@@ -41,6 +41,7 @@ export interface Brand {
 
 export interface ICourierProviderProps {
   apiUrl?: string;
+  authorization?: string;
   brand?: Brand;
   brandId?: string;
   clientKey?: string;
