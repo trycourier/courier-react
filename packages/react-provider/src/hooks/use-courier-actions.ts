@@ -12,6 +12,7 @@ const useCourierActions = (state, dispatch) => {
   return useMemo(() => {
     const courierClient = createCourierClient({
       apiUrl: state.apiUrl,
+      authorization: state.authorization,
       clientKey: state.clientKey,
       userId: state.userId,
       userSignature: state.userSignature,
