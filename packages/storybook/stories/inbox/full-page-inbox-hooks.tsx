@@ -4,10 +4,12 @@ import { useElementalInbox } from "@trycourier/react-hooks";
 export const FullPageInboxHooks: React.FunctionComponent = () => {
   const {
     fetchMessages,
+    getUnreadMessageCount,
     isLoading,
+    markMessageRead,
+    markMessageUnread,
     messages = [],
     unreadMessageCount,
-    getUnreadMessageCount,
   } = useElementalInbox();
 
   useEffect(() => {
@@ -18,20 +20,40 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
   return (
     <div
       style={{
-        backgroundColor: "pink",
+        backgroundColor: "#4caf507d",
         padding: "10px",
         borderRadius: "12px",
-        width: 250,
-        height: 300,
+        height: "100%",
       }}
     >
       <h3>My Inbox</h3>
       <div>Unread Messages: {unreadMessageCount}</div>
       {!isLoading &&
         messages?.map((message) => (
-          <div key={message.messageId}>
+          <div
+            className="message"
+            style={{
+              backgroundColor: "pink",
+              padding: "10px",
+              borderRadius: "12px",
+              width: 250,
+              margin: 6,
+            }}
+            key={message.messageId}
+          >
             <div>MessageId: {message.messageId}</div>
             <div>Title: {message.title}</div>
+            <div>Read: {message.read}</div>
+            {message.read ? (
+              <button onClick={() => markMessageUnread(message.messageId)}>
+                Mark as Unread
+              </button>
+            ) : (
+              <button onClick={() => markMessageRead(message.messageId)}>
+                Mark as Read
+              </button>
+            )}
+            <hr />
           </div>
         ))}
       {isLoading && messages?.length === 0 && <div>Loading</div>}
