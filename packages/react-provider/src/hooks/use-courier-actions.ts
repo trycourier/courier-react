@@ -65,7 +65,13 @@ const useCourierActions = (state, dispatch) => {
         });
       },
     };
-  }, [state.apiUrl, state.clientKey, state.userId, state.userSignature]);
+  }, [
+    state.apiUrl,
+    state.authentication,
+    state.clientKey,
+    state.userId,
+    state.userSignature,
+  ]);
 };
 
 export default useCourierActions;

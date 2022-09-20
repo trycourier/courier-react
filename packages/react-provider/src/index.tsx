@@ -133,6 +133,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
 
       actions.init({
         apiUrl,
+        authorization,
         brandId,
         clientKey,
         transport,
@@ -142,12 +143,13 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     }, [
       actions,
       apiUrl,
+      authorization,
       brandId,
       clientKey,
+      disableTransport,
       transport,
       userId,
       userSignature,
-      disableTransport,
     ]);
 
     useEffect(() => {
