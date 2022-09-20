@@ -48,6 +48,7 @@ const Button = styled.a`
   padding: 5px;
   border: 0.5px solid #ffffff;
   border-radius: 4px;
+  text-decoration: none;
   :hover {
     cursor: pointer;
   }
