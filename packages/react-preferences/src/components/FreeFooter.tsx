@@ -1,42 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
-export const StyledList = styled.div`
-  overflow: scroll;
-  display: flex;
-  height: 433px;
-  flex-direction: column;
-  border-top: 1px solid rgba(203, 213, 224, 0.5);
-  background: rgba(255, 255, 255, 0.2);
-`;
-
 const CourierWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 50%;
-  gap: 15px;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 
   svg {
-    width: 40%;
+    height: 75%;
     border-radius: 0px;
+  }
+  * p {
+    font-style: normal;
+    color: white;
+    font-weight: medium;
+    font-size: 0.75em;
+    white-space: nowrap;
   }
 `;
 
 const FooterWrapper = styled.div`
   background: linear-gradient(270deg, #9121c2 1.2%, #ff5e5e 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  * p {
-    font-style: normal;
-    color: white;
-    font-weight: bold;
-    font-size: 0.75em;
-    white-space: nowrap;
-  }
 `;
 
 const Button = styled.a`
@@ -46,7 +32,8 @@ const Button = styled.a`
   white-space: nowrap;
   gap: 2.5px;
   padding: 5px;
-  border: 0.5px solid #ffffff;
+  height: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.75);
   border-radius: 4px;
   text-decoration: none;
   :hover {
@@ -54,6 +41,7 @@ const Button = styled.a`
   }
   p {
     margin: 0;
+    font-weight: bold;
   }
 `;
 
@@ -61,7 +49,6 @@ export const FreeFooter: React.FunctionComponent = () => {
   return (
     <FooterWrapper>
       <CourierWrapper>
-        <p>Notifications powered by</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 145 33"
@@ -88,24 +75,24 @@ export const FreeFooter: React.FunctionComponent = () => {
             />
           </defs>
         </svg>
+        <Button href="https://www.courier.com/features/preferences/?utm_campaign=preferences-center&utm_source=hosted-preferences-center&utm_term=footer-banner">
+          <p>Learn more about Courier</p>
+          <svg
+            width="6"
+            height="9"
+            viewBox="0 0 6 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M1.0392 7.69575L4.5096 4.54163L1.0392 1.37009C0.570225 0.95186 1.33934 0.23739 1.80831 0.673043L5.76644 4.24539C5.93527 4.40222 5.93527 4.66361 5.76644 4.80302L1.80831 8.41022C1.33934 8.82845 0.570226 8.11398 1.0392 7.69575Z"
+              fill="#F9FAFB"
+            />
+          </svg>
+        </Button>
       </CourierWrapper>
-      <Button href="https://www.courier.com/features/preferences/?utm_campaign=preferences-center&utm_source=hosted-preferences-center&utm_term=footer-banner">
-        <p>More about preferences</p>
-        <svg
-          width="6"
-          height="9"
-          viewBox="0 0 6 9"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M1.0392 7.69575L4.5096 4.54163L1.0392 1.37009C0.570225 0.95186 1.33934 0.23739 1.80831 0.673043L5.76644 4.24539C5.93527 4.40222 5.93527 4.66361 5.76644 4.80302L1.80831 8.41022C1.33934 8.82845 0.570226 8.11398 1.0392 7.69575Z"
-            fill="#F9FAFB"
-          />
-        </svg>
-      </Button>
     </FooterWrapper>
   );
 };
