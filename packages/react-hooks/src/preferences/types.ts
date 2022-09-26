@@ -23,6 +23,10 @@ export type PreferencePage = {
         url: string;
       };
     };
+    logo: {
+      href: string;
+      image: string;
+    };
   };
   sections: PreferenceSection;
 };
