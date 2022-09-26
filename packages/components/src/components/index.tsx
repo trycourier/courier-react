@@ -7,6 +7,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
 const Footer = lazy(() => import("./Footer"));
+const Header = lazy(() => import("./Header"));
 const Preferences = lazy(() => import("./Preferences"));
 
 const querySelector = (element: HTMLElement, selector: string) => {
@@ -183,6 +184,7 @@ export const CourierComponents: React.FunctionComponent = () => {
         createPortal(
           <Suspense fallback={<div />}>
             <>
+              <Header />
               <Preferences />
               <Footer />
             </>
