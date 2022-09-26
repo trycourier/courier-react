@@ -26,6 +26,10 @@ const PREFERENCE_PAGE = `
           }
         }
         links
+        logo {
+          href
+          image
+        }
       }
       sections {
         nodes {
