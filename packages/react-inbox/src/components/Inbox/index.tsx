@@ -163,14 +163,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         setView("messages");
         myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
         setCurrentTab(myCurrentTab);
-      }
 
-      if (tabs) {
-        fetchMessageLists(tabs);
-      } else {
-        fetchMessages({
-          params: myCurrentTab.filters,
-        });
+        if (tabs) {
+          fetchMessageLists(tabs);
+        } else {
+          fetchMessages({
+            params: myCurrentTab.filters,
+          });
+        }
       }
 
       toggleInbox();
