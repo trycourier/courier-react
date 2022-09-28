@@ -15,7 +15,7 @@ const useInbox = () => {
 
   const actions = useInboxActions();
 
-  if (inbox) {
+  if (inbox && (brand || inbox.brand)) {
     inbox.brand = deepExtend({}, brand ?? {}, inbox.brand ?? {});
   }
 
