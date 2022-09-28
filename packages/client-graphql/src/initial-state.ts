@@ -11,7 +11,7 @@ interface IInitialStateParams {
 
 type GetInitialState = (params: IInitialStateParams) => Promise<
   | {
-      brand: any;
+      brand?: any;
       unreadMessageCount: number;
     }
   | undefined
@@ -71,16 +71,22 @@ export const getInitialState =
     const brandProp = brandId ? "brand" : "inAppBrand";
     const brand = results?.data?.[brandProp];
 
-    const colors = brand?.settings?.colors;
-    const inapp = brand?.settings?.inapp;
-    const preferenceTemplates = brand?.preferenceTemplates?.nodes;
+    if (brand) {
+      const colors = brand?.settings?.colors;
+      const inapp = brand?.settings?.inapp;
+      const preferenceTemplates = brand?.preferenceTemplates?.nodes;
+
+      return {
+        brand: {
+          colors,
+          inapp,
+          preferenceTemplates,
+        },
+        unreadMessageCount: results?.data?.messageCount ?? 0,
+      };
+    }
 
     return {
-      brand: {
-        colors,
-        inapp,
-        preferenceTemplates,
-      },
       unreadMessageCount: results?.data?.messageCount ?? 0,
     };
   };
