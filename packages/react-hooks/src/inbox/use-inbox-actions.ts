@@ -74,7 +74,7 @@ const useInboxActions = (): IInboxActions => {
 
       const response = await initialState.getInitialState({
         brandId,
-        skipFetchBrand: Boolean(brand),
+        skipFetchBrand: brand ? Object.entries(brand).length > 0 : false,
       });
 
       if (response?.brand) {
