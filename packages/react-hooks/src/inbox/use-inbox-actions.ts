@@ -43,16 +43,7 @@ interface IInboxActions {
 }
 
 const useInboxActions = (): IInboxActions => {
-  const {
-    apiUrl,
-    clientKey,
-    dispatch,
-    inbox,
-    userId,
-    userSignature,
-    brandId,
-    brand,
-  } =
+  const { apiUrl, clientKey, dispatch, inbox, userId, userSignature, brandId } =
     useCourier<{
       inbox: IInbox;
     }>();
@@ -74,7 +65,9 @@ const useInboxActions = (): IInboxActions => {
 
       const response = await initialState.getInitialState({
         brandId,
-        skipFetchBrand: brand ? Object.entries(brand).length > 0 : false,
+        skipFetchBrand: payload.brand
+          ? Object.entries(payload.brand).length > 0
+          : false,
       });
 
       if (response?.brand) {
