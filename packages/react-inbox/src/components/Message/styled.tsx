@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
 import CourierSvg from "~/assets/courier_icon.svg";
+import CourierBigSvg from "~/assets/courier_big_icon.svg";
+import "@fontsource/poppins";
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -35,7 +37,8 @@ export const Contents = styled.div(({ theme }) => ({
 export const Title = styled.div(({ theme }) =>
   deepExtend(
     {
-      fontSize: "14px",
+      fontFamily: "Poppins",
+      fontSize: "12px",
       fontStyle: "normal",
       fontWeight: "600",
       lineHeight: "19px",
@@ -43,7 +46,7 @@ export const Title = styled.div(({ theme }) =>
       display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      color: "#24324B",
+      color: "rgb(28, 39, 58)",
     },
     theme.message?.title
   )
@@ -52,7 +55,7 @@ export const Title = styled.div(({ theme }) =>
 export const TextBlock = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "#73819B",
+      color: "rgb(28, 39, 58) ",
       marginTop: "1px",
       wordBreak: "break-word",
       fontSize: "12px",
@@ -100,13 +103,13 @@ export const ActionBlock = styled.div(({ theme }) =>
 export const TimeAgo = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "#aaa",
-      fontSize: "10px",
+      color: "rgb(86, 96, 116)",
+      fontSize: "12px",
       fontStyle: "normal",
       fontWeight: "400",
       lineHeight: "14px",
       whiteSpace: "nowrap",
-      paddingRight: 6,
+      paddingRight: 2,
       maxWidth: "65px",
       textOverflow: "ellipsis",
       overflow: "hidden",
@@ -120,6 +123,19 @@ const iconStyles = ({ theme }) =>
     {
       height: 25,
       width: 25,
+      flexShrink: "0",
+      path: {
+        fill: theme?.brand?.colors?.primary ?? "#9121c2",
+      },
+    },
+    theme.message?.icon
+  );
+
+const bigIconStyles = ({ theme }) =>
+  deepExtend(
+    {
+      height: 36,
+      width: 36,
       flexShrink: "0",
       path: {
         fill: theme?.brand?.colors?.primary ?? "#9121c2",
@@ -144,8 +160,9 @@ export const UnreadIndicator = styled.div(({ theme }) =>
 
 export const Icon = styled.img(iconStyles);
 const CourierIcon = styled(CourierSvg)(iconStyles);
+const CourierBigIcon = styled(CourierBigSvg)(bigIconStyles);
 
-export const getIcon = (icon?: false | string) => {
+export const getIcon = (icon?: false | string, big?: boolean) => {
   return useMemo(() => {
     if (icon === false) {
       return;
@@ -153,6 +170,10 @@ export const getIcon = (icon?: false | string) => {
 
     if (icon && typeof icon === "string") {
       return <Icon src={icon} />;
+    }
+
+    if (big) {
+      return <CourierBigIcon />;
     }
 
     return <CourierIcon />;

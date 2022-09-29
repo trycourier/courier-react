@@ -81,7 +81,7 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
         height,
         maxHeight: height,
         flexDirection: "column",
-        borderTop: "1px solid rgba(203,213,224,.5)",
+        borderTop: "1px solid rgb(222, 232, 240)",
       },
       theme?.messageList?.container
     );
@@ -100,6 +100,7 @@ export const Footer = styled.div(({ theme }) =>
       zIndex: 1,
       fontWeight: "700",
       lineHeight: "14px",
+      letterSpacing: "0.1rem",
       height: 36,
       justifyContent: "center",
       paddingRight: 18,

@@ -72,13 +72,17 @@ export const Loading = () => {
         </div>
         <CourierProvider
           middleware={[
-            () => (next) => () => {
-              next({
-                type: "inbox/INIT",
-                payload: {
-                  isLoading: true,
-                },
-              });
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    isLoading: true,
+                  },
+                });
+                return;
+              }
             },
           ]}
           wsOptions={{
@@ -124,39 +128,43 @@ export const LoadingMore = () => {
         </div>
         <CourierProvider
           middleware={[
-            () => (next) => () => {
-              next({
-                type: "inbox/INIT",
-                payload: {
-                  isLoading: true,
-                  messages: [
-                    {
-                      body: "This Message is Unread",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 123,
-                      read: false,
-                      title: "Unread Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    isLoading: true,
+                    messages: [
+                      {
+                        body: "This Message is Unread",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 123,
+                        read: false,
+                        title: "Unread Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                    {
-                      body: "This Message is Read",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 456,
-                      read: true,
-                      title: "Read Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 456,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                  ],
-                },
-              });
+                    ],
+                  },
+                });
+                return;
+              }
             },
           ]}
           wsOptions={{
@@ -202,88 +210,92 @@ export const PaginationEnd = () => {
         </div>
         <CourierProvider
           middleware={[
-            () => (next) => () => {
-              next({
-                type: "inbox/INIT",
-                payload: {
-                  autoMarkAsRead: false,
-                  isLoading: false,
-                  messages: [
-                    {
-                      body: "This Message is Unread",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 123,
-                      read: false,
-                      title: "Unread Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    autoMarkAsRead: false,
+                    isLoading: false,
+                    messages: [
+                      {
+                        body: "This Message is Unread",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 123,
+                        read: false,
+                        title: "Unread Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                    {
-                      body: "This Message is Read",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 456,
-                      read: true,
-                      title: "Read Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 456,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                    {
-                      body: "This Message is Read",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 457,
-                      read: true,
-                      title: "Read Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 457,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                    {
-                      body: "This Message is Read",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 458,
-                      read: true,
-                      title: "Read Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 458,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                    {
-                      body: "This Message is Read",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 459,
-                      read: true,
-                      title: "Read Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 459,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                    {
-                      body: "This Message is Read",
-                      created: "2021-04-06T18:02:28.065Z",
-                      messageId: 4510,
-                      read: true,
-                      title: "Read Message",
-                      trackingIds: {
-                        archiveTrackingId: 123,
-                        readTrackingId: 123,
-                        unreadTrackingId: 123,
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 4510,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
                       },
-                    },
-                  ],
-                },
-              });
+                    ],
+                  },
+                });
+                return;
+              }
             },
           ]}
           wsOptions={{
@@ -329,14 +341,18 @@ export const NoMessages = () => {
         </div>
         <CourierProvider
           middleware={[
-            () => (next) => () => {
-              next({
-                type: "inbox/INIT",
-                payload: {
-                  isLoading: false,
-                  messages: [],
-                },
-              });
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    isLoading: false,
+                    messages: [],
+                  },
+                });
+                return;
+              }
             },
           ]}
           wsOptions={{

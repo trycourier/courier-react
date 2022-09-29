@@ -23,7 +23,7 @@ const Empty = styled.div(({ theme }) =>
       background: "white",
       width: "100%",
 
-      color: theme?.brand?.inapp?.emptyState?.textColor ?? "#566074",
+      color: theme?.brand?.inapp?.emptyState?.textColor ?? "rgb(28, 39, 58)",
       margin: "auto",
       svg: {
         path: {
