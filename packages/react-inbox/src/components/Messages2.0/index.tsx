@@ -63,7 +63,7 @@ const DismissInbox = styled.button(({ theme }) =>
 
 const MessageList = styled.div<{ isMobile?: boolean }>(
   ({ isMobile, theme }) => {
-    const defaultHeight = 300;
+    const defaultHeight = 342;
 
     const height = (() => {
       if (!isMobile) {
