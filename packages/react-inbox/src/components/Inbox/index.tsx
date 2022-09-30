@@ -95,6 +95,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   // set defaults
   props = useMemo(() => {
     if (props.theme?.name === "2.0") {
+      delete props.tabs;
+
       return deepExtend(
         {},
         {
