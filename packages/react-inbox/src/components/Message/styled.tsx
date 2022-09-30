@@ -36,7 +36,6 @@ export const Contents = styled.div(({ theme }) => ({
 export const Title = styled.div(({ theme }) =>
   deepExtend(
     {
-      fontFamily: "Poppins",
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: "600",
