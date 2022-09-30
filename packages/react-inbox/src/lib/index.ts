@@ -1,4 +1,5 @@
 import distanceInWords from "date-fns/formatDistanceStrict";
+import format from "date-fns/format";
 
 export const getTimeAgo = (created: string) => {
   return (
@@ -8,6 +9,10 @@ export const getTimeAgo = (created: string) => {
       roundingMethod: "floor",
     })
   );
+};
+
+export const getPrettyDate = (created: string) => {
+  return created && format(new Date(created).getTime(), "yyyy-MM-dd hh:mm:ss");
 };
 
 export const getTimeAgoShort = (created: string) => {

@@ -17,7 +17,7 @@ import { useInbox } from "@trycourier/react-hooks";
 import { IMessageProps } from "./types";
 import { InboxProps } from "../../types";
 
-import { getTimeAgo } from "~/lib";
+import { getTimeAgo, getPrettyDate } from "~/lib";
 import { useMessageOptions } from "~/hooks";
 import Markdown from "markdown-to-jsx";
 
@@ -62,6 +62,7 @@ const Message: React.FunctionComponent<
   );
 
   const formattedTime = formatDate ? formatDate(created) : getTimeAgo(created);
+  const prettyDate = getPrettyDate(created);
 
   const messageOptions = useMessageOptions({
     read,
@@ -143,7 +144,7 @@ const Message: React.FunctionComponent<
           </>
         )}
       </Contents>
-      <TimeAgo>{formattedTime}</TimeAgo>
+      <TimeAgo title={prettyDate}>{formattedTime}</TimeAgo>
       {messageOptions?.length ? (
         <OptionsDropdown options={messageOptions} />
       ) : undefined}

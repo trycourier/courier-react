@@ -45,43 +45,52 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
   )
 );
 
-const DropdownOptionButton = styled.button(({ theme, disabled }) => {
-  const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
+const DropdownOptionButton = styled.button<{ showDropdown?: boolean }>(
+  ({ theme, disabled, showDropdown }) => {
+    const primaryColor = theme.brand?.colors?.primary;
+    const tcPrimaryColor = tinycolor2(primaryColor);
 
-  return {
-    background: "transparent",
-    border: "none",
-    cursor: disabled ? "default" : "pointer",
-    padding: "6px",
-    color: "rgba(28, 39, 58, 1)",
-    fontWeight: 700,
-    fontSize: "16px",
-    display: "flex",
-    alignItems: "center",
-
-    svg: {
-      marginLeft: "3px",
-    },
-
-    ".message-count": {
-      fontSize: 14,
+    return {
+      background: "transparent",
+      border: "none",
+      cursor: disabled ? "default" : "pointer",
+      padding: "6px",
+      color: "rgba(28, 39, 58, 1)",
       fontWeight: 400,
-      margin: "0 3px",
-      backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
-        0.6
-      )} 100%)`,
-      color: "white",
-      borderRadius: "17px",
+      lineHeight: "21px",
+      fontSize: "16px",
       display: "flex",
-      justifyContent: "center",
+      height: 42,
       alignItems: "center",
-      height: 18,
-      padding: "0 6px",
-      minWidth: 28,
-    },
-  };
-});
+
+      svg: {
+        marginLeft: "3px",
+        ...(showDropdown
+          ? {
+              transform: "rotate(180deg)",
+            }
+          : {}),
+      },
+
+      ".message-count": {
+        fontSize: 14,
+        fontWeight: 400,
+        margin: "0 3px",
+        backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
+          0.6
+        )} 100%)`,
+        color: "white",
+        borderRadius: "17px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 18,
+        padding: "0 6px",
+        minWidth: 28,
+      },
+    };
+  }
+);
 
 const HeadingDropdownButtonContainer = styled.div<{
   flexDirection?: "column";
@@ -123,9 +132,10 @@ const HeadingDropdownOptions = styled.div(({ theme }) => {
     position: "absolute",
     top: "42px",
     left: 0,
-    background: "#f2f6f9",
+    background: "white",
     width: "100%",
     zIndex: 2,
+    height: "343px",
 
     [DropdownOptionButton]: {
       width: "100%",
@@ -173,15 +183,21 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       {
         id: "messages",
         Component: ({
-          onClick,
+          className,
           disabled,
+          onClick,
+          showDropdown,
         }: {
-          onClick?: React.MouseEventHandler;
+          className?: string;
           disabled?: boolean;
+          onClick?: React.MouseEventHandler;
+          showDropdown?: boolean;
         }) => (
           <DropdownOptionButton
+            className={className}
             disabled={disabled}
             onClick={onClick ?? handleSetView("messages")}
+            showDropdown={showDropdown}
           >
             {title}
             {unreadMessageCount ? (
@@ -205,9 +221,19 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       },
       brand?.preferenceTemplates?.length && {
         id: "preferences",
-        Component: ({ onClick }: { onClick?: React.MouseEventHandler }) => (
+        Component: ({
+          className,
+          onClick,
+          showDropdown,
+        }: {
+          className?: string;
+          onClick?: React.MouseEventHandler;
+          showDropdown?: boolean;
+        }) => (
           <DropdownOptionButton
+            className={className}
             onClick={onClick ?? handleSetView("preferences")}
+            showDropdown={showDropdown}
           >
             Preferences
             {onClick && (
@@ -238,6 +264,8 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       >
         {ActiveOption && (
           <ActiveOption
+            className="active"
+            showDropdown={showDropdown}
             disabled={!hasDropdownOptions}
             onClick={handleShowDropdown}
           />

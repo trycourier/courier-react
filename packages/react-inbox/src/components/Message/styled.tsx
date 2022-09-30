@@ -3,7 +3,6 @@ import deepExtend from "deep-extend";
 import styled from "styled-components";
 import CourierSvg from "~/assets/courier_icon.svg";
 import CourierBigSvg from "~/assets/courier_big_icon.svg";
-import "@fontsource/poppins";
 
 export const Container = styled.div(({ theme }) =>
   deepExtend(
@@ -60,6 +59,7 @@ export const TextBlock = styled.div(({ theme }) =>
       wordBreak: "break-word",
       fontSize: "12px",
       fontStyle: "normal",
+      maxWidth: 250,
       fontWeight: "400",
       lineHeight: "16px",
       textAlign: "left",
@@ -110,7 +110,7 @@ export const TimeAgo = styled.div(({ theme }) =>
       lineHeight: "14px",
       whiteSpace: "nowrap",
       paddingRight: 2,
-      maxWidth: "65px",
+      maxWidth: "90px",
       textOverflow: "ellipsis",
       overflow: "hidden",
     },
@@ -160,7 +160,9 @@ export const UnreadIndicator = styled.div(({ theme }) =>
 
 export const Icon = styled.img(iconStyles);
 const CourierIcon = styled(CourierSvg)(iconStyles);
-const CourierBigIcon = styled(CourierBigSvg)(bigIconStyles);
+const CourierBigIcon = styled(CourierBigSvg).attrs({
+  className: "icon",
+})(bigIconStyles);
 
 export const getIcon = (icon?: false | string, big?: boolean) => {
   return useMemo(() => {
@@ -169,7 +171,7 @@ export const getIcon = (icon?: false | string, big?: boolean) => {
     }
 
     if (icon && typeof icon === "string") {
-      return <Icon src={icon} />;
+      return <Icon className="icon" src={icon} />;
     }
 
     if (big) {
