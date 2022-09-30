@@ -43,6 +43,7 @@ module.exports = (babelConfig) => ({
       "<rootDir>/__mocks__/fileMock.js",
     "\\.(scss|sass|css)$": "identity-obj-proxy",
     "~(.*)$": "<rootDir>/src/$1",
+    "@fontsource/poppins": "identity-obj-proxy",
   },
   testPathIgnorePatterns: ["/node_modules/", "helpers"],
 });
