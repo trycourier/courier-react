@@ -322,6 +322,140 @@ export const PaginationEnd = () => {
   );
 };
 
+export const NoCourierFooter = () => {
+  return (
+    <>
+      <ReactMarkdown>{"TODO"}</ReactMarkdown>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "top",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <ReactMarkdown>{`## Example`}</ReactMarkdown>
+          <ReactMarkdown>{`\`\`\`javascript\n<Inbox theme={{
+  name: "2.0",
+}} />\n\`\`\``}</ReactMarkdown>
+        </div>
+        <CourierProvider
+          middleware={[
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    autoMarkAsRead: false,
+                    isLoading: false,
+                    messages: [
+                      {
+                        body: "This Message is Unread",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 123,
+                        read: false,
+                        title: "Unread Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
+                      },
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 456,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
+                      },
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 457,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
+                      },
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 458,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
+                      },
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 459,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
+                      },
+                      {
+                        body: "This Message is Read",
+                        created: "2021-04-06T18:02:28.065Z",
+                        messageId: 4510,
+                        read: true,
+                        title: "Read Message",
+                        trackingIds: {
+                          archiveTrackingId: 123,
+                          readTrackingId: 123,
+                          unreadTrackingId: 123,
+                        },
+                      },
+                    ],
+                  },
+                });
+                return;
+              }
+            },
+          ]}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
+          apiUrl={API_URL}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
+        >
+          <Inbox
+            isOpen={true}
+            theme={{
+              name: "2.0",
+            }}
+            brand={{
+              colors: {
+                primary: "#FF93CD",
+              },
+              inapp: {
+                disableCourierFooter: true,
+              },
+            }}
+          />
+        </CourierProvider>
+      </div>
+    </>
+  );
+};
+
 export const NoMessages = () => {
   return (
     <>
@@ -342,6 +476,78 @@ export const NoMessages = () => {
         <CourierProvider
           middleware={[
             () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    isLoading: false,
+                    messages: [],
+                  },
+                });
+                return;
+              }
+            },
+          ]}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
+          apiUrl={API_URL}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
+        >
+          <Inbox
+            isOpen={true}
+            theme={{
+              name: "2.0",
+            }}
+            brand={{
+              colors: {
+                primary: "#FF93CD",
+              },
+            }}
+          />
+        </CourierProvider>
+      </div>
+    </>
+  );
+};
+
+export const WithPreferences = () => {
+  return (
+    <>
+      <ReactMarkdown>{"TODO"}</ReactMarkdown>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "top",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <ReactMarkdown>{`## Example`}</ReactMarkdown>
+          <ReactMarkdown>{`\`\`\`javascript\n<Inbox theme={{
+  name: "2.0",
+}} />\n\`\`\``}</ReactMarkdown>
+        </div>
+        <CourierProvider
+          middleware={[
+            () => (next) => (action) => {
+              console.log(action);
+              if (action.type === "root/GET_BRAND/DONE") {
+                next({
+                  type: "root/GET_BRAND/DONE",
+                  payload: {
+                    colors: {
+                      primary: "#FF93CD",
+                      secondary: "#C1B6DD",
+                      tertiary: "#E85178",
+                    },
+                    preferenceTemplates: [{}],
+                  },
+                });
+              }
+
               if (action.type === "inbox/INIT") {
                 next({
                   ...action,

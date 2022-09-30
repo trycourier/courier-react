@@ -45,7 +45,10 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
   )
 );
 
-const DropdownOptionButton = styled.button(({ theme, disabled }) => {
+const DropdownOptionButton = styled.button<{
+  active?: boolean;
+  showDropdown?: boolean;
+}>(({ theme, disabled, active, showDropdown }) => {
   const primaryColor = theme.brand?.colors?.primary;
   const tcPrimaryColor = tinycolor2(primaryColor);
 
@@ -55,13 +58,20 @@ const DropdownOptionButton = styled.button(({ theme, disabled }) => {
     cursor: disabled ? "default" : "pointer",
     padding: "6px",
     color: "rgba(28, 39, 58, 1)",
-    fontWeight: 700,
+    fontWeight: active ? 700 : 400,
+    lineHeight: "21px",
     fontSize: "16px",
     display: "flex",
+    height: active ? "initial" : 42,
     alignItems: "center",
 
     svg: {
       marginLeft: "3px",
+      ...(showDropdown
+        ? {
+            transform: "rotate(180deg)",
+          }
+        : {}),
     },
 
     ".message-count": {
@@ -123,9 +133,10 @@ const HeadingDropdownOptions = styled.div(({ theme }) => {
     position: "absolute",
     top: "42px",
     left: 0,
-    background: "#f2f6f9",
+    background: "white",
     width: "100%",
     zIndex: 2,
+    height: "343px",
 
     [DropdownOptionButton]: {
       width: "100%",
@@ -173,15 +184,21 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       {
         id: "messages",
         Component: ({
-          onClick,
+          active,
           disabled,
+          onClick,
+          showDropdown,
         }: {
-          onClick?: React.MouseEventHandler;
+          active?: boolean;
           disabled?: boolean;
+          onClick?: React.MouseEventHandler;
+          showDropdown?: boolean;
         }) => (
           <DropdownOptionButton
+            active={active}
             disabled={disabled}
             onClick={onClick ?? handleSetView("messages")}
+            showDropdown={showDropdown}
           >
             {title}
             {unreadMessageCount ? (
@@ -205,9 +222,19 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       },
       brand?.preferenceTemplates?.length && {
         id: "preferences",
-        Component: ({ onClick }: { onClick?: React.MouseEventHandler }) => (
+        Component: ({
+          active,
+          onClick,
+          showDropdown,
+        }: {
+          active?: boolean;
+          onClick?: React.MouseEventHandler;
+          showDropdown?: boolean;
+        }) => (
           <DropdownOptionButton
+            active={active}
             onClick={onClick ?? handleSetView("preferences")}
+            showDropdown={showDropdown}
           >
             Preferences
             {onClick && (
@@ -238,6 +265,8 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       >
         {ActiveOption && (
           <ActiveOption
+            active={true}
+            showDropdown={showDropdown}
             disabled={!hasDropdownOptions}
             onClick={handleShowDropdown}
           />

@@ -134,6 +134,7 @@ export const Footer = styled.div(({ theme }) =>
       display: "flex",
       fontSize: "10px",
       fontStyle: "normal",
+      letterSpacing: ".1rem",
       position: "relative",
       zIndex: 1,
       boxShadow: "0 14px 11px 18px #3445632e",
