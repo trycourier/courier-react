@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import Tippy from "@tippyjs/react";
 
-const StyledTippy = styled(Tippy).attrs({
-  placement: "top",
-})`
+const StyledTippy = styled(Tippy)`
   .tippy-arrow {
     border-top-color: red;
   }

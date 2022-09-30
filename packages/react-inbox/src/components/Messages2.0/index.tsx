@@ -121,6 +121,7 @@ export const Footer = styled.div(({ theme }) =>
       a: {
         display: "flex",
         alignItems: "center",
+        textDecoration: "none",
         color: "rgba(86, 96, 116, 0.8)",
       },
     },
