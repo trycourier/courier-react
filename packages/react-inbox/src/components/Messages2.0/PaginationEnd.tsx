@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import "@fontsource/poppins";
 
 const Styled = styled.div`
   display: flex;
@@ -8,8 +9,10 @@ const Styled = styled.div`
   height: 100%;
   width: 100%;
   flex-direction: column;
-  color: #566074;
+  color: rgb(28, 39, 58);
   font-size: 12px;
+  font-family: Poppins;
+  font-weight: 600;
   padding: 12px;
   font-weight: 600;
   div {

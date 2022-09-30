@@ -66,6 +66,7 @@ const DropdownOptionButton = styled.button(({ theme, disabled }) => {
 
     ".message-count": {
       fontSize: 14,
+      fontWeight: 400,
       margin: "0 3px",
       backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
         0.6

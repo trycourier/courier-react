@@ -57,7 +57,7 @@ const StyledTippy = styled(LazyTippy)<{
   return deepExtend(
     {
       fontFamily: `'Nunito Sans', sans-serif`,
-      boxShadow: "0px 12px 32px rgba(86, 43, 85, 0.3)",
+      boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
       width: theme.name === "2.0" ? "396px" : "483px",
       maxWidth: "initial !important",
 

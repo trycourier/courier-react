@@ -67,7 +67,8 @@ const UnreadIndicator = styled.div<{ read?: boolean }>(({ theme, read }) => {
 
   return deepExtend(
     {
-      height: "100%",
+      display: "block",
+      height: "auto",
       width: 2,
       background: read
         ? "linear-gradient(180deg, rgba(86, 96, 116, 0.3) 0%, rgba(86, 96, 116, 0.12) 100%)"
@@ -76,6 +77,8 @@ const UnreadIndicator = styled.div<{ read?: boolean }>(({ theme, read }) => {
           )} 100%)`,
       position: "absolute",
       left: "1px",
+      top: "1px",
+      bottom: "1px",
     },
     theme?.message?.unreadIndicator
   );
@@ -86,10 +89,10 @@ const MessageContainer = styled.div(({ theme }) => {
     {
       display: "flex",
       position: "relative",
-      padding: "10px",
+      padding: "12px",
       backgroundColor: "#F9FAFB",
       alignItems: "center",
-      borderBottom: "1px solid rgba(203,213,224,.5)",
+      borderBottom: "1px solid rgb(222, 232, 240)",
       "&:hover.read": {
         zIndex: 1,
       },
@@ -97,7 +100,7 @@ const MessageContainer = styled.div(({ theme }) => {
         background: "#F2F6F9",
         "img, svg": {
           filter: "grayscale(100%)",
-          opacity: "0.5",
+          opacity: "0.3",
         },
       },
 
@@ -105,8 +108,8 @@ const MessageContainer = styled.div(({ theme }) => {
         display: "flex",
         alignItems: "center",
         position: "absolute",
-        top: 10,
-        right: 10,
+        top: 6,
+        right: 6,
       },
     },
     theme?.message?.container
@@ -269,7 +272,8 @@ const MessageWrapper: React.FunctionComponent<
 
     brand?.inapp?.disableMessageIcon
       ? false
-      : (icon || defaultIcon) ?? brand?.inapp?.icons?.message
+      : (icon || defaultIcon) ?? brand?.inapp?.icons?.message,
+    true // 36px icon
   );
 
   const formattedTime = formatDate

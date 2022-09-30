@@ -13,6 +13,8 @@ const StyledButton = styled.button(({ theme }) => {
     background: "transparent",
     borderRadius: "6px",
     padding: 0,
+    height: "24px",
+    opacity: 1,
 
     "&:hover": {
       backgroundImage: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(

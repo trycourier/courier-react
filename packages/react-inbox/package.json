@@ -19,6 +19,7 @@
     "concat-md": "^0.3.5"
   },
   "dependencies": {
+    "@fontsource/poppins": "^4.5.9",
     "@tippyjs/react": "^4.2.3",
     "@trycourier/client-graphql": "^1.45.3",
     "@trycourier/react-elements": "^1.45.3",

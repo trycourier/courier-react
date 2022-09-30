@@ -13,6 +13,8 @@ const StyledButton = styled.button(({ theme }) => {
     background: "transparent",
     borderRadius: "6px",
     padding: 0,
+    marginRight: "6px",
+    height: "24px",
 
     path: {
       fill: theme?.brand?.colors?.primary,
@@ -34,6 +36,7 @@ const MarkAllRead: React.FunctionComponent<{
   return (
     <StyledTippy content={"Mark All as Read"}>
       <StyledButton onClick={onClick}>
+        <div id="arrow" data-popper-arrow></div>
         <svg
           width="24"
           height="24"
