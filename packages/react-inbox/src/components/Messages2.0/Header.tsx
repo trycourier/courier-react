@@ -45,52 +45,53 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
   )
 );
 
-const DropdownOptionButton = styled.button<{ showDropdown?: boolean }>(
-  ({ theme, disabled, showDropdown }) => {
-    const primaryColor = theme.brand?.colors?.primary;
-    const tcPrimaryColor = tinycolor2(primaryColor);
+const DropdownOptionButton = styled.button<{
+  active?: boolean;
+  showDropdown?: boolean;
+}>(({ theme, disabled, active, showDropdown }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
 
-    return {
-      background: "transparent",
-      border: "none",
-      cursor: disabled ? "default" : "pointer",
-      padding: "6px",
-      color: "rgba(28, 39, 58, 1)",
+  return {
+    background: "transparent",
+    border: "none",
+    cursor: disabled ? "default" : "pointer",
+    padding: "6px",
+    color: "rgba(28, 39, 58, 1)",
+    fontWeight: active ? 700 : 400,
+    lineHeight: "21px",
+    fontSize: "16px",
+    display: "flex",
+    height: active ? "initial" : 42,
+    alignItems: "center",
+
+    svg: {
+      marginLeft: "3px",
+      ...(showDropdown
+        ? {
+            transform: "rotate(180deg)",
+          }
+        : {}),
+    },
+
+    ".message-count": {
+      fontSize: 14,
       fontWeight: 400,
-      lineHeight: "21px",
-      fontSize: "16px",
+      margin: "0 3px",
+      backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
+        0.6
+      )} 100%)`,
+      color: "white",
+      borderRadius: "17px",
       display: "flex",
-      height: 42,
+      justifyContent: "center",
       alignItems: "center",
-
-      svg: {
-        marginLeft: "3px",
-        ...(showDropdown
-          ? {
-              transform: "rotate(180deg)",
-            }
-          : {}),
-      },
-
-      ".message-count": {
-        fontSize: 14,
-        fontWeight: 400,
-        margin: "0 3px",
-        backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
-          0.6
-        )} 100%)`,
-        color: "white",
-        borderRadius: "17px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: 18,
-        padding: "0 6px",
-        minWidth: 28,
-      },
-    };
-  }
-);
+      height: 18,
+      padding: "0 6px",
+      minWidth: 28,
+    },
+  };
+});
 
 const HeadingDropdownButtonContainer = styled.div<{
   flexDirection?: "column";
@@ -183,18 +184,18 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       {
         id: "messages",
         Component: ({
-          className,
+          active,
           disabled,
           onClick,
           showDropdown,
         }: {
-          className?: string;
+          active?: boolean;
           disabled?: boolean;
           onClick?: React.MouseEventHandler;
           showDropdown?: boolean;
         }) => (
           <DropdownOptionButton
-            className={className}
+            active={active}
             disabled={disabled}
             onClick={onClick ?? handleSetView("messages")}
             showDropdown={showDropdown}
@@ -222,16 +223,16 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       brand?.preferenceTemplates?.length && {
         id: "preferences",
         Component: ({
-          className,
+          active,
           onClick,
           showDropdown,
         }: {
-          className?: string;
+          active?: boolean;
           onClick?: React.MouseEventHandler;
           showDropdown?: boolean;
         }) => (
           <DropdownOptionButton
-            className={className}
+            active={active}
             onClick={onClick ?? handleSetView("preferences")}
             showDropdown={showDropdown}
           >
@@ -264,7 +265,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       >
         {ActiveOption && (
           <ActiveOption
-            className="active"
+            active={true}
             showDropdown={showDropdown}
             disabled={!hasDropdownOptions}
             onClick={handleShowDropdown}
