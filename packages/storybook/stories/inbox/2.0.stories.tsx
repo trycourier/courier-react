@@ -14,6 +14,81 @@ export default {
   title: "Inbox Redesign",
 };
 
+const mockMessages = [
+  {
+    body: "This Message is Unread",
+    created: "2021-04-06T18:02:28.065Z",
+    messageId: 123,
+    read: false,
+    title: "Unread Message",
+    trackingIds: {
+      archiveTrackingId: 123,
+      readTrackingId: 123,
+      unreadTrackingId: 123,
+    },
+  },
+  {
+    body: "This Message is Read",
+    created: "2021-04-06T18:02:28.065Z",
+    messageId: 456,
+    read: true,
+    title: "Read Message",
+    trackingIds: {
+      archiveTrackingId: 123,
+      readTrackingId: 123,
+      unreadTrackingId: 123,
+    },
+  },
+  {
+    body: "This Message is Read",
+    created: "2021-04-06T18:02:28.065Z",
+    messageId: 457,
+    read: true,
+    title: "Read Message",
+    trackingIds: {
+      archiveTrackingId: 123,
+      readTrackingId: 123,
+      unreadTrackingId: 123,
+    },
+  },
+  {
+    body: "This Message is Read",
+    created: "2021-04-06T18:02:28.065Z",
+    messageId: 458,
+    read: true,
+    title: "Read Message",
+    trackingIds: {
+      archiveTrackingId: 123,
+      readTrackingId: 123,
+      unreadTrackingId: 123,
+    },
+  },
+  {
+    body: "This Message is Read",
+    created: "2021-04-06T18:02:28.065Z",
+    messageId: 459,
+    read: true,
+    title: "Read Message",
+    trackingIds: {
+      archiveTrackingId: 123,
+      readTrackingId: 123,
+      unreadTrackingId: 123,
+    },
+  },
+  {
+    body: "This Message is Read",
+    created: "2021-04-06T18:02:28.065Z",
+    messageId: 4510,
+    read: true,
+    title: "Read Message",
+    trackingIds: {
+      archiveTrackingId: 123,
+      readTrackingId: 123,
+      unreadTrackingId: 123,
+    },
+  },
+];
+
 export const Version2 = () => {
   return (
     <>
@@ -135,32 +210,7 @@ export const LoadingMore = () => {
                   payload: {
                     ...action.payload,
                     isLoading: true,
-                    messages: [
-                      {
-                        body: "This Message is Unread",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 123,
-                        read: false,
-                        title: "Unread Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 456,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                    ],
+                    messages: mockMessages.slice(0, 2),
                   },
                 });
                 return;
@@ -218,80 +268,7 @@ export const PaginationEnd = () => {
                     ...action.payload,
                     autoMarkAsRead: false,
                     isLoading: false,
-                    messages: [
-                      {
-                        body: "This Message is Unread",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 123,
-                        read: false,
-                        title: "Unread Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 456,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 457,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 458,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 459,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 4510,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                    ],
+                    messages: mockMessages,
                   },
                 });
                 return;
@@ -349,80 +326,7 @@ export const NoCourierFooter = () => {
                     ...action.payload,
                     autoMarkAsRead: false,
                     isLoading: false,
-                    messages: [
-                      {
-                        body: "This Message is Unread",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 123,
-                        read: false,
-                        title: "Unread Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 456,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 457,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 458,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 459,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                      {
-                        body: "This Message is Read",
-                        created: "2021-04-06T18:02:28.065Z",
-                        messageId: 4510,
-                        read: true,
-                        title: "Read Message",
-                        trackingIds: {
-                          archiveTrackingId: 123,
-                          readTrackingId: 123,
-                          unreadTrackingId: 123,
-                        },
-                      },
-                    ],
+                    messages: mockMessages,
                   },
                 });
                 return;
@@ -533,7 +437,6 @@ export const WithPreferences = () => {
         <CourierProvider
           middleware={[
             () => (next) => (action) => {
-              console.log(action);
               if (action.type === "root/GET_BRAND/DONE") {
                 next({
                   type: "root/GET_BRAND/DONE",
@@ -554,7 +457,7 @@ export const WithPreferences = () => {
                   payload: {
                     ...action.payload,
                     isLoading: false,
-                    messages: [],
+                    messages: mockMessages,
                   },
                 });
                 return;
