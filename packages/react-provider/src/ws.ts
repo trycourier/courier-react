@@ -25,7 +25,7 @@ export class WS {
     userSignature,
   }: {
     authorization?: string;
-    clientKey: string;
+    clientKey?: string;
     options?: {
       connectionTimeout?: number;
       onError?: ErrorEventHandler;

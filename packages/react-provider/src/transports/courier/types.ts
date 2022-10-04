@@ -1,6 +1,7 @@
 import { ErrorEvent } from "reconnecting-websocket";
 export interface ITransportOptions {
-  clientKey: string;
+  clientKey?: string;
+  authorization?: string;
   userSignature?: string;
   wsOptions?: {
     url?: string;

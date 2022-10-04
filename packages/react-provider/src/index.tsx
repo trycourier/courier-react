@@ -68,9 +68,10 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       disableTransport || typeof window === "undefined"
         ? undefined
         : useTransport({
+            authorization,
+            clientKey,
             transport: _transport,
             userSignature,
-            clientKey,
             wsOptions,
           });
 
