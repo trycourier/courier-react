@@ -5,6 +5,7 @@ const StyledTippy = styled(Tippy)`
   .tippy-arrow {
     border-top-color: red;
   }
+  min-width: 125px;
 
   .tippy-content {
     box-sizing: border-box;

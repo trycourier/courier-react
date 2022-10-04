@@ -9,7 +9,8 @@ export class WS {
     event?: string;
     callback: ICourierEventCallback;
   }>;
-  private clientKey: string;
+  private authorization?: string;
+  private clientKey?: string;
   private connectionTimeout?: number;
   private onError?: ErrorEventHandler;
   private url: string;
@@ -18,10 +19,12 @@ export class WS {
   protected messageCallback;
 
   constructor({
+    authorization,
     clientKey,
     options,
     userSignature,
   }: {
+    authorization?: string;
     clientKey: string;
     options?: {
       connectionTimeout?: number;
@@ -30,6 +33,7 @@ export class WS {
     };
     userSignature?: string;
   }) {
+    this.authorization = authorization;
     this.messageCallback = null;
     this.connection = undefined;
     this.connected = false;
@@ -46,7 +50,11 @@ export class WS {
 
   connect(): void {
     this.connection = new ReconnectingWebSocket(
-      `${this.url}/?clientKey=${this.clientKey}`,
+      `${this.url}/?${
+        this.authorization
+          ? `auth=${this.authorization}`
+          : `clientKey=${this.clientKey}`
+      }`,
       [],
       {
         connectionTimeout: this.connectionTimeout,

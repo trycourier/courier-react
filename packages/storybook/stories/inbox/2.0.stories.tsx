@@ -68,6 +68,7 @@ const mockMessages = [
     created: "2021-04-06T18:02:28.065Z",
     messageId: 459,
     read: true,
+    icon: false,
     title: "Read Message",
     trackingIds: {
       archiveTrackingId: 123,
@@ -116,7 +117,7 @@ export const Version2 = () => {
           userId={USER_ID}
         >
           <Inbox
-            autoMarkAsRead={true}
+            autoMarkAsRead={false}
             isOpen={true}
             theme={{
               name: "2.0",

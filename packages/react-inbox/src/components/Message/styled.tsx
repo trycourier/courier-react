@@ -33,7 +33,7 @@ export const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-export const Title = styled.div(({ theme }) =>
+export const Title = styled.div<{ read?: boolean }>(({ theme, read }) =>
   deepExtend(
     {
       fontSize: "12px",
@@ -44,7 +44,7 @@ export const Title = styled.div(({ theme }) =>
       display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      color: "rgb(28, 39, 58)",
+      color: read ? "rgba(86, 96, 116, 1)" : "rgb(28, 39, 58)",
     },
     theme.message?.title
   )
