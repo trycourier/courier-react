@@ -271,7 +271,6 @@ const MessageWrapper: React.FunctionComponent<
   }, [messageId, autoMarkAsRead, read, inView]);
 
   const handleClickMessage = () => {
-    console.log("click", clickTrackingId);
     if (clickTrackingId) {
       // mark message read, but don't fire the event as the backend will do it for us,
       // we just want to set the message as read here in our local state
