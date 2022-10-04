@@ -271,6 +271,7 @@ const MessageWrapper: React.FunctionComponent<
   }, [messageId, autoMarkAsRead, read, inView]);
 
   const handleClickMessage = () => {
+    console.log("click", clickTrackingId);
     if (clickTrackingId) {
       // mark message read, but don't fire the event as the backend will do it for us,
       // we just want to set the message as read here in our local state
@@ -344,7 +345,7 @@ const MessageWrapper: React.FunctionComponent<
   let containerProps: {
     "data-testid": string;
     href?: string;
-    onClick?: (event: React.MouseEvent) => void;
+    onMouseDown?: (event: React.MouseEvent) => void;
     rel?: string;
     target?: string;
   } = {
@@ -353,7 +354,7 @@ const MessageWrapper: React.FunctionComponent<
 
   if (clickAction) {
     containerProps.href = clickAction;
-    containerProps.onClick = handleClickMessage;
+    containerProps.onMouseDown = handleClickMessage;
 
     if (openLinksInNewTab) {
       containerProps = {

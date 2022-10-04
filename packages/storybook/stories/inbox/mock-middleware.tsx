@@ -35,6 +35,7 @@ export default () => (next) => (action) => {
               read: false,
               content: {
                 trackingIds: {
+                  clickTrackingId: 123,
                   archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
@@ -49,6 +50,7 @@ export default () => (next) => (action) => {
               read: true,
               content: {
                 trackingIds: {
+                  clickTrackingId: 123,
                   archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
@@ -63,6 +65,7 @@ export default () => (next) => (action) => {
               read: false,
               content: {
                 trackingIds: {
+                  clickTrackingId: 123,
                   archiveTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
@@ -106,6 +109,7 @@ export default () => (next) => (action) => {
               read: false,
               content: {
                 trackingIds: {
+                  clickTrackingId: 123,
                   readTrackingId: 123,
                   unreadTrackingId: 123,
                 },
