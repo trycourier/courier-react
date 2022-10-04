@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Transport, CourierTransport } from "~/transports";
-import { useWhyDidYouUpdate } from "./use-why-did-you-update";
 
 const useCourierTransport = ({
   transport,
@@ -9,14 +8,6 @@ const useCourierTransport = ({
   userSignature,
   wsOptions,
 }): Transport => {
-  useWhyDidYouUpdate("transport", {
-    authorization,
-    clientKey,
-    transport,
-    userSignature,
-    wsOptions,
-  });
-
   return useMemo(() => {
     if (transport) {
       return transport;
