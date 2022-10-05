@@ -1,5 +1,4 @@
 global.fetch = jest.fn();
-//require("isomorphic-fetch");
 
 const fetchMock = global.fetch as jest.Mock;
 import Banner from "../banner";
