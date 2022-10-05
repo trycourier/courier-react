@@ -43,13 +43,23 @@ interface IInboxActions {
 }
 
 const useInboxActions = (): IInboxActions => {
-  const { apiUrl, clientKey, dispatch, inbox, userId, userSignature, brandId } =
+  const {
+    apiUrl,
+    authorization,
+    clientKey,
+    dispatch,
+    inbox,
+    userId,
+    userSignature,
+    brandId,
+  } =
     useCourier<{
       inbox: IInbox;
     }>();
 
   const courierClient = createCourierClient({
     apiUrl,
+    authorization,
     clientKey,
     userId,
     userSignature,

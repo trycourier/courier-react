@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { ICourierClientBasicParams } from "./types";
+import { ICourierClientBasicParams, ICourierClientJWTParams } from "./types";
 import { createCourierClient } from "./client";
 
 export const GET_MESSAGE_COUNT = `
@@ -209,7 +209,10 @@ export const getMessageLists =
   };
 
 export default (
-  params: ICourierClientBasicParams | { client?: Client }
+  params:
+    | ICourierClientBasicParams
+    | ICourierClientJWTParams
+    | { client?: Client }
 ): {
   getMessageCount: GetMessageCount;
   getMessageLists: GetMessageLists;

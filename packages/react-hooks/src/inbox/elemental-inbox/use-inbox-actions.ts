@@ -28,12 +28,21 @@ interface IInboxActions {
 }
 
 const useElementalInboxActions = (): IInboxActions => {
-  const { apiUrl, clientKey, dispatch, inbox, userId, userSignature } =
+  const {
+    apiUrl,
+    authorization,
+    clientKey,
+    dispatch,
+    inbox,
+    userId,
+    userSignature,
+  } =
     useCourier<{
       inbox: IElementalInbox;
     }>();
 
   const courierClient = createCourierClient({
+    authorization,
     apiUrl:
       apiUrl ??
       "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",

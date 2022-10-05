@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { ICourierClientParams } from "./types";
+import { ICourierClientBasicParams, ICourierClientJWTParams } from "./types";
 import { createCourierClient } from "./client";
 
 export interface IGetBannerParams {
@@ -77,7 +77,10 @@ export const getBanners =
   };
 
 export default (
-  params: ICourierClientParams | { client: Client }
+  params:
+    | ICourierClientBasicParams
+    | ICourierClientJWTParams
+    | { client?: Client }
 ): {
   getBanners: GetBanners;
 } => {

@@ -13,7 +13,7 @@ const useCourierTransport = ({
       return transport;
     }
 
-    if (clientKey && !transport) {
+    if ((clientKey || authorization) && !transport) {
       return new CourierTransport({
         authorization,
         userSignature,
