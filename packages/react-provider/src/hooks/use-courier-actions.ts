@@ -10,7 +10,6 @@ import { ICourierProviderProps } from "~/types";
 
 const useCourierActions = (state, dispatch) => {
   return useMemo(() => {
-    console.log(state);
     const courierClient = createCourierClient({
       apiUrl: state.apiUrl,
       authorization: state.authorization,
