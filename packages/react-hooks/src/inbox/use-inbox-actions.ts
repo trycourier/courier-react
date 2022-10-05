@@ -34,7 +34,7 @@ interface IInboxActions {
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
-  markMessageRead: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
   rehydrateMessages: (payload: Rehydratemessages["payload"]) => void;
   setCurrentTab: (newTab: ITab) => void;
@@ -43,13 +43,23 @@ interface IInboxActions {
 }
 
 const useInboxActions = (): IInboxActions => {
-  const { apiUrl, clientKey, dispatch, inbox, userId, userSignature, brandId } =
+  const {
+    apiUrl,
+    authorization,
+    clientKey,
+    dispatch,
+    inbox,
+    userId,
+    userSignature,
+    brandId,
+  } =
     useCourier<{
       inbox: IInbox;
     }>();
 
   const courierClient = createCourierClient({
     apiUrl,
+    authorization,
     clientKey,
     userId,
     userSignature,
@@ -167,9 +177,11 @@ const useInboxActions = (): IInboxActions => {
           }),
       });
     },
-    markMessageRead: async (messageId: string, trackingId: string) => {
+    markMessageRead: async (messageId: string, trackingId?: string) => {
       dispatch(markMessageRead(messageId));
-      await events.trackEvent(trackingId);
+      if (trackingId) {
+        await events.trackEvent(trackingId);
+      }
     },
     markAllAsRead: async () => {
       dispatch(markAllRead());

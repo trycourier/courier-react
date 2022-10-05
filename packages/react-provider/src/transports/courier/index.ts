@@ -5,21 +5,24 @@ import { ITransportOptions } from "./types";
 
 export class CourierTransport extends Transport {
   protected ws: WS;
-  protected clientKey: string;
+  protected authorization?: string;
+  protected clientKey?: string;
   protected userSignature?: string;
   protected declare interceptor?: Interceptor;
 
   constructor(options: ITransportOptions) {
     super();
 
-    if (!options.clientKey) {
-      throw new Error("Missing Client Key");
+    if (!options.clientKey && !options.authorization) {
+      throw new Error("Missing Authorization");
     }
 
+    this.authorization = options.authorization;
     this.clientKey = options.clientKey;
     this.userSignature = options.userSignature;
 
     this.ws = new WS({
+      authorization: options.authorization,
       clientKey: options.clientKey,
       options: options.wsOptions,
       userSignature: options.userSignature,

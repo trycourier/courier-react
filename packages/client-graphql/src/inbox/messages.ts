@@ -20,6 +20,12 @@ export const GET_INBOX_MESSAGES = `
         messageId
         read
         created
+        actions {
+          background_color
+          content
+          href
+          style
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
 import { Client } from "urql";
 import { brandProps } from "./brands";
 import { createCourierClient } from "./client";
-import { ICourierClientBasicParams } from "./types";
+import { ICourierClientBasicParams, ICourierClientJWTParams } from "./types";
 
 interface IInitialStateParams {
   skipFetchBrand?: boolean;
@@ -92,7 +92,10 @@ export const getInitialState =
   };
 
 export default (
-  params: ICourierClientBasicParams | { client?: Client }
+  params:
+    | ICourierClientBasicParams
+    | ICourierClientJWTParams
+    | { client?: Client }
 ): {
   getInitialState: GetInitialState;
 } => {

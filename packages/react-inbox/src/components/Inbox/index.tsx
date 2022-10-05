@@ -100,7 +100,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       return deepExtend(
         {},
         {
-          autoMarkAsRead: true,
           openLinksInNewTab: true,
           title: "Notifications",
           theme: {

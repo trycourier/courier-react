@@ -3,6 +3,7 @@ import { Transport, CourierTransport } from "~/transports";
 
 const useCourierTransport = ({
   transport,
+  authorization,
   clientKey,
   userSignature,
   wsOptions,
@@ -12,14 +13,15 @@ const useCourierTransport = ({
       return transport;
     }
 
-    if (clientKey && !transport) {
+    if ((clientKey || authorization) && !transport) {
       return new CourierTransport({
+        authorization,
         userSignature,
         clientKey,
         wsOptions,
       });
     }
-  }, [transport, clientKey, wsOptions, userSignature]);
+  }, [authorization, clientKey, transport, userSignature, wsOptions]);
 };
 
 export default useCourierTransport;

@@ -1,3 +1,5 @@
+require("isomorphic-fetch");
+
 import { Client, createClient } from "urql";
 import {
   ICourierClientJWTParams,

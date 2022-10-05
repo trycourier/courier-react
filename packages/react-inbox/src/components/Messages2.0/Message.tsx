@@ -44,6 +44,10 @@ const ClickableContainer = styled.a(({ theme }) => {
 
   return deepExtend(
     {
+      "text-decoration": "none",
+      "*": {
+        "text-decoration": "none",
+      },
       "> div:hover": {
         background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
           0.2
@@ -90,6 +94,7 @@ const MessageContainer = styled.div(({ theme }) => {
       display: "flex",
       position: "relative",
       padding: "12px",
+      minHeight: 60,
       backgroundColor: "#F9FAFB",
       alignItems: "center",
       borderBottom: "1px solid rgb(222, 232, 240)",
@@ -158,7 +163,7 @@ const Message: React.FunctionComponent<{
       <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents>
-        <Title>{title}</Title>
+        <Title read={read}>{title}</Title>
         {textBlocks?.map((block: ITextBlock, index: number) => {
           if (renderTextBlock) {
             const Block = renderTextBlock;
@@ -230,8 +235,12 @@ const MessageWrapper: React.FunctionComponent<
   trackingIds = {},
 }) => {
   const { brand, autoMarkAsRead, markMessageRead } = useInbox();
-  const { readTrackingId, unreadTrackingId, archiveTrackingId } =
-    trackingIds || {};
+  const {
+    readTrackingId,
+    unreadTrackingId,
+    archiveTrackingId,
+    clickTrackingId,
+  } = trackingIds || {};
   const [messageTimeout, setMessageTimeout] = useState<NodeJS.Timeout>();
 
   const { ref, inView } = useInView({
@@ -260,6 +269,14 @@ const MessageWrapper: React.FunctionComponent<
       clearTimeout(timeout);
     };
   }, [messageId, autoMarkAsRead, read, inView]);
+
+  const handleClickMessage = () => {
+    if (clickTrackingId) {
+      // mark message read, but don't fire the event as the backend will do it for us,
+      // we just want to set the message as read here in our local state
+      markMessageRead(messageId);
+    }
+  };
 
   const renderedIcon = getIcon(
     /* priority:
@@ -325,16 +342,18 @@ const MessageWrapper: React.FunctionComponent<
   }, []);
 
   let containerProps: {
-    href?: string;
-    target?: string;
-    rel?: string;
     "data-testid": string;
+    href?: string;
+    onMouseDown?: (event: React.MouseEvent) => void;
+    rel?: string;
+    target?: string;
   } = {
     "data-testid": "inbox-message",
   };
 
   if (clickAction) {
     containerProps.href = clickAction;
+    containerProps.onMouseDown = handleClickMessage;
 
     if (openLinksInNewTab) {
       containerProps = {

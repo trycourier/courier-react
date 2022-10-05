@@ -8,6 +8,12 @@ export const GET_INBOX_MESSAGE = `
       read
       content {
         html
+        actions {
+          background_color
+          content
+          href
+          style
+        }
         elemental {
           ... on TextElement {
             type

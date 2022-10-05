@@ -1,4 +1,4 @@
-import { ICourierClientBasicParams } from "./types";
+import { ICourierClientBasicParams, ICourierClientJWTParams } from "./types";
 import { Client } from "urql";
 import { createCourierClient } from "./client";
 
@@ -100,7 +100,10 @@ export const getBrand =
   };
 
 export default (
-  params: ICourierClientBasicParams | { client?: Client }
+  params:
+    | ICourierClientBasicParams
+    | ICourierClientJWTParams
+    | { client?: Client }
 ): {
   getBrand: GetBrand;
 } => {

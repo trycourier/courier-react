@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { ICourierClientBasicParams } from "../types";
+import { ICourierClientBasicParams, ICourierClientJWTParams } from "../types";
 import { createCourierClient } from "../client";
 
 import { GetInboxCount, getInboxCount } from "./count";
@@ -12,7 +12,10 @@ export { IInboxMessage } from "./message";
 export { IInboxMessagePreview, IGetInboxMessagesParams } from "./messages";
 
 export default (
-  params: ICourierClientBasicParams | { client?: Client }
+  params:
+    | ICourierClientBasicParams
+    | ICourierClientJWTParams
+    | { client?: Client }
 ): {
   getInboxCount: GetInboxCount;
   getMessage: message.GetInboxMessage;
