@@ -1,6 +1,6 @@
 require("isomorphic-fetch");
 
-import { Client, createClient } from "urql";
+import { Client, createClient } from "urql/";
 import {
   ICourierClientJWTParams,
   ICourierClientBasicParams,
@@ -25,10 +25,11 @@ export const createCourierClient = (
   }
 
   let headers: CourierBasicHeaders | CourierJWTHeaders;
+  const jwtParams = params as ICourierClientJWTParams;
 
-  if ("authorization" in params) {
+  if (jwtParams.authorization) {
     headers = {
-      authorization: `Bearer ${params.authorization}`,
+      authorization: `Bearer ${jwtParams.authorization}`,
     } as CourierJWTHeaders;
   } else {
     const { clientKey, userId, userSignature } =
