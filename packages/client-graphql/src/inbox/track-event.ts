@@ -25,7 +25,7 @@ export const trackEvent =
     }
 
     const QUERY = getTrackEventQuery(eventType);
-    const results = await client.query(QUERY, { messageId }).toPromise();
+    const results = await client.mutation(QUERY, { messageId }).toPromise();
     const status = results?.data?.[eventType];
 
     return {
