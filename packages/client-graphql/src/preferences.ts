@@ -38,6 +38,7 @@ const PREFERENCE_PAGE = `
           routingOptions
           topics {
             nodes {
+              defaultStatus
               templateName
               templateId
             }
