@@ -6,7 +6,7 @@ import deepExtend from "deep-extend";
 
 import { IMessage, ITab, InboxProps } from "~/types";
 import MarkAllRead from "./actions/MarkAllRead";
-import CloseInbox from "./actions/CloseInbox";
+import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
 
@@ -50,7 +50,6 @@ const DropdownOptionButton = styled.button<{
   showDropdown?: boolean;
 }>(({ theme, disabled, active, showDropdown }) => {
   const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
 
   return {
     background: "transparent",
@@ -78,9 +77,7 @@ const DropdownOptionButton = styled.button<{
       fontSize: 14,
       fontWeight: 400,
       margin: "0 3px",
-      backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
-        0.6
-      )} 100%)`,
+      background: primaryColor,
       color: "white",
       borderRadius: "17px",
       display: "flex",
@@ -106,6 +103,7 @@ const HeadingDropdownButtonContainer = styled.div<{
     flexDirection,
     alignItems,
     borderRadius: 6,
+    transition: "background 200ms ease-in-out",
 
     "svg path": {
       fill: theme.brand?.colors?.primary,
@@ -114,11 +112,7 @@ const HeadingDropdownButtonContainer = styled.div<{
 
   if (hasDropdownOptions) {
     styles["&:hover"] = {
-      background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-        0.2
-      )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-        0.08
-      )} 100%)`,
+      background: tcPrimaryColor.setAlpha(0.14),
     };
   }
 
@@ -141,11 +135,7 @@ const HeadingDropdownOptions = styled.div(({ theme }) => {
     [DropdownOptionButton]: {
       width: "100%",
       "&:hover": {
-        background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-          0.2
-        )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-          0.08
-        )} 100%)`,
+        background: tcPrimaryColor.setAlpha(0.14),
       },
     },
   };

@@ -1,18 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 
-function useHover() {
+function useHover(cb?: (event: Event) => boolean | void) {
   const [value, setValue] = useState(false);
   const ref: React.RefObject<HTMLDivElement> = useRef(null);
-  const handleMouseOver = () => setValue(true);
+  const handleMouseOver = (event: Event) => {
+    let shouldHover = true;
+    if (cb) {
+      shouldHover = cb(event) !== false;
+    }
+    setValue(shouldHover);
+  };
   const handleMouseOut = () => setValue(false);
   useEffect(
     () => {
       const node = ref.current;
       if (node) {
-        node.addEventListener("mouseenter", handleMouseOver);
+        node.addEventListener("mouseover", handleMouseOver);
         node.addEventListener("mouseleave", handleMouseOut);
         return () => {
-          node.removeEventListener("mouseenter", handleMouseOver);
+          node.removeEventListener("mouseover", handleMouseOver);
           node.removeEventListener("mouseleave", handleMouseOut);
         };
       }
