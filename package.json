@@ -92,7 +92,6 @@
   },
   "dependencies": {
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "isomorphic-fetch": "^3.0.0",
     "jest-websocket-mock": "^2.3.0",
     "msw": "^0.43.0",
     "nx": "^14.4.2"
