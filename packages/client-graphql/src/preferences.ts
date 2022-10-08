@@ -36,6 +36,7 @@ const PREFERENCE_PAGE = `
           name
           sectionId
           routingOptions
+          hasCustomRouting
           topics {
             nodes {
               defaultStatus

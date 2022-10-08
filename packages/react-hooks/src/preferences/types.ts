@@ -36,7 +36,8 @@ export type PreferenceSection = {
     name: string;
     sectionId: string;
     routingOptions: Array<ChannelClassification>;
-    topics: Array<IPreferenceTemplate>;
+    topics: { nodes: Array<IPreferenceTemplate> };
+    hasCustomRouting: boolean;
   }>;
 };
 

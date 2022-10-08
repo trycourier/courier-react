@@ -13,7 +13,7 @@ import {
 
 const DisplayChannel = (channel: ChannelClassification) => {
   if (channel === "direct_message") {
-    return "SMS";
+    return "Chat";
   }
   return channel.charAt(0).toUpperCase() + channel.slice(1);
 };

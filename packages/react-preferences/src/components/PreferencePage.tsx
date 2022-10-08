@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 import {
@@ -8,7 +8,12 @@ import {
 } from "~/types";
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
-import { PreferencePage } from "@trycourier/react-hooks/typings/preferences/types";
+import type {
+  PreferencePage,
+  PreferenceSection,
+} from "@trycourier/react-hooks/typings/preferences/types";
+import { updateRecipientPreferences } from "@trycourier/client-graphql/typings/preferences";
+import { ChannelPreferences } from "./ChannelPreferences";
 
 const PreferenceSectionWrapper = styled.div`
   background: white;
@@ -48,95 +53,121 @@ const StyledItem = styled.div`
   }
 `;
 
-export const PreferenceTopic: React.FunctionComponent<{
-  topic: any;
-}> = ({ topic }) => {
-  // const { updateRecipientPreferences } = usePreferences();
+const getDefaultStatusText = (defaultStatus: string) => {
+  switch (defaultStatus) {
+    case "OPTED_IN":
+      return "Opted In";
+    case "OPTED_OUT":
+      return "Opted Out";
+    case "REQUIRED":
+      return "Required";
+  }
+};
 
-  // const handleOnPreferenceChange = (newPreferences) => {
-  //   updateRecipientPreferences({
-  //     templateId: preferenceTemplate.templateId,
-  //     ...newPreferences,
-  //   });
-  // };
+export const PreferenceTopic: React.FunctionComponent<{
+  topic: IPreferenceTemplate;
+  defaultRoutingOptions: ChannelClassification[];
+  hasCustomRouting: boolean;
+  status: IRecipientPreference["status"] | undefined;
+}> = ({ topic, defaultRoutingOptions, hasCustomRouting, status }) => {
+  //Temporary mapping until I update this in the backend
+  const { defaultStatus, templateName: topicName, templateId: topicId } = topic;
+
+  // If there user hasn't set a status then use the default status to set the toggle.
+  const [statusToggle, setStatusToggle] = React.useState(
+    status ? status === "OPTED_IN" : defaultStatus === "OPTED_IN"
+  );
+
+  const { updateRecipientPreferences } = usePreferences();
+  const handleStatusChange = () => {
+    // Required statuses should never change
+    if (defaultStatus === "REQUIRED") {
+      return;
+    }
+
+    const newStatus = statusToggle ? "OPTED_OUT" : "OPTED_IN";
+    updateRecipientPreferences({
+      templateId: topicId,
+      status: newStatus,
+    });
+
+    setStatusToggle(!statusToggle);
+  };
+
+  const handleChannePrefenceUpdate = ({
+    routingPreferences,
+    status,
+    hasCustomRouting,
+  }: IRecipientPreference) => {
+    updateRecipientPreferences({
+      templateId: topicId,
+      status: status,
+      routingPreferences: routingPreferences,
+      hasCustomRouting,
+    });
+
+    setStatusToggle(status === "OPTED_IN");
+  };
 
   if (!topic) {
     return null;
   }
 
-  const { defaultStatus } = topic;
-
-  const [statusToggle, setStatusToggle] = React.useState(
-    defaultStatus === "OPTED_IN"
-  );
-
-  // const { preferences, updateRecipientPreferences } = usePreferences();
-
-  // console.log(topic);
-
-  // const handleStatusChange = () => {
-  //   // Required statuses should never change
-  //   if (defaultStatus === "REQUIRED") {
-  //     return;
-  //   }
-
-  //   const newStatus = statusToggle ? "OPTED_OUT" : "OPTED_IN";
-
-  //   setStatusToggle(!statusToggle);
-  // };
-
   return (
     <StyledItem>
-      <div className="template-name">{topic.templateName}</div>
-      {/* <StatusPreference
-        value={
-          preferenceTemplate?.defaultStatus === "REQUIRED"
-            ? "REQUIRED"
-            : recipientPreference?.status ?? preferenceTemplate?.defaultStatus
-        }
-        onPreferenceChange={handleOnPreferenceChange}
-        templateId={preferenceTemplate.templateId}
-        defaultRoutingOptions={sectionRoutingOptions}
-        customizeDeliveryChannel={customizeDeliveryChannel}
-      /> */}
+      <div className="template-name">{topicName}</div>
       <StyledToggle checked={statusToggle}>
-        <label>{defaultStatus}</label>
+        <label>{getDefaultStatusText(defaultStatus)}</label>
         <Toggle
           icons={false}
           disabled={defaultStatus === "REQUIRED"}
           checked={statusToggle}
-          value={defaultStatus}
-          onChange={() => setStatusToggle(!statusToggle)}
+          onChange={handleStatusChange}
         />
       </StyledToggle>
-      {/* {statusToggle && customizeDeliveryChannel && (
+      {statusToggle && hasCustomRouting && (
         <ChannelPreferences
-          onPreferenceChange={onPreferenceChange}
-          templateId={templateId}
-          routingOptions={routingOptions}
+          onPreferenceChange={handleChannePrefenceUpdate}
+          templateId={topicId}
+          routingOptions={defaultRoutingOptions}
         />
-      )} */}
+      )}
     </StyledItem>
   );
 };
 
-export const PreferenceSection: React.FunctionComponent<{
-  section: any;
-  // preferences: IPreferenceTemplate[] | undefined;
+export const PreferenceSections: React.FunctionComponent<{
+  section: PreferenceSection["nodes"][0];
 }> = ({ section }) => {
-  // console.log(preferences);
-  // if (!preferences) {
-  //   return null;
-  // }
+  const { recipientPreferences } = usePreferences();
+
+  const memoizedTopics = useMemo(() => {
+    return section.topics.nodes.map((topic) => {
+      return {
+        topic: topic,
+        recipientPreference: recipientPreferences?.find((preference) => {
+          if (preference.templateId === topic.templateId) {
+            return preference;
+          }
+        }),
+      };
+    });
+  }, [section]);
+
+  if (!recipientPreferences) {
+    return null;
+  }
 
   return (
     <>
       <SectionHeader>{section.name}</SectionHeader>
-      {section.topics.nodes.map((topic) => (
+      {memoizedTopics.map(({ topic, recipientPreference }) => (
         <>
           <PreferenceTopic
             topic={topic}
-            routingOptions={section.routingOptions}
+            defaultRoutingOptions={section.routingOptions}
+            hasCustomRouting={section.hasCustomRouting}
+            status={recipientPreference?.status}
           />
           <LineBreak />
         </>
@@ -149,18 +180,10 @@ export const PreferenceSection: React.FunctionComponent<{
 export const PreferencePage2 = () => {
   const preferences = usePreferences();
 
-  useEffect(() => {
-    preferences.fetchPreferencePage();
-  }, []);
-
   return (
     <PreferenceSectionWrapper>
       {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
-        <PreferenceSection
-          key={i}
-          section={section}
-          // preferences={preferences.preferences}
-        />
+        <PreferenceSections key={i} section={section} />
       ))}
     </PreferenceSectionWrapper>
   );
