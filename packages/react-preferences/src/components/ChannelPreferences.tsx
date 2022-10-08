@@ -70,10 +70,12 @@ export const ChannelPreferences: React.FC<{
   const handleDeliveryChannels = () => {
     onPreferenceChange({
       status: "OPTED_IN",
-      routingPreferences: !checked ? ["email", "push", "direct_message"] : [],
+      routingPreferences: !checked
+        ? ["email", "push", "direct_message", "sms"]
+        : [],
     });
 
-    setRouting(["email", "push", "direct_message"]);
+    setRouting(["email", "push", "direct_message", "sms"]);
     setChecked(!checked);
   };
 

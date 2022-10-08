@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 import {
@@ -8,12 +8,8 @@ import {
 } from "~/types";
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
-import type {
-  PreferencePage,
-  PreferenceSection,
-} from "@trycourier/react-hooks/typings/preferences/types";
-import { updateRecipientPreferences } from "@trycourier/client-graphql/typings/preferences";
-import { ChannelPreferences } from "./ChannelPreferences";
+import type { PreferenceSection } from "@trycourier/react-hooks/typings/preferences/types";
+import { Channel, ChannelOption, Input } from "./ChannelPreferenceStyles";
 
 const PreferenceSectionWrapper = styled.div`
   background: white;
@@ -53,6 +49,67 @@ const StyledItem = styled.div`
   }
 `;
 
+const Check = styled.svg`
+  width: 12px;
+  height: 12px;
+  padding-left: 5px;
+  fill: white;
+`;
+
+const ChannelPreferenceStyles = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+  p {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .custmoize-delivery {
+    input {
+      display: none;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    display: flex;
+    align-items: center;
+
+    div {
+      width: 20px;
+      height: 20px;
+      border: solid 1px black;
+      border-radius: 100%;
+      margin: 0 2.5px;
+      position: static;
+      background-color: !white;
+
+      display: flex;
+      align-items: center;
+    }
+
+    ${Input}:checked ~ div > ${Check} {
+      fill: white;
+    }
+
+    ${Input}:checked ~ div {
+      border: 0;
+      background-color: #1e4637;
+    }
+  }
+`;
+
+const Checkmark = () => {
+  return (
+    <Check viewBox="0 0 9 8">
+      <path d="M3.0005 7.09954C2.84689 7.09954 2.69328 7.04074 2.57567 6.92433L0.175512 4.52417C-0.0585039 4.29015 -0.0585039 3.90973 0.175512 3.67571C0.409527 3.4417 0.789953 3.4417 1.02397 3.67571L3.0005 5.65104L7.97603 0.675512C8.21005 0.441496 8.59047 0.441496 8.82449 0.675512C9.0585 0.909527 9.0585 1.28995 8.82449 1.52397L3.42413 6.92433C3.30772 7.04074 3.15411 7.09954 3.0005 7.09954Z" />
+    </Check>
+  );
+};
+
 const getDefaultStatusText = (defaultStatus: string) => {
   switch (defaultStatus) {
     case "OPTED_IN":
@@ -62,6 +119,72 @@ const getDefaultStatusText = (defaultStatus: string) => {
     case "REQUIRED":
       return "Required";
   }
+};
+
+const DisplayChannel = (channel: ChannelClassification) => {
+  if (channel === "direct_message") {
+    return "Chat";
+  } else if (channel === "sms") {
+    return "SMS";
+  }
+  return channel.charAt(0).toUpperCase() + channel.slice(1);
+};
+
+const DeliveryChannel = ({ channel, handleRouting, defaultChecked }) => {
+  const [checked, setChecked] = useState(defaultChecked);
+
+  return (
+    <Channel>
+      <label>
+        <Input
+          type="checkbox"
+          onChange={() => {
+            handleRouting(channel);
+            setChecked(!checked);
+          }}
+          checked={checked}
+        />
+        <ChannelOption>
+          {checked && <Checkmark />}
+          <div>{DisplayChannel(channel)}</div>
+        </ChannelOption>
+      </label>
+    </Channel>
+  );
+};
+
+const ChannelDeliveryPreferences = ({
+  defaultRoutingOptions,
+}: {
+  defaultRoutingOptions: ChannelClassification[];
+}) => {
+  const handleRouting = (channel: ChannelClassification) => {
+    console.log(channel);
+  };
+
+  return (
+    <ChannelPreferenceStyles>
+      <div className="custmoize-delivery">
+        <Input
+          type="checkbox"
+          checked={true}
+          // onClick={handleDeliveryChannels}
+        />
+        <div>{true && <Checkmark />}</div>
+        <p>Customize Delivery Channel</p>
+      </div>
+      {defaultRoutingOptions.map((channel, i) => {
+        return (
+          <DeliveryChannel
+            key={i}
+            channel={channel}
+            defaultChecked={true}
+            handleRouting={handleRouting}
+          />
+        );
+      })}
+    </ChannelPreferenceStyles>
+  );
 };
 
 export const PreferenceTopic: React.FunctionComponent<{
@@ -126,10 +249,8 @@ export const PreferenceTopic: React.FunctionComponent<{
         />
       </StyledToggle>
       {statusToggle && hasCustomRouting && (
-        <ChannelPreferences
-          onPreferenceChange={handleChannePrefenceUpdate}
-          templateId={topicId}
-          routingOptions={defaultRoutingOptions}
+        <ChannelDeliveryPreferences
+          defaultRoutingOptions={defaultRoutingOptions}
         />
       )}
     </StyledItem>
