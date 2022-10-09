@@ -1,10 +1,9 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
 import styled, { ThemeProvider, ThemeProps } from "styled-components";
-
-const PreferencePage = lazy(() => import("./PreferencePage"));
-const PreferenceTemplate = lazy(() => import("./PreferenceTemplate"));
+import { PreferenceTemplate } from "./PreferenceTemplate";
+import PreferencePage from "./PreferencePage";
 
 export const StyledList = styled.div`
   overflow: scroll;
@@ -65,9 +64,7 @@ export const PreferenceList: React.FunctionComponent<{
           brand,
         }}
       >
-        <Suspense fallback={<></>}>
-          <StyledList>{renderPreferences()}</StyledList>
-        </Suspense>
+        <StyledList>{renderPreferences()}</StyledList>
       </ThemeProvider>
     </>
   );
