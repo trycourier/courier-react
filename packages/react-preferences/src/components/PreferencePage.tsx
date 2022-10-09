@@ -378,7 +378,7 @@ export const PreferenceSections: React.FunctionComponent<{
 };
 
 // Doesn't include header or footer
-export const PreferencePage2 = () => {
+export default () => {
   const preferences = usePreferences();
 
   return (

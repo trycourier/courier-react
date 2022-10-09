@@ -27,7 +27,7 @@ const StyledItem = styled.div`
   }
 `;
 
-export const PreferenceTemplate: React.FunctionComponent<{
+const PreferenceTemplate: React.FunctionComponent<{
   preferenceTemplate: IPreferenceTemplate;
   recipientPreference?: IRecipientPreference;
   routingOptions: Array<ChannelClassification>;
@@ -68,3 +68,5 @@ export const PreferenceTemplate: React.FunctionComponent<{
     </StyledItem>
   );
 };
+
+export default PreferenceTemplate;
