@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
-import { PreferenceTemplate } from "./PreferenceTemplate";
 import styled, { ThemeProvider, ThemeProps } from "styled-components";
+import { PreferenceTemplate } from "./PreferenceTemplate";
+import PreferencePage from "./PreferencePage";
 
 export const StyledList = styled.div`
   overflow: scroll;
@@ -12,51 +13,6 @@ export const StyledList = styled.div`
   border-top: 1px solid rgba(203, 213, 224, 0.5);
   background: rgba(255, 255, 255, 0.2);
 `;
-
-const PreferenceSectionWrapper = styled.div`
-  background: white;
-  margin: 10px;
-  padding: 10px;
-  text: black;
-`;
-
-const SectionHeader = styled.h1`
-  margin: 0;
-  color: black;
-`;
-
-const LineBreak = styled.div`
-  height: 1px;
-  background-color: black;
-  widht: 100%;
-  opacity: 0.3;
-  margin: 8px 0;
-`;
-
-const PreferenceSection: React.FunctionComponent<{
-  section: any;
-  preferences: any;
-}> = ({ section, preferences }) => {
-  return (
-    <PreferenceSectionWrapper>
-      <SectionHeader>{section.name}</SectionHeader>
-      {section.topics.nodes.map((template) => (
-        <>
-          <PreferenceTemplate
-            key={template.templateId}
-            preferenceTemplate={template}
-            recipientPreference={preferences?.recipientPreferences?.find(
-              (preference) => preference.templateId === template.templateId
-            )}
-            routingOptions={section.routingOptions}
-            customizeDeliveryChannel={section.hasCustomRouting}
-          />
-          <LineBreak />
-        </>
-      ))}
-    </PreferenceSectionWrapper>
-  );
-};
 
 export const PreferenceList: React.FunctionComponent<{
   // TODO: define Preferences theming
@@ -79,13 +35,7 @@ export const PreferenceList: React.FunctionComponent<{
       preferences.preferencePage?.sections?.nodes &&
       preferences.preferencePage?.sections?.nodes.length > 0
     ) {
-      return preferences.preferencePage?.sections?.nodes.map((section, key) => (
-        <PreferenceSection
-          section={section}
-          preferences={preferences}
-          key={key}
-        />
-      ));
+      return <PreferencePage />;
     }
 
     // TODO: Handle Backfilled preferences. (https://linear.app/trycourier/issue/C-6836/cleanup-react-preference-section-template-renderer-after-backfill)

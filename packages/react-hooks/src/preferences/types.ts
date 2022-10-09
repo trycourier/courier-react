@@ -36,7 +36,8 @@ export type PreferenceSection = {
     name: string;
     sectionId: string;
     routingOptions: Array<ChannelClassification>;
-    topics: Array<IPreferenceTemplate>;
+    topics: { nodes: Array<IPreferenceTemplate> };
+    hasCustomRouting: boolean;
   }>;
 };
 
@@ -48,7 +49,7 @@ export interface PreferenceState {
   preferencePage?: PreferencePage;
 }
 
-export type ChannelClassification = "email" | "push" | "direct_message";
+export type ChannelClassification = "email" | "push" | "direct_message" | "sms";
 
 export type SnoozePreference = {
   start?: string;
