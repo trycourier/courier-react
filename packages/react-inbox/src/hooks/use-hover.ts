@@ -15,10 +15,10 @@ function useHover(cb?: (event: Event) => boolean | void) {
     () => {
       const node = ref.current;
       if (node) {
-        node.addEventListener("mouseover", handleMouseOver);
+        node.addEventListener("mouseenter", handleMouseOver);
         node.addEventListener("mouseleave", handleMouseOut);
         return () => {
-          node.removeEventListener("mouseover", handleMouseOver);
+          node.removeEventListener("mouseenter", handleMouseOver);
           node.removeEventListener("mouseleave", handleMouseOut);
         };
       }
