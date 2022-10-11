@@ -26,8 +26,9 @@ const StyledButton = styled.button(({ theme }) => {
 });
 
 export const Checkmark: React.FunctionComponent<{
+  fill?: string;
   style?: React.CSSProperties;
-}> = ({ style }) => (
+}> = ({ fill = "#566074", style }) => (
   <svg
     fill="none"
     height="24"
@@ -38,7 +39,7 @@ export const Checkmark: React.FunctionComponent<{
   >
     <path
       d="M16.6825 8.2925C16.2925 7.9025 15.6625 7.9025 15.2725 8.2925L10.8425 12.7225C10.6425 12.9225 10.3325 12.9225 10.1325 12.7225L8.7025 11.2925C8.3125 10.9025 7.6825 10.9025 7.2925 11.2925C6.9025 11.6825 6.9025 12.3125 7.2925 12.7025L9.7825 15.2025C10.1725 15.5925 10.8025 15.5925 11.1925 15.2025L16.6825 9.7125C17.0725 9.3225 17.0725 8.6925 16.6825 8.3025V8.2925Z"
-      fill="#566074"
+      fill={fill}
     />
   </svg>
 );

@@ -94,6 +94,10 @@ const MessageContainer = styled.div(({ theme }) => {
       },
       "&.hasBody": {
         alignItems: "top",
+
+        ".actions": {
+          marginTop: -4,
+        },
       },
       borderBottom: "1px solid rgb(222, 232, 240)",
       "&:hover": {
@@ -224,7 +228,7 @@ const Message: React.FunctionComponent<{
       <div className="actions" ref={actionsHoverRef}>
         <div
           className={classNames({
-            visible: true,
+            visible: isHovered,
           })}
         >
           {!read && trackingIds?.readTrackingId && (
@@ -243,16 +247,16 @@ const Message: React.FunctionComponent<{
         </div>
         <div
           className={classNames({
-            visible: false,
+            visible: !isHovered,
           })}
         >
           <TimeAgo>{formattedTime}</TimeAgo>
           {read && (
             <Checkmark
+              fill={"rgba(86, 96, 116, 0.3)"}
               style={{
                 marginRight: -6,
-                marginLeft: 6,
-                marginTop: -3,
+                marginLeft: -3,
               }}
             />
           )}

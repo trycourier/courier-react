@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import Tippy from "@tippyjs/react";
 
-const StyledTippy = styled(Tippy)`
-  .tippy-arrow {
-    border-top-color: red;
-  }
+const StyledTippy = styled(Tippy).attrs({
+  offset: [0, 3],
+})`
   min-width: 125px;
 
   .tippy-content {

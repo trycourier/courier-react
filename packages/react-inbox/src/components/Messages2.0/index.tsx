@@ -75,7 +75,7 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
 
     return deepExtend(
       {
-        background: "rgba(255, 255, 255, 0.2)",
+        background: "rgb(242, 246, 249)",
         overflow: "scroll",
         display: "flex",
         height,
