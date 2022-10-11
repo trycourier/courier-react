@@ -1,9 +1,8 @@
+import React from "react";
 import styled from "styled-components";
-import Tippy from "@tippyjs/react";
+import Tippy, { TippyProps } from "@tippyjs/react";
 
-const StyledTippy = styled(Tippy).attrs({
-  offset: [0, 3],
-})`
+const Styled = styled(Tippy)`
   min-width: 125px;
 
   .tippy-content {
@@ -19,5 +18,9 @@ const StyledTippy = styled(Tippy).attrs({
     border-radius: 4px !important;
   }
 `;
+
+const StyledTippy: React.FunctionComponent<TippyProps> = (props) => {
+  return <Styled {...props} offset={[0, 3]} />;
+};
 
 export default StyledTippy;
