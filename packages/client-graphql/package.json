@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/client-graphql",
-  "version": "1.47.5",
+  "version": "1.48.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
