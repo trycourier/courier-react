@@ -14,26 +14,22 @@ const StyledButton = styled.button(({ theme }) => {
     borderRadius: "6px",
     padding: 0,
     height: "24px",
-    opacity: 1,
+    transition: "background 200ms ease-in-out",
 
     "&:hover": {
-      backgroundImage: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-        0.2
-      )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-        0.08
-      )} 100%);`,
+      background: tcPrimaryColor.setAlpha(0.14),
     },
   };
 });
 
-const CloseInbox: React.FunctionComponent<{
+const CloseAction: React.FunctionComponent<{
   onClick: React.MouseEventHandler;
   tooltip: string;
   size?: "small";
 }> = ({ onClick, tooltip, size }) => {
   return (
     <StyledTippy content={tooltip}>
-      <StyledButton onClick={onClick}>
+      <StyledButton className="close" onClick={onClick}>
         {size === "small" ? (
           <svg
             width="24"
@@ -66,4 +62,4 @@ const CloseInbox: React.FunctionComponent<{
   );
 };
 
-export default CloseInbox;
+export default CloseAction;

@@ -23,6 +23,7 @@ const TippyStyle = createGlobalStyle`
       max-width:calc(100vw - 10px)
   }
   .tippy-box{
+      background:transparent;
       position:relative;
       color:#fff;
       font-size:14px;
@@ -34,9 +35,9 @@ const TippyStyle = createGlobalStyle`
       bottom:0
   }
   .tippy-box[data-placement^=top]>.tippy-arrow:before{
-      bottom:-7px;
-      left:0;
-      border-width:8px 8px 0;
+      bottom:-4px;
+      left:3px;
+      border-width:4px 4px 0;
       border-top-color:initial;
       transform-origin:center top
   }
@@ -44,9 +45,9 @@ const TippyStyle = createGlobalStyle`
       top:0
   }
   .tippy-box[data-placement^=bottom]>.tippy-arrow:before{
-      top:-7px;
-      left:0;
-      border-width:0 8px 8px;
+      top:-4px;
+      left:3px;
+      border-width:0 4px 4px;
       border-bottom-color:initial;
       transform-origin:center bottom
   }
@@ -74,7 +75,7 @@ const TippyStyle = createGlobalStyle`
   .tippy-arrow{
       width:16px;
       height:16px;
-      color:#333
+      color:#1c273a;
   }
   .tippy-arrow:before{
       content:"";

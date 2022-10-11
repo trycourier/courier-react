@@ -6,7 +6,7 @@ import deepExtend from "deep-extend";
 
 import { IMessage, ITab, InboxProps } from "~/types";
 import MarkAllRead from "./actions/MarkAllRead";
-import CloseInbox from "./actions/CloseInbox";
+import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
 
@@ -23,7 +23,7 @@ export interface IHeaderProps {
 const Container = styled.div<{ view?: string }>(({ theme }) =>
   deepExtend(
     {
-      padding: "6px",
+      padding: "9px 6px",
       userSelect: "none",
       display: "flex",
       position: "relative",
@@ -47,25 +47,27 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
 
 const DropdownOptionButton = styled.button<{
   active?: boolean;
+  selected?: boolean;
   showDropdown?: boolean;
-}>(({ theme, disabled, active, showDropdown }) => {
+}>(({ theme, disabled, active, selected, showDropdown }) => {
   const primaryColor = theme.brand?.colors?.primary;
   const tcPrimaryColor = tinycolor2(primaryColor);
 
-  return {
-    background: "transparent",
+  const cssProps = {
+    background: active ? primaryColor : "transparent",
     border: "none",
     cursor: disabled ? "default" : "pointer",
-    padding: "6px",
-    color: "rgba(28, 39, 58, 1)",
-    fontWeight: active ? 700 : 400,
+    padding: selected ? "6px" : "12px",
+    color: active ? "white" : "rgba(28, 39, 58, 1)",
+    fontWeight: active || selected ? 700 : 400,
     lineHeight: "21px",
-    fontSize: "16px",
+    fontSize: "14px",
     display: "flex",
-    height: active ? "initial" : 42,
+    height: selected ? "24px" : "42px",
     alignItems: "center",
 
     svg: {
+      marginTop: "1px",
       marginLeft: "3px",
       ...(showDropdown
         ? {
@@ -78,9 +80,7 @@ const DropdownOptionButton = styled.button<{
       fontSize: 14,
       fontWeight: 400,
       margin: "0 3px",
-      backgroundImage: `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
-        0.6
-      )} 100%)`,
+      background: primaryColor,
       color: "white",
       borderRadius: "17px",
       display: "flex",
@@ -91,6 +91,14 @@ const DropdownOptionButton = styled.button<{
       minWidth: 28,
     },
   };
+
+  if (!active && !selected) {
+    cssProps["&:hover"] = {
+      background: tcPrimaryColor.setAlpha(0.14),
+    };
+  }
+
+  return cssProps;
 });
 
 const HeadingDropdownButtonContainer = styled.div<{
@@ -106,6 +114,7 @@ const HeadingDropdownButtonContainer = styled.div<{
     flexDirection,
     alignItems,
     borderRadius: 6,
+    transition: "background 200ms ease-in-out",
 
     "svg path": {
       fill: theme.brand?.colors?.primary,
@@ -114,21 +123,14 @@ const HeadingDropdownButtonContainer = styled.div<{
 
   if (hasDropdownOptions) {
     styles["&:hover"] = {
-      background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-        0.2
-      )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-        0.08
-      )} 100%)`,
+      background: tcPrimaryColor.setAlpha(0.14),
     };
   }
 
   return styles;
 });
 
-const HeadingDropdownOptions = styled.div(({ theme }) => {
-  const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
-
+const HeadingDropdownOptions = styled.div((_) => {
   return {
     position: "absolute",
     top: "42px",
@@ -140,16 +142,21 @@ const HeadingDropdownOptions = styled.div(({ theme }) => {
 
     [DropdownOptionButton]: {
       width: "100%",
-      "&:hover": {
-        background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-          0.2
-        )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-          0.08
-        )} 100%)`,
-      },
     },
   };
 });
+
+const DownCarrot: React.FunctionComponent = () => (
+  <svg
+    width="8"
+    height="5"
+    viewBox="0 0 8 5"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
+  </svg>
+);
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
   currentTab,
@@ -187,17 +194,20 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           active,
           disabled,
           onClick,
+          selected,
           showDropdown,
         }: {
           active?: boolean;
           disabled?: boolean;
           onClick?: React.MouseEventHandler;
+          selected?: boolean;
           showDropdown?: boolean;
         }) => (
           <DropdownOptionButton
             active={active}
             disabled={disabled}
             onClick={onClick ?? handleSetView("messages")}
+            selected={selected}
             showDropdown={showDropdown}
           >
             {title}
@@ -206,17 +216,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
                 {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
               </span>
             ) : undefined}
-            {onClick && !disabled && (
-              <svg
-                width="8"
-                height="5"
-                viewBox="0 0 8 5"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
-              </svg>
-            )}
+            {onClick && !disabled && <DownCarrot />}
           </DropdownOptionButton>
         ),
       },
@@ -224,30 +224,23 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         id: "preferences",
         Component: ({
           active,
+          selected,
           onClick,
           showDropdown,
         }: {
           active?: boolean;
+          selected?: boolean;
           onClick?: React.MouseEventHandler;
           showDropdown?: boolean;
         }) => (
           <DropdownOptionButton
             active={active}
             onClick={onClick ?? handleSetView("preferences")}
+            selected={selected}
             showDropdown={showDropdown}
           >
             Preferences
-            {onClick && (
-              <svg
-                width="8"
-                height="5"
-                viewBox="0 0 8 5"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
-              </svg>
-            )}
+            {onClick && <DownCarrot />}
           </DropdownOptionButton>
         ),
       },
@@ -265,7 +258,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       >
         {ActiveOption && (
           <ActiveOption
-            active={true}
+            selected={true}
             showDropdown={showDropdown}
             disabled={!hasDropdownOptions}
             onClick={handleShowDropdown}
@@ -276,11 +269,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         <HeadingDropdownOptions>
           {options
             .map((o) => {
-              if (o.id === view) {
-                return null;
-              }
-
-              return <o.Component key={o.id} />;
+              return <o.Component active={o.id === view} key={o.id} />;
             })
             .filter(Boolean)}
         </HeadingDropdownOptions>

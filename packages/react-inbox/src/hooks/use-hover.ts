@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
-function useHover() {
+function useHover(cb?: (event: Event) => boolean | void) {
   const [value, setValue] = useState(false);
   const ref: React.RefObject<HTMLDivElement> = useRef(null);
-  const handleMouseOver = () => setValue(true);
+  const handleMouseOver = (event: Event) => {
+    let shouldHover = true;
+    if (cb) {
+      shouldHover = cb(event) !== false;
+    }
+    setValue(shouldHover);
+  };
   const handleMouseOut = () => setValue(false);
   useEffect(
     () => {

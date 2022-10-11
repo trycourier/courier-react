@@ -15,17 +15,14 @@ const StyledButton = styled.button(({ theme }) => {
     padding: 0,
     marginRight: "6px",
     height: "24px",
+    transition: "background 200ms ease-in-out",
 
     path: {
       fill: theme?.brand?.colors?.primary,
     },
 
     "&:hover": {
-      backgroundImage: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-        0.2
-      )} 0%, ${tcPrimaryColor.setAlpha(0.2)} 0.01%, ${tcPrimaryColor.setAlpha(
-        0.08
-      )} 100%);`,
+      background: tcPrimaryColor.setAlpha(0.14),
     },
   };
 });
@@ -36,7 +33,6 @@ const MarkAllRead: React.FunctionComponent<{
   return (
     <StyledTippy content={"Mark All as Read"}>
       <StyledButton onClick={onClick}>
-        <div id="arrow" data-popper-arrow></div>
         <svg
           width="24"
           height="24"

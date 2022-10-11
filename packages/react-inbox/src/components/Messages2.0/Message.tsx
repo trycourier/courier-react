@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useMemo } from "react";
 import classNames from "classnames";
 import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
@@ -12,11 +12,10 @@ import Markdown from "markdown-to-jsx";
 
 import deepExtend from "deep-extend";
 import styled from "styled-components";
-import useMessageOptions, { IMessageOption } from "~/hooks/use-message-options";
-import OptionsDropdown from "../OptionsDropdown";
 import tinycolor2 from "tinycolor2";
-import { useInView } from "react-intersection-observer";
-import CloseInbox from "./actions/CloseInbox";
+import CloseAction from "./actions/Close";
+import MarkRead, { Checkmark } from "./actions/MarkRead";
+import MarkUnread from "./actions/MarkUnread";
 
 export interface IMessageProps {
   blocks?: Array<ITextBlock | IActionBlock>;
@@ -48,10 +47,8 @@ const ClickableContainer = styled.a(({ theme }) => {
       "*": {
         "text-decoration": "none",
       },
-      "> div:hover": {
-        background: `linear-gradient(180deg, ${tcPrimaryColor.setAlpha(
-          0.2
-        )} 0%, ${tcPrimaryColor.setAlpha(0.08)} 100%);`,
+      ".message-container.hover": {
+        background: tcPrimaryColor.setAlpha(0.14),
       },
     },
     theme.message?.clickableContainer ?? {}
@@ -67,18 +64,13 @@ const Contents = styled.div(({ theme }) => ({
 
 const UnreadIndicator = styled.div<{ read?: boolean }>(({ theme, read }) => {
   const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
 
   return deepExtend(
     {
       visibility: read ? "hidden" : "visible",
       height: "auto",
       width: 2,
-      background: read
-        ? "linear-gradient(180deg, rgba(86, 96, 116, 0.3) 0%, rgba(86, 96, 116, 0.12) 100%)"
-        : `linear-gradient(180deg, ${primaryColor} 0%, ${tcPrimaryColor.setAlpha(
-            0.4
-          )} 100%)`,
+      background: primaryColor,
       position: "absolute",
       left: "1px",
       top: "1px",
@@ -91,12 +83,22 @@ const UnreadIndicator = styled.div<{ read?: boolean }>(({ theme, read }) => {
 const MessageContainer = styled.div(({ theme }) => {
   return deepExtend(
     {
+      transition: "background 200ms ease-in-out",
       display: "flex",
       position: "relative",
       padding: "12px",
       minHeight: 60,
       backgroundColor: "#F9FAFB",
-      alignItems: "center",
+      "&:not(.hasBody)": {
+        alignItems: "center",
+      },
+      "&.hasBody": {
+        alignItems: "top",
+
+        ".actions": {
+          marginTop: -4,
+        },
+      },
       borderBottom: "1px solid rgb(222, 232, 240)",
       "&:hover": {
         zIndex: 1,
@@ -111,10 +113,29 @@ const MessageContainer = styled.div(({ theme }) => {
 
       ".actions": {
         display: "flex",
+        height: 24,
         alignItems: "center",
-        position: "absolute",
-        top: 6,
-        right: 6,
+
+        ".close": {
+          marginRight: -6,
+          marginLeft: 6,
+          marginTop: -3,
+        },
+
+        "> div": {
+          display: "flex",
+          alignItems: "center",
+          transition: "opacity 200ms ease-in-out",
+          visibility: "hidden",
+          opacity: 0,
+          "&:not(.visible)": {
+            position: "absolute",
+          },
+          "&.visible": {
+            opacity: 1,
+            visibility: "visible",
+          },
+        },
       },
     },
     theme?.message?.container
@@ -122,10 +143,9 @@ const MessageContainer = styled.div(({ theme }) => {
 });
 
 const Message: React.FunctionComponent<{
-  archiveTrackingId?: string;
+  trackingIds?: IMessageProps["trackingIds"];
   formattedTime?: string;
   messageId: string;
-  messageOptions: IMessageOption[];
   read?: boolean;
   renderedIcon: ReactNode;
   renderTextBlock?: React.FunctionComponent<ITextBlock>;
@@ -133,31 +153,59 @@ const Message: React.FunctionComponent<{
   title?: string;
 }> = ({
   read,
-  archiveTrackingId,
+  trackingIds,
   messageId,
   formattedTime,
   renderedIcon,
   renderTextBlock,
   textBlocks,
   title,
-  messageOptions,
 }) => {
-  const { autoMarkAsRead, markMessageArchived } = useInbox();
-  const [hoverRef, isHovered] = useHover();
-  const handleArchiveMessage = (event: React.MouseEvent) => {
-    event?.preventDefault();
-    if (!archiveTrackingId) {
-      return;
-    }
+  const { markMessageArchived, markMessageRead, markMessageUnread } =
+    useInbox();
 
-    markMessageArchived(messageId, archiveTrackingId);
+  const [hoverRef, isHovered] = useHover();
+  const [actionsHoverRef, areActionsHovered] = useHover();
+
+  const handleEvent = (eventName: string) => (event: React.MouseEvent) => {
+    event?.preventDefault();
+    switch (eventName) {
+      case "archived": {
+        if (!trackingIds?.archiveTrackingId) {
+          return;
+        }
+
+        markMessageArchived(messageId, trackingIds.archiveTrackingId);
+        break;
+      }
+
+      case "read": {
+        if (!trackingIds?.readTrackingId) {
+          return;
+        }
+
+        markMessageRead(messageId, trackingIds.readTrackingId);
+        break;
+      }
+
+      case "unread": {
+        if (!trackingIds?.unreadTrackingId) {
+          return;
+        }
+
+        markMessageUnread(messageId, trackingIds.unreadTrackingId);
+        break;
+      }
+    }
   };
 
   return (
     <MessageContainer
       ref={hoverRef}
-      className={classNames({
+      className={classNames("message-container", {
+        hover: isHovered && !areActionsHovered,
         read,
+        hasBody: Boolean(textBlocks?.length),
       })}
     >
       <UnreadIndicator read={read} />
@@ -177,35 +225,42 @@ const Message: React.FunctionComponent<{
           );
         })}
       </Contents>
-      <div className="actions">
-        {autoMarkAsRead && isHovered && archiveTrackingId ? (
-          <CloseInbox
-            size="small"
-            onClick={handleArchiveMessage}
-            tooltip="Archive Message"
-          />
-        ) : (
-          <>
-            <TimeAgo>{formattedTime}</TimeAgo>
-            {read && (
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.14983 6.7125L2.71983 5.2825C2.32983 4.8925 1.69983 4.8925 1.30983 5.2825C0.919834 5.6725 0.919834 6.3025 1.30983 6.6925L3.79983 9.1925C4.18983 9.5825 4.81983 9.5825 5.20983 9.1925L10.6998 3.7025C11.0898 3.3125 11.0898 2.6825 10.6998 2.2925C10.3098 1.9025 9.67983 1.9025 9.28983 2.2925L4.85983 6.7225C4.65983 6.9225 4.34983 6.9225 4.14983 6.7225V6.7125Z"
-                  fill="rgba(86, 96, 116, 0.3)"
-                />
-              </svg>
-            )}
-            {!autoMarkAsRead && messageOptions?.length ? (
-              <OptionsDropdown options={messageOptions} />
-            ) : undefined}
-          </>
-        )}
+      <div className="actions" ref={actionsHoverRef}>
+        <div
+          className={classNames({
+            visible: isHovered,
+          })}
+        >
+          {!read && trackingIds?.readTrackingId && (
+            <MarkRead onClick={handleEvent("read")} />
+          )}
+          {read && trackingIds?.unreadTrackingId && (
+            <MarkUnread onClick={handleEvent("unread")} />
+          )}
+          {trackingIds?.archiveTrackingId && (
+            <CloseAction
+              size="small"
+              onClick={handleEvent("archive")}
+              tooltip="Archive Message"
+            />
+          )}
+        </div>
+        <div
+          className={classNames({
+            visible: !isHovered,
+          })}
+        >
+          <TimeAgo>{formattedTime}</TimeAgo>
+          {read && (
+            <Checkmark
+              fill={"rgba(86, 96, 116, 0.3)"}
+              style={{
+                marginRight: -6,
+                marginLeft: -3,
+              }}
+            />
+          )}
+        </div>
       </div>
     </MessageContainer>
   );
@@ -224,7 +279,6 @@ const MessageWrapper: React.FunctionComponent<
   created,
   data,
   defaultIcon,
-  labels,
   formatDate,
   messageId,
   icon,
@@ -232,46 +286,12 @@ const MessageWrapper: React.FunctionComponent<
   read,
   renderBlocks,
   title,
-  trackingIds = {},
+  trackingIds,
 }) => {
-  const { brand, autoMarkAsRead, markMessageRead } = useInbox();
-  const {
-    readTrackingId,
-    unreadTrackingId,
-    archiveTrackingId,
-    clickTrackingId,
-  } = trackingIds || {};
-  const [messageTimeout, setMessageTimeout] = useState<NodeJS.Timeout>();
-
-  const { ref, inView } = useInView({
-    /* Optional options */
-    threshold: 0,
-  });
-
-  useEffect(() => {
-    if (!inView || !autoMarkAsRead || read) {
-      if (messageTimeout) {
-        clearTimeout(messageTimeout);
-      }
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      if (readTrackingId) {
-        markMessageRead(messageId, String(readTrackingId));
-      }
-
-      setMessageTimeout(undefined);
-    }, 5000);
-
-    setMessageTimeout(timeout);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [messageId, autoMarkAsRead, read, inView]);
+  const { brand, markMessageRead } = useInbox();
 
   const handleClickMessage = () => {
-    if (clickTrackingId) {
+    if (trackingIds?.clickTrackingId) {
       // mark message read, but don't fire the event as the backend will do it for us,
       // we just want to set the message as read here in our local state
       markMessageRead(messageId);
@@ -295,16 +315,6 @@ const MessageWrapper: React.FunctionComponent<
   const formattedTime = formatDate
     ? formatDate(created)
     : getTimeAgoShort(created);
-
-  const messageOptions = useMessageOptions({
-    archiveTrackingId,
-    labels,
-    messageId,
-    read,
-    readTrackingId,
-    showArchived: true,
-    unreadTrackingId,
-  });
 
   const blocksByType = useMemo(() => {
     return blocks?.reduce(
@@ -367,21 +377,19 @@ const MessageWrapper: React.FunctionComponent<
   const renderedMessage = useMemo(() => {
     return (
       <Message
-        archiveTrackingId={trackingIds.archiveTrackingId}
         formattedTime={formattedTime}
         messageId={messageId}
-        messageOptions={messageOptions}
         read={read}
         renderedIcon={renderedIcon}
         renderTextBlock={renderBlocks?.text}
         textBlocks={blocksByType?.text ?? []}
         title={title}
+        trackingIds={trackingIds}
       />
     );
   }, [
     blocksByType?.text,
     formattedTime,
-    messageOptions,
     read,
     renderBlocks?.text,
     renderedIcon,
@@ -389,13 +397,11 @@ const MessageWrapper: React.FunctionComponent<
   ]);
 
   return containerProps.href ? (
-    <ClickableContainer {...containerProps} ref={ref}>
+    <ClickableContainer {...containerProps}>
       {renderedMessage}
     </ClickableContainer>
   ) : (
-    <div {...containerProps} ref={ref}>
-      {renderedMessage}
-    </div>
+    <div {...containerProps}>{renderedMessage}</div>
   );
 };
 
