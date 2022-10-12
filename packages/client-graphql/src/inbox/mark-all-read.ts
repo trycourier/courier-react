@@ -20,7 +20,7 @@ export const markAllRead =
       return Promise.resolve(undefined);
     }
 
-    const results = await client.query(MARK_ALL_READ).toPromise();
+    const results = await client.mutation(MARK_ALL_READ).toPromise();
     const markAllRead = results?.data?.markAllRead;
 
     return {

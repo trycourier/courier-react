@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-preferences",
-  "version": "1.48.0",
+  "version": "1.48.1",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {
@@ -13,6 +13,7 @@
     "types": "tsc --build"
   },
   "peerDependencies": {
+    "@trycourier/react-provider": "^1.48.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
