@@ -21,11 +21,11 @@
   },
   "dependencies": {
     "@trycourier/client-graphql": "^1.48.0",
-    "@trycourier/react-provider": "^1.48.0",
     "deep-extend": "^0.6.0",
     "rimraf": "^3.0.2"
   },
   "peerDependencies": {
+    "@trycourier/react-provider": "1.48.0",
     "react": "^17.0.1"
   },
   "files": [
