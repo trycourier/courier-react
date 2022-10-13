@@ -13,7 +13,6 @@ const StyledButton = styled.button(({ theme }) => {
     background: "transparent",
     borderRadius: "6px",
     padding: 0,
-    marginRight: 6,
     marginTop: -3,
     height: "24px",
     width: "24px",
