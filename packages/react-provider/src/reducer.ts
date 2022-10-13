@@ -13,6 +13,17 @@ export const registerReducer = (scope, reducer) => {
 };
 
 const rootReducer = (state, action) => {
+  if (
+    typeof window !== "undefined" &&
+    (
+      window as {
+        DEBUG_COURIER_PROVIDER?: boolean;
+      }
+    ).DEBUG_COURIER_PROVIDER
+  ) {
+    console.log(action);
+  }
+
   const [scope] = action.type.split("/");
 
   if (scope !== "root" && reducers[scope]) {

@@ -170,7 +170,7 @@ const Message: React.FunctionComponent<{
   const handleEvent = (eventName: string) => (event: React.MouseEvent) => {
     event?.preventDefault();
     switch (eventName) {
-      case "archived": {
+      case "archive": {
         if (!trackingIds?.archiveTrackingId) {
           return;
         }
