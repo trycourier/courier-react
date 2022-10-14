@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import { PreferenceList } from "@trycourier/react-preferences";
+import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import Header from "./Header";
@@ -10,7 +11,6 @@ import LoadingMore from "./LoadingMore";
 import Message from "./Message";
 import PaginationEnd from "./PaginationEnd";
 import NoMessages from "./NoMessages";
-import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
 import { InboxProps } from "../../types";
 
@@ -24,6 +24,9 @@ const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
       {
         ...(isMobile
           ? {
+              "*, &": {
+                boxSizing: "border-box",
+              },
               position: "fixed",
               top: 0,
               left: 0,
@@ -31,6 +34,9 @@ const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
               height: "100vh",
             }
           : {
+              "*, &": {
+                boxSizing: "border-box",
+              },
               background: "#F2F6F9",
             }),
       },
@@ -70,7 +76,7 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
         return defaultHeight;
       }
 
-      return `Calc(100vh - 205px)`;
+      return `Calc(100vh - 90px)`;
     })();
 
     return deepExtend(

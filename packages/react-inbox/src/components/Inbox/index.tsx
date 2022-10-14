@@ -277,7 +277,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {tippyProps.visible ? (
           <>
             {isMobile ? (
-              <Messages ref={ref} isMobile={true} {...props} />
+              <MessageList ref={ref} isMobile={true} {...props} />
             ) : (
               <StyledTippy
                 {...tippyProps}

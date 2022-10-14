@@ -1,9 +1,9 @@
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import classNames from "classnames";
 import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
-import { TextBlock, getIcon, TimeAgo, Title } from "../Message/styled";
+import { TextBlock, getIcon, Title } from "../Message/styled";
 import { InboxProps } from "../../types";
 
 import { getTimeAgoShort } from "~/lib";
@@ -13,9 +13,7 @@ import Markdown from "markdown-to-jsx";
 import deepExtend from "deep-extend";
 import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
-import CloseAction from "./actions/Close";
-import MarkRead, { Checkmark } from "./actions/MarkRead";
-import MarkUnread from "./actions/MarkUnread";
+import MessageActions from "./actions";
 
 export interface IMessageProps {
   blocks?: Array<ITextBlock | IActionBlock>;
@@ -43,8 +41,7 @@ const ClickableContainer = styled.a(({ theme }) => {
 
   return deepExtend(
     {
-      "text-decoration": "none",
-      "*": {
+      "*, &": {
         "text-decoration": "none",
       },
       ".message-container.hover": {
@@ -89,52 +86,12 @@ const MessageContainer = styled.div(({ theme }) => {
       padding: "12px",
       minHeight: 60,
       backgroundColor: "#F9FAFB",
-      "&:not(.hasBody)": {
-        alignItems: "center",
-      },
-      "&.hasBody": {
-        alignItems: "top",
-
-        ".actions": {
-          marginTop: -4,
-        },
-      },
       borderBottom: "1px solid rgb(222, 232, 240)",
-      "&:hover": {
-        zIndex: 1,
-      },
       "&.read": {
         background: "#F2F6F9",
         ".icon": {
           filter: "grayscale(100%)",
           opacity: "0.3",
-        },
-      },
-
-      ".actions": {
-        display: "flex",
-        height: 24,
-        alignItems: "center",
-
-        ".close": {
-          marginRight: -6,
-          marginLeft: 6,
-          marginTop: -3,
-        },
-
-        "> div": {
-          display: "flex",
-          alignItems: "center",
-          transition: "opacity 200ms ease-in-out",
-          visibility: "hidden",
-          opacity: 0,
-          "&:not(.visible)": {
-            position: "absolute",
-          },
-          "&.visible": {
-            opacity: 1,
-            visibility: "visible",
-          },
         },
       },
     },
@@ -143,69 +100,27 @@ const MessageContainer = styled.div(({ theme }) => {
 });
 
 const Message: React.FunctionComponent<{
-  trackingIds?: IMessageProps["trackingIds"];
-  formattedTime?: string;
-  messageId: string;
+  areActionsHovered?: boolean;
+  isMessageHovered?: boolean;
   read?: boolean;
   renderedIcon: ReactNode;
   renderTextBlock?: React.FunctionComponent<ITextBlock>;
   textBlocks: ITextBlock[];
   title?: string;
 }> = ({
+  areActionsHovered,
+  isMessageHovered,
   read,
-  trackingIds,
-  messageId,
-  formattedTime,
   renderedIcon,
   renderTextBlock,
   textBlocks,
   title,
 }) => {
-  const { markMessageArchived, markMessageRead, markMessageUnread } =
-    useInbox();
-
-  const [hoverRef, isHovered] = useHover();
-  const [actionsHoverRef, areActionsHovered] = useHover();
-
-  const handleEvent = (eventName: string) => (event: React.MouseEvent) => {
-    event?.preventDefault();
-    switch (eventName) {
-      case "archive": {
-        if (!trackingIds?.archiveTrackingId) {
-          return;
-        }
-
-        markMessageArchived(messageId, trackingIds.archiveTrackingId);
-        break;
-      }
-
-      case "read": {
-        if (!trackingIds?.readTrackingId) {
-          return;
-        }
-
-        markMessageRead(messageId, trackingIds.readTrackingId);
-        break;
-      }
-
-      case "unread": {
-        if (!trackingIds?.unreadTrackingId) {
-          return;
-        }
-
-        markMessageUnread(messageId, trackingIds.unreadTrackingId);
-        break;
-      }
-    }
-  };
-
   return (
     <MessageContainer
-      ref={hoverRef}
       className={classNames("message-container", {
-        hover: isHovered && !areActionsHovered,
+        hover: isMessageHovered && !areActionsHovered,
         read,
-        hasBody: Boolean(textBlocks?.length),
       })}
     >
       <UnreadIndicator read={read} />
@@ -225,43 +140,6 @@ const Message: React.FunctionComponent<{
           );
         })}
       </Contents>
-      <div className="actions" ref={actionsHoverRef}>
-        <div
-          className={classNames({
-            visible: isHovered,
-          })}
-        >
-          {!read && trackingIds?.readTrackingId && (
-            <MarkRead onClick={handleEvent("read")} />
-          )}
-          {read && trackingIds?.unreadTrackingId && (
-            <MarkUnread onClick={handleEvent("unread")} />
-          )}
-          {trackingIds?.archiveTrackingId && (
-            <CloseAction
-              size="small"
-              onClick={handleEvent("archive")}
-              tooltip="Archive Message"
-            />
-          )}
-        </div>
-        <div
-          className={classNames({
-            visible: !isHovered,
-          })}
-        >
-          <TimeAgo>{formattedTime}</TimeAgo>
-          {read && (
-            <Checkmark
-              fill={"rgba(86, 96, 116, 0.3)"}
-              style={{
-                marginRight: -6,
-                marginLeft: -3,
-              }}
-            />
-          )}
-        </div>
-      </div>
     </MessageContainer>
   );
 };
@@ -288,13 +166,16 @@ const MessageWrapper: React.FunctionComponent<
   title,
   trackingIds,
 }) => {
+  const [messageHoverRef, isMessageHovered] = useHover();
+  const [areActionsHovered, setAreActionsHovered] = useState(false);
   const { brand, markMessageRead } = useInbox();
 
-  const handleClickMessage = () => {
-    if (trackingIds?.clickTrackingId) {
+  const handleClickMessage = (event?: React.MouseEvent) => {
+    event?.preventDefault();
+    if (trackingIds?.clickTrackingId && trackingIds?.readTrackingId) {
       // mark message read, but don't fire the event as the backend will do it for us,
       // we just want to set the message as read here in our local state
-      markMessageRead(messageId);
+      markMessageRead(messageId, trackingIds?.readTrackingId);
     }
   };
 
@@ -352,14 +233,11 @@ const MessageWrapper: React.FunctionComponent<
   }, []);
 
   let containerProps: {
-    "data-testid": string;
     href?: string;
     onMouseDown?: (event: React.MouseEvent) => void;
     rel?: string;
     target?: string;
-  } = {
-    "data-testid": "inbox-message",
-  };
+  } = {};
 
   if (clickAction) {
     containerProps.href = clickAction;
@@ -377,31 +255,51 @@ const MessageWrapper: React.FunctionComponent<
   const renderedMessage = useMemo(() => {
     return (
       <Message
-        formattedTime={formattedTime}
-        messageId={messageId}
+        areActionsHovered={areActionsHovered}
+        isMessageHovered={isMessageHovered}
         read={read}
         renderedIcon={renderedIcon}
         renderTextBlock={renderBlocks?.text}
         textBlocks={blocksByType?.text ?? []}
         title={title}
-        trackingIds={trackingIds}
       />
     );
   }, [
+    areActionsHovered,
     blocksByType?.text,
     formattedTime,
+    isMessageHovered,
     read,
     renderBlocks?.text,
     renderedIcon,
     title,
   ]);
 
-  return containerProps.href ? (
-    <ClickableContainer {...containerProps}>
-      {renderedMessage}
-    </ClickableContainer>
-  ) : (
-    <div {...containerProps}>{renderedMessage}</div>
+  return (
+    <div
+      ref={messageHoverRef}
+      data-testid="inbox-message"
+      style={{
+        position: "relative",
+      }}
+    >
+      {containerProps.href ? (
+        <ClickableContainer {...containerProps}>
+          {renderedMessage}
+        </ClickableContainer>
+      ) : (
+        renderedMessage
+      )}
+      <MessageActions
+        formattedTime={formattedTime}
+        hasBody={Boolean(renderBlocks?.text?.length)}
+        isMessageHovered={isMessageHovered}
+        messageId={messageId}
+        read={read}
+        setAreActionsHovered={setAreActionsHovered}
+        trackingIds={trackingIds}
+      />
+    </div>
   );
 };
 
