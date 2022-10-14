@@ -13,7 +13,6 @@ export const registerReducer = (scope, reducer) => {
 };
 
 const rootReducer = (state, action) => {
-  console.log(action);
   if (
     typeof window !== "undefined" &&
     (
