@@ -56,7 +56,6 @@ const LineBreak = styled.div`
 `;
 
 const StyledItem = styled.div`
-  border-bottom: 1px solid #dadce0;
   padding: 10px;
   margin-top: 6px;
   background: white;
