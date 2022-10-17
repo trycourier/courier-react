@@ -18,16 +18,16 @@ export interface IFetchMessagesParams {
 interface IInboxActions {
   /** Fetches messages from the server, sets inbox.messages to the received value */
   fetchMessages: (params?: IFetchMessagesParams) => void;
-  /** Returns a count of messages who's status === "unread" */
+  /** Returns a count of messages that do not have a message.read date */
   getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
   init: (inbox: IElementalInbox) => void;
-  /** Marks message.status = "read" for all messages in the channel */
+  /** Marks all messages as read by setting message.read to the current ISO 8601 date */
   markAllAsRead: () => void;
   /** Archives the supplied message, archived messages are not returned by fetchMessages */
   markMessageArchived: (messageId: string) => Promise<void>;
-  /** Sets message.status to "read */
+  /** Sets message.read to the current ISO 8601 date  */
   markMessageRead: (messageId: string) => Promise<void>;
-  /** Sets message.status = "unread */
+  /** Removes message.read, signalling that the message is no longer read */
   markMessageUnread: (messageId: string) => Promise<void>;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
