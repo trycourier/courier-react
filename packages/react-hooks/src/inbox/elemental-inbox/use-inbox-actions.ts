@@ -37,7 +37,7 @@ interface IInboxActions {
    * this function can be called with a new token every 5 minutes to ensure
    * messages are received in real time with no interruptions.
    */
-  renewSession: (token: string) => void;
+  renewSession: (authorization: string) => void;
 }
 
 const useElementalInboxActions = (): IInboxActions => {
@@ -121,7 +121,9 @@ const useElementalInboxActions = (): IInboxActions => {
       await inboxClient.markArchive(messageId);
     },
     renewSession: async (token: string) => {
-      await (transport as CourierTransport).renewSession(token);
+      if (transport instanceof CourierTransport) {
+        transport.renewSession(token);
+      }
     },
   };
 };
