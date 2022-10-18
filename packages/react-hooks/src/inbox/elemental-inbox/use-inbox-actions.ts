@@ -1,4 +1,4 @@
-import { useCourier } from "@trycourier/react-provider";
+import { CourierTransport, useCourier } from "@trycourier/react-provider";
 import { IElementalInbox } from "./types";
 import { createCourierClient, Inbox } from "@trycourier/client-graphql";
 import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
@@ -16,15 +16,28 @@ export interface IFetchMessagesParams {
 }
 
 interface IInboxActions {
+  /** Fetches messages from the server, sets inbox.messages to the received value */
   fetchMessages: (params?: IFetchMessagesParams) => void;
+  /** Returns a count of messages that do not have a message.read date */
   getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
   init: (inbox: IElementalInbox) => void;
+  /** Marks all messages as read by setting message.read to the current ISO 8601 date */
   markAllAsRead: () => void;
+  /** Archives the supplied message, archived messages are not returned by fetchMessages */
   markMessageArchived: (messageId: string) => Promise<void>;
+  /** Sets message.read to the current ISO 8601 date  */
   markMessageRead: (messageId: string) => Promise<void>;
+  /** Removes message.read, signalling that the message is no longer read */
   markMessageUnread: (messageId: string) => Promise<void>;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
+  /**
+   * Allows for renewal of sessions authorized with short lived tokens.
+   * For example, if the supplied authorization token lasts 10 minutes,
+   * this function can be called with a new token every 5 minutes to ensure
+   * messages are received in real time with no interruptions.
+   */
+  renewSession: (authorization: string) => void;
 }
 
 const useElementalInboxActions = (): IInboxActions => {
@@ -36,6 +49,7 @@ const useElementalInboxActions = (): IInboxActions => {
     inbox,
     userId,
     userSignature,
+    transport,
   } =
     useCourier<{
       inbox: IElementalInbox;
@@ -105,6 +119,11 @@ const useElementalInboxActions = (): IInboxActions => {
     markMessageArchived: async (messageId: string) => {
       dispatch(markMessageArchived(messageId));
       await inboxClient.markArchive(messageId);
+    },
+    renewSession: async (token: string) => {
+      if (transport instanceof CourierTransport) {
+        transport.renewSession(token);
+      }
     },
   };
 };

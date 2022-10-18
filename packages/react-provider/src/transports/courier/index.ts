@@ -57,4 +57,8 @@ export class CourierTransport extends Transport {
   unsubscribe(channel: string, event?: string): void {
     this.ws.unsubscribe(channel, event ?? "*");
   }
+
+  renewSession(token: string): void {
+    this.ws.renewSession(token);
+  }
 }

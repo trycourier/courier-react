@@ -1,6 +1,6 @@
 import { ICourierEventCallback, ICourierMessage } from "./transports/types";
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
-import { ErrorEventHandler } from "./types";
+import { ErrorEventHandler, WSOptions } from "./types";
 
 export class WS {
   connection?: ReconnectingWebSocket;
@@ -13,6 +13,7 @@ export class WS {
   private clientKey?: string;
   private connectionTimeout?: number;
   private onError?: ErrorEventHandler;
+  private onClose?: () => void;
   private url: string;
   private userSignature?: string;
   protected connected;
@@ -26,11 +27,7 @@ export class WS {
   }: {
     authorization?: string;
     clientKey?: string;
-    options?: {
-      connectionTimeout?: number;
-      onError?: ErrorEventHandler;
-      url?: string;
-    };
+    options?: WSOptions;
     userSignature?: string;
   }) {
     this.authorization = authorization;
@@ -46,6 +43,7 @@ export class WS {
     this.subscriptions = [];
     this.connectionTimeout = options?.connectionTimeout;
     this.onError = options?.onError;
+    this.onClose = options?.onClose;
   }
 
   connect(): void {
@@ -79,6 +77,9 @@ export class WS {
 
   _onClose(): void {
     this.connected = false;
+    if (this.onClose) {
+      this.onClose();
+    }
   }
 
   _onOpen(): void {
@@ -169,6 +170,16 @@ export class WS {
         event,
         clientKey: this.clientKey,
         userSignature: this.userSignature,
+      },
+    });
+  }
+
+  renewSession(token: string): void {
+    this.send({
+      action: "renewSession",
+      data: {
+        version: "2",
+        auth: token,
       },
     });
   }
