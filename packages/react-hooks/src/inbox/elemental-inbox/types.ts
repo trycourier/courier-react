@@ -5,11 +5,11 @@ import {
 import { Brand } from "@trycourier/react-provider";
 
 export interface IElementalInbox {
-  lastMessagesFetched?: number;
   brand?: Brand;
   from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
+  lastMessagesFetched?: number;
   messages?: Array<IElementalInboxMessagePreview>;
   startCursor?: string;
   unreadMessageCount?: number;

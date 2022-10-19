@@ -14,12 +14,11 @@ import { toggleInbox } from "./actions/toggle-inbox";
 import { setView } from "./actions/set-view";
 import { setCurrentTab } from "./actions/set-current-tab";
 import { markMessageRead } from "./actions/mark-message-read";
-import { markAllRead } from "./actions/mark-all-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
 import { markMessageArchived } from "./actions/mark-message-archived";
 import {
   rehydrateMessages,
-  Rehydratemessages,
+  RehydrateMessages,
 } from "./actions/rehydrate-messages";
 
 export interface IFetchMessagesParams {
@@ -36,7 +35,7 @@ interface IInboxActions {
   markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
   markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
-  rehydrateMessages: (payload: Rehydratemessages["payload"]) => void;
+  rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
@@ -184,8 +183,10 @@ const useInboxActions = (): IInboxActions => {
       }
     },
     markAllAsRead: async () => {
-      dispatch(markAllRead());
-      await events.trackEventBatch("read");
+      dispatch({
+        type: "inbox/MARK_ALL_READ",
+        payload: () => events.trackEventBatch("read"),
+      });
     },
     markMessageUnread: async (messageId: string, trackingId: string) => {
       dispatch(markMessageUnread(messageId));

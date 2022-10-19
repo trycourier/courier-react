@@ -31,12 +31,14 @@ const Styled = styled.div`
   }
 `;
 
-const LoadingIndicator: React.FunctionComponent = () => {
+const LoadingIndicator: React.FunctionComponent<{ width?: string }> = ({
+  width = 48,
+}) => {
   return (
     <Styled>
       <svg
-        width="48"
-        height="48"
+        width={width}
+        height={width}
         viewBox="0 0 48 48"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

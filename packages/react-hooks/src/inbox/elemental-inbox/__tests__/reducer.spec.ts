@@ -1,8 +1,8 @@
-import { IElementalInboxMessagePreview } from "../types";
+import { IElementalInbox, IElementalInboxMessagePreview } from "../types";
 import reducer, { initialState } from "../reducer";
-import { initInbox, INBOX_INIT } from "../actions/init";
-import { setView, INBOX_SET_VIEW } from "../actions/set-view";
-import { toggleInbox, INBOX_TOGGLE } from "../actions/toggle-inbox";
+import { initInbox, INBOX_INIT } from "../../actions/init";
+import { setView, INBOX_SET_VIEW } from "../../actions/set-view";
+import { toggleInbox, INBOX_TOGGLE } from "../../actions/toggle-inbox";
 import {
   fetchUnreadMessageCountDone,
   INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE,
@@ -19,11 +19,11 @@ import {
 import {
   markMessageRead,
   INBOX_MARK_MESSAGE_READ,
-} from "../actions/mark-message-read";
+} from "../../actions/mark-message-read";
 import {
   markMessageUnread,
   INBOX_MARK_MESSAGE_UNREAD,
-} from "../actions/mark-message-unread";
+} from "../../actions/mark-message-unread";
 
 import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
 
@@ -57,7 +57,7 @@ describe("inbox reducer", () => {
   it(`action ${INBOX_INIT}`, () => {
     const state = reducer(
       initialState,
-      initInbox({
+      initInbox<IElementalInbox>({
         isOpen: true,
       })
     );

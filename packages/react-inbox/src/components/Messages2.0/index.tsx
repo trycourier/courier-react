@@ -121,7 +121,7 @@ export const Footer = styled.div(({ theme }) =>
       paddingRight: 18,
       svg: {
         marginLeft: -3,
-        marginTop: -2,
+        marginTop: -4,
       },
 
       a: {

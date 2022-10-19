@@ -131,6 +131,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     fetchMessages,
     init,
     isOpen: isOpenState,
+    lastMessagesFetched,
     setCurrentTab,
     setView,
     tabs,
@@ -161,22 +162,29 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       event.preventDefault();
       let myCurrentTab = currentTab;
       if (!isOpen) {
+        const now = new Date().getTime();
+        const dateDiff = lastMessagesFetched
+          ? now - lastMessagesFetched
+          : undefined;
+
         setView("messages");
         myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
         setCurrentTab(myCurrentTab);
 
-        if (tabs) {
-          fetchMessageLists(tabs);
-        } else {
-          fetchMessages({
-            params: myCurrentTab.filters,
-          });
+        if (!dateDiff || dateDiff > 3600000) {
+          if (tabs) {
+            fetchMessageLists(tabs);
+          } else {
+            fetchMessages({
+              params: myCurrentTab.filters,
+            });
+          }
         }
       }
 
       toggleInbox();
     },
-    [tabs, isOpen, setView, setCurrentTab]
+    [lastMessagesFetched, tabs, isOpen, setView, setCurrentTab]
   );
 
   const handleClickOutside = useCallback(

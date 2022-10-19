@@ -34,7 +34,7 @@ import {
 import { ITab } from "../types";
 import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
 
-import { INBOX_MARK_ALL_READ, markAllRead } from "../actions/mark-all-read";
+import { INBOX_MARK_ALL_READ, markAllReadDone } from "../actions/mark-all-read";
 import {
   fetchMessageListsPending,
   fetchMessageListsDone,
@@ -465,6 +465,7 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           isLoading: false,
         });
@@ -491,6 +492,7 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           currentTab: mockTab,
           isLoading: false,
@@ -519,6 +521,7 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          lastMessagesFetched: mockDate,
           messages: [
             mapMessage(mockGraphMessage),
             mapMessage(mockGraphMessage2),
@@ -562,6 +565,7 @@ describe("inbox reducer", () => {
         expect(state).toEqual({
           ...initialState,
           currentTab: mockTabs[0],
+          lastMessagesFetched: mockDate,
           tabs: [
             mockTab,
             {
@@ -627,6 +631,7 @@ describe("inbox reducer", () => {
         expect(state).toEqual({
           ...initialState,
           currentTab: mockTab,
+          lastMessagesFetched: mockDate,
           messages: [mapMessage(mockGraphMessage)],
           tabs: [
             {
@@ -911,12 +916,16 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mappedMessage, mappedMessage2],
         },
-        markAllRead()
+        markAllReadDone({
+          ids: [mappedMessage.messageId, mappedMessage2.messageId],
+        })
       );
 
       expect(state).toEqual({
         ...initialState,
         unreadMessageCount: 0,
+        lastMarkedAllRead: mockDate,
+        markingAllAsRead: false,
         messages: [
           {
             ...mappedMessage,
@@ -958,13 +967,17 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mappedMessage, mappedMessage2],
         },
-        markAllRead()
+        markAllReadDone({
+          ids: [mappedMessage.messageId, mappedMessage2.messageId],
+        })
       );
 
       expect(state).toEqual({
         ...initialState,
         currentTab: unreadTab,
         unreadMessageCount: 0,
+        lastMarkedAllRead: mockDate,
+        markingAllAsRead: false,
         messages: [],
         tabs: [
           {
@@ -1020,7 +1033,9 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mappedMessage, mappedMessage2],
         },
-        markAllRead()
+        markAllReadDone({
+          ids: [mappedMessage.messageId, mappedMessage2.messageId],
+        })
       );
 
       const readMessages = [
@@ -1039,6 +1054,8 @@ describe("inbox reducer", () => {
         currentTab: allMessagesTab,
         unreadMessageCount: 0,
         messages: readMessages,
+        lastMarkedAllRead: mockDate,
+        markingAllAsRead: false,
         tabs: [
           {
             ...unreadTab,

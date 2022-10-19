@@ -1,21 +1,21 @@
 import { IElementalInbox, IElementalInboxMessagePreview } from "./types";
-import { InboxInit, INBOX_INIT } from "./actions/init";
-import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
-import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
+import { InboxInit, INBOX_INIT } from "../actions/init";
+import { InboxSetView, INBOX_SET_VIEW } from "../actions/set-view";
+import { ToggleInbox, INBOX_TOGGLE } from "../actions/toggle-inbox";
 import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
 import {
   MarkMessageArchived,
   INBOX_MARK_MESSAGE_ARCHIVED,
-} from "./actions/mark-message-archived";
+} from "../actions/mark-message-archived";
 import {
   MarkMessageRead,
   INBOX_MARK_MESSAGE_READ,
-} from "./actions/mark-message-read";
+} from "../actions/mark-message-read";
 import {
   MarkMessageUnread,
   INBOX_MARK_MESSAGE_UNREAD,
-} from "./actions/mark-message-unread";
+} from "../actions/mark-message-unread";
 import {
   FetchUnreadMessageCountDone,
   INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE,
@@ -41,7 +41,7 @@ type ElementalInboxAction =
   | FetchMessagesError
   | FetchMessagesPending
   | FetchUnreadMessageCountDone
-  | InboxInit
+  | InboxInit<IElementalInbox>
   | InboxSetView
   | MarkAllRead
   | MarkMessageArchived

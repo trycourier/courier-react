@@ -9,6 +9,7 @@ import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
+import Loading from "./Loading";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
@@ -38,7 +39,10 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       borderTopLeftRadius: "12px",
       borderTopRightRadius: "12px",
       ".actions": {
-        paddingTop: 6,
+        width: 54,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
       },
     },
     theme?.header
@@ -130,6 +134,7 @@ const HeadingDropdownButtonContainer = styled.div<{
   return styles;
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const HeadingDropdownOptions = styled.div((_) => {
   return {
     position: "absolute",
@@ -168,7 +173,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
-  const { view, setView, tabs, toggleInbox } = useInbox();
+  const { view, setView, tabs, toggleInbox, markingAllAsRead } = useInbox();
   const handleSetView =
     (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
@@ -276,7 +281,12 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       )}
       <div className="actions">
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
-          tabs === undefined) && <MarkAllRead onClick={markAllAsRead} />}
+          tabs === undefined) &&
+          (markingAllAsRead ? (
+            <Loading width="24px" />
+          ) : (
+            <MarkAllRead onClick={markAllAsRead} />
+          ))}
         <CloseInbox onClick={handleCloseInbox} tooltip="Close Inbox" />
       </div>
     </Container>

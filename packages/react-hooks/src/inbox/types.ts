@@ -33,14 +33,17 @@ export interface IMessage {
   };
 }
 
-export interface IInbox {
+export interface IInbox<T = IMessage> {
   autoMarkAsRead?: boolean;
   brand?: Brand;
   currentTab?: ITab;
   from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
-  messages?: Array<IMessage>;
+  lastMarkedAllRead?: number;
+  lastMessagesFetched?: number;
+  markingAllAsRead?: boolean;
+  messages?: Array<T>;
   startCursor?: string;
   tabs?: ITab[];
   unreadMessageCount?: number;

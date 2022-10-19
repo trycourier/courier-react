@@ -31,7 +31,7 @@ const TRACK_EVENT_BATCH = `
     }
   }
 `;
-export type TrackEventBatch = (eventType: string) => Promise<void>;
+export type TrackEventBatch = (eventType: string) => Promise<string[]>;
 export const trackEventBatch =
   (client?: Client): TrackEventBatch =>
   async (eventType) => {
@@ -39,11 +39,13 @@ export const trackEventBatch =
       return Promise.resolve(undefined);
     }
 
-    await client
+    const response = await client
       .mutation(TRACK_EVENT_BATCH, {
         eventType,
       })
       .toPromise();
+
+    return response?.data?.batchTrackEvent?.ids ?? [];
   };
 
 export default (
