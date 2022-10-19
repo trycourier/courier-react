@@ -2,8 +2,14 @@ import { useEffect, useMemo } from "react";
 import { useInbox } from "@trycourier/react-hooks";
 
 const useLocalStorageMessages = (clientKey: string, userId: string) => {
-  const { messages, rehydrateMessages, startCursor, tabs, unreadMessageCount } =
-    useInbox();
+  const {
+    lastMessagesFetched,
+    messages,
+    rehydrateMessages,
+    startCursor,
+    tabs,
+    unreadMessageCount,
+  } = useInbox();
 
   const localStorageKey = useMemo(() => {
     if (!clientKey || !userId) {
@@ -21,9 +27,15 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     const localStorageState = window.localStorage.getItem(localStorageKey);
     if (localStorageState) {
       try {
-        const { unreadMessageCount, messages, tabs, startCursor } =
-          JSON.parse(localStorageState);
+        const {
+          lastMessagesFetched,
+          unreadMessageCount,
+          messages,
+          tabs,
+          startCursor,
+        } = JSON.parse(localStorageState);
         rehydrateMessages({
+          lastMessagesFetched,
           messages,
           startCursor,
           tabs,
@@ -40,28 +52,24 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
       return;
     }
 
-    const hasMoreThan10Messages = (messages?.length ?? 0) > 10;
-
     window.localStorage.setItem(
       localStorageKey,
       JSON.stringify({
-        messages: messages?.slice(0, 10),
-        startCursor: hasMoreThan10Messages ? undefined : startCursor,
+        lastMessagesFetched,
+        messages,
+        startCursor,
         unreadMessageCount,
         tabs: tabs?.map((tab) => {
           if (!tab.state) {
             return tab;
           }
 
-          // only save first 10 messages in state
           const tabState = tab.state;
-          const tabHasMoreThan10 = (tabState?.messages?.length ?? 0) > 10;
-
           return {
             ...tab,
             state: {
-              messages: tabState?.messages?.slice(0, 10),
-              startCursor: tabHasMoreThan10 ? undefined : tabState.startCursor,
+              messages: tabState?.messages,
+              startCursor: tabState.startCursor,
             },
           };
         }),

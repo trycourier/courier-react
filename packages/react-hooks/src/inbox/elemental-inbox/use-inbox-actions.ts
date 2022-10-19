@@ -2,13 +2,14 @@ import { CourierTransport, useCourier } from "@trycourier/react-provider";
 import { IElementalInbox } from "./types";
 import { createCourierClient, Inbox } from "@trycourier/client-graphql";
 import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
-import { initInbox } from "./actions/init";
-import { toggleInbox } from "./actions/toggle-inbox";
-import { setView } from "./actions/set-view";
-import { markMessageRead } from "./actions/mark-message-read";
+import { initInbox } from "../actions/init";
+import { toggleInbox } from "../actions/toggle-inbox";
+import { setView } from "../actions/set-view";
+import { markMessageRead } from "../actions/mark-message-read";
 import { markAllRead } from "./actions/mark-all-read";
-import { markMessageUnread } from "./actions/mark-message-unread";
-import { markMessageArchived } from "./actions/mark-message-archived";
+import { markMessageUnread } from "../actions/mark-message-unread";
+import { markMessageArchived } from "../actions/mark-message-archived";
+import { IInbox } from "../types";
 
 export interface IFetchMessagesParams {
   params?: IGetInboxMessagesParams;
@@ -20,7 +21,7 @@ interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   /** Returns a count of messages that do not have a message.read date */
   getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
-  init: (inbox: IElementalInbox) => void;
+  init: (inbox: IInbox<IElementalInbox>) => void;
   /** Marks all messages as read by setting message.read to the current ISO 8601 date */
   markAllAsRead: () => void;
   /** Archives the supplied message, archived messages are not returned by fetchMessages */

@@ -1,13 +1,15 @@
 import { IInbox } from "../types";
 
-export type InboxInit = {
+export type InboxInit<T = IInbox> = {
   type: "inbox/INIT";
-  payload: IInbox;
+  payload: T;
 };
 
 export const INBOX_INIT = "inbox/INIT";
 
-export const initInbox = (payload: IInbox): InboxInit => ({
-  type: INBOX_INIT,
-  payload,
-});
+export function initInbox<T = IInbox>(payload: T): InboxInit<T> {
+  return {
+    type: INBOX_INIT,
+    payload,
+  };
+}

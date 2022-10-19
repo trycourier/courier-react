@@ -4,10 +4,17 @@ import { IMessage, IInbox, ITab } from "./types";
 import { InboxInit, INBOX_INIT } from "./actions/init";
 import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
 import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
-import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
+import {
+  INBOX_MARK_ALL_READ_DONE,
+  MarkAllReadDone,
+  MarkAllReadPending,
+  MarkAllReadError,
+  INBOX_MARK_ALL_READ_PENDING,
+  INBOX_MARK_ALL_READ_ERROR,
+} from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
 import {
-  Rehydratemessages,
+  RehydrateMessages,
   INBOX_REHYDRATE_MESSAGES,
 } from "./actions/rehydrate-messages";
 
@@ -48,13 +55,20 @@ import {
   INBOX_SET_CURRENT_TAB,
 } from "./actions/set-current-tab";
 
-export const mapMessage = (message: IGraphMessageResponse): IMessage => ({
+export const mapMessage = (
+  message: IGraphMessageResponse,
+  lastMarkedAllRead?: number
+): IMessage => ({
   blocks: message.content.blocks,
   body: message.content.body,
   created: message.created,
   data: message.content.data,
   messageId: message.messageId,
-  read: message.read,
+  read: lastMarkedAllRead
+    ? lastMarkedAllRead > new Date(message.created).getTime()
+      ? true
+      : message.read
+    : message.read,
   title: message.content.title,
   trackingIds: message.content.trackingIds,
 });
@@ -76,8 +90,10 @@ type InboxAction =
   | FetchUnreadMessageCountDone
   | InboxInit
   | InboxSetView
-  | MarkAllRead
-  | Rehydratemessages
+  | MarkAllReadError
+  | MarkAllReadPending
+  | MarkAllReadDone
+  | RehydrateMessages
   | MarkMessageArchived
   | MarkMessageRead
   | MarkMessageUnread
@@ -172,6 +188,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       if (!state.tabs && action.payload.messages) {
         return {
           ...state,
+          lastMessagesFetched: action.payload.lastMessagesFetched,
           messages: action.payload.messages,
           startCursor: action.payload.startCursor,
           unreadMessageCount: action.payload.unreadMessageCount,
@@ -200,6 +217,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         ...newTabs?.[0]?.state,
+        lastMessagesFetched: action.payload.lastMessagesFetched,
         tabs: newTabs,
         unreadMessageCount: action.payload.unreadMessageCount,
       };
@@ -225,12 +243,15 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         ...currentTab?.state,
         isLoading: false,
+        lastMessagesFetched: new Date().getTime(),
         tabs: newTabs,
       };
     }
 
     case INBOX_FETCH_MESSAGES_DONE: {
-      const mappedMessages = action.payload.messages.map(mapMessage);
+      const mappedMessages = action.payload.messages.map((message) =>
+        mapMessage(message, state.lastMarkedAllRead)
+      );
 
       if (!state.tabs) {
         const newMessages = action.payload.appendMessages
@@ -240,8 +261,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return {
           ...state,
           isLoading: false,
-          startCursor: action.payload.startCursor,
+          lastMessagesFetched: new Date().getTime(),
           messages: newMessages,
+          startCursor: action.payload.startCursor,
         };
       }
 
@@ -268,6 +290,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return {
           ...state,
           isLoading: false,
+          lastMessagesFetched: new Date().getTime(),
           tabs,
         };
       }
@@ -275,6 +298,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
+        lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         startCursor: action.payload.startCursor,
         tabs,
@@ -282,10 +306,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_MARK_MESSAGE_READ: {
-      const unreadMessageCount = Math.max(
-        (state.unreadMessageCount ?? 0) - 1,
-        0
-      );
+      const unreadMessageCount = Math.max((state.unreadMessageCount ?? 0) - 1);
 
       const currentTab = state.currentTab;
       if (currentTab?.filters?.isRead === false) {
@@ -475,7 +496,21 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
-    case INBOX_MARK_ALL_READ: {
+    case INBOX_MARK_ALL_READ_PENDING: {
+      return {
+        ...state,
+        markingAllAsRead: true,
+      };
+    }
+
+    case INBOX_MARK_ALL_READ_ERROR: {
+      return {
+        ...state,
+        markingAllAsRead: false,
+      };
+    }
+
+    case INBOX_MARK_ALL_READ_DONE: {
       const unreadMessageCount = 0;
       const currentTab = state.currentTab;
 
@@ -502,6 +537,8 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
         return {
           ...state,
+          lastMarkedAllRead: new Date().getTime(),
+          markingAllAsRead: false,
           messages: [],
           tabs,
           unreadMessageCount,
@@ -537,6 +574,8 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
+        lastMarkedAllRead: new Date().getTime(),
+        markingAllAsRead: false,
         messages: newMessages,
         tabs,
         unreadMessageCount,

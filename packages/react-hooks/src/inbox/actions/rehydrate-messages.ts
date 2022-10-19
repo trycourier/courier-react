@@ -1,11 +1,12 @@
 import { IMessage, ITab } from "../types";
 
-export type Rehydratemessages = {
+export type RehydrateMessages = {
   type: "inbox/REHYDRATE_MESSAGES";
   payload: {
-    tabs?: ITab[];
+    lastMessagesFetched?: number;
     messages?: IMessage[];
     startCursor?: string;
+    tabs?: ITab[];
     unreadMessageCount?: number;
   };
 };
@@ -13,8 +14,8 @@ export type Rehydratemessages = {
 export const INBOX_REHYDRATE_MESSAGES = "inbox/REHYDRATE_MESSAGES";
 
 export const rehydrateMessages = (
-  payload: Rehydratemessages["payload"]
-): Rehydratemessages => ({
+  payload: RehydrateMessages["payload"]
+): RehydrateMessages => ({
   type: INBOX_REHYDRATE_MESSAGES,
   payload,
 });
