@@ -171,8 +171,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
         setCurrentTab(myCurrentTab);
 
-        console.log("lastMessagesFetched", lastMessagesFetched);
-        console.log("dateDiff", dateDiff);
         if (!dateDiff || dateDiff > 3600000) {
           if (tabs) {
             fetchMessageLists(tabs);
