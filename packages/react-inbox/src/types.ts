@@ -17,7 +17,6 @@ export interface InboxProps {
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
-  autoMarkAsRead?: boolean;
   formatDate?: (isoDate: string) => string;
   labels?: {
     archiveMessage?: string;

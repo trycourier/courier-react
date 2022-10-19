@@ -117,7 +117,6 @@ export const Version2 = () => {
           userId={USER_ID}
         >
           <Inbox
-            autoMarkAsRead={false}
             isOpen={true}
             theme={{
               name: "2.0",
@@ -267,7 +266,6 @@ export const PaginationEnd = () => {
                   ...action,
                   payload: {
                     ...action.payload,
-                    autoMarkAsRead: false,
                     isLoading: false,
                     messages: mockMessages,
                   },
@@ -325,7 +323,6 @@ export const NoCourierFooter = () => {
                   ...action,
                   payload: {
                     ...action.payload,
-                    autoMarkAsRead: false,
                     isLoading: false,
                     messages: mockMessages,
                   },

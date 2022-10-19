@@ -46,7 +46,7 @@ const Message: React.FunctionComponent<
   trackingIds = {},
 }) => {
   const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const { brand } = useInbox();
+  const { brand, markMessageRead } = useInbox();
 
   const renderedIcon = getIcon(
     /* priority:
@@ -71,6 +71,12 @@ const Message: React.FunctionComponent<
     readTrackingId,
     unreadTrackingId,
   });
+
+  const handleMarkAsReadOnClick = () => {
+    if (!read) {
+      markMessageRead(messageId);
+    }
+  };
 
   return (
     <Container
@@ -107,7 +113,10 @@ const Message: React.FunctionComponent<
               let actionProps: {
                 target?: string;
                 rel?: string;
-              } = {};
+                onClick: (event: React.MouseEvent) => void;
+              } = {
+                onClick: handleMarkAsReadOnClick,
+              };
 
               const openInNewTab =
                 typeof block.openInNewTab === "boolean"

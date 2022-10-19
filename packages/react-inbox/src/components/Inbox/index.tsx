@@ -149,7 +149,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useEffect(() => {
     init({
-      autoMarkAsRead: props.autoMarkAsRead,
       brand: props.brand,
       isOpen: props.isOpen,
       tabs: propTabs,
