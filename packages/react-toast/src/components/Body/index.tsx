@@ -43,12 +43,6 @@ const Body: React.FunctionComponent<
   const handleClickMessage = (event: React.MouseEvent) => {
     event?.preventDefault();
 
-    console.log(
-      "messageId, data?.trackingIds?.readTrackingId",
-      messageId,
-      data?.trackingIds
-    );
-
     if (
       data?.trackingIds?.clickTrackingId &&
       data?.trackingIds?.readTrackingId
