@@ -5,10 +5,6 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
-if (!global?.localStorage) {
-  require("localstorage-polyfill");
-}
-
 import React, { useCallback, useEffect } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import {
@@ -50,10 +46,11 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     brandId,
     children,
     clientKey,
+    disableTransport, // Note: For now, disable transport also means disable non push-provider-bound requests
+    localStorage = window?.localStorage,
     middleware: _middleware = [],
     onMessage,
     transport: _transport,
-    disableTransport, // Note: For now, disable transport also means disable non push-provider-bound requests
     userId,
     userSignature,
     wsOptions,
@@ -81,6 +78,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       brand,
       brandId,
       clientKey,
+      localStorage,
       middleware,
       transport,
       userId,
@@ -137,6 +135,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         authorization,
         brandId,
         clientKey,
+        localStorage,
         transport,
         userId,
         userSignature,
@@ -148,30 +147,31 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       brandId,
       clientKey,
       disableTransport,
+      localStorage,
       transport,
       userId,
       userSignature,
     ]);
 
     useEffect(() => {
-      if (!state.brand || !clientKey || !userId) {
+      if (!state.brand || !clientKey || !userId || !state.localStorage) {
         return;
       }
 
-      localStorage.setItem(
+      state.localStorage.setItem(
         `${clientKey}/${userId}/provider`,
         JSON.stringify({
           brand: state.brand,
         })
       );
-    }, [state.brand, clientKey, userId]);
+    }, [state.brand, clientKey, userId, state.localStorage]);
 
     useEffect(() => {
-      if (!clientKey || !userId || disableTransport) {
+      if (!clientKey || !userId || disableTransport || !state.localStorage) {
         return;
       }
 
-      const localStorageState = localStorage.getItem(
+      const localStorageState = state.localStorage.getItem(
         `${clientKey}/${userId}/provider`
       );
 
@@ -183,7 +183,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
           console.log("error", ex);
         }
       }
-    }, [clientKey, userId]);
+    }, [clientKey, userId, state.localStorage]);
 
     return (
       <CourierContext.Provider
