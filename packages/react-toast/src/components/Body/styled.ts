@@ -48,7 +48,10 @@ export const Dismiss = styled.button(({ theme }) =>
 );
 
 export const Container = styled.div`
-  display: flex;
+  a {
+    display: flex;
+  }
+
   padding: 0 12px;
   width: 100%;
   position: relative;

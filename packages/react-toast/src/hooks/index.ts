@@ -4,12 +4,13 @@ import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
 
 export const useToast: UseToast = () => {
-  const { toast, clientKey } = useCourier<{
-    toast?: {
-      toast: ToastCaller;
-      config?: IToastConfig;
-    };
-  }>();
+  const { toast, clientKey } =
+    useCourier<{
+      toast?: {
+        toast: ToastCaller;
+        config?: IToastConfig;
+      };
+    }>();
   const toastCaller = toast?.toast ? toast.toast : () => {};
   return [
     toastCaller,
@@ -25,6 +26,8 @@ export const useListenForTransportEvent = (
   transport: ICourierContext["transport"],
   handleToast
 ) => {
+  const { createTrackEvent } = useCourier();
+
   useEffect(() => {
     if (!transport) {
       return;
@@ -33,6 +36,11 @@ export const useListenForTransportEvent = (
     transport.listen({
       id: "toast-listener",
       listener: (courierEvent) => {
+        const courierData = courierEvent?.data?.data;
+        if (courierData?.trackingIds?.deliverTrackingId) {
+          createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
+        }
+
         handleToast(courierEvent?.data);
       },
     });
