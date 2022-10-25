@@ -1,26 +1,24 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { toast } from "react-toastify";
-import {
-  Container,
-  Message,
-  Title,
-  TextBlock,
-  ActionBlock,
-  Dismiss,
-} from "./styled";
+import { Container, Message, Title, TextBlock, Dismiss } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
-import { useCourier, ICourierMessage } from "@trycourier/react-provider";
+import {
+  useCourier,
+  ICourierMessage,
+  IActionBlock,
+  ITextBlock,
+} from "@trycourier/react-provider";
 import Markdown from "markdown-to-jsx";
 
 const Body: React.FunctionComponent<
   ICourierMessage & {
     onClick?: (event: React.MouseEvent) => void;
   }
-> = ({ title, body, blocks, icon, data, onClick, ...props }) => {
+> = ({ title, body, blocks, icon, data, onClick, messageId, ...props }) => {
   const { toastProps } = props as { toastProps: any };
   const [, { config }] = useToast();
-  const { brand: courierBrand } = useCourier();
+  const { brand: courierBrand, dispatch } = useCourier();
 
   const brand = props.brand ?? config?.brand ?? courierBrand;
   const { renderBlocks, openLinksInNewTab } = config;
@@ -42,57 +40,103 @@ const Body: React.FunctionComponent<
       : (icon || config?.defaultIcon) ?? brand?.inapp?.icons?.message
   );
 
+  const handleClickMessage = (event: React.MouseEvent) => {
+    event?.preventDefault();
+
+    if (
+      data?.trackingIds?.clickTrackingId &&
+      data?.trackingIds?.readTrackingId
+    ) {
+      dispatch({
+        type: "inbox/MARK_MESSAGE_READ",
+        payload: {
+          messageId,
+        },
+      });
+    }
+
+    if (onClick) {
+      onClick(event);
+    }
+  };
+
+  const blocksByType = useMemo(() => {
+    return blocks?.reduce(
+      (acc, cur) => {
+        if (cur.type === "text") {
+          acc.text.push(cur);
+        }
+
+        if (cur.type === "action") {
+          acc.action.push(cur);
+        }
+
+        return acc;
+      },
+      {
+        action: [],
+        text: [],
+      } as {
+        action: IActionBlock[];
+        text: ITextBlock[];
+      }
+    );
+  }, [blocks]);
+
+  const clickAction = useMemo(() => {
+    if (data?.clickAction) {
+      return data.clickAction;
+    }
+
+    if (!blocksByType?.action.length || blocksByType.action?.length > 1) {
+      return;
+    }
+
+    return blocksByType.action[0].url;
+  }, []);
+
+  let containerProps: {
+    href?: string;
+    onMouseDown?: (event: React.MouseEvent) => void;
+    rel?: string;
+    target?: string;
+  } = {};
+
+  if (clickAction) {
+    containerProps.href = clickAction;
+    containerProps.onMouseDown = handleClickMessage;
+
+    if (openLinksInNewTab) {
+      containerProps = {
+        ...containerProps,
+        target: "_blank",
+        rel: "noreferrer",
+      };
+    }
+  }
+
   return (
     <Container>
-      {Icon && <Icon data-testid="message-icon" />}
-      <Message data-testid="message">
-        {title && <Title data-testid="message-title">{title}</Title>}
-        {blocks?.length ? (
-          blocks?.map((block, index) => {
-            if (block.type === "text") {
-              if (renderBlocks?.text) {
-                const Block = renderBlocks?.text;
-                return <Block {...block} key={index} />;
+      <a {...containerProps}>
+        {Icon && <Icon data-testid="message-icon" />}
+        <Message data-testid="message">
+          {title && <Title data-testid="message-title">{title}</Title>}
+          {blocksByType?.text?.length ? (
+            blocksByType?.text?.map((block, index) => {
+              if (block.type === "text") {
+                if (renderBlocks?.text) {
+                  const Block = renderBlocks?.text;
+                  return <Block {...block} key={index} />;
+                }
+
+                return (
+                  <TextBlock key={index} data-testid="message-body">
+                    {block.text && <Markdown>{block.text}</Markdown>}
+                  </TextBlock>
+                );
               }
-
-              return (
-                <TextBlock key={index} data-testid="message-body">
-                  {block.text && <Markdown>{block.text}</Markdown>}
-                </TextBlock>
-              );
-            }
-
-            if (block.type === "action") {
-              if (renderBlocks?.action) {
-                const Block = renderBlocks?.action;
-                return <Block {...block} key={index} />;
-              }
-
-              let actionProps = {};
-              const openInNewTab =
-                typeof block.openInNewTab === "boolean"
-                  ? block.openInNewTab
-                  : openLinksInNewTab;
-
-              if (openInNewTab) {
-                actionProps = {
-                  ...actionProps,
-                  target: "_blank",
-                  rel: "noreferrer",
-                };
-              }
-
-              return (
-                <ActionBlock data-testid={`action-${index}`} key={index}>
-                  <a href={block.url} {...actionProps}>
-                    {block.text}
-                  </a>
-                </ActionBlock>
-              );
-            }
-          })
-        ) : (
-          <>
+            })
+          ) : (
             <TextBlock data-testid="message-body">
               {typeof body === "string" ? (
                 <Markdown>{body as string}</Markdown>
@@ -100,21 +144,9 @@ const Body: React.FunctionComponent<
                 body
               )}
             </TextBlock>
-            {data?.clickAction && (
-              <ActionBlock data-testid="action-0">
-                <a
-                  href={data?.clickAction}
-                  onClick={onClick}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  View Details
-                </a>
-              </ActionBlock>
-            )}
-          </>
-        )}
-      </Message>
+          )}
+        </Message>
+      </a>
       <Dismiss data-testid="dismiss" onClick={handleOnClickDismiss}>
         X
       </Dismiss>

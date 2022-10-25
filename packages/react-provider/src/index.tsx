@@ -104,18 +104,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         courierTransport.intercept(onMessage);
       }
 
-      courierTransport.listen({
-        id: "deliver-tracking",
-        listener: (courierEvent) => {
-          const courierData = courierEvent?.data?.data;
-          if (!courierData?.trackingIds?.deliverTrackingId) {
-            return;
-          }
-
-          actions.createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
-        },
-      });
-
       return () => {
         courierTransport.unsubscribe(userId);
       };
