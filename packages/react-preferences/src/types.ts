@@ -1,6 +1,11 @@
 export type Preference = "channel_preferences" | "status" | "snooze";
 
-export type ChannelClassification = "email" | "push" | "direct_message" | "sms";
+export type ChannelClassification =
+  | "email"
+  | "push"
+  | "direct_message"
+  | "sms"
+  | "webhook";
 
 export type PreferenceItemComponentFn = React.FunctionComponent<{
   label?: string;
