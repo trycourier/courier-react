@@ -36,7 +36,7 @@ const MyApp = () => {
   /**
    * Auth token for courier provider, can be a token from Courier's auth/issue-token endpoint
    * or a JWT signed with a valid courier api key. Must include scope: "user_id:<user_id_here> inbox:read:messages",
-   * if using track events like markAllAsRead you must also include the scope inbox:write:events
+   * you must also include the "inbox:write:events" scope if making a write request or mutation as well.
    *
    * For more information on the auth/issue-token endpoint, visit:
    * https://courier.com/docs/reference/auth/intro/
