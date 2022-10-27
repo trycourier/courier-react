@@ -49,7 +49,12 @@ export interface PreferenceState {
   preferencePage?: PreferencePage;
 }
 
-export type ChannelClassification = "email" | "push" | "direct_message" | "sms";
+export type ChannelClassification =
+  | "email"
+  | "push"
+  | "direct_message"
+  | "sms"
+  | "webhook";
 
 export type SnoozePreference = {
   start?: string;

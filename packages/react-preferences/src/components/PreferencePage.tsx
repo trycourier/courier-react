@@ -12,8 +12,9 @@ import type { PreferenceSection } from "@trycourier/react-hooks/typings/preferen
 
 export const ChannelOption = styled.div`
   display: flex;
-  width: 55px;
   height: 20px;
+  padding: 0 10px;
+  gap: 5px;
 
   background: transparent;
   border-radius: 12px;
@@ -27,11 +28,9 @@ export const ChannelOption = styled.div`
 
   justify-content: center;
   align-items: center;
-  margin: 0 3px;
 
   svg {
     display: normal;
-    margin-right: 3px;
   }
 `;
 
@@ -73,9 +72,6 @@ const StyledItem = styled.div`
 `;
 
 const Check = styled.svg`
-  width: 12px;
-  height: 12px;
-  padding-left: 5px;
   fill: white;
 `;
 
@@ -159,13 +155,16 @@ const ChannelPreferenceStyles = styled.div`
     ${Input}:checked ~ div {
       border: 0;
       background-color: #1e4637;
+      svg {
+        margin-left: 5px;
+      }
     }
   }
 `;
 
 const Checkmark = () => {
   return (
-    <Check viewBox="0 0 9 8">
+    <Check viewBox="0 0 9 8" height="10px" width="10px">
       <path d="M3.0005 7.09954C2.84689 7.09954 2.69328 7.04074 2.57567 6.92433L0.175512 4.52417C-0.0585039 4.29015 -0.0585039 3.90973 0.175512 3.67571C0.409527 3.4417 0.789953 3.4417 1.02397 3.67571L3.0005 5.65104L7.97603 0.675512C8.21005 0.441496 8.59047 0.441496 8.82449 0.675512C9.0585 0.909527 9.0585 1.28995 8.82449 1.52397L3.42413 6.92433C3.30772 7.04074 3.15411 7.09954 3.0005 7.09954Z" />
     </Check>
   );
@@ -266,14 +265,20 @@ export const PreferenceTopic: React.FunctionComponent<{
       templateId: topicId,
       hasCustomRouting: !customizeDelivery,
       ...(!customizeDelivery && {
-        routingPreferences: ["sms", "email", "direct_message", "push"],
+        routingPreferences: [
+          "sms",
+          "email",
+          "direct_message",
+          "push",
+          "webhook",
+        ],
       }),
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
     });
 
     // If Customize Delivery is turned on, set the routing preferences to the default
     !customizeDelivery &&
-      setRouting(["sms", "email", "direct_message", "push"]);
+      setRouting(["sms", "email", "direct_message", "push", "webhook"]);
 
     setCustomizeDelivery(!customizeDelivery);
   };
