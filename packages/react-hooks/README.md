@@ -43,7 +43,7 @@ const MyApp = () => {
   const authorization = await fetchAuthToken();
 
   return (
-    <CourierProvider authorization="abc123">
+    <CourierProvider authorization="abc123" userId="MY_USER_ID">
       <MyInbox />
     </CourierProvider>
   );
@@ -175,11 +175,11 @@ Elemental Inbox (`useElementalInbox`):
 ```ts
 // This interface defines the return value of useElemental Inbox
 interface IElementalInbox {
-  lastMessagesFetched?: number;
   brand?: Brand;
   from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
+  lastMessagesFetched?: number;
   messages?: Array<IElementalInboxMessage>;
   startCursor?: string;
   unreadMessageCount?: number;
