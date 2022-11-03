@@ -1,10 +1,10 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { CourierProvider, WSOptions } from "@trycourier/react-provider";
-import { CourierComponents } from "./components";
+import { WSOptions } from "@trycourier/react-provider";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
+import { App } from "./app";
 
 declare global {
   interface Window {
@@ -43,38 +43,20 @@ interface ICourierConfig {
   userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;
+  authorization?: string;
 }
 
 let hasInit = false;
 
-const initCourier = async (courierConfig?: ICourierConfig) => {
-  const { clientKey, apiUrl, userId, userSignature, wsOptions, brandId } =
-    courierConfig ?? window.courierConfig ?? {};
-
+const initCourier = async () => {
   if (hasInit || typeof document === "undefined") {
-    return;
-  }
-
-  if (!userId || !clientKey) {
     return;
   }
 
   const courierRoot = document.createElement("courier-root");
   document.body.appendChild(courierRoot);
 
-  render(
-    <CourierProvider
-      apiUrl={apiUrl}
-      brandId={brandId}
-      clientKey={clientKey}
-      userId={userId}
-      userSignature={userSignature}
-      wsOptions={wsOptions}
-    >
-      <CourierComponents />
-    </CourierProvider>,
-    courierRoot
-  );
+  render(<App />, courierRoot);
 
   hasInit = true;
 };

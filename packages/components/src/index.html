@@ -13,46 +13,12 @@
       }
     </style>
     <script type="text/javascript">
-      const userId = "3b17362c-0c91-4fcd-a829-885a2343eb67";
-      /* window.loadCourier = function (config) {
-        if (!config || !config.clientKey || !config.userId) {
-          return Promise.reject();
-        }
-        window.courierConfig = { ...config };
-
-        return new Promise((resolve) => {
-          var src =
-            "https://courier-components-xvdza5.s3.amazonaws.com/latest.js";
-          (function () {
-            var d = document;
-            var s = d.createElement("script");
-            s.type = "text/javascript";
-            s.onload = resolve;
-            s.charset = "utf-8";
-            s.async = true;
-            s.src = src;
-            document.body.appendChild(s);
-          })();
-        });
-      };*/
       window.courierConfig = {
-        brandId: "447SBME93MMYRQQHP1ZS0PATNAPC",
-        apiUrl:
-          "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q",
+        apiUrl: "https://7fjohtftv9.execute-api.us-east-1.amazonaws.com/dev/q",
+        userId: "awJ1oZeCLFCSZ9b9CxR2rv",
+        authorization: "token goes here",
         wsOptions: {
-          url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
-        },
-        clientKey: "NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4",
-        userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
-
-        components: {
-          inbox: {
-            openLinksInNewTab: false,
-
-            theme: {
-              name: "2.0",
-            },
-          },
+          url: "wss://47f0tdh3y5.execute-api.us-east-1.amazonaws.com/dev",
         },
       };
 
