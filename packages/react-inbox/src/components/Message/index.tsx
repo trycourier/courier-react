@@ -80,7 +80,6 @@ const Message: React.FunctionComponent<
   };
 
   useEffect(() => {
-    console.log("openTrackingId", openTrackingId);
     if (!openTrackingId) {
       return;
     }
