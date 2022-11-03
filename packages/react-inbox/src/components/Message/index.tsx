@@ -47,7 +47,6 @@ const Message: React.FunctionComponent<
 }) => {
   const { readTrackingId, unreadTrackingId, openTrackingId } =
     trackingIds || {};
-  console.log("trackingIds", trackingIds);
   const { brand, markMessageRead, markMessageOpened } = useInbox();
 
   const renderedIcon = getIcon(
