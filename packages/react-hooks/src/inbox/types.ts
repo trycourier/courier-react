@@ -13,21 +13,21 @@ export interface ITab {
 }
 
 export interface IMessage {
-  unread?: number;
   messageId: string;
   created: string;
-  title: string;
-  body: string;
+  title?: string;
+  body?: string;
   blocks?: Array<IActionBlock | ITextBlock>;
   icon?: string;
   read?: boolean;
   data?: {
-    clickAction: string;
+    clickAction?: string;
   };
   trackingIds?: {
     archiveTrackingId: string;
     clickTrackingId: string;
     deliverTrackingId: string;
+    openTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

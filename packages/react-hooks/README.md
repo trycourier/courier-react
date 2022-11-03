@@ -141,6 +141,7 @@ interface IMessage {
     archiveTrackingId: string;
     clickTrackingId: string;
     deliveredTrackingId: string;
+    openTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

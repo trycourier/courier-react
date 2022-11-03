@@ -104,6 +104,7 @@ export interface IMessage {
     archiveTrackingId: string;
     clickTrackingId: string;
     deliverTrackingId: string;
+    openTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

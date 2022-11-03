@@ -64,6 +64,7 @@ const messagesProps = `{
       }
       data
       trackingIds {
+        openTrackingId
         archiveTrackingId
         clickTrackingId
         deliverTrackingId
@@ -105,6 +106,7 @@ export interface IGraphMessageResponse {
       archiveTrackingId: string;
       clickTrackingId: string;
       deliverTrackingId: string;
+      openTrackingId: string;
       readTrackingId: string;
       unreadTrackingId: string;
     };

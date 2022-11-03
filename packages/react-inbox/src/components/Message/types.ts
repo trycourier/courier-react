@@ -13,8 +13,10 @@ export interface IMessageProps {
     clickAction: string;
   };
   trackingIds?: {
+    archiveTrackingId: string;
     clickTrackingId: string;
     deliverTrackingId: string;
+    openTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

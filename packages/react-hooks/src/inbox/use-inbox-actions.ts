@@ -1,3 +1,4 @@
+import { ICourierMessage } from "./../../../react-provider/src/transports/types";
 import { useCourier } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
@@ -20,6 +21,7 @@ import {
   rehydrateMessages,
   RehydrateMessages,
 } from "./actions/rehydrate-messages";
+import { newMessage } from "./actions/new-message";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -35,10 +37,12 @@ interface IInboxActions {
   markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
   markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageOpened: (trackingId: string) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
+  newMessage: (transportMessage: ICourierMessage) => void;
 }
 
 const useInboxActions = (): IInboxActions => {
@@ -192,9 +196,28 @@ const useInboxActions = (): IInboxActions => {
       dispatch(markMessageUnread(messageId));
       await events.trackEvent(trackingId);
     },
+    markMessageOpened: async (trackingId: string) => {
+      await events.trackEvent(trackingId);
+    },
     markMessageArchived: async (messageId: string, trackingId: string) => {
       dispatch(markMessageArchived(messageId));
       await events.trackEvent(trackingId);
+    },
+    newMessage: (message: ICourierMessage) => {
+      dispatch(
+        newMessage({
+          icon: message.icon,
+          messageId: message.messageId,
+          created: new Date().toISOString(),
+          body: message.body,
+          blocks: message.blocks,
+          title: message.title,
+          trackingIds: message.data?.trackingIds,
+          data: {
+            clickAction: message.data?.clickAction,
+          },
+        })
+      );
     },
   };
 };

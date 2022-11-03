@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import OptionsDropdown from "../OptionsDropdown";
 import {
@@ -45,8 +45,10 @@ const Message: React.FunctionComponent<
   title,
   trackingIds = {},
 }) => {
-  const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const { brand, markMessageRead } = useInbox();
+  const { readTrackingId, unreadTrackingId, openTrackingId } =
+    trackingIds || {};
+  console.log("trackingIds", trackingIds);
+  const { brand, markMessageRead, markMessageOpened } = useInbox();
 
   const renderedIcon = getIcon(
     /* priority:
@@ -77,6 +79,15 @@ const Message: React.FunctionComponent<
       markMessageRead(messageId);
     }
   };
+
+  useEffect(() => {
+    console.log("openTrackingId", openTrackingId);
+    if (!openTrackingId) {
+      return;
+    }
+
+    markMessageOpened(openTrackingId);
+  }, [openTrackingId]);
 
   return (
     <Container
