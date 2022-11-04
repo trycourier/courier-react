@@ -1,5 +1,6 @@
 import { IGraphMessageResponse } from "@trycourier/client-graphql";
-import { IMessage, IInbox, ITab } from "./types";
+import { IMessage } from "@trycourier/react-provider";
+import { IInbox, ITab } from "./types";
 
 import { InboxInit, INBOX_INIT } from "./actions/init";
 import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";

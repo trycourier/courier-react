@@ -1,5 +1,11 @@
 import { TippyProps } from "@tippyjs/react";
-import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import {
+  Brand,
+  IActionBlock,
+  ITextBlock,
+  IMessage,
+} from "@trycourier/react-provider";
+
 import { IHeaderProps } from "./components/Messages/Header/types";
 export interface ITab {
   filters: {
@@ -87,25 +93,4 @@ export interface InboxProps {
   }>;
   renderMessage?: React.FunctionComponent<IMessage>;
   renderNoMessages?: React.FunctionComponent;
-}
-export interface IMessage {
-  unread?: number;
-  messageId: string;
-  created: string;
-  title: string;
-  body: string;
-  blocks?: Array<IActionBlock | ITextBlock>;
-  icon?: string;
-  read?: boolean;
-  data?: {
-    clickAction: string;
-  };
-  trackingIds?: {
-    archiveTrackingId: string;
-    clickTrackingId: string;
-    deliverTrackingId: string;
-    openTrackingId: string;
-    readTrackingId: string;
-    unreadTrackingId: string;
-  };
 }

@@ -43,9 +43,10 @@ const messagesProps = `{
     hasNextPage
   }
   nodes {
+    created
     id
     messageId
-    created
+    opened
     read
     tags
     content {
@@ -95,6 +96,7 @@ export interface IGraphMessageResponse {
   id: string;
   messageId: string;
   created: string;
+  oepened: string;
   read?: boolean;
   tags?: string[];
   content: {
@@ -140,6 +142,7 @@ export const getMessages =
     const messages = results?.data?.messages?.nodes;
     const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
+    console.log("messages", messages);
     return {
       appendMessages: Boolean(after),
       messages,

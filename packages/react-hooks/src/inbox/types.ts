@@ -1,4 +1,4 @@
-import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import { Brand, IMessage } from "@trycourier/react-provider";
 
 export interface ITab {
   filters: {
@@ -9,27 +9,6 @@ export interface ITab {
   state?: {
     messages?: IMessage[];
     startCursor?: string;
-  };
-}
-
-export interface IMessage {
-  messageId: string;
-  created: string;
-  title?: string;
-  body?: string;
-  blocks?: Array<IActionBlock | ITextBlock>;
-  icon?: string;
-  read?: boolean;
-  data?: {
-    clickAction?: string;
-  };
-  trackingIds?: {
-    archiveTrackingId: string;
-    clickTrackingId: string;
-    deliverTrackingId: string;
-    openTrackingId: string;
-    readTrackingId: string;
-    unreadTrackingId: string;
   };
 }
 

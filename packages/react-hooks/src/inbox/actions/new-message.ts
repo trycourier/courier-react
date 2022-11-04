@@ -1,4 +1,4 @@
-import { IMessage } from "../types";
+import { IMessage } from "@trycourier/react-provider";
 
 export type NewMessage = {
   type: "inbox/NEW_MESSAGE";
