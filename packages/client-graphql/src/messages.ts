@@ -96,7 +96,7 @@ export interface IGraphMessageResponse {
   id: string;
   messageId: string;
   created: string;
-  oepened: string;
+  opened: string;
   read?: boolean;
   tags?: string[];
   content: {
@@ -142,7 +142,6 @@ export const getMessages =
     const messages = results?.data?.messages?.nodes;
     const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
-    console.log("messages", messages);
     return {
       appendMessages: Boolean(after),
       messages,

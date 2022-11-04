@@ -1,5 +1,4 @@
-import { ICourierMessage } from "./../../../react-provider/src/transports/types";
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, ICourierMessage } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
 import {
