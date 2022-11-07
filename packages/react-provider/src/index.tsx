@@ -8,9 +8,10 @@ if (typeof window !== "undefined") {
 import React, { useCallback, useEffect } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import {
-  ICourierProviderProps,
-  ICourierContext,
   Brand,
+  ICourierContext,
+  ICourierProviderProps,
+  IMessage,
   WSOptions,
 } from "./types";
 
@@ -28,11 +29,12 @@ export const registerReducer = _registerReducer;
 
 export type {
   Brand,
-  WSOptions,
-  ITextBlock,
   IActionBlock,
-  ICourierMessage,
   ICourierContext,
+  ICourierMessage,
+  IMessage,
+  ITextBlock,
+  WSOptions,
 };
 
 export const CourierContext =

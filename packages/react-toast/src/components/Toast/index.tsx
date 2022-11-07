@@ -49,9 +49,21 @@ export const Toast: React.FunctionComponent<
             } as ICourierMessage)
           : message;
 
-      toast(<Body {...message} icon={message?.icon ?? config?.defaultIcon} />, {
-        role: config?.role ?? "status",
-      });
+      toast(
+        <Body
+          {...message}
+          icon={
+            typeof message?.icon === "string"
+              ? message.icon
+              : typeof config?.defaultIcon === "string"
+              ? config.defaultIcon
+              : undefined
+          }
+        />,
+        {
+          role: config?.role ?? "status",
+        }
+      );
     },
     [config]
   );

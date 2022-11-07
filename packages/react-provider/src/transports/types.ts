@@ -12,20 +12,22 @@ export interface IActionBlock {
 export interface ICourierMessage {
   event?: string;
   error?: string;
-  messageId?: string;
-  body?: string | React.ReactElement;
+  messageId: string;
+  body?: string;
   blocks?: Array<ITextBlock | IActionBlock>;
-  icon?: string | false;
-  title?: string | React.ReactElement;
+  icon?: string;
+  title?: string;
   data?: {
     channel?: string;
     brandId?: string;
     trackingIds?: {
-      channelTrackingId?: string;
-      clickTrackingId?: string;
-      deliverTrackingId?: string;
-      readTrackingId?: string;
-      unreadTrackingId?: string;
+      archiveTrackingId: string;
+      channelTrackingId: string;
+      clickTrackingId: string;
+      deliverTrackingId: string;
+      openTrackingId: string;
+      readTrackingId: string;
+      unreadTrackingId: string;
     };
     trackingUrl?: string;
     clickAction?: string;

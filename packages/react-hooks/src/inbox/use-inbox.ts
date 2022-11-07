@@ -27,14 +27,11 @@ const useInbox = () => {
     transport?.listen({
       id: "inbox-listener",
       listener: (courierEvent) => {
-        if (!dispatch) {
+        if (!dispatch || !courierEvent?.data) {
           return;
         }
 
-        dispatch({
-          type: "inbox/NEW_MESSAGE",
-          payload: courierEvent?.data,
-        });
+        actions.newMessage(courierEvent?.data);
       },
     });
   }, [transport]);

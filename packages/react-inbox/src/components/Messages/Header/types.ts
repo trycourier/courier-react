@@ -1,4 +1,5 @@
-import { IMessage, ITab, InboxProps } from "~/types";
+import { ITab, InboxProps } from "~/types";
+import { IMessage } from "@trycourier/react-provider";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {

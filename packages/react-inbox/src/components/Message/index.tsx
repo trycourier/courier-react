@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import classNames from "classnames";
 import OptionsDropdown from "../OptionsDropdown";
 import {
@@ -11,18 +11,17 @@ import {
   Title,
   UnreadIndicator,
 } from "./styled";
-import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import { IActionBlock, ITextBlock, IMessage } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
-import { IMessageProps } from "./types";
 import { InboxProps } from "../../types";
 
 import { getTimeAgo, getPrettyDate } from "~/lib";
-import { useMessageOptions } from "~/hooks";
+import { useMessageOptions, useOnScreen } from "~/hooks";
 import Markdown from "markdown-to-jsx";
 
 const Message: React.FunctionComponent<
-  IMessageProps & {
+  IMessage & {
     labels: InboxProps["labels"];
     formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
@@ -39,14 +38,17 @@ const Message: React.FunctionComponent<
   icon,
   labels,
   messageId,
+  opened,
   openLinksInNewTab,
   read,
   renderBlocks,
   title,
   trackingIds = {},
 }) => {
-  const { readTrackingId, unreadTrackingId } = trackingIds || {};
-  const { brand, markMessageRead } = useInbox();
+  const ref = useRef(null);
+  const { readTrackingId, unreadTrackingId, openTrackingId } =
+    trackingIds || {};
+  const { brand, markMessageRead, markMessageOpened } = useInbox();
 
   const renderedIcon = getIcon(
     /* priority:
@@ -78,8 +80,17 @@ const Message: React.FunctionComponent<
     }
   };
 
+  useOnScreen(ref, () => {
+    if (!openTrackingId || opened) {
+      return;
+    }
+
+    markMessageOpened(openTrackingId);
+  });
+
   return (
     <Container
+      ref={ref}
       data-testid="inbox-message"
       className={classNames({
         read,

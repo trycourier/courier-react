@@ -43,9 +43,10 @@ const messagesProps = `{
     hasNextPage
   }
   nodes {
+    created
     id
     messageId
-    created
+    opened
     read
     tags
     content {
@@ -64,6 +65,7 @@ const messagesProps = `{
       }
       data
       trackingIds {
+        openTrackingId
         archiveTrackingId
         clickTrackingId
         deliverTrackingId
@@ -94,6 +96,7 @@ export interface IGraphMessageResponse {
   id: string;
   messageId: string;
   created: string;
+  opened?: string;
   read?: boolean;
   tags?: string[];
   content: {
@@ -105,6 +108,7 @@ export interface IGraphMessageResponse {
       archiveTrackingId: string;
       clickTrackingId: string;
       deliverTrackingId: string;
+      openTrackingId: string;
       readTrackingId: string;
       unreadTrackingId: string;
     };

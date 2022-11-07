@@ -1,23 +1,23 @@
 import { IGraphMessageResponse } from "@trycourier/client-graphql";
-import { IMessage, IInbox, ITab } from "./types";
+import { IMessage } from "@trycourier/react-provider";
+import { IInbox, ITab } from "./types";
 
 import { InboxInit, INBOX_INIT } from "./actions/init";
 import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
 import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
 import {
   INBOX_MARK_ALL_READ_DONE,
-  MarkAllReadDone,
-  MarkAllReadPending,
-  MarkAllReadError,
-  INBOX_MARK_ALL_READ_PENDING,
   INBOX_MARK_ALL_READ_ERROR,
+  INBOX_MARK_ALL_READ_PENDING,
+  MarkAllReadDone,
+  MarkAllReadError,
+  MarkAllReadPending,
 } from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
 import {
   RehydrateMessages,
   INBOX_REHYDRATE_MESSAGES,
 } from "./actions/rehydrate-messages";
-
 import {
   MarkMessageArchived,
   INBOX_MARK_MESSAGE_ARCHIVED,
@@ -26,6 +26,10 @@ import {
   MarkMessageRead,
   INBOX_MARK_MESSAGE_READ,
 } from "./actions/mark-message-read";
+import {
+  MarkMessageOpened,
+  INBOX_MARK_MESSAGE_OPENED,
+} from "./actions/mark-message-opened";
 import {
   MarkMessageUnread,
   INBOX_MARK_MESSAGE_UNREAD,
@@ -64,6 +68,7 @@ export const mapMessage = (
   created: message.created,
   data: message.content.data,
   messageId: message.messageId,
+  opened: message.opened,
   read: lastMarkedAllRead
     ? lastMarkedAllRead > new Date(message.created).getTime()
       ? true
@@ -90,14 +95,15 @@ type InboxAction =
   | FetchUnreadMessageCountDone
   | InboxInit
   | InboxSetView
+  | MarkAllReadDone
   | MarkAllReadError
   | MarkAllReadPending
-  | MarkAllReadDone
-  | RehydrateMessages
   | MarkMessageArchived
+  | MarkMessageOpened
   | MarkMessageRead
   | MarkMessageUnread
   | NewMessage
+  | RehydrateMessages
   | SetCurrentTab
   | ToggleInbox;
 
@@ -443,6 +449,44 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         messages: newMessages,
         tabs,
         unreadMessageCount,
+      };
+    }
+
+    case INBOX_MARK_MESSAGE_OPENED: {
+      const newMessages = state.messages?.map((message) => {
+        if (message.messageId === action.payload.messageId) {
+          return {
+            ...message,
+            opened: new Date().toISOString(),
+          };
+        }
+
+        return message;
+      });
+
+      const tabs = state.tabs?.map((tab) => {
+        if (!tab.state) {
+          return tab;
+        }
+
+        tab.state.messages = tab.state.messages?.map((message) => {
+          if (message.messageId === action.payload.messageId) {
+            return {
+              ...message,
+              opened: new Date().toISOString(),
+            };
+          }
+
+          return message;
+        });
+
+        return tab;
+      });
+
+      return {
+        ...state,
+        messages: newMessages,
+        tabs,
       };
     }
 

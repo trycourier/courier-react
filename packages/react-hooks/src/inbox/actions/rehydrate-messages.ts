@@ -1,4 +1,5 @@
-import { IMessage, ITab } from "../types";
+import { IMessage } from "@trycourier/react-provider";
+import { ITab } from "../types";
 
 export type RehydrateMessages = {
   type: "inbox/REHYDRATE_MESSAGES";

@@ -21,15 +21,16 @@ export interface IMessageProps {
   icon?: string;
   messageId: string;
   read?: boolean;
-  title: string;
+  title?: string;
   unread?: number;
   data?: {
-    clickAction: string;
+    clickAction?: string;
   };
   trackingIds?: {
     archiveTrackingId: string;
     clickTrackingId: string;
     deliverTrackingId: string;
+    openTrackingId: string;
     readTrackingId: string;
     unreadTrackingId: string;
   };

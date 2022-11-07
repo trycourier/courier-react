@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { useInbox } from "@trycourier/react-hooks";
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, IMessage } from "@trycourier/react-provider";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
-import { IMessage, ITab, InboxProps } from "~/types";
+import { ITab, InboxProps } from "~/types";
 import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
