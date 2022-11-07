@@ -49,6 +49,10 @@ import {
   rehydrateMessages,
   INBOX_REHYDRATE_MESSAGES,
 } from "../actions/rehydrate-messages";
+import {
+  INBOX_MARK_MESSAGE_OPENED,
+  markMessageOpened,
+} from "../actions/mark-message-opened";
 
 const mockTab: ITab = {
   filters: {
@@ -902,6 +906,86 @@ describe("inbox reducer", () => {
             },
           },
           randomTab,
+        ],
+      });
+    });
+  });
+
+  describe(`action ${INBOX_MARK_MESSAGE_OPENED}`, () => {
+    const mappedMessage = mapMessage(mockGraphMessage);
+    const mappedMessage2 = mapMessage(mockGraphMessage2);
+
+    const unreadTab = {
+      ...mockTab,
+      state: {
+        messages: [mappedMessage],
+      },
+    };
+
+    const allMessagesTab = {
+      id: "all",
+      label: "All Messages",
+      filters: {},
+      state: {
+        messages: [mappedMessage, mappedMessage2],
+      },
+    };
+
+    const openedMessage = {
+      ...mappedMessage,
+      opened: new Date(mockDate).toISOString(),
+    };
+
+    it("Without Tabs, will update message opened date", () => {
+      const state = reducer(
+        {
+          ...initialState,
+          unreadMessageCount: 0,
+          messages: [mappedMessage],
+        },
+        markMessageOpened(mockGraphMessage.messageId)
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [openedMessage],
+      });
+    });
+
+    it("With Tabs, will update message opened date on all tabs message exists", () => {
+      const state = reducer(
+        {
+          ...initialState,
+          unreadMessageCount: 0,
+          messages: [mappedMessage, mappedMessage2],
+          currentTab: allMessagesTab,
+          tabs: [unreadTab, allMessagesTab],
+        },
+        markMessageOpened(mockGraphMessage.messageId)
+      );
+
+      expect(state).toEqual({
+        ...initialState,
+        messages: [openedMessage, mappedMessage2],
+        currentTab: {
+          ...allMessagesTab,
+          state: {
+            messages: [openedMessage, mappedMessage2],
+          },
+        },
+        tabs: [
+          {
+            ...unreadTab,
+            state: {
+              messages: [openedMessage],
+            },
+          },
+          {
+            ...allMessagesTab,
+            state: {
+              messages: [openedMessage, mappedMessage2],
+            },
+          },
         ],
       });
     });
