@@ -1,4 +1,4 @@
-import { IMessage } from "../types";
+import { IMessage } from "@trycourier/react-provider";
 import { IGraphMessageResponse } from "@trycourier/client-graphql";
 
 import reducer, { initialState, mapMessage } from "../reducer";
@@ -80,6 +80,7 @@ const mockGraphMessage: IGraphMessageResponse = {
       },
     ],
     trackingIds: {
+      openTrackingId: "mockOpenTrackingId",
       archiveTrackingId: "mockArchiveTrackingId",
       clickTrackingId: "mockClickTrackingId",
       deliverTrackingId: "mockDeliverTrackingId",
@@ -103,6 +104,7 @@ const mockGraphMessage2: IGraphMessageResponse = {
       },
     ],
     trackingIds: {
+      openTrackingId: "mockOpenTrackingId2",
       archiveTrackingId: "mockArchiveTrackingId2",
       clickTrackingId: "mockClickTrackingId2",
       deliverTrackingId: "mockDeliverTrackingId2",

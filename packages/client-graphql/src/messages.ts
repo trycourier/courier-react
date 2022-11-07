@@ -96,7 +96,7 @@ export interface IGraphMessageResponse {
   id: string;
   messageId: string;
   created: string;
-  opened: string;
+  opened?: string;
   read?: boolean;
   tags?: string[];
   content: {
