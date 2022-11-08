@@ -9,7 +9,7 @@ export interface IMessage {
   body?: string;
   created: string;
   icon?: string;
-  messageId?: string;
+  messageId: string;
   opened?: string;
   read?: boolean;
   title?: string;

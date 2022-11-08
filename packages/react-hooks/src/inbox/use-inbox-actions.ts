@@ -205,6 +205,10 @@ const useInboxActions = (): IInboxActions => {
       await events.trackEvent(trackingId);
     },
     newMessage: (message: ICourierMessage) => {
+      if (!message.messageId) {
+        return;
+      }
+
       dispatch(
         newMessage({
           icon: message.icon,
