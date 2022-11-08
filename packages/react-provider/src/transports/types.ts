@@ -12,7 +12,7 @@ export interface IActionBlock {
 export interface ICourierMessage {
   event?: string;
   error?: string;
-  messageId: string;
+  messageId?: string;
   body?: string;
   blocks?: Array<ITextBlock | IActionBlock>;
   icon?: string;

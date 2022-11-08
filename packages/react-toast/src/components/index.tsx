@@ -1,5 +1,5 @@
 export { default as Toast } from "./Toast";
-import React from "react";
+import React, { ReactElement } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import toastCss from "react-toastify/dist/ReactToastify.css";
 import { Brand, useCourier, ICourierMessage } from "@trycourier/react-provider";
@@ -12,9 +12,11 @@ const Styled = styled.div(toastStyles);
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
 export const ToastBody: React.FunctionComponent<
-  ICourierMessage & {
+  Omit<ICourierMessage, "title" | "body"> & {
     theme?: Theme;
     brand?: Brand;
+    title?: ICourierMessage["title"] | ReactElement;
+    body?: ICourierMessage["body"] | ReactElement;
   }
 > = ({ theme, ...props }) => {
   const { brand: remoteBrand } = useCourier();

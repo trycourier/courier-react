@@ -54,7 +54,7 @@ const MessageActions: React.FunctionComponent<{
   formattedTime: string;
   hasBody?: boolean;
   isMessageHovered?: boolean;
-  messageId: string;
+  messageId?: string;
   read?: boolean;
   setAreActionsHovered: (hovered: boolean) => void;
   trackingIds?: IMessageProps["trackingIds"];
@@ -81,7 +81,7 @@ const MessageActions: React.FunctionComponent<{
 
     switch (eventName) {
       case "archive": {
-        if (!trackingIds?.archiveTrackingId) {
+        if (!trackingIds?.archiveTrackingId || !messageId) {
           return;
         }
 
@@ -90,7 +90,7 @@ const MessageActions: React.FunctionComponent<{
       }
 
       case "read": {
-        if (!trackingIds?.readTrackingId) {
+        if (!trackingIds?.readTrackingId || !messageId) {
           return;
         }
 
@@ -99,7 +99,7 @@ const MessageActions: React.FunctionComponent<{
       }
 
       case "unread": {
-        if (!trackingIds?.unreadTrackingId) {
+        if (!trackingIds?.unreadTrackingId || !messageId) {
           return;
         }
 

@@ -19,7 +19,7 @@ export interface IMessageProps {
   blocks?: Array<ITextBlock | IActionBlock>;
   created: string;
   icon?: string;
-  messageId: string;
+  messageId?: string;
   read?: boolean;
   title?: string;
   unread?: number;
@@ -173,6 +173,10 @@ const MessageWrapper: React.FunctionComponent<
 
   const handleClickMessage = (event?: React.MouseEvent) => {
     event?.preventDefault();
+    if (!messageId) {
+      return;
+    }
+
     if (!read && trackingIds?.clickTrackingId && trackingIds?.readTrackingId) {
       // mark message read, but don't fire the event as the backend will do it for us,
       // we just want to set the message as read here in our local state

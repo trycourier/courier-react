@@ -10,7 +10,7 @@ export interface IMessageOption {
 interface IMessageOptions {
   archiveTrackingId?: string;
   labels: InboxProps["labels"];
-  messageId: string;
+  messageId?: string;
   read?: boolean;
   readTrackingId?: string;
   showArchived?: boolean;
@@ -31,7 +31,7 @@ const useMessageOptions = ({
 
   const messageOptions: Array<IMessageOption> = [];
 
-  if (!read && readTrackingId) {
+  if (!read && readTrackingId && messageId) {
     messageOptions.push({
       label: labels?.markAsRead ?? MESSAGE_LABELS.MARK_AS_READ,
       onClick: () => {
@@ -40,7 +40,7 @@ const useMessageOptions = ({
     });
   }
 
-  if (read && unreadTrackingId) {
+  if (read && unreadTrackingId && messageId) {
     messageOptions.push({
       label: labels?.markAsUnread ?? MESSAGE_LABELS.MARK_AS_UNREAD,
       onClick: () => {
@@ -49,7 +49,7 @@ const useMessageOptions = ({
     });
   }
 
-  if (showArchived && archiveTrackingId) {
+  if (showArchived && archiveTrackingId && messageId) {
     messageOptions.push({
       label: labels?.archiveMessage ?? MESSAGE_LABELS.ARCHIVE_MESSAGE,
       onClick: () => {
