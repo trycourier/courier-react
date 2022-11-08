@@ -75,17 +75,17 @@ const Message: React.FunctionComponent<
   });
 
   const handleMarkAsReadOnClick = () => {
-    if (!read) {
+    if (!read && messageId) {
       markMessageRead(messageId);
     }
   };
 
   useOnScreen(ref, () => {
-    if (!openTrackingId || opened) {
+    if (!openTrackingId || opened || !messageId) {
       return;
     }
 
-    markMessageOpened(openTrackingId);
+    markMessageOpened(messageId, openTrackingId);
   });
 
   return (

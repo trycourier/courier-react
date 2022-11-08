@@ -21,6 +21,7 @@ import {
   RehydrateMessages,
 } from "./actions/rehydrate-messages";
 import { newMessage } from "./actions/new-message";
+import { markMessageOpened } from "./actions/mark-message-opened";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -36,7 +37,7 @@ interface IInboxActions {
   markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
   markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
-  markMessageOpened: (trackingId: string) => Promise<void>;
+  markMessageOpened: (messageId: string, trackingId: string) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
@@ -195,7 +196,8 @@ const useInboxActions = (): IInboxActions => {
       dispatch(markMessageUnread(messageId));
       await events.trackEvent(trackingId);
     },
-    markMessageOpened: async (trackingId: string) => {
+    markMessageOpened: async (messageId: string, trackingId: string) => {
+      dispatch(markMessageOpened(messageId));
       await events.trackEvent(trackingId);
     },
     markMessageArchived: async (messageId: string, trackingId: string) => {
@@ -203,6 +205,10 @@ const useInboxActions = (): IInboxActions => {
       await events.trackEvent(trackingId);
     },
     newMessage: (message: ICourierMessage) => {
+      if (!message.messageId) {
+        return;
+      }
+
       dispatch(
         newMessage({
           icon: message.icon,
