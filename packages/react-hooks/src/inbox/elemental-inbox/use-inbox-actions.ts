@@ -56,17 +56,21 @@ const useElementalInboxActions = (): IInboxActions => {
       inbox: IElementalInbox;
     }>();
 
-  const courierClient = createCourierClient({
-    authorization,
-    apiUrl:
-      apiUrl ??
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
-    clientKey,
-    userId,
-    userSignature,
-  });
+  const initClient = (renewedAuthHeader?: string) => {
+    const courierClient = createCourierClient({
+      authorization: renewedAuthHeader ?? authorization,
+      apiUrl:
+        apiUrl ??
+        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+      clientKey,
+      userId,
+      userSignature,
+    });
 
-  const inboxClient = Inbox({ client: courierClient });
+    return Inbox({ client: courierClient });
+  };
+
+  let inboxClient = initClient();
 
   return {
     init: (payload) => {
@@ -125,6 +129,8 @@ const useElementalInboxActions = (): IInboxActions => {
       if (transport instanceof CourierTransport) {
         transport.renewSession(token);
       }
+
+      inboxClient = initClient(token);
     },
   };
 };
