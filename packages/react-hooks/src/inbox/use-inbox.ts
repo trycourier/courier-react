@@ -25,13 +25,44 @@ const useInbox = () => {
 
   useEffect(() => {
     transport?.listen({
-      id: "inbox-listener",
+      id: "message-listener",
+      type: "message",
       listener: (courierEvent) => {
         if (!dispatch || !courierEvent?.data) {
           return;
         }
 
         actions.newMessage(courierEvent?.data);
+      },
+    });
+
+    transport?.listen({
+      id: "event-listener",
+      type: "event",
+      listener: (courierEvent) => {
+        const data = courierEvent?.data;
+        if (!dispatch || !data || !data?.event || !data?.messageId) {
+          return;
+        }
+
+        switch (data.event) {
+          case "read": {
+            actions.markMessageRead(data.messageId);
+            return;
+          }
+
+          case "unread": {
+            actions.markMessageUnread(data.messageId);
+            return;
+          }
+
+          case "archive": {
+            actions.markMessageArchived(data.messageId);
+            return;
+          }
+        }
+
+        console.log("courierEvent", courierEvent);
       },
     });
   }, [transport]);

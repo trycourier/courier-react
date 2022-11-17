@@ -45,12 +45,13 @@ const useElementalInboxActions = (): IInboxActions => {
   const {
     apiUrl,
     authorization,
+    clientSourceId,
     clientKey,
     dispatch,
     inbox,
+    transport,
     userId,
     userSignature,
-    transport,
   } =
     useCourier<{
       inbox: IElementalInbox;
@@ -62,6 +63,7 @@ const useElementalInboxActions = (): IInboxActions => {
       apiUrl ??
       "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
     clientKey,
+    clientSourceId,
     userId,
     userSignature,
   });

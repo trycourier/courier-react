@@ -5,7 +5,7 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 import {
   Brand,
@@ -14,7 +14,7 @@ import {
   IMessage,
   WSOptions,
 } from "./types";
-
+import * as uuid from "uuid";
 import { CourierTransport } from "./transports/courier";
 import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
@@ -57,6 +57,20 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     userSignature,
     wsOptions,
   }) => {
+    const clientSourceId = useMemo(() => {
+      const clientSourceIdLSKey = `${clientKey}/${userId}/clientSourceId`;
+      const localStorageClientSourceId =
+        localStorage.getItem(clientSourceIdLSKey);
+
+      if (localStorageClientSourceId) {
+        return localStorageClientSourceId;
+      }
+
+      const newClientSourceId = uuid.v4();
+      localStorage.setItem(clientSourceIdLSKey, newClientSourceId);
+      return newClientSourceId;
+    }, [localStorage, clientKey, userId]);
+
     const middleware = [..._middleware, ...defaultMiddleware];
     const useReducer = useCallback(
       createReducer<any, Partial<ICourierContext>>(...middleware),
@@ -68,6 +82,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         ? undefined
         : useTransport({
             authorization,
+            clientSourceId,
             clientKey,
             transport: _transport,
             userSignature,
@@ -79,6 +94,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       authorization,
       brand,
       brandId,
+      clientSourceId,
       clientKey,
       localStorage,
       middleware,
@@ -168,7 +184,9 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       if (localStorageState) {
         try {
           const { brand } = JSON.parse(localStorageState);
-          actions.setBrand(brand);
+          actions.init({
+            brand,
+          });
         } catch (ex) {
           console.log("error", ex);
         }
@@ -180,6 +198,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         value={{
           ...state,
           ...actions,
+          clientSourceId,
           dispatch,
         }}
       >

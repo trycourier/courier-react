@@ -81,5 +81,5 @@ export interface ICourierProviderProps {
 }
 export interface ICourierContext extends ICourierProviderProps {
   dispatch: (action: { type: string; payload?: any; meta?: any }) => void;
-  graphQLClient?: any;
+  clientSourceId: string;
 }

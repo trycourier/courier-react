@@ -34,9 +34,12 @@ interface IInboxActions {
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
-  markMessageArchived: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageArchived: (
+    messageId: string,
+    trackingId?: string
+  ) => Promise<void>;
   markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
-  markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageUnread: (messageId: string, trackingId?: string) => Promise<void>;
   markMessageOpened: (messageId: string, trackingId: string) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   setCurrentTab: (newTab: ITab) => void;
@@ -49,12 +52,13 @@ const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
     authorization,
+    brandId,
+    clientSourceId,
     clientKey,
     dispatch,
     inbox,
     userId,
     userSignature,
-    brandId,
   } =
     useCourier<{
       inbox: IInbox;
@@ -63,6 +67,7 @@ const useInboxActions = (): IInboxActions => {
   const courierClient = createCourierClient({
     apiUrl,
     authorization,
+    clientSourceId,
     clientKey,
     userId,
     userSignature,
@@ -192,17 +197,21 @@ const useInboxActions = (): IInboxActions => {
         payload: () => events.trackEventBatch("read"),
       });
     },
-    markMessageUnread: async (messageId: string, trackingId: string) => {
+    markMessageUnread: async (messageId: string, trackingId?: string) => {
       dispatch(markMessageUnread(messageId));
-      await events.trackEvent(trackingId);
+      if (trackingId) {
+        await events.trackEvent(trackingId);
+      }
     },
     markMessageOpened: async (messageId: string, trackingId: string) => {
       dispatch(markMessageOpened(messageId));
       await events.trackEvent(trackingId);
     },
-    markMessageArchived: async (messageId: string, trackingId: string) => {
+    markMessageArchived: async (messageId: string, trackingId?: string) => {
       dispatch(markMessageArchived(messageId));
-      await events.trackEvent(trackingId);
+      if (trackingId) {
+        await events.trackEvent(trackingId);
+      }
     },
     newMessage: (message: ICourierMessage) => {
       if (!message.messageId) {

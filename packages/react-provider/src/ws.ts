@@ -9,6 +9,7 @@ export class WS {
     event?: string;
     callback: ICourierEventCallback;
   }>;
+  private clientSourceId?: string;
   private authorization?: string;
   private clientKey?: string;
   private connectionTimeout?: number;
@@ -23,9 +24,11 @@ export class WS {
     authorization,
     clientKey,
     options,
+    clientSourceId,
     userSignature,
   }: {
     authorization?: string;
+    clientSourceId?: string;
     clientKey?: string;
     options?: WSOptions;
     userSignature?: string;
@@ -38,6 +41,7 @@ export class WS {
       options?.url ||
       process.env.COURIER_WS_URL ||
       "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production";
+    this.clientSourceId = clientSourceId;
     this.clientKey = clientKey;
     this.userSignature = userSignature;
     this.subscriptions = [];
@@ -89,11 +93,12 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
-          version: "2",
           channel: sub.channel,
-          event: sub.event,
+          clientSourceId: this.clientSourceId,
           clientKey: this.clientKey,
+          event: sub.event,
           userSignature: this.userSignature,
+          version: "3",
         },
       });
     }
@@ -119,7 +124,7 @@ export class WS {
         continue;
       }
 
-      sub.callback({ data: message });
+      sub.callback({ type: message.type ?? "message", data: message });
     }
   }
 
@@ -138,11 +143,12 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
-          version: "2",
           channel,
-          event,
+          clientSourceId: this.clientSourceId,
           clientKey: this.clientKey,
+          event,
           userSignature: this.userSignature,
+          version: "3",
         },
       });
     }
@@ -165,7 +171,7 @@ export class WS {
     this.send({
       action: "unsubscribe",
       data: {
-        version: "2",
+        version: "3",
         channel,
         event,
         clientKey: this.clientKey,
@@ -174,12 +180,18 @@ export class WS {
     });
   }
 
-  renewSession(token: string): void {
+  renewSession(newAuthorization: string): void {
+    this.authorization = newAuthorization;
+    if (!this.connected || !this.connection) {
+      this.connect();
+      return;
+    }
+
     this.send({
       action: "renewSession",
       data: {
-        version: "2",
-        auth: token,
+        version: "3",
+        auth: newAuthorization,
       },
     });
   }

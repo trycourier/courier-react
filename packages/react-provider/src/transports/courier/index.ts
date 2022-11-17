@@ -4,11 +4,12 @@ import { Interceptor, ICourierMessage } from "../types";
 import { ITransportOptions } from "./types";
 
 export class CourierTransport extends Transport {
-  protected ws: WS;
   protected authorization?: string;
+  protected clientSourceId: string;
   protected clientKey?: string;
-  protected userSignature?: string;
   protected declare interceptor?: Interceptor;
+  protected userSignature?: string;
+  protected ws: WS;
 
   constructor(options: ITransportOptions) {
     super();
@@ -18,11 +19,13 @@ export class CourierTransport extends Transport {
     }
 
     this.authorization = options.authorization;
+    this.clientSourceId = options.clientSourceId;
     this.clientKey = options.clientKey;
     this.userSignature = options.userSignature;
 
     this.ws = new WS({
       authorization: options.authorization,
+      clientSourceId: options.clientSourceId,
       clientKey: options.clientKey,
       options: options.wsOptions,
       userSignature: options.userSignature,
@@ -41,16 +44,16 @@ export class CourierTransport extends Transport {
   }
 
   subscribe(channel: string, event?: string): void {
-    this.ws.subscribe(channel, event ?? "*", ({ data }) => {
+    this.ws.subscribe(channel, event ?? "*", ({ data: courierEvent }) => {
       if (this.interceptor) {
-        data = this.interceptor(data);
+        courierEvent = this.interceptor(courierEvent);
       }
 
-      if (!data) {
+      if (!courierEvent) {
         return;
       }
 
-      this.emit({ data });
+      this.emit({ type: courierEvent.type ?? "message", data: courierEvent });
     });
   }
 
