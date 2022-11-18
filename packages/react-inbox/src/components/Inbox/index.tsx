@@ -122,10 +122,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, [props]);
 
   const propTabs = props.tabs === false ? undefined : props.tabs;
+  const currentTab = propTabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
   const {
     brand,
+    fetchMessageLists,
     fetchMessages,
     init,
     isOpen: isOpenState,
@@ -157,8 +159,26 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
+      let myCurrentTab = currentTab;
       if (!isOpen) {
-        fetchMessages();
+        const now = new Date().getTime();
+        const dateDiff = lastMessagesFetched
+          ? now - lastMessagesFetched
+          : undefined;
+
+        setView("messages");
+        myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
+        setCurrentTab(myCurrentTab);
+
+        if (!dateDiff || dateDiff > 3600000) {
+          if (tabs) {
+            fetchMessageLists(tabs);
+          } else {
+            fetchMessages({
+              params: myCurrentTab.filters,
+            });
+          }
+        }
       }
 
       toggleInbox();

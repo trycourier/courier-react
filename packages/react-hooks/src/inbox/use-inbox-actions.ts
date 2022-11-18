@@ -40,22 +40,9 @@ export interface IFetchMessagesParams {
   after?: string;
 }
 
-export const DEFAULT_TABS = [
-  {
-    id: "unread",
-    label: "Unread",
-    filters: {
-      isRead: false,
-    },
-  },
-  {
-    id: "all",
-    label: "All Messages",
-    filters: {},
-  },
-];
 interface IInboxActions {
-  fetchMessages: (bypassLastMessagesFethed?: boolean) => void;
+  fetchMessageLists: (tabs?: ITab[]) => void;
+  fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   fetchInitialState: (inbox: IInbox) => void;
@@ -168,53 +155,6 @@ const useInboxActions = (): IInboxActions => {
     }
   };
 
-  const handleFetchMessages = (bypassLastMessagesFethed?: boolean) => {
-    const now = new Date().getTime();
-    const dateDiff =
-      inbox.lastMessagesFetched && !bypassLastMessagesFethed
-        ? now - inbox.lastMessagesFetched
-        : undefined;
-
-    dispatch(setView("messages"));
-    const currentTab = inbox.tabs?.[0] ?? DEFAULT_TABS[1];
-    dispatch(setCurrentTab(currentTab));
-
-    if (!dateDiff || dateDiff > 3600000) {
-      if (inbox.tabs) {
-        const listParams = inbox.tabs?.map((tab) => ({
-          ...tab,
-          filters: {
-            ...tab.filters,
-            from: inbox.from,
-          },
-        }));
-
-        if (!listParams) {
-          return;
-        }
-
-        dispatch({
-          type: "inbox/FETCH_MESSAGE_LISTS",
-          meta: listParams,
-          payload: () => messages.getMessageLists(listParams),
-        });
-      } else {
-        const meta = {
-          tabId: currentTab?.id,
-          searchParams: {
-            from: inbox?.from,
-          },
-        };
-
-        dispatch({
-          meta,
-          payload: () => messages.getMessages(currentTab.filters),
-          type: "inbox/FETCH_MESSAGES",
-        });
-      }
-    }
-  };
-
   return {
     init: handleInit,
     fetchInitialState: handleFetchInitialState,
@@ -238,7 +178,40 @@ const useInboxActions = (): IInboxActions => {
 
       dispatch(setCurrentTab(newTab));
     },
-    fetchMessages: handleFetchMessages,
+    fetchMessages: (payload?: IFetchMessagesParams) => {
+      const meta = {
+        tabId: inbox?.currentTab?.id,
+        searchParams: {
+          ...payload?.params,
+          from: inbox?.from,
+        },
+      };
+
+      dispatch({
+        meta,
+        payload: () => messages.getMessages(meta.searchParams, payload?.after),
+        type: "inbox/FETCH_MESSAGES",
+      });
+    },
+    fetchMessageLists: (tabs?: ITab[]) => {
+      const listParams = tabs?.map((tab) => ({
+        ...tab,
+        filters: {
+          from: inbox.from,
+          ...tab.filters,
+        },
+      }));
+
+      if (!listParams) {
+        return;
+      }
+
+      dispatch({
+        type: "inbox/FETCH_MESSAGE_LISTS",
+        meta: listParams,
+        payload: () => messages.getMessageLists(listParams),
+      });
+    },
     getUnreadMessageCount: () => {
       dispatch({
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
