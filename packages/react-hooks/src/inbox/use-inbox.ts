@@ -47,7 +47,12 @@ const useInbox = () => {
           }
 
           case "unread": {
-            actions.markMessageUnread(data.messageId);
+            /* 
+              intentionally do not patch unread as if the unread message that is referenced is not in state,
+              then we will be screwing with the local state.  instead just reset last fetched so we fetch new data 
+              the next time the inbox is open and closed
+            */
+            actions.resetLastFetched();
             return;
           }
 

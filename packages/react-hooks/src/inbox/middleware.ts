@@ -12,8 +12,8 @@ export default (api) => (store) => (next) => async (action) => {
   switch (action.type) {
     case "root/PAGE_VISIBLE":
     case "root/WS_RECONNECTED": {
-      store.dispatch(fetchUnreadMessageCount());
       store.dispatch(resetLastFetched());
+      store.dispatch(fetchUnreadMessageCount());
       break;
     }
 
