@@ -58,8 +58,6 @@ export class WS {
   }
 
   close(): void {
-    console.log(this.connected);
-    console.log(this.connection);
     if (!this.connected || !this.connection) {
       return;
     }
@@ -97,7 +95,6 @@ export class WS {
   }
 
   private _onClose(): void {
-    console.log("connection closed");
     this.connected = false;
     if (this.onClose) {
       this.onClose();

@@ -20,7 +20,6 @@
     "graphql": "^15.5.0",
     "react-use": "^17.2.1",
     "reconnecting-websocket": "^4.4.0",
-    "redux-dynamic-middlewares": "^2.2.0",
     "rimraf": "^3.0.2",
     "urql": "^2.0.1",
     "uuid": "^9.0.0"

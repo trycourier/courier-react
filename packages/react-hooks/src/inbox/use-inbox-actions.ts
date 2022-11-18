@@ -159,7 +159,6 @@ const useInboxActions = (): IInboxActions => {
     init: handleInit,
     fetchInitialState: handleFetchInitialState,
     resetLastFetched: () => {
-      console.log("resetLastFetched", resetLastFetched);
       dispatch(resetLastFetched());
       dispatch(fetchUnreadMessageCount());
     },
