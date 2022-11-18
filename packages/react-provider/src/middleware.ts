@@ -1,4 +1,3 @@
-import { Middleware } from "./middleware";
 function compose(...funcs) {
   if (funcs.length === 0) {
     // infer the argument type so it is usable in inference down the line
