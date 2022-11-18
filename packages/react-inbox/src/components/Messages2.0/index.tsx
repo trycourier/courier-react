@@ -181,12 +181,9 @@ const Messages: React.ForwardRefExoticComponent<
           return;
         }
 
-        fetchMessages({
-          params: currentTab?.filters,
-          after: startCursor,
-        });
+        fetchMessages();
       },
-      [isLoading, startCursor, currentTab]
+      [isLoading, startCursor]
     );
 
     useEffect(() => {

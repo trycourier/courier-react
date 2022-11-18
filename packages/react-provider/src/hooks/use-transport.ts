@@ -2,9 +2,10 @@ import { useMemo } from "react";
 import { Transport, CourierTransport } from "~/transports";
 
 const useCourierTransport = ({
-  transport,
   authorization,
+  clientSourceId,
   clientKey,
+  transport,
   userSignature,
   wsOptions,
 }): Transport => {
@@ -16,8 +17,9 @@ const useCourierTransport = ({
     if ((clientKey || authorization) && !transport) {
       return new CourierTransport({
         authorization,
-        userSignature,
+        clientSourceId,
         clientKey,
+        userSignature,
         wsOptions,
       });
     }

@@ -35,6 +35,7 @@ export const useListenForTransportEvent = (
 
     transport.listen({
       id: "toast-listener",
+      type: "message",
       listener: (courierEvent) => {
         const courierData = courierEvent?.data?.data;
         if (courierData?.trackingIds?.deliverTrackingId) {

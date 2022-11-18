@@ -19,6 +19,10 @@ import {
   INBOX_REHYDRATE_MESSAGES,
 } from "./actions/rehydrate-messages";
 import {
+  ResetLastFetched,
+  INBOX_RESET_LAST_FETCHED,
+} from "./actions/reset-last-fetched";
+import {
   MarkMessageArchived,
   INBOX_MARK_MESSAGE_ARCHIVED,
 } from "./actions/mark-message-archived";
@@ -103,6 +107,7 @@ type InboxAction =
   | MarkMessageRead
   | MarkMessageUnread
   | NewMessage
+  | ResetLastFetched
   | RehydrateMessages
   | SetCurrentTab
   | ToggleInbox;
@@ -179,6 +184,13 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
+      };
+    }
+
+    case INBOX_RESET_LAST_FETCHED: {
+      return {
+        ...state,
+        lastMessagesFetched: undefined,
       };
     }
 

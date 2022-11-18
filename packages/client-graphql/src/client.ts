@@ -31,14 +31,22 @@ export const createCourierClient = (
     headers = {
       authorization: `Bearer ${jwtParams.authorization}`,
     } as CourierJWTHeaders;
+
+    if (jwtParams.clientSourceId) {
+      headers["x-courier-client-source-id"] = jwtParams.clientSourceId;
+    }
   } else {
-    const { clientKey, userId, userSignature } =
+    const { clientKey, userId, userSignature, clientSourceId } =
       params as ICourierClientBasicParams;
 
     headers = {
       "x-courier-client-key": clientKey,
       "x-courier-user-id": userId,
     } as CourierBasicHeaders;
+
+    if (clientSourceId) {
+      headers["x-courier-client-source-id"] = clientSourceId;
+    }
 
     if (userSignature) {
       headers["x-courier-user-signature"] = userSignature;

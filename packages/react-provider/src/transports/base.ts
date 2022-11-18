@@ -1,26 +1,38 @@
 import { ICourierEvent, Interceptor } from "./types";
 
+enum ListenerType {
+  message = "message",
+  event = "event",
+}
 export class Transport {
   constructor() {
-    this.listeners = [];
+    this.listeners = {
+      message: [],
+      event: [],
+    };
     this.interceptor = undefined;
   }
 
   /** Callback for emitted events  */
-  protected listeners: Array<{
-    id: string;
-    listener: (courierEvent: ICourierEvent) => void;
-  }>;
+  protected listeners: {
+    [key in ListenerType]: Array<{
+      id: string;
+      listener: (courierEvent: ICourierEvent) => void;
+    }>;
+  };
 
   protected interceptor?: Interceptor;
   /** Wrapper method for emitted events  */
   protected emit = (courierEvent: ICourierEvent): void => {
-    if (!this.listeners.length) {
+    const eventType = courierEvent.type ?? "message";
+    const listeners = this.listeners[eventType];
+
+    if (!listeners.length) {
       console.warn("No Listeners Registered");
       return;
     }
 
-    for (const { listener } of this.listeners) {
+    for (const { listener } of listeners) {
       listener(courierEvent);
     }
   };
@@ -28,10 +40,14 @@ export class Transport {
   /** Setter method for a listener */
   listen = (listener: {
     id: string;
+    type?: "message" | "event";
     listener: (courierEvent: ICourierEvent) => void;
   }): void => {
     let didReplaceListener = false;
-    this.listeners = this.listeners.map((l) => {
+    const eventType = listener.type ?? "message";
+    let listeners = this.listeners[eventType];
+
+    listeners = listeners.map((l) => {
       if (l.id === listener.id) {
         didReplaceListener = true;
         return listener;
@@ -41,10 +57,11 @@ export class Transport {
     });
 
     if (didReplaceListener) {
+      this.listeners[eventType] = listeners;
       return;
     }
 
-    this.listeners.push(listener);
+    this.listeners[eventType] = [...this.listeners[eventType], listener];
   };
 
   intercept = (cb: Interceptor): void => {

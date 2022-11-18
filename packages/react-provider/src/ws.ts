@@ -9,13 +9,19 @@ export class WS {
     event?: string;
     callback: ICourierEventCallback;
   }>;
+  private clientSourceId?: string;
   private authorization?: string;
   private clientKey?: string;
   private connectionTimeout?: number;
   private onError?: ErrorEventHandler;
   private onClose?: () => void;
+  private onReconnectionHandlers: Array<{
+    id: string;
+    callback: () => void;
+  }>;
   private url: string;
   private userSignature?: string;
+  private connectionCount: number;
   protected connected;
   protected messageCallback;
 
@@ -23,13 +29,16 @@ export class WS {
     authorization,
     clientKey,
     options,
+    clientSourceId,
     userSignature,
   }: {
     authorization?: string;
+    clientSourceId?: string;
     clientKey?: string;
     options?: WSOptions;
     userSignature?: string;
   }) {
+    this.connectionCount = 0;
     this.authorization = authorization;
     this.messageCallback = null;
     this.connection = undefined;
@@ -38,12 +47,22 @@ export class WS {
       options?.url ||
       process.env.COURIER_WS_URL ||
       "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production";
+    this.clientSourceId = clientSourceId;
     this.clientKey = clientKey;
     this.userSignature = userSignature;
     this.subscriptions = [];
+    this.onReconnectionHandlers = [];
     this.connectionTimeout = options?.connectionTimeout;
     this.onError = options?.onError;
     this.onClose = options?.onClose;
+  }
+
+  close(): void {
+    if (!this.connected || !this.connection) {
+      return;
+    }
+
+    this.connection.close();
   }
 
   connect(): void {
@@ -65,7 +84,7 @@ export class WS {
     this.connection.onmessage = this._onMessage.bind(this);
   }
 
-  _onError(event: ErrorEvent): void {
+  private _onError(event: ErrorEvent): void {
     if (this.onError) {
       this.onError(event);
     } else {
@@ -75,31 +94,39 @@ export class WS {
     this.connection?.close();
   }
 
-  _onClose(): void {
+  private _onClose(): void {
     this.connected = false;
     if (this.onClose) {
       this.onClose();
     }
   }
 
-  _onOpen(): void {
+  private _onOpen(): void {
     this.connected = true;
+    this.connectionCount++;
+
+    if (this.connectionCount > 1) {
+      for (const reconnectHandler of this.onReconnectionHandlers) {
+        reconnectHandler.callback();
+      }
+    }
 
     for (const sub of this.subscriptions) {
       this.send({
         action: "subscribe",
         data: {
-          version: "2",
           channel: sub.channel,
-          event: sub.event,
+          clientSourceId: this.clientSourceId,
           clientKey: this.clientKey,
+          event: sub.event,
           userSignature: this.userSignature,
+          version: "3",
         },
       });
     }
   }
 
-  _onMessage({ data }: { data: string }): void {
+  private _onMessage({ data }: { data: string }): void {
     let message: ICourierMessage;
 
     try {
@@ -119,7 +146,7 @@ export class WS {
         continue;
       }
 
-      sub.callback({ data: message });
+      sub.callback({ type: message.type ?? "message", data: message });
     }
   }
 
@@ -138,11 +165,12 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
-          version: "2",
           channel,
-          event,
+          clientSourceId: this.clientSourceId,
           clientKey: this.clientKey,
+          event,
           userSignature: this.userSignature,
+          version: "3",
         },
       });
     }
@@ -165,7 +193,7 @@ export class WS {
     this.send({
       action: "unsubscribe",
       data: {
-        version: "2",
+        version: "3",
         channel,
         event,
         clientKey: this.clientKey,
@@ -174,17 +202,27 @@ export class WS {
     });
   }
 
-  renewSession(token: string): void {
+  renewSession(newAuthorization: string): void {
+    this.authorization = newAuthorization;
+    if (!this.connected || !this.connection) {
+      this.connect();
+      return;
+    }
+
     this.send({
       action: "renewSession",
       data: {
-        version: "2",
-        auth: token,
+        version: "3",
+        auth: newAuthorization,
       },
     });
   }
 
-  close(): void {
-    this.connection?.close();
+  onReconnection(handler: { id: string; callback: () => void }): void {
+    if (this.onReconnectionHandlers.find((h) => h.id === handler.id)) {
+      return;
+    }
+
+    this.onReconnectionHandlers.push(handler);
   }
 }

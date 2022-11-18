@@ -6,13 +6,14 @@ import {
   Events,
 } from "@trycourier/client-graphql";
 import { Brand } from "..";
-import { ICourierProviderProps } from "~/types";
+import { ICourierContext } from "~/types";
 
 const useCourierActions = (state, dispatch) => {
   return useMemo(() => {
     const courierClient = createCourierClient({
       apiUrl: state.apiUrl,
       authorization: state.authorization,
+      clientSourceId: state.clientSourceId,
       clientKey: state.clientKey,
       userId: state.userId,
       userSignature: state.userSignature,
@@ -22,7 +23,7 @@ const useCourierActions = (state, dispatch) => {
     const events = Events({ client: courierClient });
 
     return {
-      init: async (payload: ICourierProviderProps) => {
+      init: async (payload: Partial<ICourierContext>) => {
         dispatch({
           type: "root/INIT",
           payload,
@@ -38,6 +39,16 @@ const useCourierActions = (state, dispatch) => {
         dispatch({
           type: "inbox/INIT",
           payload,
+        });
+      },
+      pageVisible: () => {
+        dispatch({
+          type: "root/PAGE_VISIBLE",
+        });
+      },
+      wsReconnected: () => {
+        dispatch({
+          type: "root/WS_RECONNECTED",
         });
       },
       getBrand: (brandId?: string) => {

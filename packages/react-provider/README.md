@@ -24,9 +24,6 @@ interface ICourierProvider {
   /** Allows the browser to modify or react to a received message before the message is displayed to the user */
   onMessage?: (message?: ICourierMessage) => ICourierMessage | undefined;
 
-  /** Set to true to disable websockets */
-  disableTransport?: boolean;
-
   /** Courier client key. Along with userId and userSignature this can be used as an alternative to the authorization field / token. */
   clientKey?: string;
   /** Required if using client key and signature */

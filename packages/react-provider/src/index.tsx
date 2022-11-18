@@ -5,8 +5,9 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
+
 import {
   Brand,
   ICourierContext,
@@ -14,20 +15,26 @@ import {
   IMessage,
   WSOptions,
 } from "./types";
-
+import * as uuid from "uuid";
 import { CourierTransport } from "./transports/courier";
 import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
-import defaultMiddleware from "./middleware";
+import defaultMiddleware, {
+  registerMiddleware as _registerMiddleware,
+  Middleware,
+} from "./middleware";
 import useCourierActions from "./hooks/use-courier-actions";
+import { usePageVisible } from "./hooks/use-page-visible";
 import useTransport from "./hooks/use-transport";
 
 export * from "./transports";
 export * from "./hooks";
 
 export const registerReducer = _registerReducer;
+export const registerMiddleware = _registerMiddleware;
 
 export type {
+  Middleware,
   Brand,
   IActionBlock,
   ICourierContext,
@@ -42,13 +49,13 @@ export const CourierContext =
 
 export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
   ({
+    id,
     apiUrl,
     authorization,
     brand,
     brandId,
     children,
     clientKey,
-    disableTransport, // Note: For now, disable transport also means disable non push-provider-bound requests
     localStorage = window?.localStorage,
     middleware: _middleware = [],
     onMessage,
@@ -57,17 +64,34 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     userSignature,
     wsOptions,
   }) => {
+    const clientSourceId = useMemo(() => {
+      const clientKeyId = id ? `${clientKey}/${id}` : clientKey;
+      const clientSourceIdLSKey = `${clientKeyId}/${userId}/clientSourceId`;
+      const localStorageClientSourceId =
+        localStorage.getItem(clientSourceIdLSKey);
+
+      if (localStorageClientSourceId) {
+        return localStorageClientSourceId;
+      }
+
+      const newClientSourceId = uuid.v4();
+      localStorage.setItem(clientSourceIdLSKey, newClientSourceId);
+      return newClientSourceId;
+    }, [localStorage, clientKey, userId]);
+
     const middleware = [..._middleware, ...defaultMiddleware];
+
     const useReducer = useCallback(
       createReducer<any, Partial<ICourierContext>>(...middleware),
       [_middleware]
     );
 
     const transport =
-      disableTransport || typeof window === "undefined"
+      typeof window === "undefined"
         ? undefined
         : useTransport({
             authorization,
+            clientSourceId,
             clientKey,
             transport: _transport,
             userSignature,
@@ -79,6 +103,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       authorization,
       brand,
       brandId,
+      clientSourceId,
       clientKey,
       localStorage,
       middleware,
@@ -88,6 +113,15 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     });
 
     const actions = useCourierActions(state, dispatch);
+
+    usePageVisible((isVisible) => {
+      if (!isVisible) {
+        return;
+      }
+
+      // this means we left the tab and came back so we should refetch
+      actions.pageVisible();
+    });
 
     useEffect(() => {
       if (_transport) {
@@ -100,7 +134,14 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       }
 
       const courierTransport = transport as CourierTransport;
+
       courierTransport.subscribe(userId);
+      courierTransport.onReconnection({
+        id: "handleWSReconnection",
+        callback: () => {
+          actions.wsReconnected();
+        },
+      });
 
       if (onMessage) {
         courierTransport.intercept(onMessage);
@@ -116,8 +157,19 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         return;
       }
 
-      if (disableTransport) {
-        return;
+      let parsedLocalStorageState;
+      if (state.localStorage) {
+        const localStorageState = state.localStorage.getItem(
+          `${clientKey}/${userId}/provider`
+        );
+
+        if (localStorageState) {
+          try {
+            parsedLocalStorageState = JSON.parse(localStorageState);
+          } catch (ex) {
+            console.log("error", ex);
+          }
+        }
       }
 
       actions.init({
@@ -129,6 +181,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         transport,
         userId,
         userSignature,
+        ...parsedLocalStorageState,
       });
     }, [
       actions,
@@ -136,7 +189,6 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       authorization,
       brandId,
       clientKey,
-      disableTransport,
       localStorage,
       transport,
       userId,
@@ -156,30 +208,12 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       );
     }, [state.brand, clientKey, userId, state.localStorage]);
 
-    useEffect(() => {
-      if (!clientKey || !userId || disableTransport || !state.localStorage) {
-        return;
-      }
-
-      const localStorageState = state.localStorage.getItem(
-        `${clientKey}/${userId}/provider`
-      );
-
-      if (localStorageState) {
-        try {
-          const { brand } = JSON.parse(localStorageState);
-          actions.setBrand(brand);
-        } catch (ex) {
-          console.log("error", ex);
-        }
-      }
-    }, [clientKey, userId, state.localStorage]);
-
     return (
       <CourierContext.Provider
         value={{
           ...state,
           ...actions,
+          clientSourceId,
           dispatch,
         }}
       >

@@ -11,6 +11,7 @@ export interface IActionBlock {
 }
 export interface ICourierMessage {
   event?: string;
+  type?: "message" | "event";
   error?: string;
   messageId?: string;
   body?: string;
@@ -36,11 +37,11 @@ export interface ICourierMessage {
 }
 
 export interface ICourierEvent {
-  type?: "message";
+  type?: "message" | "event";
   data?: ICourierMessage;
 }
 
-export type ICourierEventCallback = (params: ICourierEvent) => void;
+export type ICourierEventCallback = (event: ICourierEvent) => void;
 
 export type Interceptor = (
   message?: ICourierMessage

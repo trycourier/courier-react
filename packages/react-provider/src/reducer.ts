@@ -1,3 +1,5 @@
+import { ICourierContext } from "./types";
+
 export interface IAction {
   type: "root/INIT";
   payload: any;
@@ -12,7 +14,7 @@ export const registerReducer = (scope, reducer) => {
   reducers[scope] = reducer;
 };
 
-const rootReducer = (state, action) => {
+const rootReducer = (state: Partial<ICourierContext>, action) => {
   if (
     typeof window !== "undefined" &&
     (
@@ -39,13 +41,7 @@ const rootReducer = (state, action) => {
     case "root/INIT": {
       return {
         ...state,
-        apiUrl: action.payload.apiUrl,
-        brandId: action.payload.brandId,
-        clientKey: action.payload.clientKey,
-        graphQLClient: action.payload.graphQLClient,
-        transport: action.payload.transport,
-        userId: action.payload.userId,
-        userSignature: action.payload.userSignature,
+        ...action.payload,
       };
     }
     case "root/GET_BRAND/DONE": {
