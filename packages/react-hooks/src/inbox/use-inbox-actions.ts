@@ -1,4 +1,10 @@
-import { useCourier, ICourierMessage } from "@trycourier/react-provider";
+import {
+  useCourier,
+  ICourierMessage,
+  registerReducer,
+  registerMiddleware,
+  Middleware,
+} from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
 import {
@@ -16,12 +22,18 @@ import { setCurrentTab } from "./actions/set-current-tab";
 import { markMessageRead } from "./actions/mark-message-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
 import { markMessageArchived } from "./actions/mark-message-archived";
+import { resetLastFetched } from "./actions/reset-last-fetched";
+
 import {
   rehydrateMessages,
   RehydrateMessages,
 } from "./actions/rehydrate-messages";
 import { newMessage } from "./actions/new-message";
 import { markMessageOpened } from "./actions/mark-message-opened";
+import { useEffect } from "react";
+import reducer from "./reducer";
+import middleware from "./middleware";
+import { fetchUnreadMessageCount } from "./actions/fetch-unread-message-count";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -33,6 +45,7 @@ interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
+  fetchInitialState: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageArchived: (
     messageId: string,
@@ -42,6 +55,7 @@ interface IInboxActions {
   markMessageUnread: (messageId: string, trackingId?: string) => Promise<void>;
   markMessageOpened: (messageId: string, trackingId: string) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
+  resetLastFetched: () => void;
   setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
@@ -77,53 +91,78 @@ const useInboxActions = (): IInboxActions => {
   const messages = Messages({ client: courierClient });
   const initialState = InitialState({ client: courierClient });
 
-  return {
-    init: async (payload) => {
-      dispatch(initInbox(payload));
+  useEffect(() => {
+    registerReducer("inbox", reducer);
+    registerMiddleware({
+      id: "inboxMiddlware",
+      middleware: middleware({
+        events,
+        messages,
+        initialState,
+      }) as Middleware,
+    });
+  }, []);
 
-      const response = await initialState.getInitialState({
-        brandId,
-        skipFetchBrand: payload.brand
-          ? Object.entries(payload.brand).length > 0
-          : false,
+  const handleInit: IInboxActions["init"] = async (payload) => {
+    dispatch(initInbox(payload));
+    handleFetchInitialState(payload);
+  };
+
+  const handleFetchInitialState: IInboxActions["fetchInitialState"] = async (
+    payload
+  ) => {
+    const response = await initialState.getInitialState({
+      brandId,
+      skipFetchBrand: payload.brand
+        ? Object.entries(payload.brand).length > 0
+        : false,
+    });
+
+    if (response?.brand) {
+      dispatch({
+        type: "root/GET_BRAND/DONE",
+        payload: response.brand,
       });
+    }
 
-      if (response?.brand) {
+    dispatch({
+      type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
+      payload: response?.unreadMessageCount,
+    });
+
+    if (payload.isOpen) {
+      const meta = {
+        tabId: inbox?.currentTab?.id,
+        searchParams: {
+          ...inbox?.currentTab?.filters,
+          from: inbox?.from,
+        },
+      };
+
+      if (payload.tabs) {
         dispatch({
-          type: "root/GET_BRAND/DONE",
-          payload: response.brand,
+          type: "inbox/FETCH_MESSAGE_LISTS",
+          meta,
+          payload: () => messages.getMessageLists(payload.tabs),
         });
+        return;
       }
 
       dispatch({
-        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
-        payload: response?.unreadMessageCount,
+        type: "inbox/FETCH_MESSAGES",
+        meta,
+        payload: () => messages.getMessages(meta.searchParams),
       });
+    }
+  };
 
-      if (payload.isOpen) {
-        const meta = {
-          tabId: inbox?.currentTab?.id,
-          searchParams: {
-            ...inbox?.currentTab?.filters,
-            from: inbox?.from,
-          },
-        };
-
-        if (payload.tabs) {
-          dispatch({
-            type: "inbox/FETCH_MESSAGE_LISTS",
-            meta,
-            payload: () => messages.getMessageLists(payload.tabs),
-          });
-          return;
-        }
-
-        dispatch({
-          type: "inbox/FETCH_MESSAGES",
-          meta,
-          payload: () => messages.getMessages(meta.searchParams),
-        });
-      }
+  return {
+    init: handleInit,
+    fetchInitialState: handleFetchInitialState,
+    resetLastFetched: () => {
+      console.log("resetLastFetched", resetLastFetched);
+      dispatch(resetLastFetched());
+      dispatch(fetchUnreadMessageCount());
     },
     rehydrateMessages: (payload) => {
       dispatch(rehydrateMessages(payload));

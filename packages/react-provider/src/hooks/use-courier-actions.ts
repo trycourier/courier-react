@@ -41,6 +41,16 @@ const useCourierActions = (state, dispatch) => {
           payload,
         });
       },
+      pageVisible: () => {
+        dispatch({
+          type: "root/PAGE_VISIBLE",
+        });
+      },
+      wsReconnected: () => {
+        dispatch({
+          type: "root/WS_RECONNECTED",
+        });
+      },
       getBrand: (brandId?: string) => {
         dispatch({
           type: "root/GET_BRAND",

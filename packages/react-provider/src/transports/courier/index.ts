@@ -33,6 +33,14 @@ export class CourierTransport extends Transport {
     this.ws.connect();
   }
 
+  closeConnection(): void {
+    this.ws.close();
+  }
+
+  connect(): void {
+    this.ws.connect();
+  }
+
   send(message: ICourierMessage): void {
     this.ws.send({
       ...message,
@@ -59,6 +67,10 @@ export class CourierTransport extends Transport {
 
   unsubscribe(channel: string, event?: string): void {
     this.ws.unsubscribe(channel, event ?? "*");
+  }
+
+  onReconnection(handler: { id: string; callback: () => void }): void {
+    this.ws.onReconnection(handler);
   }
 
   renewSession(token: string): void {

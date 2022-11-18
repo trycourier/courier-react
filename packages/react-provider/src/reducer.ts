@@ -15,6 +15,7 @@ export const registerReducer = (scope, reducer) => {
 };
 
 const rootReducer = (state: Partial<ICourierContext>, action) => {
+  console.log("action", action);
   if (
     typeof window !== "undefined" &&
     (

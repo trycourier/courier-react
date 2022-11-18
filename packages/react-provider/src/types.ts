@@ -64,6 +64,7 @@ export interface Brand {
 }
 
 export interface ICourierProviderProps {
+  id?: string;
   apiUrl?: string;
   authorization?: string;
   brand?: Brand;
@@ -73,8 +74,6 @@ export interface ICourierProviderProps {
   localStorage?: Storage;
   onMessage?: Interceptor;
   transport?: Transport;
-  /** Set to true to disable websockets */
-  disableTransport?: boolean;
   userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;

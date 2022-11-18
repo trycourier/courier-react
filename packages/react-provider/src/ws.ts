@@ -15,8 +15,13 @@ export class WS {
   private connectionTimeout?: number;
   private onError?: ErrorEventHandler;
   private onClose?: () => void;
+  private onReconnectionHandlers: Array<{
+    id: string;
+    callback: () => void;
+  }>;
   private url: string;
   private userSignature?: string;
+  private connectionCount: number;
   protected connected;
   protected messageCallback;
 
@@ -33,6 +38,7 @@ export class WS {
     options?: WSOptions;
     userSignature?: string;
   }) {
+    this.connectionCount = 0;
     this.authorization = authorization;
     this.messageCallback = null;
     this.connection = undefined;
@@ -45,9 +51,20 @@ export class WS {
     this.clientKey = clientKey;
     this.userSignature = userSignature;
     this.subscriptions = [];
+    this.onReconnectionHandlers = [];
     this.connectionTimeout = options?.connectionTimeout;
     this.onError = options?.onError;
     this.onClose = options?.onClose;
+  }
+
+  close(): void {
+    console.log(this.connected);
+    console.log(this.connection);
+    if (!this.connected || !this.connection) {
+      return;
+    }
+
+    this.connection.close();
   }
 
   connect(): void {
@@ -69,7 +86,7 @@ export class WS {
     this.connection.onmessage = this._onMessage.bind(this);
   }
 
-  _onError(event: ErrorEvent): void {
+  private _onError(event: ErrorEvent): void {
     if (this.onError) {
       this.onError(event);
     } else {
@@ -79,15 +96,23 @@ export class WS {
     this.connection?.close();
   }
 
-  _onClose(): void {
+  private _onClose(): void {
+    console.log("connection closed");
     this.connected = false;
     if (this.onClose) {
       this.onClose();
     }
   }
 
-  _onOpen(): void {
+  private _onOpen(): void {
     this.connected = true;
+    this.connectionCount++;
+
+    if (this.connectionCount > 1) {
+      for (const reconnectHandler of this.onReconnectionHandlers) {
+        reconnectHandler.callback();
+      }
+    }
 
     for (const sub of this.subscriptions) {
       this.send({
@@ -104,7 +129,7 @@ export class WS {
     }
   }
 
-  _onMessage({ data }: { data: string }): void {
+  private _onMessage({ data }: { data: string }): void {
     let message: ICourierMessage;
 
     try {
@@ -196,7 +221,11 @@ export class WS {
     });
   }
 
-  close(): void {
-    this.connection?.close();
+  onReconnection(handler: { id: string; callback: () => void }): void {
+    if (this.onReconnectionHandlers.find((h) => h.id === handler.id)) {
+      return;
+    }
+
+    this.onReconnectionHandlers.push(handler);
   }
 }
