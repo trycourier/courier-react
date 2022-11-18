@@ -1,3 +1,4 @@
+import { Middleware } from "./middleware";
 function compose(...funcs) {
   if (funcs.length === 0) {
     // infer the argument type so it is usable in inference down the line
@@ -32,39 +33,41 @@ export interface Middleware {
 }
 
 const createDynamicMiddlewares = () => {
-  const middlewares: any[] = [];
+  const middlewares: Array<{
+    id: string;
+    middleware: Middleware;
+  }> = [];
   let store;
 
   const enhancer = (_store) => {
     store = _store;
     return (next) => (action) => {
-      return compose(...middlewares.map((m) => m.middleware))(next)(action);
+      return compose(...middlewares.map((m) => m.middleware(store)))(next)(
+        action
+      );
     };
   };
 
-  const addMiddleware = (middleware: {
-    id: string;
-    middleware: Middleware;
-  }) => {
-    if (middlewares.find((m) => m.id === middleware.id)) {
+  const registerMiddleware = (id: string, middleware: Middleware) => {
+    if (middlewares.find((m) => m.id === id)) {
       return;
     }
 
     middlewares.push({
-      ...middleware,
-      middleware: middleware.middleware(store),
+      id,
+      middleware,
     });
   };
 
   return {
     enhancer,
-    addMiddleware,
+    registerMiddleware,
   };
 };
 
 const dynamicMiddlewaresInstance = createDynamicMiddlewares();
 
-export const { addMiddleware } = dynamicMiddlewaresInstance;
+export const { registerMiddleware } = dynamicMiddlewaresInstance;
 
 const asyncMiddleware = (store) => (next) => async (action) => {
   if (typeof action.payload !== "function") {

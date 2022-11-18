@@ -32,7 +32,7 @@ import { newMessage } from "./actions/new-message";
 import { markMessageOpened } from "./actions/mark-message-opened";
 import { useEffect } from "react";
 import reducer from "./reducer";
-import middleware from "./middleware";
+import createMiddleware from "./middleware";
 import { fetchUnreadMessageCount } from "./actions/fetch-unread-message-count";
 
 export interface IFetchMessagesParams {
@@ -92,15 +92,14 @@ const useInboxActions = (): IInboxActions => {
   const initialState = InitialState({ client: courierClient });
 
   useEffect(() => {
-    registerReducer("inbox", reducer);
-    registerMiddleware({
-      id: "inboxMiddlware",
-      middleware: middleware({
-        events,
-        messages,
-        initialState,
-      }) as Middleware,
+    const inboxMiddleware = createMiddleware({
+      events,
+      messages,
+      initialState,
     });
+
+    registerReducer("inbox", reducer);
+    registerMiddleware("inbox", inboxMiddleware as Middleware);
   }, []);
 
   const handleInit: IInboxActions["init"] = async (payload) => {

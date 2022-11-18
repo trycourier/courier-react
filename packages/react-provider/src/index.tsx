@@ -19,7 +19,10 @@ import * as uuid from "uuid";
 import { CourierTransport } from "./transports/courier";
 import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
-import defaultMiddleware, { addMiddleware, Middleware } from "./middleware";
+import defaultMiddleware, {
+  registerMiddleware as _registerMiddleware,
+  Middleware,
+} from "./middleware";
 import useCourierActions from "./hooks/use-courier-actions";
 import { usePageVisible } from "./hooks/use-page-visible";
 import useTransport from "./hooks/use-transport";
@@ -28,7 +31,7 @@ export * from "./transports";
 export * from "./hooks";
 
 export const registerReducer = _registerReducer;
-export const registerMiddleware = addMiddleware;
+export const registerMiddleware = _registerMiddleware;
 
 export type {
   Middleware,
