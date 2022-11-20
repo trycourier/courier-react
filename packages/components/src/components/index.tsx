@@ -18,6 +18,8 @@ const querySelector = (element: HTMLElement, selector: string) => {
 };
 
 export const CourierComponents: React.FunctionComponent = () => {
+  const preferencePageDraftMode =
+    window.courierConfig?.preferencePageDraftMode ?? false;
   const componentConfigs = window.courierConfig?.components;
   const initialInbox = querySelector(window?.document?.body, "courier-inbox");
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
@@ -182,7 +184,7 @@ export const CourierComponents: React.FunctionComponent = () => {
       {preferencePage &&
         createPortal(
           <Suspense fallback={<div />}>
-            <PreferencePage />
+            <PreferencePage draft={preferencePageDraftMode} />
           </Suspense>,
           preferencePage
         )}

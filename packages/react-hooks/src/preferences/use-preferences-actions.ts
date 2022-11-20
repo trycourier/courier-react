@@ -20,9 +20,14 @@ const usePreferencesActions = () => {
         payload: () => preferences.getRecipientPreferences(),
       });
     },
-    fetchPreferencePage: () => {
+    fetchPreferencePage: (draft = false) => {
+      const dispatchType =
+        draft === true
+          ? "preferences/FETCH_DRAFT_PREFERENCE_PAGE"
+          : "preferences/FETCH_PREFERENCE_PAGE";
+
       dispatch({
-        type: "preferences/FETCH_PREFERENCE_PAGE",
+        type: dispatchType,
         payload: () => preferences.getPreferencePage(),
       });
     },
