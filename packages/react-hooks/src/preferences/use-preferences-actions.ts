@@ -21,15 +21,17 @@ const usePreferencesActions = () => {
       });
     },
     fetchPreferencePage: (draft = false) => {
-      const dispatchType =
-        draft === true
-          ? "preferences/FETCH_DRAFT_PREFERENCE_PAGE"
-          : "preferences/FETCH_PREFERENCE_PAGE";
-
-      dispatch({
-        type: dispatchType,
-        payload: () => preferences.getPreferencePage(),
-      });
+      if (draft) {
+        dispatch({
+          type: "preferences/FETCH_DRAFT_PREFERENCE_PAGE",
+          payload: () => preferences.getDraftPreferencePage(),
+        });
+      } else {
+        dispatch({
+          type: "preferences/FETCH_PREFERENCE_PAGE",
+          payload: () => preferences.getPreferencePage(),
+        });
+      }
     },
     updateRecipientPreferences: async (payload) => {
       dispatch({

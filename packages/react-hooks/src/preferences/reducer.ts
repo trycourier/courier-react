@@ -25,6 +25,11 @@ export default (state: PreferenceState = initialState, action) => {
         ...state,
         isUpdating: true,
       };
+    case "preferences/FETCH_DRAFT_PREFERENCE_PAGE/PENDING":
+      return {
+        ...state,
+        isUpdating: true,
+      };
 
     case "preferences/FETCH_RECIPIENT_PREFERENCES/DONE": {
       return {
@@ -35,6 +40,12 @@ export default (state: PreferenceState = initialState, action) => {
     }
 
     case "preferences/FETCH_PREFERENCE_PAGE/DONE":
+      return {
+        ...state,
+        isLoading: false,
+        preferencePage: action?.payload,
+      };
+    case "preferences/FETCH_DRAFT_PREFERENCE_PAGE/DONE":
       return {
         ...state,
         isLoading: false,
