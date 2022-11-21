@@ -117,7 +117,7 @@ export const getDraftPreferencePage =
     }
 
     const results = await client.query(DRAFT_PREFERENCE_PAGE).toPromise();
-    return results.data?.preferencePage;
+    return results.data?.draftPreferencePage;
   };
 
 const UPDATE_RECIPIENT_PREFERENCES = `

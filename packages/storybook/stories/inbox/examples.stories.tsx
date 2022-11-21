@@ -174,7 +174,7 @@ export function MultipleInbox(): React.ReactElement {
       userId="christian"
     >
       <h1>Test</h1>
-      <PreferenceList />
+      <PreferenceList draft />
     </CourierProvider>
   );
 }
