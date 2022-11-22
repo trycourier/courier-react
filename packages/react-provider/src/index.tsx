@@ -56,7 +56,9 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     brandId,
     children,
     clientKey,
-    localStorage = window?.localStorage,
+    localStorage = typeof window !== "undefined"
+      ? window?.localStorage
+      : undefined,
     middleware: _middleware = [],
     onMessage,
     transport: _transport,
@@ -68,14 +70,14 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       const clientKeyId = id ? `${clientKey}/${id}` : clientKey;
       const clientSourceIdLSKey = `${clientKeyId}/${userId}/clientSourceId`;
       const localStorageClientSourceId =
-        localStorage.getItem(clientSourceIdLSKey);
+        localStorage?.getItem(clientSourceIdLSKey);
 
       if (localStorageClientSourceId) {
         return localStorageClientSourceId;
       }
 
       const newClientSourceId = uuid.v4();
-      localStorage.setItem(clientSourceIdLSKey, newClientSourceId);
+      localStorage?.setItem(clientSourceIdLSKey, newClientSourceId);
       return newClientSourceId;
     }, [localStorage, clientKey, userId]);
 
