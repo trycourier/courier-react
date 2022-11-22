@@ -56,7 +56,9 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     brandId,
     children,
     clientKey,
-    localStorage = window?.localStorage,
+    localStorage = typeof window !== "undefined"
+      ? window?.localStorage
+      : undefined,
     middleware: _middleware = [],
     onMessage,
     transport: _transport,
