@@ -1,4 +1,8 @@
-import { CourierTransport, useCourier } from "@trycourier/react-provider";
+import {
+  CourierTransport,
+  IInboxMessagePreview,
+  useCourier,
+} from "@trycourier/react-provider";
 import { IElementalInbox } from "./types";
 import { createCourierClient, Inbox } from "@trycourier/client-graphql";
 import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
@@ -10,6 +14,8 @@ import { markAllRead } from "./actions/mark-all-read";
 import { markMessageUnread } from "../actions/mark-message-unread";
 import { markMessageArchived } from "../actions/mark-message-archived";
 import { IInbox } from "../types";
+import { newMessage } from "./actions/new-message";
+import { resetLastFetched } from "../actions/reset-last-fetched";
 
 export interface IFetchMessagesParams {
   params?: IGetInboxMessagesParams;
@@ -23,13 +29,21 @@ interface IInboxActions {
   getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
   init: (inbox: IInbox<IElementalInbox>) => void;
   /** Marks all messages as read by setting message.read to the current ISO 8601 date */
-  markAllAsRead: () => void;
+  markAllAsRead: (fromWSEvent?: boolean) => void;
   /** Archives the supplied message, archived messages are not returned by fetchMessages */
-  markMessageArchived: (messageId: string) => Promise<void>;
+  markMessageArchived: (
+    messageId: string,
+    fromWSEvent?: boolean
+  ) => Promise<void>;
   /** Sets message.read to the current ISO 8601 date  */
-  markMessageRead: (messageId: string) => Promise<void>;
+  markMessageRead: (messageId: string, fromWSEvent?: boolean) => Promise<void>;
   /** Removes message.read, signalling that the message is no longer read */
-  markMessageUnread: (messageId: string) => Promise<void>;
+  markMessageUnread: (
+    messageId: string,
+    fromWSEvent?: boolean
+  ) => Promise<void>;
+  newMessage: (transportMessage: IInboxMessagePreview) => void;
+  resetLastFetched: () => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
   /**
@@ -81,13 +95,23 @@ const useElementalInboxActions = (): IInboxActions => {
         });
       }
     },
-    toggleInbox: (isOpen?: boolean) => {
+    resetLastFetched: () => {
+      dispatch(resetLastFetched());
+      dispatch({
+        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
+        payload: () =>
+          inboxClient.getInboxCount({
+            status: "unread",
+          }),
+      });
+    },
+    toggleInbox: (isOpen) => {
       dispatch(toggleInbox(isOpen));
     },
     setView: (view: "messages" | "preferences") => {
       dispatch(setView(view));
     },
-    fetchMessages: (payload?: IFetchMessagesParams) => {
+    fetchMessages: (payload) => {
       const params = {
         from: inbox?.from,
         ...payload?.params,
@@ -107,26 +131,45 @@ const useElementalInboxActions = (): IInboxActions => {
           }),
       });
     },
-    markMessageRead: async (messageId: string) => {
+    markMessageRead: async (messageId, fromWSEvent) => {
       dispatch(markMessageRead(messageId));
+      if (fromWSEvent) {
+        return;
+      }
       await inboxClient.markRead(messageId);
     },
-    markAllAsRead: async () => {
+    markAllAsRead: async (fromWSEvent) => {
       dispatch(markAllRead());
+      if (fromWSEvent) {
+        return;
+      }
       await inboxClient.markAllRead();
     },
-    markMessageUnread: async (messageId: string) => {
+    markMessageUnread: async (messageId, fromWSEvent) => {
       dispatch(markMessageUnread(messageId));
+      if (fromWSEvent) {
+        return;
+      }
       await inboxClient.markUnread(messageId);
     },
-    markMessageArchived: async (messageId: string) => {
+    markMessageArchived: async (messageId, fromWSEvent) => {
       dispatch(markMessageArchived(messageId));
+      if (fromWSEvent) {
+        return;
+      }
       await inboxClient.markArchive(messageId);
     },
-    renewSession: async (token: string) => {
+    renewSession: async (token) => {
       if (transport instanceof CourierTransport) {
         transport.renewSession(token);
       }
+    },
+    newMessage: (message) => {
+      if (!message.messageId) {
+        return;
+      }
+
+      dispatch(newMessage(message));
     },
   };
 };

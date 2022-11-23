@@ -17,7 +17,13 @@ import {
 } from "./types";
 import * as uuid from "uuid";
 import { CourierTransport } from "./transports/courier";
-import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
+import {
+  IActionBlock,
+  ICourierEventMessage,
+  ICourierMessage,
+  IInboxMessagePreview,
+  ITextBlock,
+} from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
   registerMiddleware as _registerMiddleware,
@@ -34,13 +40,15 @@ export const registerReducer = _registerReducer;
 export const registerMiddleware = _registerMiddleware;
 
 export type {
-  Middleware,
   Brand,
   IActionBlock,
   ICourierContext,
+  ICourierEventMessage,
   ICourierMessage,
+  IInboxMessagePreview,
   IMessage,
   ITextBlock,
+  Middleware,
   WSOptions,
 };
 
@@ -67,19 +75,20 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     wsOptions,
   }) => {
     const clientSourceId = useMemo(() => {
-      const clientKeyId = id ? `${clientKey}/${id}` : clientKey;
-      const clientSourceIdLSKey = `${clientKeyId}/${userId}/clientSourceId`;
+      const clientSourceIdLSKey = `${clientKey}/${userId}/clientSourceId`;
       const localStorageClientSourceId =
         localStorage?.getItem(clientSourceIdLSKey);
 
       if (localStorageClientSourceId) {
-        return localStorageClientSourceId;
+        return id
+          ? `${localStorageClientSourceId}/${id}`
+          : localStorageClientSourceId;
       }
 
       const newClientSourceId = uuid.v4();
       localStorage?.setItem(clientSourceIdLSKey, newClientSourceId);
-      return newClientSourceId;
-    }, [localStorage, clientKey, userId]);
+      return id ? `${newClientSourceId}/${id}` : newClientSourceId;
+    }, [localStorage, clientKey, userId, id]);
 
     const middleware = [..._middleware, ...defaultMiddleware];
 
