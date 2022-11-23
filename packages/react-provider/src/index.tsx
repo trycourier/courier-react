@@ -67,7 +67,8 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     wsOptions,
   }) => {
     const clientSourceId = useMemo(() => {
-      const clientKeyId = id ? `${clientKey}/${id}` : clientKey;
+      const key = clientKey ? clientKey : authorization;
+      const clientKeyId = id ? `${key}/${id}` : key;
       const clientSourceIdLSKey = `${clientKeyId}/${userId}/clientSourceId`;
       const localStorageClientSourceId =
         localStorage?.getItem(clientSourceIdLSKey);
