@@ -1,4 +1,9 @@
-import { useCourier, registerReducer } from "@trycourier/react-provider";
+import {
+  useCourier,
+  registerReducer,
+  IInboxMessagePreview,
+  ICourierEventMessage,
+} from "@trycourier/react-provider";
 import { useEffect } from "react";
 import reducer from "./reducer";
 import deepExtend from "deep-extend";
@@ -23,16 +28,55 @@ export const useElementalInbox = () => {
 
   useEffect(() => {
     transport?.listen({
-      id: "inbox-listener",
+      id: "message-listener",
+      type: "message",
       listener: (courierEvent) => {
-        if (!dispatch) {
+        if (!dispatch || !courierEvent?.data) {
           return;
         }
 
-        dispatch({
-          type: "inbox/NEW_MESSAGE",
-          payload: courierEvent?.data,
-        });
+        actions.newMessage(courierEvent?.data as IInboxMessagePreview);
+      },
+    });
+
+    transport?.listen({
+      id: "event-listener",
+      type: "event",
+      listener: (courierEvent) => {
+        const data = courierEvent?.data as ICourierEventMessage;
+        if (!dispatch || !data || !data?.event) {
+          return;
+        }
+
+        if (data.event === "mark-all-read") {
+          actions.markAllAsRead(true);
+        }
+
+        if (!data?.messageId) {
+          return;
+        }
+
+        switch (data.event) {
+          case "read": {
+            actions.markMessageRead(data.messageId, true);
+            return;
+          }
+
+          case "unread": {
+            actions.markMessageUnread(data.messageId, true);
+            return;
+          }
+
+          case "archive": {
+            actions.markMessageArchived(data.messageId, true);
+            return;
+          }
+
+          case "mark-all-read": {
+            actions.markAllAsRead(true);
+            return;
+          }
+        }
       },
     });
   }, [transport]);

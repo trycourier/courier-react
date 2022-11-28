@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastProps } from "react-toastify";
 import { Container, Message, Title, TextBlock, Dismiss } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
@@ -13,6 +13,7 @@ import Markdown from "markdown-to-jsx";
 
 const Body: React.FunctionComponent<
   Omit<ICourierMessage, "title" | "body"> & {
+    toastProps?: ToastProps;
     onClick?: (event: React.MouseEvent) => void;
     title?: ICourierMessage["title"] | ReactElement;
     body?: ICourierMessage["body"] | ReactElement;

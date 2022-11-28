@@ -29,6 +29,7 @@
     "@trycourier/react-preferences": "^1.53.1",
     "@trycourier/react-provider": "^1.53.1",
     "@trycourier/react-toast": "^1.53.1",
+    "react-frame-component": "^5.2.3",
     "react-markdown": "^6.0.1",
     "storybook": "^6.5.9",
     "styled-components": "^5.2.1",

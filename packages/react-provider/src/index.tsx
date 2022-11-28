@@ -5,7 +5,7 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 
 import {
@@ -15,9 +15,14 @@ import {
   IMessage,
   WSOptions,
 } from "./types";
-import * as uuid from "uuid";
 import { CourierTransport } from "./transports/courier";
-import { ICourierMessage, ITextBlock, IActionBlock } from "./transports/types";
+import {
+  IActionBlock,
+  ICourierEventMessage,
+  ICourierMessage,
+  IInboxMessagePreview,
+  ITextBlock,
+} from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
   registerMiddleware as _registerMiddleware,
@@ -26,6 +31,7 @@ import defaultMiddleware, {
 import useCourierActions from "./hooks/use-courier-actions";
 import { usePageVisible } from "./hooks/use-page-visible";
 import useTransport from "./hooks/use-transport";
+import useClientSourceId from "./hooks/use-client-source-id";
 
 export * from "./transports";
 export * from "./hooks";
@@ -34,13 +40,15 @@ export const registerReducer = _registerReducer;
 export const registerMiddleware = _registerMiddleware;
 
 export type {
-  Middleware,
   Brand,
   IActionBlock,
   ICourierContext,
+  ICourierEventMessage,
   ICourierMessage,
+  IInboxMessagePreview,
   IMessage,
   ITextBlock,
+  Middleware,
   WSOptions,
 };
 
@@ -66,23 +74,15 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     userSignature,
     wsOptions,
   }) => {
-    const clientSourceId = useMemo(() => {
-      const clientKeyId = id ? `${clientKey}/${id}` : clientKey;
-      const clientSourceIdLSKey = `${clientKeyId}/${userId}/clientSourceId`;
-      const localStorageClientSourceId =
-        localStorage?.getItem(clientSourceIdLSKey);
-
-      if (localStorageClientSourceId) {
-        return localStorageClientSourceId;
-      }
-
-      const newClientSourceId = uuid.v4();
-      localStorage?.setItem(clientSourceIdLSKey, newClientSourceId);
-      return newClientSourceId;
-    }, [localStorage, clientKey, userId]);
+    const clientSourceId = useClientSourceId({
+      authorization,
+      clientKey,
+      id,
+      localStorage,
+      userId,
+    });
 
     const middleware = [..._middleware, ...defaultMiddleware];
-
     const useReducer = useCallback(
       createReducer<any, Partial<ICourierContext>>(...middleware),
       [_middleware]

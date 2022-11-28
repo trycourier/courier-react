@@ -1,4 +1,8 @@
-import { useCourier } from "@trycourier/react-provider";
+import {
+  ICourierEventMessage,
+  ICourierMessage,
+  useCourier,
+} from "@trycourier/react-provider";
 import { useEffect } from "react";
 
 import deepExtend from "deep-extend";
@@ -27,7 +31,7 @@ const useInbox = () => {
           return;
         }
 
-        actions.newMessage(courierEvent?.data);
+        actions.newMessage(courierEvent?.data as ICourierMessage);
       },
     });
 
@@ -35,7 +39,7 @@ const useInbox = () => {
       id: "event-listener",
       type: "event",
       listener: (courierEvent) => {
-        const data = courierEvent?.data;
+        const data = courierEvent?.data as ICourierEventMessage;
         if (!dispatch || !data || !data?.event || !data?.messageId) {
           return;
         }

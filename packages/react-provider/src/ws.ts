@@ -1,4 +1,8 @@
-import { ICourierEventCallback, ICourierMessage } from "./transports/types";
+import {
+  ICourierEventCallback,
+  ICourierEventMessage,
+  ICourierMessage,
+} from "./transports/types";
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
 
@@ -127,7 +131,7 @@ export class WS {
   }
 
   private _onMessage({ data }: { data: string }): void {
-    let message: ICourierMessage;
+    let message: ICourierMessage | ICourierEventMessage;
 
     try {
       message = JSON.parse(data);

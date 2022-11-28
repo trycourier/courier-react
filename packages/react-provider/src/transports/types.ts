@@ -9,15 +9,16 @@ export interface IActionBlock {
   url: string;
   openInNewTab?: boolean;
 }
-export interface ICourierMessage {
-  event?: string;
-  type?: "message" | "event";
-  error?: string;
+
+export interface ICourierEventMessage {
+  event: "read" | "unread" | "archive" | "mark-all-read";
+  type: "event";
   messageId?: string;
-  body?: string;
+  error?: string;
+}
+export interface ICourierMessage {
   blocks?: Array<ITextBlock | IActionBlock>;
-  icon?: string;
-  title?: string;
+  body?: string;
   data?: {
     channel?: string;
     brandId?: string;
@@ -33,16 +34,32 @@ export interface ICourierMessage {
     trackingUrl?: string;
     clickAction?: string;
   };
+  error?: string;
+  event: string;
+  icon?: string;
+  messageId?: string;
+  title?: string;
+  type: "message";
   brand?: Brand;
+}
+
+export interface IInboxMessagePreview {
+  type: "message";
+  created?: string;
+  messageId: string;
+  preview?: string;
+  /** ISO 8601 date the message was read */
+  read?: string;
+  title?: string;
 }
 
 export interface ICourierEvent {
   type?: "message" | "event";
-  data?: ICourierMessage;
+  data?: ICourierMessage | IInboxMessagePreview | ICourierEventMessage;
 }
 
 export type ICourierEventCallback = (event: ICourierEvent) => void;
 
 export type Interceptor = (
-  message?: ICourierMessage
+  message?: ICourierMessage | ICourierEventMessage | IInboxMessagePreview
 ) => ICourierMessage | undefined;
