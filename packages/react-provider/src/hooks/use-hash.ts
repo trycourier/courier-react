@@ -1,5 +1,9 @@
 import { useMemo } from "react";
 
+/**
+    A string hashing function based on Daniel J. Bernstein's popular 'times 33' hash algorithm.
+*/
+
 function hash(text) {
   let hash = 5381;
   let index = text.length;

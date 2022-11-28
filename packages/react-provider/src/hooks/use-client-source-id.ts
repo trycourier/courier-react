@@ -2,6 +2,9 @@ import useHash from "./use-hash";
 import * as uuid from "uuid";
 import { useMemo } from "react";
 
+// this hash or clientsoureid is used to help create a managealbe sized property to store information in localstorage
+// its possible we will just have the "authorization" as an identifier and that is a huge string
+
 const useClientSourceId = ({
   clientKey,
   userId,

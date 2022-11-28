@@ -11,7 +11,7 @@ export interface IActionBlock {
 }
 
 export interface ICourierEventMessage {
-  event?: "read" | "unread" | "archive" | "mark-all-read";
+  event: "read" | "unread" | "archive" | "mark-all-read";
   type: "event";
   messageId?: string;
   error?: string;

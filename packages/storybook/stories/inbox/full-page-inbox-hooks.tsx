@@ -6,9 +6,10 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
     fetchMessages,
     getUnreadMessageCount,
     isLoading,
+    markAllAsRead,
+    markMessageArchived,
     markMessageRead,
     markMessageUnread,
-    markAllAsRead,
     messages = [],
     unreadMessageCount,
   } = useElementalInbox();
@@ -47,9 +48,14 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
             <div>Title: {message?.title}</div>
             <div>Read: {message?.read}</div>
             {message?.read ? (
-              <button onClick={() => markMessageUnread(message?.messageId)}>
-                Mark as Unread
-              </button>
+              <>
+                <button onClick={() => markMessageUnread(message?.messageId)}>
+                  Mark as Unread
+                </button>
+                <button onClick={() => markMessageArchived(message?.messageId)}>
+                  Archive
+                </button>
+              </>
             ) : (
               <button onClick={() => markMessageRead(message?.messageId)}>
                 Mark as Read
