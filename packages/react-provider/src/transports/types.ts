@@ -35,11 +35,11 @@ export interface ICourierMessage {
     clickAction?: string;
   };
   error?: string;
-  event: string;
+  event?: string;
   icon?: string;
   messageId?: string;
   title?: string;
-  type: "message";
+  type?: "message";
   brand?: Brand;
 }
 
