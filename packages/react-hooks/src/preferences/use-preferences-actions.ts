@@ -20,11 +20,18 @@ const usePreferencesActions = () => {
         payload: () => preferences.getRecipientPreferences(),
       });
     },
-    fetchPreferencePage: () => {
-      dispatch({
-        type: "preferences/FETCH_PREFERENCE_PAGE",
-        payload: () => preferences.getPreferencePage(),
-      });
+    fetchPreferencePage: (draft = false) => {
+      if (draft) {
+        dispatch({
+          type: "preferences/FETCH_DRAFT_PREFERENCE_PAGE",
+          payload: () => preferences.getDraftPreferencePage(),
+        });
+      } else {
+        dispatch({
+          type: "preferences/FETCH_PREFERENCE_PAGE",
+          payload: () => preferences.getPreferencePage(),
+        });
+      }
     },
     updateRecipientPreferences: async (payload) => {
       dispatch({

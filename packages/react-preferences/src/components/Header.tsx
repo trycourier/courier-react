@@ -2,10 +2,12 @@ import { usePreferences } from "@trycourier/react-hooks";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 
-export const Header: React.FunctionComponent = () => {
+export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
+  draft = false,
+}) => {
   const preferences = usePreferences();
   useEffect(() => {
-    preferences.fetchPreferencePage();
+    preferences.fetchPreferencePage(draft);
   }, []);
 
   if (preferences.isLoading || !preferences.preferencePage) {

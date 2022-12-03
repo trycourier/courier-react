@@ -17,13 +17,14 @@ export const StyledList = styled.div`
 export const PreferenceList: React.FunctionComponent<{
   // TODO: define Preferences theming
   theme?: ThemeProps<any>;
-}> = (props) => {
+  draft?: boolean;
+}> = ({ theme, draft }) => {
   const { brand } = useCourier();
   const preferences = usePreferences();
 
   useEffect(() => {
     preferences.fetchRecipientPreferences();
-    preferences.fetchPreferencePage();
+    preferences.fetchPreferencePage(draft);
   }, []);
 
   const renderPreferences = () => {
@@ -60,7 +61,7 @@ export const PreferenceList: React.FunctionComponent<{
     <>
       <ThemeProvider
         theme={{
-          ...props.theme,
+          ...theme,
           brand,
         }}
       >

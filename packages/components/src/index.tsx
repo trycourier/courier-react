@@ -44,6 +44,7 @@ interface ICourierConfig {
   userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;
+  preferencePageDraftMode?: boolean;
 }
 
 let hasInit = false;
