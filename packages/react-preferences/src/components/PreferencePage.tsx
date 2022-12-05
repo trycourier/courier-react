@@ -170,17 +170,6 @@ const Checkmark = () => {
   );
 };
 
-const getDefaultStatusText = (defaultStatus: string) => {
-  switch (defaultStatus) {
-    case "OPTED_IN":
-      return "Opted In";
-    case "OPTED_OUT":
-      return "Opted Out";
-    case "REQUIRED":
-      return "Required";
-  }
-};
-
 const DisplayChannel = (channel: ChannelClassification) => {
   if (channel === "direct_message") {
     return "Chat";
@@ -239,7 +228,7 @@ export const PreferenceTopic: React.FunctionComponent<{
 
   // If there user hasn't set a status then use the default status to set the toggle.
   const [statusToggle, setStatusToggle] = useState(
-    status ? status === "OPTED_IN" : defaultStatus === "OPTED_IN"
+    status ? status === "OPTED_IN" : defaultStatus !== "OPTED_OUT"
   );
   const [customizeDelivery, setCustomizeDelivery] = useState(hasCustomRouting);
 
@@ -302,11 +291,19 @@ export const PreferenceTopic: React.FunctionComponent<{
     return null;
   }
 
+  const getStatusString = (status: boolean) => {
+    return status ? "Opted In" : "Opted Out";
+  };
+
   return (
     <StyledItem>
       <div className="template-name">{topicName}</div>
       <StyledToggle checked={statusToggle}>
-        <label>{getDefaultStatusText(defaultStatus)}</label>
+        <label>
+          {defaultStatus !== "REQUIRED"
+            ? getStatusString(statusToggle)
+            : "Required"}
+        </label>
         <Toggle
           icons={false}
           disabled={defaultStatus === "REQUIRED"}
