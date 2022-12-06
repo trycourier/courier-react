@@ -3,7 +3,7 @@ import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
 import styled, { ThemeProvider, ThemeProps } from "styled-components";
 import { PreferenceTemplate } from "./PreferenceTemplate";
-import PreferencePage from "./PreferencePage";
+import { PreferencesV4 } from "./PreferencesV4";
 
 export const StyledList = styled.div`
   overflow: scroll;
@@ -36,7 +36,7 @@ export const PreferenceList: React.FunctionComponent<{
       preferences.preferencePage?.sections?.nodes &&
       preferences.preferencePage?.sections?.nodes.length > 0
     ) {
-      return <PreferencePage />;
+      return <PreferencesV4 />;
     }
 
     // TODO: Handle Backfilled preferences. (https://linear.app/trycourier/issue/C-6836/cleanup-react-preference-section-template-renderer-after-backfill)

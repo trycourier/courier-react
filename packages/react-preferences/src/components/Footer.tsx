@@ -17,8 +17,6 @@ export const Footer: React.FunctionComponent<{ draft?: boolean }> = ({
   }
 
   const FooterWrapepr = styled.div`
-    position: absolute;
-    bottom: 0;
     width: 100%;
     left: 0;
     > div {

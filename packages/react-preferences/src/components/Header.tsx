@@ -10,10 +10,6 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
     preferences.fetchPreferencePage(draft);
   }, []);
 
-  if (preferences.isLoading || !preferences.preferencePage) {
-    return null;
-  }
-
   const HeaderWrapper = styled.div`
     padding: 0 20px;
     margin-bottom: 20px;
@@ -50,6 +46,10 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
     }
 }
   `;
+
+  if (preferences.isLoading || !preferences.preferencePage) {
+    return null;
+  }
 
   return (
     <HeaderWrapper>

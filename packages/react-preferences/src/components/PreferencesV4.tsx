@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 import {
@@ -379,8 +379,19 @@ export const PreferenceSections: React.FunctionComponent<{
 };
 
 // Doesn't include header or footer
-export default () => {
+export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
   const preferences = usePreferences();
+
+  useEffect(() => {
+    if (!preferences.preferencePage && !preferences.recipientPreferences) {
+      preferences.fetchPreferencePage(draft);
+      preferences.fetchRecipientPreferences();
+    }
+  }, []);
+
+  if (!preferences) {
+    return null;
+  }
 
   return (
     <PreferenceSectionWrapper>
