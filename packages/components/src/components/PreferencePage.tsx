@@ -11,6 +11,7 @@ const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
         width: "100vw",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <Header draft={draft} />
@@ -19,8 +20,8 @@ const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
           overflow: "auto",
           display: "flex",
           flexDirection: "column",
-          borderTop: "1px solid rgba(203, 213, 224, 0.5)",
           background: "rgba(255, 255, 255, 0.2)",
+          width: "100%",
         }}
       >
         <PreferencesV4 draft={draft} />

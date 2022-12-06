@@ -20,7 +20,7 @@ export const Footer: React.FunctionComponent<{ draft?: boolean }> = ({
     width: 100%;
     left: 0;
     > div {
-      height: 50px;
+      height: 80px;
       padding: 10px;
     }
   `;
@@ -30,7 +30,10 @@ export const Footer: React.FunctionComponent<{ draft?: boolean }> = ({
       {preferences.preferencePage?.showCourierFooter ? (
         <FreeFooter />
       ) : (
-        <BusinessFooter links={preferences.preferencePage.brand.links} />
+        <BusinessFooter
+          links={preferences.preferencePage.brand.links}
+          theme={preferences.preferencePage.brand.settings.colors.primary}
+        />
       )}
     </FooterWrapepr>
   );

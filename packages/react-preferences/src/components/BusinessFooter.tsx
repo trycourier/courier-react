@@ -7,7 +7,7 @@ import Medium from "../assets/social-icons/icon-social-medium.svg";
 import Twitter from "../assets/social-icons/icon-social-twitter.svg";
 
 const FooterWrapper = styled.div`
-  background: #721dc7;
+  background: ${({ theme }) => theme ?? "#9121c2"};
 `;
 
 const SVGWrapper = styled.div`
@@ -31,11 +31,16 @@ const SVGWrapper = styled.div`
   }
 `;
 
-export const BusinessFooter: React.FunctionComponent<{ links: any }> = ({
-  links,
-}) => {
+export const BusinessFooter: React.FunctionComponent<{
+  links: any;
+  theme: string;
+}> = ({ links, theme }) => {
+  if (Object.keys(links).length === 0) {
+    return null;
+  }
+
   return (
-    <FooterWrapper>
+    <FooterWrapper theme={theme}>
       <SVGWrapper>
         {links?.facebook?.url && (
           <a href={links.facebook.url}>

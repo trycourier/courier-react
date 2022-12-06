@@ -11,8 +11,8 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
   }, []);
 
   const HeaderWrapper = styled.div`
-    padding: 0 20px;
-    margin-bottom: 20px;
+    padding: 0px;
+    width: 100%;
   `;
 
   const ImageWrapper = styled.div`
@@ -28,23 +28,42 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
 
   const Image = styled.div`
     img {
-      max-height: 48px;
+      max-height: 36px;
     }
   `;
 
   const FreeTierText = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 4px;
     p {
+      padding: 8px 0;
+      font-size: 10px;
       margin: 0;
-      text-color: black;
+      color: #73819b;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 14px;
+      
+      span {
+        font-weight: bold;
+      }
     }
-    svg {
-      height: 16px;
-    }
-}
+
+}`;
+
+  const Header = styled.h1`
+    margin: 0;
+    padding: 8px 0 0 0;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 44px;
+  `;
+
+  const SubHeader = styled.p`
+    margin: 0;
+    padding: 0 0 16px 0;
+    color: #73819b;
+    font-weight: 300;
+    font-size: 12px;
   `;
 
   if (preferences.isLoading || !preferences.preferencePage) {
@@ -104,54 +123,18 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
           )}
         </Image>
       </ImageWrapper>
-
       {preferences.preferencePage.showCourierFooter && (
         <FreeTierText>
-          <p>Notifications provided by </p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 187 43"
-            fill="none"
-          >
-            <path
-              d="M40 19.2C40.1 19.1 40.1999 18.9 40.0999 18.7C38.4999 9.39998 30.3 2.29999 20.5 2.29999C9.49997 2.29999 0.499946 11.3 0.599946 22.3C0.699946 33 9.7 42 20.4 42.1C29.5 42.1 37.1999 36 39.5999 27.7C39.6999 27.4 39.5 27.1 39.2 27L38.4 26.7C35.2 25.6 31.7 26 28.8 27.8C27.5 28.6 26.5999 29.3 26.5999 29.3C24.9999 30.4 23 31 20.9 31C15.3 31 11.4 26.4 10.7 20.8L10.3 17.7C10.2 16.8 9.49998 16 8.69998 15.6L7.59995 15.2C7.39995 15.1 7.29997 14.9 7.49997 14.7C12.3 8.29998 18.2 9.69998 18.2 9.69998C19.2 9.79998 20.1 10.2 20.8 10.7C21.9 11.4 22.6 12.5 23.2 13.6C25 17.7 29.1 20.6 34 20.6C33.9 20.8 38.5 21 40 19.2Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M12.9 14.5C13.5628 14.5 14.1 13.9627 14.1 13.3C14.1 12.6372 13.5628 12.1 12.9 12.1C12.2373 12.1 11.7 12.6372 11.7 13.3C11.7 13.9627 12.2373 14.5 12.9 14.5Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M13.1 20.5C13.4 22.3 14.8 28 21.2 29.1C21.3 29.1 21.3 29 21.3 28.9C19.8 28.2 16 26 13.3 20.4C13.2 20.4 13.1 20.4 13.1 20.5Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M70.9 27.5C70.9 35.6 64.7 41.6 56.7 41.6C48.7 41.6 42.6 35.6 42.6 27.5C42.6 19.3 48.7 13.2 56.7 13.2C64.8 13.2 70.9 19.3 70.9 27.5ZM51.3 27.5C51.3 30.7 53.6 33.1 56.7 33.1C59.9 33.1 62.2 30.7 62.2 27.5C62.2 24.2 59.9 21.7 56.7 21.7C53.6 21.8 51.3 24.2 51.3 27.5Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M100.2 28.4C100.2 36.2 94.8 41.7 87.1 41.7C79.4 41.7 73.9 36.2 73.9 28.4V13.8H82.8V28.4C82.8 31.3 84.5 33.1 87.1 33.1C89.7 33.1 91.4 31.3 91.4 28.4V13.8H100.2V28.4Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M122.1 13.6V21.7C121.1 21.5 120.2 21.4 119.3 21.4C115.6 21.4 112.6 23.3 112.6 28.6V41.2H103.7V13.9H112.6V16.8C114.2 14.6 116.5 13.4 119.5 13.4C120.4 13.3 121.2 13.4 122.1 13.6Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M135.3 5.49998C135.3 8.39998 132.9 10.8 130 10.8C127.1 10.8 124.7 8.39998 124.7 5.49998C124.7 2.69998 127.1 0.199982 130 0.199982C132.9 0.199982 135.3 2.59998 135.3 5.49998ZM134.4 13.8V41.1H125.5V13.8H134.4Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M165 29.8H145.5C146.2 32.6 148.5 34.4 151.5 34.4C154.2 34.4 155.7 33.3 156 31.8H164.7C163.9 37.8 158.7 41.7 151.7 41.7C143.6 41.7 137.3 35.4 137.3 27.4C137.3 19.4 143.5 13.3 151.6 13.3C159 13.3 165.2 19.2 165.2 26.7C165.2 27.3 165.1 28.8 165 29.8ZM155.9 24.2C155.7 22 153.6 20.5 151.2 20.5C148.8 20.5 146.8 21.6 145.9 24.2H155.9Z"
-              fill="#2C1437"
-            />
-            <path
-              d="M186.7 13.6V21.7C185.7 21.5 184.8 21.4 183.9 21.4C180.2 21.4 177.2 23.3 177.2 28.6V41.2H168.3V13.9H177.2V16.8C178.8 14.6 181.1 13.4 184.1 13.4C184.9 13.3 185.7 13.4 186.7 13.6Z"
-              fill="#2C1437"
-            />
-          </svg>
+          <p>
+            POWERED BY <span>COURIER</span>
+          </p>
         </FreeTierText>
       )}
+      <Header>Notification Preferences</Header>
+      <SubHeader>
+        For the categories listed below, you can choose how you’d like to be
+        reached.
+      </SubHeader>
     </HeaderWrapper>
   );
 };
