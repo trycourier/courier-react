@@ -98,7 +98,7 @@ export const Channel = styled.div`
   }
 
   ${Input}:checked ~ ${ChannelOption} {
-    background: #1e4637;
+    background: ${({ theme }) => theme?.primary ?? "#9121c2"};
     color: white;
     border: 0;
   }
@@ -154,7 +154,7 @@ const ChannelPreferenceStyles = styled.div`
 
     ${Input}:checked ~ div {
       border: 0;
-      background-color: #1e4637;
+      background-color: ${({ theme }) => theme?.primary ?? "#9121c2"};
       svg {
         margin-left: 5px;
       }
@@ -185,9 +185,10 @@ const ChannelPreference: React.FunctionComponent<{
   channel: ChannelClassification;
 }> = ({ handleChannelRouting, routingPreferences, channel }) => {
   const [checked, setChecked] = useState(routingPreferences.includes(channel));
+  const { preferencePage } = usePreferences();
 
   return (
-    <Channel>
+    <Channel theme={{ primary: preferencePage?.brand.settings.colors.primary }}>
       <label>
         <Input
           type="checkbox"
@@ -221,7 +222,7 @@ export const PreferenceTopic: React.FunctionComponent<{
   hasCustomRouting,
   defaultHasCustomRouting,
 }) => {
-  const { updateRecipientPreferences } = usePreferences();
+  const { preferencePage, updateRecipientPreferences } = usePreferences();
 
   //Temporary mapping until I update this in the backend
   const { defaultStatus, templateName: topicName, templateId: topicId } = topic;
@@ -298,7 +299,16 @@ export const PreferenceTopic: React.FunctionComponent<{
   return (
     <StyledItem>
       <div className="template-name">{topicName}</div>
-      <StyledToggle checked={statusToggle}>
+      <StyledToggle
+        checked={statusToggle}
+        theme={{
+          brand: {
+            colors: {
+              primary: preferencePage?.brand.settings.colors.primary,
+            },
+          },
+        }}
+      >
         <label>
           {defaultStatus !== "REQUIRED"
             ? getStatusString(statusToggle)
@@ -312,7 +322,9 @@ export const PreferenceTopic: React.FunctionComponent<{
         />
       </StyledToggle>
       {statusToggle && defaultHasCustomRouting && (
-        <ChannelPreferenceStyles>
+        <ChannelPreferenceStyles
+          theme={{ primary: preferencePage?.brand.settings.colors.primary }}
+        >
           <label className="custmoize-delivery">
             <Input
               type="checkbox"
