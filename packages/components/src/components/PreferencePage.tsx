@@ -14,19 +14,25 @@ const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
         alignItems: "center",
       }}
     >
-      <Header draft={draft} />
+      <div
+        style={{
+          width: "50%",
+        }}
+      >
+        <Header />
+      </div>
       <div
         style={{
           overflow: "auto",
           display: "flex",
           flexDirection: "column",
           background: "rgba(255, 255, 255, 0.2)",
-          width: "100%",
+          width: "50%",
         }}
       >
-        <PreferencesV4 draft={draft} />
+        <PreferencesV4 />
       </div>
-      <Footer draft={draft} />
+      <Footer />
     </div>
   );
 };
