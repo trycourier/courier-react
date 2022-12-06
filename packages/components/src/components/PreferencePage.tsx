@@ -30,7 +30,7 @@ const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
           width: "50%",
         }}
       >
-        <PreferencesV4 />
+        <PreferencesV4 draft={draft} />
       </div>
       <Footer />
     </div>
