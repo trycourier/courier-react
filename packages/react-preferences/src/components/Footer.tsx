@@ -18,7 +18,7 @@ export const Footer: React.FunctionComponent<{ draft?: boolean }> = ({
 
   const FooterWrapepr = styled.div`
     width: 100%;
-    left: 0;
+    margin-top: 16px;
     > div {
       height: 80px;
       padding: 10px;

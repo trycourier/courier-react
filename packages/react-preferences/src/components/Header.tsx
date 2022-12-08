@@ -11,7 +11,7 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
   }, []);
 
   const HeaderWrapper = styled.div`
-    padding: 0px;
+    padding-top: 16px;
     width: 100%;
   `;
 
