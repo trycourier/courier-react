@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 import {
@@ -36,26 +36,18 @@ export const ChannelOption = styled.div`
 
 const PreferenceSectionWrapper = styled.div`
   background: white;
-  margin: 10px;
-  padding: 10px;
   text: black;
+  width: 100%;
 `;
 
 const SectionHeader = styled.h1`
   margin: 0;
+  font-size: 24px;
   color: black;
 `;
 
-const LineBreak = styled.div`
-  height: 1px;
-  background-color: black;
-  widht: 100%;
-  opacity: 0.3;
-  margin: 8px 0;
-`;
-
 const StyledItem = styled.div`
-  padding: 10px;
+  padding: 16px 0;
   margin-top: 6px;
   background: white;
   border-radius: 4px;
@@ -134,6 +126,10 @@ const ChannelPreferenceStyles = styled.div`
     display: flex;
     flex-grow: 1;
     align-items: center;
+
+    p {
+      font-size: 12px;
+    }
 
     div {
       width: 20px;
@@ -383,7 +379,6 @@ export const PreferenceSections: React.FunctionComponent<{
             status={recipientPreference?.status}
             routingPreferences={recipientPreference?.routingPreferences ?? []}
           />
-          <LineBreak />
         </>
       ))}
     </>
@@ -391,8 +386,19 @@ export const PreferenceSections: React.FunctionComponent<{
 };
 
 // Doesn't include header or footer
-export default () => {
+export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
   const preferences = usePreferences();
+
+  useEffect(() => {
+    if (!preferences.preferencePage && !preferences.recipientPreferences) {
+      preferences.fetchPreferencePage(draft);
+      preferences.fetchRecipientPreferences();
+    }
+  }, []);
+
+  if (!preferences) {
+    return null;
+  }
 
   return (
     <PreferenceSectionWrapper>
