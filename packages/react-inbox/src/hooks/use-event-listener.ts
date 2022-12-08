@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-const useEventListener = (eventName, handler, element) => {
+const useEventListener = (eventName, handler, element?: Element | Window) => {
   element = element ?? typeof window !== "undefined" ? window : undefined;
   const savedHandler = useRef<React.EventHandler<any>>();
 
@@ -32,6 +32,10 @@ const useEventListener = (eventName, handler, element) => {
       element.addEventListener(eventName, eventListener);
       // Remove event listener on cleanup
       return () => {
+        if (!element) {
+          return;
+        }
+
         element.removeEventListener(eventName, eventListener);
       };
     },
