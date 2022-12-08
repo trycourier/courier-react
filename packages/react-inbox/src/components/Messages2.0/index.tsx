@@ -5,12 +5,10 @@ import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
 import { useAtBottom } from "~/hooks/use-at-bottom";
 import Header from "./Header";
-import Loading from "./Loading";
+import LoadingMessages from "./LoadingMessages";
 import LoadingMore from "./LoadingMore";
 
 import Message from "./Message";
-import PaginationEnd from "./PaginationEnd";
-import NoMessages from "./NoMessages";
 
 import { InboxProps } from "../../types";
 
@@ -238,17 +236,15 @@ const Messages: React.ForwardRefExoticComponent<
                 />
               )
             )}
-            {isLoading && messages?.length === 0 && <Loading />}
-            {isLoading && messages?.length !== 0 && <LoadingMore />}
-            {!isLoading &&
-              messages?.length === 0 &&
-              (renderNoMessages ? (
-                renderNoMessages({})
+            {!messages?.length &&
+              (isLoading || !renderNoMessages ? (
+                <LoadingMessages labels={labels} noResults={!isLoading} />
               ) : (
-                <NoMessages labels={labels} />
+                renderNoMessages({})
               ))}
-            {!isLoading && messages?.length > 5 && !startCursor && (
-              <PaginationEnd />
+            {((isLoading && messages?.length > 0) ||
+              (!startCursor && messages.length > 5)) && (
+              <LoadingMore noResults={!isLoading} />
             )}
           </MessageList>
         ) : (
