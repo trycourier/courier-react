@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 
-const useEventListener = (eventName, handler, element = window) => {
+const useEventListener = (eventName, handler, element?: Element | Window) => {
+  element = element ?? typeof window !== "undefined" ? window : undefined;
   const savedHandler = useRef<React.EventHandler<any>>();
 
   useEffect(() => {
@@ -9,9 +10,12 @@ const useEventListener = (eventName, handler, element = window) => {
 
   useEffect(
     () => {
+      if (!element) {
+        return;
+      }
       // Make sure element supports addEventListener
       // On
-      const isSupported = element && element.addEventListener;
+      const isSupported = Boolean(element?.addEventListener);
       if (!isSupported || !savedHandler) {
         return;
       }
@@ -28,6 +32,10 @@ const useEventListener = (eventName, handler, element = window) => {
       element.addEventListener(eventName, eventListener);
       // Remove event listener on cleanup
       return () => {
+        if (!element) {
+          return;
+        }
+
         element.removeEventListener(eventName, eventListener);
       };
     },
