@@ -9,7 +9,7 @@ import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
-import Loading from "./Loading";
+import LoadingIndicator from "./LoadingIndicator";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
@@ -283,7 +283,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
           tabs === undefined) &&
           (markingAllAsRead ? (
-            <Loading width="24px" />
+            <LoadingIndicator size={24} />
           ) : (
             <MarkAllRead onClick={markAllAsRead} />
           ))}
