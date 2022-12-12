@@ -4,8 +4,11 @@
 - [New Inbox Styling](#new-inbox-styling)
 - [What is Inbox?](#what-is-inbox)
 - [Installation](#installation)
-- [Courier Provider](#courier-provider)
+  - [Courier Provider](#courier-provider)
 - [Authentication](#authentication)
+  - [JWT Authentication (Recommended)](#jwt-authentication-recommended)
+  - [Token Expiration](#token-expiration)
+  - [HMAC Authentication (Legacy)](#hmac-authentication-legacy)
   - [Props](#props)
   - [Hooks](#hooks)
   - [Theme](#theme)
@@ -17,7 +20,11 @@
 
 ## New Inbox Styling
 
-We've released a new styling of Inbox (seen below). The new Inbox is streamlined and simplified and focuses on a single list of messages instead of the multi tabbed approach. There should be no changes required of you to utilize these new designs.
+2022-12-12: We've released a new styling of Inbox (seen below). The new Inbox is streamlined and simplified and focuses on a single list of messages instead of the multi tabbed approach. There should be no changes required of you to utilize these new designs.
+
+Breaking Changes:
+
+- New Default UI Styling (See Below)
 
 _Classic Theme:_
 ![image](https://user-images.githubusercontent.com/7017640/207160099-5f0d1229-4832-4c41-be3f-a0873fafba46.png)
@@ -52,8 +59,8 @@ Inbox is a React component that you can add to your application and show a user 
 
 ## [Installation](#installation)
 
-Inbox requires a backend to pull messages. This is all done through the [CourierProvider](https://github.com/trycourier/courier-react/tree/main/packages/react-provider) and requires an account at [Courier](https://www.courier.com). To set up Courier Inbox you will need to install Courier from the integrations page. [Courier Push integration](https://app.courier.com/integrations/courier)
-After installing the integration you will be provided with a Client Key
+Inbox requires a backend to pull messages. This is all done through the [CourierProvider](https://github.com/trycourier/courier-react/tree/main/packages/react-provider) and requires an account at [Courier](https://www.courier.com). To set up the Inbox you will need to install the Courier Provider from the [integrations page](https://app.courier.com/integrations/courier).
+After installing the integration you will be provided with a Client Key that you will pass into the CourierProvider.
 
 ![image](https://user-images.githubusercontent.com/7017640/207163131-df6b733b-5d36-4dbc-b03f-2dba017bb9e3.png)
 
@@ -66,7 +73,7 @@ yarn add @trycourier/react-inbox
 
 > @trycourier/react-provider is a peer dependeny of @trycourier/react-inbox and must also be installed
 
-## [Courier Provider](#courier-provider)
+### [Courier Provider](#courier-provider)
 
 In order for the `Inbox` component to be placed in the dom you will need to use the `CourierProvider`. This will handle context and give us access Courier's backend API.
 
@@ -90,6 +97,127 @@ function App() {
 <a name="2authenticationmd"></a>
 
 ## [Authentication](#authentication)
+
+By default the Courier Provider does **not** have authentication enabled. This is intentional and is helpful in getting things up and running. All that is required initially is the _clientKey_ and a _userId_.
+
+> Information about the _clientKey_ and authentication configuration can be found at https://app.courier.com/integrations/courier
+
+### [JWT Authentication (Recommended)](#jwt)
+
+The recommended way of doing authentication with Courier Inbox is to generate a JWT token for each user using the inbox. You can learn more about how to issue a token here: https://www.courier.com/docs/reference/auth/issue-token/
+
+The required scopes are the following:
+
+1. `read:messages` - so we can fetch the messages
+2. `write:events` - so we can create events like `read/unread/archive`
+
+An example payload to the `issue-token` api looks like :
+
+```json
+{
+  "scope": "user_id:MY_USER_ID read:messages write:events"
+}
+```
+
+The token that is returned can then be used the following way:
+
+```js
+//App.js
+import { useState, useEffect } from "react";
+import { CourierProvider } from "@trycourier/react-provider";
+import { Inbox } from "@trycourier/react-inbox";
+
+function App() {
+  const [authentication, setAuthentication] = useState();
+
+  useEffect(() => {
+    const response = await fetchAuthToken();
+    setAuthentication(response);
+  }, []);
+
+  return (
+    <CourierProvider userId={yourUserId} authentication={authentication}>
+      <Inbox />
+    </CourierProvider>
+  );
+}
+```
+
+### [Token Expiration](#jwt-expiration)
+
+If you need your tokens to expire periodically you can pass an `expires_in` property to the token generation.
+
+```json
+{
+  "scope": "user_id:MY_USER_ID read:messages write:events",
+  "expires_in": "1h"
+}
+```
+
+```js
+//App.js
+import { useState, useEffect } from "react";
+import { CourierProvider } from "@trycourier/react-provider";
+import { Inbox } from "@trycourier/react-inbox";
+
+function App() {
+  const [authentication, setAuthentication] = useState();
+
+  useEffect(() => {
+    const response = await fetchAuthToken();
+    setAuthentication(response);
+
+    const interval = setInterval(async () => {
+      const response = await fetchAuthToken();
+      setAuthentication(response);
+    }, 300000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <CourierProvider userId={yourUserId} authentication={YOUR_CLIENT_KEY}>
+      <Inbox />
+    </CourierProvider>
+  );
+}
+```
+
+### [HMAC Authentication (Legacy)](#hmac)
+
+You can also provide an HMAC token to be used. This has been replaced with JWT tokens. Please use JWT over HMAC as JWT allows you to create fine grain scopes and HMAC does not.
+
+HMAC allows you to generate a signature for each user you have in your system. It is a hash of your userId and your API Key.
+
+```js
+import crypto from "crypto";
+
+const computedUserHmac = crypto
+  .createHmac("sha256", apiKey)
+  .update(userId)
+  .digest("hex");
+```
+
+Make sure you **DO NOT** do this on your frontend because your API Key is private and you do not want to leak it. This HMAC should be genrated on the backend and either embedded in your frontend via SSR or you must have an API endpoint to return this value per user.
+After you have this HMAC returned, you can provide it to the `CourierProvider` property. This is typically done inside an api that returns user information. `i.e. GET /user/:user-id`
+
+```js
+import { CourierProvider } from "@trycourier/react-provider";
+import { Inbox } from "@trycourier/react-inbox";
+
+const MyComponent = (props) => {
+  return (
+    <CourierProvider
+      userId={props.userId}
+      userSignature={props.computedUserHmac}
+      clientKey={process.env.COURIER_CLIENT_KEY}
+    >
+      <Inbox />
+      {props.children}
+    </CourierProvider>
+  );
+};
+```
 
 <a name="3propsmd"></a>
 
