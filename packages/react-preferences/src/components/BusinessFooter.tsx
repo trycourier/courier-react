@@ -35,8 +35,13 @@ export const BusinessFooter: React.FunctionComponent<{
   links: any;
   theme: string;
 }> = ({ links, theme }) => {
-  if (Object.keys(links).length === 0) {
-    return null;
+  if (
+    typeof links !== "object" ||
+    links === undefined ||
+    !links ||
+    !Object.keys(links).length
+  ) {
+    return <></>;
   }
 
   return (
