@@ -85,7 +85,6 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
         height,
         maxHeight: height,
         flexDirection: "column",
-        borderTop: "1px solid rgb(222, 232, 240)",
       },
       theme?.messageList?.container
     );
