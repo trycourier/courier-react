@@ -15,101 +15,6 @@
 
 This also enables using this package with `react-native` in a much simpler way.
 
-#### Elemental Inbox
-
-React Hooks exposes two inbox hooks, `useInbox` and `useElementalInbox`. Elemental inbox is a new inbox
-that takes advantage of Courier's content specification, [Elemental](https://www.courier.com/docs/elemental/).
-
-Elemental provides a more advanced format for delivered
-notifications. This includes the ability to add customized buttons, images, and markdown formatted text
-to your messages.
-
-See [types](#1typesmd) for details on the interface.
-
-#### Example Usage
-
-```tsx
-import { CourierProvider } from "@trycourier/react-provider";
-import { useElementalInbox } from "@trycourier/react-hooks";
-
-const MyApp = () => {
-  /**
-   * Auth token for courier provider, can be a token from Courier's auth/issue-token endpoint
-   * or a JWT signed with a valid courier api key. Must include scope: "user_id:<user_id_here> inbox:read:messages",
-   * you must also include the "inbox:write:events" scope if making a write request or mutation as well.
-   *
-   * For more information on the auth/issue-token endpoint, visit:
-   * https://courier.com/docs/reference/auth/intro/
-   */
-  const authorization = await fetchAuthToken();
-
-  return (
-    <CourierProvider authorization="abc123" userId="MY_USER_ID">
-      <MyInbox />
-    </CourierProvider>
-  );
-};
-
-const MyInbox = () => {
-  const inbox = useElementalInbox();
-
-  useEffect(() => {
-    inbox.fetchMessages();
-  }, []);
-
-  // Sets message.read to current date
-  const handleReadMessage = (message) => () => {
-    inbox.markMessageRead(message.messageId);
-  };
-
-  // Removes message.read
-  const handleUnreadMessage = (message) => () => {
-    inbox.markMessageUnread(message.messageId);
-  };
-
-  // Archived messages are not included in inbox.fetchMessages()
-  const handleArchiveMessage = (message) => () => {
-    inbox.markMessageArchived(message.messageId);
-  };
-
-  // If the supplied authorization token is short lived, renew the session with a fresh token
-  // proactively before the token is set to expire. Here we use 5 minutes assuming our token only
-  // lasts 10 minutes
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const authorization = await fetchAuthToken();
-      inbox.renewSession(authorization);
-    }, 300000);
-
-    // Return a cleanup function to tell react how to stop renewal when the component is unmounted.
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <>
-      {inbox.messages.map((message) => {
-        return (
-          <Message>
-            {message.read ? (
-              <>
-                <button onClick={handleUnreadMessage(message)}>
-                  Unread Me
-                </button>
-                <button onClick={handleArchiveMessage(message)}>
-                  Archive Me
-                </button>
-              </>
-            ) : (
-              <button onClick={handleReadMessage(message)}>Read Me</button>
-            )}
-          </Message>
-        );
-      })}
-    </>
-  );
-};
-```
-
 <a name="1typesmd"></a>
 
 ### [Types](#types)
@@ -316,4 +221,161 @@ interface IElementalInbox {
    */
   renewSession: (authorization: string) => void;
 }
+```
+
+#### Manually calling events (`useElementalInbox` Example)
+
+You can call events manually by importing the corresponding function from the react hook.
+
+For Example:
+
+```js
+import { CourierProvider } from "@trycourier/react-provider";
+import { useElementalInbox } from "@trycourier/react-hooks";
+
+const MyInbox = () => {
+  const inbox = useElementalInbox();
+
+  useEffect(() => {
+    inbox.fetchMessages();
+  }, []);
+
+  const handleReadMessage = (message) => () => {
+    inbox.markMessageRead(message.messageId);
+  };
+
+  const handleUnreadMessage = (message) => () => {
+    inbox.markMessageUnread(message.messageId);
+  };
+
+  const handleArchiveMessage = (message) => () => {
+    inbox.markMessageArchived(message.messageId);
+  };
+
+  return (
+    <Container>
+      {inbox.messages.map((message) => {
+        return (
+          <Message>
+            {message.read ? (
+              <>
+                <button onClick={handleUnreadMessage(message)}>
+                  Unread Me
+                </button>
+                <button onClick={handleArchiveMessage(message)}>
+                  Archive Me
+                </button>
+              </>
+            ) : (
+              <button onClick={handleReadMessage(message)}>Read Me</button>
+            )}
+          </Message>
+        );
+      })}
+    </Container>
+  );
+};
+
+const MyApp = () => {
+  return (
+    <CourierProvider userId="MY_USER_ID" clientKey="MY_CLIENT_KEY">
+      <MyInbox />
+    </CourierProvider>
+  );
+};
+```
+
+#### Elemental Inbox
+
+React Hooks exposes two inbox hooks, `useInbox` and `useElementalInbox`. Elemental inbox is a new inbox
+that takes advantage of Courier's content specification, [Elemental](https://www.courier.com/docs/elemental/).
+
+Elemental provides a more advanced format for delivered
+notifications. This includes the ability to add customized buttons, images, and markdown formatted text
+to your messages.
+
+See [types](#1typesmd) for details on the interface.
+
+#### Example Usage
+
+```tsx
+import { CourierProvider } from "@trycourier/react-provider";
+import { useElementalInbox } from "@trycourier/react-hooks";
+
+const MyApp = () => {
+  /**
+   * Auth token for courier provider, can be a token from Courier's auth/issue-token endpoint
+   * or a JWT signed with a valid courier api key. Must include scope: "user_id:<user_id_here> inbox:read:messages",
+   * you must also include the "inbox:write:events" scope if making a write request or mutation as well.
+   *
+   * For more information on the auth/issue-token endpoint, visit:
+   * https://courier.com/docs/reference/auth/intro/
+   */
+  const authorization = await fetchAuthToken();
+
+  return (
+    <CourierProvider authorization="abc123" userId="MY_USER_ID">
+      <MyInbox />
+    </CourierProvider>
+  );
+};
+
+const MyInbox = () => {
+  const inbox = useElementalInbox();
+
+  useEffect(() => {
+    inbox.fetchMessages();
+  }, []);
+
+  // Sets message.read to current date
+  const handleReadMessage = (message) => () => {
+    inbox.markMessageRead(message.messageId);
+  };
+
+  // Removes message.read
+  const handleUnreadMessage = (message) => () => {
+    inbox.markMessageUnread(message.messageId);
+  };
+
+  // Archived messages are not included in inbox.fetchMessages()
+  const handleArchiveMessage = (message) => () => {
+    inbox.markMessageArchived(message.messageId);
+  };
+
+  // If the supplied authorization token is short lived, renew the session with a fresh token
+  // proactively before the token is set to expire. Here we use 5 minutes assuming our token only
+  // lasts 10 minutes
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const authorization = await fetchAuthToken();
+      inbox.renewSession(authorization);
+    }, 300000);
+
+    // Return a cleanup function to tell react how to stop renewal when the component is unmounted.
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      {inbox.messages.map((message) => {
+        return (
+          <Message>
+            {message.read ? (
+              <>
+                <button onClick={handleUnreadMessage(message)}>
+                  Unread Me
+                </button>
+                <button onClick={handleArchiveMessage(message)}>
+                  Archive Me
+                </button>
+              </>
+            ) : (
+              <button onClick={handleReadMessage(message)}>Read Me</button>
+            )}
+          </Message>
+        );
+      })}
+    </>
+  );
+};
 ```

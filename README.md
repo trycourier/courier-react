@@ -41,6 +41,21 @@ This package exports a component called `CourierProvider` which creates a [conte
 
 ---
 
+[react-hooks](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks)
+
+`hooks` that can be used to build your own inbox or interact with other parts of Courier.
+
+- useInbox
+- usePreferenes
+
+---
+
+[client-graphql](https://github.com/trycourier/courier-react/tree/main/packages/client-graphql)
+
+GraphQL library that interacts with Courier's backend
+
+---
+
 [react-brand-designer](https://github.com/trycourier/courier-react/tree/main/packages/react-brand-designer)
 
 The "React Brand Designer" package provides components with a slick UI for branding notifications
