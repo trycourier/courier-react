@@ -44,6 +44,21 @@ export const BusinessFooter: React.FunctionComponent<{
     return <></>;
   }
 
+  let emptyUrls;
+  Object.keys(links).map((key) => {
+    if (emptyUrls === false) {
+      return;
+    }
+    if (typeof links[key] !== "object" || !links[key]?.url?.length) {
+      emptyUrls = true;
+    } else {
+      emptyUrls = false;
+    }
+  });
+  if (emptyUrls) {
+    return <></>;
+  }
+
   return (
     <FooterWrapper theme={theme}>
       <SVGWrapper>
