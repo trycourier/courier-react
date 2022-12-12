@@ -58,14 +58,13 @@ const StyledTippy = styled(LazyTippy)<{
     {
       fontFamily: `'Nunito Sans', sans-serif`,
       boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
-      width: theme.name === "2.0" ? "396px" : "483px",
+      width: theme.name !== "classic" ? "396px" : "483px",
       maxWidth: "initial !important",
 
-      borderRadius: theme?.brand?.inapp?.borderRadius
-        ? theme?.brand?.inapp?.borderRadius
-        : !theme?.name || theme.name === "classic"
-        ? "24px"
-        : "12px",
+      borderRadius:
+        theme?.brand?.inapp?.borderRadius ?? theme.name !== "classic"
+          ? "12px"
+          : "24px",
       outline: "none",
       overflow: "hidden",
       margin: ["left", "right"].includes(String(placement))
@@ -95,7 +94,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   // set defaults
   props = useMemo(() => {
-    if (props.theme?.name === "2.0") {
+    if (props.theme?.name != "classic") {
       delete props.tabs;
 
       return deepExtend(
@@ -268,7 +267,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   };
 
   const MessageList = useMemo(() => {
-    if (props.theme?.name === "2.0") {
+    if (props.theme?.name !== "classic") {
       return Messages2;
     }
 

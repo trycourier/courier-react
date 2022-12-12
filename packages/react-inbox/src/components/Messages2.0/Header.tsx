@@ -167,6 +167,7 @@ const DownCarrot: React.FunctionComponent = () => (
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
   currentTab,
+  labels,
   markAllAsRead,
   messages = [],
   title,

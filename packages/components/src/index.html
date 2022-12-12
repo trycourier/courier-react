@@ -48,10 +48,12 @@
 
         components: {
           inbox: {
-            theme: {
-              name: "2.0",
-            },
+            title: "foo",
             openLinksInNewTab: false,
+            labels: {
+              closeInbox: "closme",
+              markAllAsRead: "markallread",
+            },
           },
         },
       };
@@ -74,7 +76,6 @@
     </script>
   </head>
   <body>
-    <h1>Treva Homepage</h1>
     <courier-inbox></courier-inbox>
     <courier-toast></courier-toast>
     <div id="root" />

@@ -162,8 +162,9 @@ const MessageWrapper: React.FunctionComponent<
   opened,
   defaultIcon,
   formatDate,
-  messageId,
   icon,
+  labels,
+  messageId,
   openLinksInNewTab,
   read,
   renderBlocks,
@@ -310,6 +311,7 @@ const MessageWrapper: React.FunctionComponent<
         formattedTime={formattedTime}
         hasBody={Boolean(renderBlocks?.text?.length)}
         isMessageHovered={isMessageHovered}
+        labels={labels}
         messageId={messageId}
         read={read}
         setAreActionsHovered={setAreActionsHovered}

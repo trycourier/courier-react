@@ -11,6 +11,7 @@ import CloseAction from "./Close";
 import MarkRead, { Checkmark } from "./MarkRead";
 import MarkUnread from "./MarkUnread";
 import styled from "styled-components";
+import { InboxProps } from "~/types";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Styled = styled.div((_props) => {
@@ -54,6 +55,7 @@ const MessageActions: React.FunctionComponent<{
   formattedTime: string;
   hasBody?: boolean;
   isMessageHovered?: boolean;
+  labels: InboxProps["labels"];
   messageId?: string;
   read?: boolean;
   setAreActionsHovered: (hovered: boolean) => void;
@@ -62,6 +64,7 @@ const MessageActions: React.FunctionComponent<{
   formattedTime,
   hasBody,
   isMessageHovered,
+  labels,
   messageId,
   read,
   setAreActionsHovered,
@@ -113,7 +116,6 @@ const MessageActions: React.FunctionComponent<{
       >
         {!read && <MarkRead onClick={handleEvent("read")} />}
         {read && <MarkUnread onClick={handleEvent("unread")} />}
-
         <CloseAction
           size="small"
           title="archive message"

@@ -27,6 +27,7 @@ export interface InboxProps {
   labels?: {
     archiveMessage?: string;
     backToInbox?: string;
+    closeInbox?: string;
     emptyState?: string;
     markAllAsRead?: string;
     markAsRead?: string;
