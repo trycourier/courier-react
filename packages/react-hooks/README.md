@@ -119,14 +119,6 @@ Standard Inbox (`useInbox`):
 ```ts
 const inbox: IInbox & IInboxActions = useInbox();
 
-interface ITab {
-  filters: {
-    isRead?: boolean;
-  };
-  id: string;
-  label: string;
-}
-
 interface IMessage {
   blocks?: Array<IActionBlock | ITextBlock>;
   body: string;
@@ -155,80 +147,17 @@ interface IInboxActions {
   markAllAsRead: () => void;
   markMessageRead: (messageId: string, trackingId: string) => Promise<void>;
   markMessageUnread: (messageId: string, trackingId: string) => Promise<void>;
-  setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
 }
 
 interface IInbox {
-  currentTab?: ITab;
   isLoading?: boolean;
   isOpen?: boolean;
   messages?: Array<IMessage>;
   startCursor?: string;
-  tabs?: ITab[];
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
-}
-```
-
-Elemental Inbox (`useElementalInbox`):
-
-```ts
-// This interface defines the return value of useElemental Inbox
-interface IElementalInbox {
-  brand?: Brand;
-  from?: number;
-  isLoading?: boolean;
-  isOpen?: boolean;
-  lastMessagesFetched?: number;
-  messages?: Array<IElementalInboxMessage>;
-  startCursor?: string;
-  unreadMessageCount?: number;
-  view?: "messages" | "preferences";
-  /** Fetches messages from the server, sets inbox.messages to the received value */
-  fetchMessages: (params?: IFetchMessagesParams) => void;
-  /** Returns a count of messages that do not have a message.read date */
-  getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
-  init: (inbox: IElementalInbox) => void;
-  /** Marks all messages as read by setting message.read to the current ISO 8601 date */
-  markAllAsRead: () => void;
-  /** Archives the supplied message, archived messages are not returned by fetchMessages */
-  markMessageArchived: (messageId: string) => Promise<void>;
-  /** Sets message.read to the current ISO 8601 date  */
-  markMessageRead: (messageId: string) => Promise<void>;
-  /** Removes message.read, signalling that the message is no longer read */
-  markMessageUnread: (messageId: string) => Promise<void>;
-  setView: (view: "messages" | "preferences") => void;
-  toggleInbox: (isOpen?: boolean) => void;
-
-  /**
-   * Allows for renewal of sessions authorized with short lived tokens.
-   * For example, if the supplied authorization token lasts 10 minutes,
-   * this function can be called with a new token every 5 minutes to ensure
-   * messages are received in real time with no interruptions.
-   */
-  renewSession: (authorization: string) => void;
-}
-
-interface IInboxMessage {
-  created?: string;
-  messageId: string;
-  preview?: string;
-  /** ISO 8601 date the message was read */
-  read?: string;
-  title?: string;
-}
-
-export interface IFetchMessagesParams {
-  params?: IGetInboxMessagesParams;
-  after?: string;
-}
-
-export interface IGetInboxMessagesParams {
-  status?: "read" | "unread";
-  limit?: number;
-  tags?: string[];
 }
 ```
 
@@ -242,7 +171,7 @@ Inbox supports a few different events that can be triggered on the client side.
 
 These events are:
 
-- Delivered
+- Opened
 - Read
 - Unread
 - Click
@@ -327,64 +256,64 @@ const MyApp = () => {
 };
 ```
 
-#### Manually calling events (`useElementalInbox` Example)
+<a name="3use-elemental-inboxmd"></a>
 
-You can call events manually by importing the corresponding function from the react hook.
+> useElementalInbox is in **BETA**
 
-For Example:
+```ts
+interface IInboxMessage {
+  created?: string;
+  messageId: string;
+  preview?: string;
+  /** ISO 8601 date the message was read */
+  read?: string;
+  title?: string;
+}
 
-```js
-import { CourierProvider } from "@trycourier/react-provider";
-import { useElementalInbox } from "@trycourier/react-hooks";
+export interface IFetchMessagesParams {
+  params?: IGetInboxMessagesParams;
+  after?: string;
+}
 
-const MyInbox = () => {
-  const inbox = useElementalInbox();
+export interface IGetInboxMessagesParams {
+  status?: "read" | "unread";
+  limit?: number;
+  tags?: string[];
+}
 
-  useEffect(() => {
-    inbox.fetchMessages();
-  }, []);
+// This interface defines the return value of useElemental Inbox
+interface IElementalInbox {
+  brand?: Brand;
+  from?: number;
+  isLoading?: boolean;
+  isOpen?: boolean;
+  lastMessagesFetched?: number;
+  messages?: Array<IElementalInboxMessage>;
+  startCursor?: string;
+  unreadMessageCount?: number;
+  view?: "messages" | "preferences";
+  /** Fetches messages from the server, sets inbox.messages to the received value */
+  fetchMessages: (params?: IFetchMessagesParams) => void;
+  /** Returns a count of messages that do not have a message.read date */
+  getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
+  init: (inbox: IElementalInbox) => void;
+  /** Marks all messages as read by setting message.read to the current ISO 8601 date */
+  markAllAsRead: () => void;
+  /** Archives the supplied message, archived messages are not returned by fetchMessages */
+  markMessageArchived: (messageId: string) => Promise<void>;
+  /** Sets message.read to the current ISO 8601 date  */
+  markMessageRead: (messageId: string) => Promise<void>;
+  /** Removes message.read, signalling that the message is no longer read */
+  markMessageUnread: (messageId: string) => Promise<void>;
+  setView: (view: "messages" | "preferences") => void;
+  toggleInbox: (isOpen?: boolean) => void;
 
-  const handleReadMessage = (message) => () => {
-    inbox.markMessageRead(message.messageId);
-  };
-
-  const handleUnreadMessage = (message) => () => {
-    inbox.markMessageUnread(message.messageId);
-  };
-
-  const handleArchiveMessage = (message) => () => {
-    inbox.markMessageArchived(message.messageId);
-  };
-
-  return (
-    <Container>
-      {inbox.messages.map((message) => {
-        return (
-          <Message>
-            {message.read ? (
-              <>
-                <button onClick={handleUnreadMessage(message)}>
-                  Unread Me
-                </button>
-                <button onClick={handleArchiveMessage(message)}>
-                  Archive Me
-                </button>
-              </>
-            ) : (
-              <button onClick={handleReadMessage(message)}>Read Me</button>
-            )}
-          </Message>
-        );
-      })}
-    </Container>
-  );
-};
-
-const MyApp = () => {
-  return (
-    <CourierProvider userId="MY_USER_ID" clientKey="MY_CLIENT_KEY">
-      <MyInbox />
-    </CourierProvider>
-  );
-};
+  /**
+   * Allows for renewal of sessions authorized with short lived tokens.
+   * For example, if the supplied authorization token lasts 10 minutes,
+   * this function can be called with a new token every 5 minutes to ensure
+   * messages are received in real time with no interruptions.
+   */
+  renewSession: (authorization: string) => void;
+}
 ```
