@@ -45,11 +45,13 @@ export const Checkmark: React.FunctionComponent<{
 );
 
 const MarkRead: React.FunctionComponent<{
+  label?: string;
   onClick: React.MouseEventHandler;
-}> = ({ onClick }) => {
+}> = ({ onClick, label }) => {
+  const title = label ?? "Mark as Read";
   return (
-    <StyledTippy content="Mark as Read">
-      <StyledButton title="mark as read" onClick={onClick}>
+    <StyledTippy content={title}>
+      <StyledButton title={title} onClick={onClick}>
         <Checkmark />
       </StyledButton>
     </StyledTippy>

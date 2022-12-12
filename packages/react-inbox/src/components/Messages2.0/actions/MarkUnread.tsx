@@ -26,11 +26,13 @@ const StyledButton = styled.button(({ theme }) => {
 });
 
 const MarkUnread: React.FunctionComponent<{
+  label?: string;
   onClick: React.MouseEventHandler;
-}> = ({ onClick }) => {
+}> = ({ onClick, label }) => {
+  const title = label ?? "Mark Unread";
   return (
-    <StyledTippy content="Mark Unread">
-      <StyledButton title="mark as unread" onClick={onClick}>
+    <StyledTippy content={title}>
+      <StyledButton title={title} onClick={onClick}>
         <svg
           width="24"
           height="24"
