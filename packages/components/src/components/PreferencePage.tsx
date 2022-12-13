@@ -22,6 +22,13 @@ const HeaderContainer = styled.div`
   width: 50%;
 `;
 
+const FooterContainer = styled.div`
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+`;
+
 const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
   draft = false,
 }) => {
@@ -33,7 +40,9 @@ const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
       <PreferencesV4Container>
         <PreferencesV4 draft={draft} />
       </PreferencesV4Container>
-      <Footer />
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </PreferencePageContainer>
   );
 };
