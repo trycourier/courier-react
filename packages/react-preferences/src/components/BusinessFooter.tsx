@@ -35,12 +35,7 @@ export const BusinessFooter: React.FunctionComponent<{
   links: any;
   theme: string;
 }> = ({ links, theme }) => {
-  if (
-    typeof links !== "object" ||
-    links === undefined ||
-    !links ||
-    !Object.keys(links).length
-  ) {
+  if (links === undefined || !Object.keys(links).length) {
     return <></>;
   }
 
@@ -49,7 +44,7 @@ export const BusinessFooter: React.FunctionComponent<{
     if (emptyUrls === false) {
       return;
     }
-    if (typeof links[key] !== "object" || !links[key]?.url?.length) {
+    if (!links[key]?.url?.length) {
       emptyUrls = true;
     } else {
       emptyUrls = false;
