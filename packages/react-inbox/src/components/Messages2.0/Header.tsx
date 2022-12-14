@@ -28,6 +28,7 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       userSelect: "none",
       display: "flex",
       position: "relative",
+      zIndex: 1,
       justifyContent: "space-between",
       alignItems: "center",
       fontSize: 16,
@@ -35,6 +36,7 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       height: "42px",
       color: "rgb(36, 50, 75)",
       backgroundColor: "#F2F6F9",
+      borderBottom: "1px solid rgb(222, 232, 240)",
 
       borderTopLeftRadius: "12px",
       borderTopRightRadius: "12px",
@@ -43,6 +45,18 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+      },
+
+      "&:after": {
+        content: '""',
+        position: "absolute",
+        top: "100%",
+        left: 0,
+        right: 0,
+        height: 24,
+        background:
+          "linear-gradient(to bottom, rgba(86, 96, 116, 0.05), rgba(86, 96, 116, 0))",
+        pointerEvents: "none",
       },
     },
     theme?.header

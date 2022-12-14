@@ -37,7 +37,7 @@ const StyledContent = styled.div<{ showSmiley: boolean }>`
   transition: 450ms 200ms ease-in-out;
   opacity: ${(props) => (props.showSmiley ? 1 : 0)};
   visibility: ${(props) => (props.showSmiley ? "visible" : "hidden")};
-  transform: translateY(${(props) => (props.showSmiley ? 0 : "5%")});
+  transform: translateY(${(props) => (props.showSmiley ? 0 : "25%")});
   text-align: center;
 `;
 
