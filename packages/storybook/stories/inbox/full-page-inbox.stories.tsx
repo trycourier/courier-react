@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import { CourierProvider } from "@trycourier/react-provider";
@@ -23,6 +23,8 @@ const FramedInBbox = () => {
 };
 
 export const Hooks = () => {
+  const [renderCount, setRenderCount] = useState(0);
+
   /*const stagingJWTCourierProps = {
     wsOptions: {
       url: "wss://icnrz8ttcf.execute-api.us-east-1.amazonaws.com/staging",
@@ -34,25 +36,37 @@ export const Hooks = () => {
     userId: "smokey12345",
   };*/
 
-  /*const devCourierProops = {
+  const devCourierProops = {
     apiUrl: "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
     wsOptions: {
       url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
     },
     clientKey: "NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4",
     userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
-  };*/
+  };
 
-  const stagingCourierProps = {
+  /*const stagingCourierProps = {
     wsOptions: {
       url: "wss://icnrz8ttcf.execute-api.us-east-1.amazonaws.com/staging",
     },
     apiUrl: "https://4rq7n8hhjd.execute-api.us-east-1.amazonaws.com/staging/q",
-    clientKey: "YWZiZWViNGItMjAyMS00MzgwLTlkZDUtZWI0Y2MzNzEwNmMw",
-    userId: "riley",
-  };
+    authorization:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6c21va2V5MTIzNDUgaW5ib3g6cmVhZDptZXNzYWdlcyBpbmJveDp3cml0ZTpldmVudHMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6IjFiMWU5NTNmLTBlYmItNDdhZC1iZWFiLWY1NzliZDYwNmViMSIsImlhdCI6MTY3MDk3NTgxMiwianRpIjoiNmRiNmYyODctNGMxNi00N2ZkLTliNDctNjYxNjZhY2VkOWUyIn0.QZwqutYC6TbTafsAr4Qe0FRx4K0vhp7tzGPlC_zlkg0",
+    userId: "smokey12345",
+  };*/
+
   return (
     <>
+      {renderCount}
+
+      <button
+        onClick={() => {
+          setRenderCount(renderCount + 1);
+        }}
+      >
+        render
+      </button>
+
       <ReactMarkdown>{"TODO"}</ReactMarkdown>
       <div
         style={{
@@ -65,14 +79,14 @@ export const Hooks = () => {
           <ReactMarkdown>{`## Example`}</ReactMarkdown>
           <ReactMarkdown>{`\`\`\`javascript\n${fullPageInboxHooksString}\n\`\`\``}</ReactMarkdown>
         </div>
-        <CourierProvider {...stagingCourierProps}>
+        <CourierProvider {...devCourierProops}>
           <FullPageInboxHooks />
         </CourierProvider>
-        <Frame>
+        {/*<Frame>
           <CourierProvider id="iframe" {...stagingCourierProps}>
             <FramedInBbox />
           </CourierProvider>
-        </Frame>
+      </Frame>*/}
       </div>
     </>
   );

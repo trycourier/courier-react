@@ -5,7 +5,7 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 
 import {
@@ -72,8 +72,18 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
     transport: _transport,
     userId,
     userSignature,
-    wsOptions,
+    wsOptions: _wsOptions = {},
   }) => {
+    const wsOptions = useMemo(
+      () => _wsOptions,
+      [
+        _wsOptions.connectionTimeout,
+        _wsOptions.onClose,
+        _wsOptions.onError,
+        _wsOptions.url,
+      ]
+    );
+
     const clientSourceId = useClientSourceId({
       authorization,
       clientKey,
