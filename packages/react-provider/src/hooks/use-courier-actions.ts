@@ -29,12 +29,6 @@ const useCourierActions = (state, dispatch) => {
           payload,
         });
       },
-      updateAuthToken: (token: string) => {
-        dispatch({
-          type: "root/UPDATE_AUTH_TOKEN",
-          payload: token,
-        });
-      },
       initToast: (payload) => {
         dispatch({
           type: "toast/INIT",
