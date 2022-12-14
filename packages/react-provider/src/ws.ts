@@ -165,6 +165,7 @@ export class WS {
       callback,
     });
 
+    console.log("this.connected", this.connected);
     if (this.connected) {
       this.send({
         action: "subscribe",

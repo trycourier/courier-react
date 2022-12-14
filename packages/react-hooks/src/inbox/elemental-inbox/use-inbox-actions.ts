@@ -163,6 +163,11 @@ const useElementalInboxActions = (): IInboxActions => {
       if (transport instanceof CourierTransport) {
         transport.renewSession(token);
       }
+      return;
+      dispatch({
+        type: "root/UPDATE_AUTH_TOKEN",
+        payload: token,
+      });
     },
     newMessage: (message) => {
       if (!message.messageId) {

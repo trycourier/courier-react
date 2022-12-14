@@ -44,6 +44,12 @@ const rootReducer = (state: Partial<ICourierContext>, action) => {
         ...action.payload,
       };
     }
+    case "root/UPDATE_AUTH_TOKEN": {
+      return {
+        ...state,
+        authorization: action.payload,
+      };
+    }
     case "root/GET_BRAND/DONE": {
       return {
         ...state,
