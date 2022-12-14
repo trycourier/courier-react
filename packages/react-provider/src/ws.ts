@@ -103,6 +103,8 @@ export class WS {
     if (this.onClose) {
       this.onClose();
     }
+
+    console.log("connetion closed");
   }
 
   private _onOpen(): void {
