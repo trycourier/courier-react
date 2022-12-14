@@ -161,6 +161,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
 
       return () => {
         courierTransport.unsubscribe(userId);
+        courierTransport.closeConnection();
       };
     }, [actions, transport, userId]);
 
