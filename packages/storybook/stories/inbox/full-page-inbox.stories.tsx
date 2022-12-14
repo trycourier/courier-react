@@ -23,7 +23,7 @@ const FramedInBbox = () => {
 };
 
 export const Hooks = () => {
-  const [renderCount, setRenderCount] = useState(0);
+  const [showIframe, setShowIframe] = useState(false);
 
   /*const stagingJWTCourierProps = {
     wsOptions: {
@@ -57,14 +57,12 @@ export const Hooks = () => {
 
   return (
     <>
-      {renderCount}
-
       <button
         onClick={() => {
-          setRenderCount(renderCount + 1);
+          setShowIframe(!showIframe);
         }}
       >
-        render
+        showIframe
       </button>
 
       <ReactMarkdown>{"TODO"}</ReactMarkdown>
@@ -79,14 +77,16 @@ export const Hooks = () => {
           <ReactMarkdown>{`## Example`}</ReactMarkdown>
           <ReactMarkdown>{`\`\`\`javascript\n${fullPageInboxHooksString}\n\`\`\``}</ReactMarkdown>
         </div>
-        <CourierProvider {...devCourierProops}>
+        <CourierProvider id="main" {...devCourierProops}>
           <FullPageInboxHooks />
         </CourierProvider>
-        {/*<Frame>
-          <CourierProvider id="iframe" {...stagingCourierProps}>
-            <FramedInBbox />
-          </CourierProvider>
-      </Frame>*/}
+        {showIframe && (
+          <Frame>
+            <CourierProvider id="iframe" {...devCourierProops}>
+              <FramedInBbox />
+            </CourierProvider>
+          </Frame>
+        )}
       </div>
     </>
   );
