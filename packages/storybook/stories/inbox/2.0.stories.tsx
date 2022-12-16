@@ -435,18 +435,12 @@ export const WithPreferences = () => {
         <CourierProvider
           middleware={[
             () => (next) => (action) => {
-              if (action.type === "root/GET_BRAND/DONE") {
+              if (action.type === "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE") {
                 next({
-                  type: "root/GET_BRAND/DONE",
-                  payload: {
-                    colors: {
-                      primary: "#FF93CD",
-                      secondary: "#C1B6DD",
-                      tertiary: "#E85178",
-                    },
-                    preferenceTemplates: [{}],
-                  },
+                  type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
+                  payload: 1,
                 });
+                return;
               }
 
               if (action.type === "inbox/INIT") {
@@ -456,6 +450,18 @@ export const WithPreferences = () => {
                     ...action.payload,
                     isLoading: false,
                     messages: mockMessages,
+                  },
+                });
+
+                next({
+                  type: "root/GET_BRAND/DONE",
+                  payload: {
+                    colors: {
+                      primary: "#FF93CD",
+                      secondary: "#C1B6DD",
+                      tertiary: "#E85178",
+                    },
+                    preferenceTemplates: [{}],
                   },
                 });
                 return;
