@@ -46,18 +46,6 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
         alignItems: "center",
         justifyContent: "space-between",
       },
-
-      "&:after": {
-        content: '""',
-        position: "absolute",
-        top: "100%",
-        left: 0,
-        right: 0,
-        height: 24,
-        background:
-          "linear-gradient(to bottom, rgba(86, 96, 116, 0.05), rgba(86, 96, 116, 0))",
-        pointerEvents: "none",
-      },
     },
     theme?.header
   )
