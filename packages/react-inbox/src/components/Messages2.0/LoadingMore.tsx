@@ -4,7 +4,13 @@ import styled from "styled-components";
 import LoadingIndicator from "./LoadingIndicator";
 
 const Styled = styled.div`
+  position: relative;
   padding: 12px 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(86, 96, 116, 0.05),
+    rgba(86, 96, 116, 0) 24px
+  );
 `;
 
 const StyledLabel = styled.div`

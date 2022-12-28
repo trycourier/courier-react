@@ -46,18 +46,6 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
         alignItems: "center",
         justifyContent: "space-between",
       },
-
-      "&:after": {
-        content: '""',
-        position: "absolute",
-        top: "100%",
-        left: 0,
-        right: 0,
-        height: 24,
-        background:
-          "linear-gradient(to bottom, rgba(86, 96, 116, 0.05), rgba(86, 96, 116, 0))",
-        pointerEvents: "none",
-      },
     },
     theme?.header
   )
@@ -68,12 +56,13 @@ const DropdownOptionButton = styled.button<{
   selected?: boolean;
   showDropdown?: boolean;
 }>(({ theme, disabled, active, selected, showDropdown }) => {
-  const primaryColor = theme.brand?.colors?.primary;
+  const primaryColor = theme.brand?.colors?.primary || "#9121C2";
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   const cssProps = {
     background: active ? primaryColor : "transparent",
     border: "none",
+    borderBottom: selected ? undefined : "1px solid #DEE8F0",
     cursor: disabled ? "default" : "pointer",
     padding: selected ? "6px" : "12px",
     color: active ? "white" : "rgba(28, 39, 58, 1)",
@@ -98,8 +87,8 @@ const DropdownOptionButton = styled.button<{
       fontSize: 14,
       fontWeight: 400,
       margin: "0 3px",
-      background: primaryColor,
-      color: "white",
+      background: selected ? primaryColor : "white",
+      color: selected ? "white" : primaryColor,
       borderRadius: "17px",
       display: "flex",
       justifyContent: "center",
