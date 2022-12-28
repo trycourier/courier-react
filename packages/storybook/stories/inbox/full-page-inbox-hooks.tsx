@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useElementalInbox } from "@trycourier/react-hooks";
 
 export const FullPageInboxHooks: React.FunctionComponent = () => {
-  const [authorization, setAuthorization] = useState("");
-  const handeInputOnChange = (event) => {
-    setAuthorization(event.target.value);
-  };
-
   const {
     fetchMessages,
     getUnreadMessageCount,
@@ -17,7 +12,6 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
     markMessageUnread,
     messages = [],
     unreadMessageCount,
-    renewSession,
   } = useElementalInbox();
 
   function getState() {
@@ -38,21 +32,6 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
         height: "100%",
       }}
     >
-      <input
-        type="text"
-        onChange={handeInputOnChange}
-        name="auth"
-        value={authorization}
-      />
-
-      <button
-        onClick={() => {
-          renewSession(authorization);
-        }}
-      >
-        setauth
-      </button>
-
       <button
         onClick={() => {
           getState();

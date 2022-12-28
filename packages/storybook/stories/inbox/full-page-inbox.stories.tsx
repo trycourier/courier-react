@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import { CourierProvider } from "@trycourier/react-provider";
@@ -25,6 +25,14 @@ const FramedInBbox = () => {
 export const Hooks = () => {
   const [showIframe, setShowIframe] = useState(false);
 
+  const [authorization, setAuthorization] = useState("");
+  const [auth, setAuth] = useState(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6Ijc2ODI1MWNmLTNlYjgtNDI2YS05MmViLWZhYTBlNzY3ODc2OCIsImlhdCI6MTY3MjE3MzQwOCwianRpIjoiZGQ4ODA1NTYtODRhYS00NjRhLWI3Y2UtNzRlYzYyMDU5NmQ5In0.9_Zmb9Id7DCvQ9iODHfslGIvxF-EEhQZYKn70lltrak"
+  );
+  const handeInputOnChange = (event) => {
+    setAuthorization(event.target.value);
+  };
+
   /*const stagingJWTCourierProps = {
     wsOptions: {
       url: "wss://icnrz8ttcf.execute-api.us-east-1.amazonaws.com/staging",
@@ -36,14 +44,17 @@ export const Hooks = () => {
     userId: "smokey12345",
   };*/
 
-  const devCourierProops = {
-    apiUrl: "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
-    wsOptions: {
-      url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
-    },
-    clientKey: "NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4",
-    userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
-  };
+  const devCourierProops = useMemo(
+    () => ({
+      apiUrl: "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
+      wsOptions: {
+        url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+      },
+      authorization: auth,
+      userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+    }),
+    [auth]
+  );
 
   /*const stagingCourierProps = {
     wsOptions: {
@@ -74,9 +85,23 @@ export const Hooks = () => {
         }}
       >
         <div>
+          <input
+            type="text"
+            onChange={handeInputOnChange}
+            name="auth"
+            value={authorization}
+          />
+          <button
+            onClick={() => {
+              setAuth(authorization);
+            }}
+          >
+            setauth
+          </button>
           <ReactMarkdown>{`## Example`}</ReactMarkdown>
           <ReactMarkdown>{`\`\`\`javascript\n${fullPageInboxHooksString}\n\`\`\``}</ReactMarkdown>
         </div>
+
         <CourierProvider id="main" {...devCourierProops}>
           <FullPageInboxHooks />
         </CourierProvider>
