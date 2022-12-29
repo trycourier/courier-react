@@ -55,10 +55,13 @@ const useCourierTransport = ({
       wsOptions,
     });
 
-    transportRef.current = {
-      authorization,
-      transport: newTransport,
-    };
+    // keep track of the transport so we don't reconnect when we don't have to
+    if (authorization) {
+      transportRef.current = {
+        authorization,
+        transport: newTransport,
+      };
+    }
     return newTransport;
   }, [authorization, clientKey, transport, userSignature, wsOptions]);
 };
