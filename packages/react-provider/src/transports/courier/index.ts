@@ -41,6 +41,12 @@ export class CourierTransport extends Transport {
     this.ws.connect();
   }
 
+  keepAlive(): void {
+    this.ws.send({
+      action: "keepAlive",
+    });
+  }
+
   send(message: ICourierMessage): void {
     this.ws.send({
       ...message,

@@ -17,6 +17,7 @@
   "dependencies": {
     "@trycourier/client-graphql": "^1.57.0",
     "buffer": "^6.0.3",
+    "jwt-decode": "^3.1.2",
     "react-use": "^17.2.1",
     "reconnecting-websocket": "^4.4.0",
     "rimraf": "^3.0.2",
