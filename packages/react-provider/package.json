@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {
-    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
+    "test": "jest -c jest.config.js --runInBand",
+    "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\" --ignore \"src/**/__mocks__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",

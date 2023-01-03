@@ -1,4 +1,4 @@
-import { Transport } from "./transports";
+import { CourierTransport, Transport } from "./transports";
 import { IActionBlock, Interceptor, ITextBlock } from "./transports/types";
 import { ErrorEvent } from "reconnecting-websocket";
 
@@ -73,7 +73,7 @@ export interface ICourierProviderProps {
   middleware?: any;
   localStorage?: Storage;
   onMessage?: Interceptor;
-  transport?: Transport;
+  transport?: CourierTransport | Transport;
   userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;

@@ -30,6 +30,7 @@ export class CourierTransport extends Transport {
       options: options.wsOptions,
       userSignature: options.userSignature,
     });
+
     this.ws.connect();
   }
 
