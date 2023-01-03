@@ -2,10 +2,12 @@ import { useCourier } from "@trycourier/react-provider";
 import { createCourierClient, Preferences } from "@trycourier/client-graphql";
 
 const usePreferencesActions = () => {
-  const { apiUrl, clientKey, userId, userSignature, dispatch } = useCourier();
+  const { apiUrl, clientKey, userId, userSignature, dispatch, authorization } =
+    useCourier();
 
   const courierClient = createCourierClient({
     apiUrl,
+    authorization,
     clientKey,
     userId,
     userSignature,
