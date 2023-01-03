@@ -160,7 +160,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       }
 
       const intervalId = setInterval(() => {
-        //courierTransport.keepAlive();
+        courierTransport.keepAlive();
       }, 300000); // 5 minutes
 
       return () => {
