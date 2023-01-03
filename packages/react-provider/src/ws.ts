@@ -69,18 +69,18 @@ export class WS {
     this.connection.close();
   }
 
+  getUrl(): string {
+    return `${this.url}/?${
+      this.authorization
+        ? `auth=${this.authorization}`
+        : `clientKey=${this.clientKey}`
+    }`;
+  }
+
   connect(): void {
-    this.connection = new ReconnectingWebSocket(
-      `${this.url}/?${
-        this.authorization
-          ? `auth=${this.authorization}`
-          : `clientKey=${this.clientKey}`
-      }`,
-      [],
-      {
-        connectionTimeout: this.connectionTimeout,
-      }
-    );
+    this.connection = new ReconnectingWebSocket(this.getUrl.bind(this), [], {
+      connectionTimeout: this.connectionTimeout,
+    });
 
     this.connection.onopen = this._onOpen.bind(this);
     this.connection.onclose = this._onClose.bind(this);

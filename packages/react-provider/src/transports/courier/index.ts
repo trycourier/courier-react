@@ -30,6 +30,7 @@ export class CourierTransport extends Transport {
       options: options.wsOptions,
       userSignature: options.userSignature,
     });
+
     this.ws.connect();
   }
 
@@ -39,6 +40,12 @@ export class CourierTransport extends Transport {
 
   connect(): void {
     this.ws.connect();
+  }
+
+  keepAlive(): void {
+    this.ws.send({
+      action: "keepAlive",
+    });
   }
 
   send(message: ICourierMessage): void {

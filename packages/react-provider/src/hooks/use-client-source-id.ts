@@ -1,9 +1,6 @@
-import useHash from "./use-hash";
 import * as uuid from "uuid";
 import { useMemo } from "react";
-
-// this hash or clientsoureid is used to help create a managealbe sized property to store information in localstorage
-// its possible we will just have the "authorization" as an identifier and that is a huge string
+import jwtDecode from "jwt-decode";
 
 const useClientSourceId = ({
   clientKey,
@@ -12,9 +9,22 @@ const useClientSourceId = ({
   id,
   localStorage,
 }): string => {
-  const clientSourceKey = useHash(
-    authorization ? authorization : `${clientKey}/${userId}`
-  );
+  const clientSourceKey = useMemo(() => {
+    if (!authorization) {
+      return `${clientKey}/${userId}`;
+    }
+
+    const decoded = jwtDecode(authorization) as {
+      tenantId: string;
+      scope: string;
+    };
+    const scopeUserId = decoded?.scope
+      ?.split(" ")
+      ?.find((s) => s.includes("user_id"))
+      ?.replace("user_id", "");
+
+    return `${decoded?.tenantId}/${scopeUserId}`;
+  }, [authorization, clientKey, userId]);
 
   return useMemo(() => {
     if (!localStorage) {

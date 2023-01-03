@@ -159,7 +159,12 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         courierTransport.intercept(onMessage);
       }
 
+      const intervalId = setInterval(() => {
+        //courierTransport.keepAlive();
+      }, 300000); // 5 minutes
+
       return () => {
+        clearInterval(intervalId);
         courierTransport.unsubscribe(userId);
         courierTransport.closeConnection();
       };
