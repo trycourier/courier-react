@@ -178,7 +178,9 @@ const Messages: React.ForwardRefExoticComponent<
           return;
         }
 
-        fetchMessages();
+        fetchMessages({
+          after: startCursor,
+        });
       },
       [isLoading, startCursor]
     );
