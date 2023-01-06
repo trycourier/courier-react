@@ -11,7 +11,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "test": "jest -c jest.config.js --runInBand",
+    "test": "DEBUG_PRINT_LIMIT=10000 jest -c jest.config.js --runInBand",
     "build:components": "rimraf dist && webpack -p",
     "start:components": "rimraf dist && webpack && webpack-dev-server"
   },
