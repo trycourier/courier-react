@@ -42,8 +42,8 @@ Installation is simple. All you need to do is add `<courier>` components to your
       userId: "{{USER_ID}}",
     };
   </script>
-  <!-- Be sure to use the appropriate version (On or after v1.19.1) -->
-  <script src="https://courier-components-xvdza5.s3.amazonaws.com/v1.19.1.js"></script>
+  <!-- Be sure to use the appropriate version -->
+  <script src="https://courier-components-xvdza5.s3.amazonaws.com/v{{CURRENT_VERSION}}.js"></script>
 </body>
 ```
 

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
-const FileManagerPlugin = require("filemanager-webpack-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const path = require("path");
 const webpack = require("webpack");
 
@@ -11,7 +10,6 @@ module.exports = (_env, argv) => {
   const isStaging = process.env.IS_STAGING;
   const distPath = path.resolve(__dirname, "./dist");
   const version = require(path.resolve(__dirname, "./package.json")).version;
-  const latestFilename = isStaging ? "staging.js" : "latest.js";
   const versionedFilePrefix = isStaging ? "staging-v" : "v";
 
   return {
@@ -21,7 +19,7 @@ module.exports = (_env, argv) => {
       publicPath: isProduction
         ? "https://courier-components-xvdza5.s3.amazonaws.com/"
         : undefined,
-      filename: latestFilename,
+      filename: `${versionedFilePrefix}${version}.js`,
       chunkFilename: "[id].[chunkhash:8].js",
       path: distPath,
     },
@@ -38,21 +36,6 @@ module.exports = (_env, argv) => {
       }),
       new webpack.ProvidePlugin({
         Buffer: ["buffer", "Buffer"],
-      }),
-      new FileManagerPlugin({
-        events: {
-          onEnd: {
-            copy: [
-              {
-                source: path.resolve(distPath, latestFilename),
-                destination: path.resolve(
-                  distPath,
-                  `${versionedFilePrefix}${version}.js`
-                ),
-              },
-            ],
-          },
-        },
       }),
     ].filter(Boolean),
     module: {
