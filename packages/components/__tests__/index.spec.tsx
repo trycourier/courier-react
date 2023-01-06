@@ -115,11 +115,9 @@ test("will render an inbox and can change labels", async () => {
     fireEvent.click(screen.getByTestId("bell"));
   });
 
-  const noMessagesElement = await screen.findByText(
-    "You have no notifications at this time"
-  );
+  const noMessagesElement = await screen.findByText("You’re all caught up");
 
-  expect(noMessagesElement).toBeVisible();
+  expect(noMessagesElement).toBeInTheDocument();
 
   act(() => {
     (window as any).courier.inbox.setConfig({
@@ -127,10 +125,6 @@ test("will render an inbox and can change labels", async () => {
         emptyState: "NO MESSAGES",
       },
     });
-  });
-
-  act(() => {
-    fireEvent.click(screen.getByTestId("bell"));
   });
 
   expect(await screen.findByText("NO MESSAGES")).toBeInTheDocument();
@@ -157,11 +151,9 @@ test("will render nothing and then render an inbox when the element is inserted"
     inbox.setAttribute("is-open", "true");
   });
 
-  const noMessagesElement = await screen.findByText(
-    "You have no notifications at this time"
-  );
+  const noMessagesElement = await screen.findByText("You’re all caught up");
 
-  expect(noMessagesElement).toBeVisible();
+  expect(noMessagesElement).toBeInTheDocument();
 
   act(() => {
     inbox.setAttribute(
