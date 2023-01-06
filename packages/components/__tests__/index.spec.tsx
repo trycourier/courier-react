@@ -93,7 +93,6 @@ afterAll(() => {
 
 test("will render an inbox and can change labels", async () => {
   const inbox = document.createElement("courier-inbox");
-  inbox.setAttribute("tabs", "false");
   document.body.appendChild(inbox);
   render(
     <CourierProvider
