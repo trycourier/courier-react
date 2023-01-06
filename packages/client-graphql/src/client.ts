@@ -30,6 +30,7 @@ export const createCourierClient = (
   if (jwtParams.authorization) {
     headers = {
       authorization: `Bearer ${jwtParams.authorization}`,
+      "x-courier-client-key": jwtParams.clientKey,
     } as CourierJWTHeaders;
 
     if (jwtParams.clientSourceId) {
