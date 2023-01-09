@@ -38,8 +38,8 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       backgroundColor: "#F2F6F9",
       borderBottom: "1px solid rgb(222, 232, 240)",
 
-      borderTopLeftRadius: "12px",
-      borderTopRightRadius: "12px",
+      borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
+      borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
       ".actions": {
         width: 54,
         display: "flex",

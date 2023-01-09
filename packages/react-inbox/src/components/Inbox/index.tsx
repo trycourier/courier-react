@@ -61,10 +61,11 @@ const StyledTippy = styled(LazyTippy)<{
       width: theme.name === "2.0" ? "396px" : "483px",
       maxWidth: "initial !important",
 
-      borderRadius:
-        theme?.brand?.inapp?.borderRadius ?? theme.name === "2.0"
-          ? "12px"
-          : "24px",
+      borderRadius: theme?.brand?.inapp?.borderRadius
+        ? theme?.brand?.inapp?.borderRadius
+        : !theme?.name || theme.name === "classic"
+        ? "24px"
+        : "12px",
       outline: "none",
       overflow: "hidden",
       margin: ["left", "right"].includes(String(placement))
