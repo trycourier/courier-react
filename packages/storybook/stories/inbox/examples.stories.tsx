@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useInbox } from "@trycourier/react-hooks";
 import { Inbox } from "@trycourier/react-inbox";
-import { UnsubscribePage } from "@trycourier/react-preferences";
+import { Toast } from "@trycourier/react-toast";
 import { CourierProvider } from "@trycourier/react-provider";
 import {
   withKnobs,
@@ -171,12 +171,30 @@ export function MultipleInbox(): React.ReactElement {
       apiUrl={API_URL}
       clientKey={CLIENT_KEY}
       userId={USER_ID}
-      // authorization="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6Y2hyaXN0aWFnIiwidGVuYW50X3Njb3BlIjoicHVibGlzaGVkL3Byb2R1Y3Rpb24iLCJ0ZW5hbnRfaWQiOiI1MGQ5YzhlZi0yNjkxLTRmNjQtYjU5OC1kNWYyY2YwNjIzNDIiLCJpYXQiOjE2NzI3NzM1MzIsImp0aSI6IjVjMjAyNGEwLWY5M2YtNDQyMi05ZWFjLWZiYTNkNDBjZjVjNSJ9.LC4Y2YOFXj_QkrPbTq0fJJTyrec599ZP-0204Mx6RkE"
     >
-      <UnsubscribePage
-        preferencePageUrl="https://google.com"
-        topicId="PVJC1C5K5XM12ZJKX9AQ14S45T4W"
-      />
+      <Toast />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Inbox />
+        <UseInbox />
+        <CourierProvider
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
+          apiUrl={API_URL}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
+        >
+          <Inbox
+            brand={{
+              colors: {
+                primary: "red",
+                secondary: "pink",
+                tertiary: "orange",
+              },
+            }}
+          />
+        </CourierProvider>
+      </div>
     </CourierProvider>
   );
 }
