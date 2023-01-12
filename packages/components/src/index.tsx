@@ -40,6 +40,10 @@ interface ICourierConfig {
     toast?: any;
     preferences?: any;
   };
+  unsubscribePage?: {
+    topicId: string;
+    preferencePageUrl: string;
+  };
   initOnLoad?: boolean;
   userId?: string;
   userSignature?: string;
