@@ -8,6 +8,7 @@ const Toast = lazy(() => import("./Toast"));
 const Inbox = lazy(() => import("./Inbox"));
 const Preferences = lazy(() => import("./Preferences"));
 const PreferencePage = lazy(() => import("./PreferencePage"));
+const UnsubscribePage = lazy(() => import("./UnsubscribePage"));
 
 const querySelector = (element: HTMLElement, selector: string) => {
   if (!element || !selector || !element.querySelector) {
@@ -20,6 +21,8 @@ const querySelector = (element: HTMLElement, selector: string) => {
 export const CourierComponents: React.FunctionComponent = () => {
   const preferencePageDraftMode =
     window.courierConfig?.preferencePageDraftMode ?? false;
+  const unsubscribePageConfig = window.courierConfig?.unsubscribePage;
+
   const componentConfigs = window.courierConfig?.components;
   const initialInbox = querySelector(window?.document?.body, "courier-inbox");
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
@@ -49,8 +52,17 @@ export const CourierComponents: React.FunctionComponent = () => {
     window?.document?.body,
     "courier-preference-page"
   );
+
+  const initialUnsubscribePage = querySelector(
+    window?.document?.body,
+    "courier-unsubscribe-page"
+  );
+
   const [preferencePage, setPreferencePage] = useState(
     initialPreferencePage ?? undefined
+  );
+  const [unsubscribePage, setUnsubscribePage] = useState(
+    initialUnsubscribePage ?? undefined
   );
 
   useEffect(() => {
@@ -115,6 +127,9 @@ export const CourierComponents: React.FunctionComponent = () => {
                   return;
                 case "courier-preference-page":
                   setPreferencePage(element);
+                  return;
+                case "courier-unsubscribe-page":
+                  setUnsubscribePage(element);
                   return;
                 default: {
                   const childInbox = querySelector(element, "courier-inbox");
@@ -187,6 +202,16 @@ export const CourierComponents: React.FunctionComponent = () => {
             <PreferencePage draft={preferencePageDraftMode} />
           </Suspense>,
           preferencePage
+        )}
+      {unsubscribePage &&
+        createPortal(
+          <Suspense fallback={<div />}>
+            <UnsubscribePage
+              preferencePageUrl={unsubscribePageConfig?.preferencePageUrl!}
+              topicId={unsubscribePageConfig?.topicId!}
+            />
+          </Suspense>,
+          unsubscribePage
         )}
     </CourierSdk>
   );
