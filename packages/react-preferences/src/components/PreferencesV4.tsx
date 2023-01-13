@@ -396,11 +396,11 @@ export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
     }
   }, []);
 
-  if (preferences.isLoading) {
+  if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
     return null;
   }
 
-  if (!preferences.preferencePage) {
+  if (!preferences.preferencePage && !preferences.isLoading) {
     return (
       <div>This page is not avaliable. Please contact your administrator.</div>
     );
