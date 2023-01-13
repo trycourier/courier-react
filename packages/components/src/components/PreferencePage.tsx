@@ -16,7 +16,9 @@ const PreferencesV4Container = styled.div`
   background: rgba(255, 255, 255, 0.2);
   display: flex;
   overflow: auto;
+  padding-bottom: 100px;
 `;
+//Must add padding bottom of 100px to offset the footer
 
 const HeaderContainer = styled.div`
   width: 50%;
