@@ -23,7 +23,7 @@ export default (state: PreferenceState = initialState, action) => {
     case "preferences/FETCH_PREFERENCE_PAGE/PENDING":
       return {
         ...state,
-        isUpdating: true,
+        isLoading: true,
       };
     case "preferences/FETCH_DRAFT_PREFERENCE_PAGE/PENDING":
       return {

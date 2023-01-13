@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Toggle from "react-toggle";
 import { StyledToggle } from "./StyledToggle";
-import { Footer } from ".";
 import { usePreferences } from "@trycourier/react-hooks";
+import { BusinessFooter } from "./BusinessFooter";
+import { FreeFooter } from "./FreeFooter";
 
 const PageContainer = styled.div`
   width: 100vw;
@@ -132,23 +133,13 @@ export const UnsubscribePage: React.FunctionComponent<{
 }> = ({ topicId, preferencePageUrl }) => {
   const [toggle, setToggle] = useState(false);
 
-  const {
-    preferencePage,
-    updateRecipientPreferences,
-    fetchPreferencePage,
-    isLoading,
-  } = usePreferences();
+  const preferences = usePreferences();
+
   useEffect(() => {
-    fetchPreferencePage();
+    preferences.fetchPreferencePage();
   }, []);
 
-  if (!preferencePage) {
-    return (
-      <div>This page is not avaliable. Please contact your administrator.</div>
-    );
-  }
-
-  const topic = preferencePage.sections.nodes
+  const topic = preferences.preferencePage?.sections.nodes
     .map(
       (section) =>
         section.topics.nodes.filter((topic) => topic.templateId === topicId)[0]
@@ -158,15 +149,21 @@ export const UnsubscribePage: React.FunctionComponent<{
   const handleStatusChange = async () => {
     const newStatus = toggle ? "OPTED_IN" : "OPTED_OUT";
 
-    await updateRecipientPreferences({
+    await preferences.updateRecipientPreferences({
       templateId: topicId,
       status: newStatus,
     });
     setToggle(!toggle);
   };
 
-  if (isLoading) {
+  if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
     return null;
+  }
+
+  if ((!preferences.preferencePage && !preferences.isLoading) || !topic) {
+    return (
+      <div>This page is not avaliable. Please contact your administrator.</div>
+    );
   }
 
   return (
@@ -174,8 +171,8 @@ export const UnsubscribePage: React.FunctionComponent<{
       <Header>
         <div>
           <ImageWrapper>
-            {preferencePage.brand.logo.image ? (
-              <img src={`${preferencePage.brand.logo.image}`} />
+            {preferences.preferencePage?.brand.logo.image ? (
+              <img src={`${preferences.preferencePage?.brand.logo.image}`} />
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -227,10 +224,10 @@ export const UnsubscribePage: React.FunctionComponent<{
       </Header>
       <Body>
         <div>
-          <p>{getText(topic.defaultStatus === "REQUIRED")}</p>
+          <p>{getText(topic?.defaultStatus === "REQUIRED")}</p>
           <TopicWrapper>
             <div>
-              <h1>{topic.templateName}</h1>
+              <h1>{topic?.templateName}</h1>
               <p>Be notified if you are invited to a group or event.</p>
             </div>
             <StyledToggle
@@ -238,14 +235,15 @@ export const UnsubscribePage: React.FunctionComponent<{
               theme={{
                 brand: {
                   colors: {
-                    primary: preferencePage?.brand.settings.colors.primary,
+                    primary:
+                      preferences.preferencePage?.brand.settings.colors.primary,
                   },
                 },
               }}
             >
               <Toggle
                 icons={false}
-                disabled={topic.defaultStatus === "REQUIRED"}
+                disabled={topic?.defaultStatus === "REQUIRED"}
                 checked={toggle}
                 onChange={handleStatusChange}
               />
@@ -259,7 +257,14 @@ export const UnsubscribePage: React.FunctionComponent<{
         </div>
       </Body>
       <FooterContainer>
-        <Footer />
+        {preferences.preferencePage?.showCourierFooter ? (
+          <FreeFooter />
+        ) : (
+          <BusinessFooter
+            links={preferences.preferencePage?.brand.links}
+            theme={preferences.preferencePage?.brand.settings.colors.primary!}
+          />
+        )}
       </FooterContainer>
     </PageContainer>
   );
