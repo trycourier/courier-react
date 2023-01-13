@@ -396,8 +396,14 @@ export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
     }
   }, []);
 
-  if (!preferences) {
+  if (preferences.isLoading) {
     return null;
+  }
+
+  if (!preferences.preferencePage) {
+    return (
+      <div>This page is not avaliable. Please contact your administrator.</div>
+    );
   }
 
   return (
