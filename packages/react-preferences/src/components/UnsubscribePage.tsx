@@ -142,8 +142,10 @@ export const UnsubscribePage: React.FunctionComponent<{
     fetchPreferencePage();
   }, []);
 
-  if (isLoading || !preferencePage) {
-    return null;
+  if (!preferencePage) {
+    return (
+      <div>This page is not avaliable. Please contact your administrator.</div>
+    );
   }
 
   const topic = preferencePage.sections.nodes
@@ -162,6 +164,10 @@ export const UnsubscribePage: React.FunctionComponent<{
     });
     setToggle(!toggle);
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <PageContainer>
