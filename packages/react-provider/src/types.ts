@@ -30,6 +30,7 @@ export type WSOptions = {
   url?: string;
   onError?: ErrorEventHandler;
   onClose?: () => void;
+  onReconnet?: () => void;
   connectionTimeout?: number;
 };
 
