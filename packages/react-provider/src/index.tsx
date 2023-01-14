@@ -80,6 +80,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         _wsOptions.connectionTimeout,
         _wsOptions.onClose,
         _wsOptions.onError,
+        _wsOptions.onReconnect,
         _wsOptions.url,
       ]
     );

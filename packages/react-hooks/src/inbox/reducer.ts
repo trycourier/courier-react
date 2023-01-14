@@ -324,7 +324,10 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_MARK_MESSAGE_READ: {
-      const unreadMessageCount = Math.max((state.unreadMessageCount ?? 0) - 1);
+      const unreadMessageCount = Math.max(
+        0,
+        (state.unreadMessageCount ?? 0) - 1
+      );
 
       const currentTab = state.currentTab;
       if (currentTab?.filters?.isRead === false) {
