@@ -38,7 +38,7 @@ export const Hooks = () => {
       setAuth(
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6Ijc2ODI1MWNmLTNlYjgtNDI2YS05MmViLWZhYTBlNzY3ODc2OCIsImlhdCI6MTY3MzY1NjQwNywianRpIjoiN2IxNTZhMTEtOGMwYS00MTA0LWI3OWEtYmVmMTNhM2MzMzNlIn0.cf46AojLX2fVDZ08B9763HiQI-Rzxr-Douwd4PC52BY"
       );
-    }, 180000); // 15 minutes
+    }, 180000);
 
     return () => {
       clearInterval(intervalId);
