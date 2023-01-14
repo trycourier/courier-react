@@ -33,10 +33,10 @@ export class CourierTransport extends Transport {
 
     this.ws.connect();
 
-    if (options.wsOptions?.onReconnet) {
+    if (options.wsOptions?.onReconnect) {
       this.ws.onReconnection({
         id: "propReconnect",
-        callback: options.wsOptions?.onReconnet,
+        callback: options.wsOptions?.onReconnect,
       });
     }
   }
