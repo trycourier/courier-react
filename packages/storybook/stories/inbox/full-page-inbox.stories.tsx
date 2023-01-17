@@ -27,7 +27,7 @@ export const Hooks = () => {
 
   const [authorization, setAuthorization] = useState("");
   const [auth, setAuth] = useState(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6Ijc2ODI1MWNmLTNlYjgtNDI2YS05MmViLWZhYTBlNzY3ODc2OCIsImlhdCI6MTY3MjE3MzQwOCwianRpIjoiZGQ4ODA1NTYtODRhYS00NjRhLWI3Y2UtNzRlYzYyMDU5NmQ5In0.9_Zmb9Id7DCvQ9iODHfslGIvxF-EEhQZYKn70lltrak"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6Ijc2ODI1MWNmLTNlYjgtNDI2YS05MmViLWZhYTBlNzY3ODc2OCIsImlhdCI6MTY3MzY1NzYwNSwianRpIjoiZGM5MzUzNTEtNDE4ZS00MGIyLTgwODUtODU0YzA5MmM4OGI2In0.FPDvb9VBWOW1V0luJ8b4TgmuffDCPqP--DUbXvvPpZo"
   );
   const handeInputOnChange = (event) => {
     setAuthorization(event.target.value);
@@ -36,9 +36,9 @@ export const Hooks = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setAuth(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6Ijc2ODI1MWNmLTNlYjgtNDI2YS05MmViLWZhYTBlNzY3ODc2OCIsImlhdCI6MTY3MjI1NzY1OSwianRpIjoiYmJlMDMyMmMtZWY4Mi00M2FkLWI3NGMtOGZlYWNiNTczYTY0In0.Xs_yd8IhdNORK8LyleS10FDLQbb4sXkCtGHPq7tUGa4"
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvcHJvZHVjdGlvbiIsInRlbmFudF9pZCI6Ijc2ODI1MWNmLTNlYjgtNDI2YS05MmViLWZhYTBlNzY3ODc2OCIsImlhdCI6MTY3MzY1NjQwNywianRpIjoiN2IxNTZhMTEtOGMwYS00MTA0LWI3OWEtYmVmMTNhM2MzMzNlIn0.cf46AojLX2fVDZ08B9763HiQI-Rzxr-Douwd4PC52BY"
       );
-    }, 300000 * 3); // 15 minutes
+    }, 180000);
 
     return () => {
       clearInterval(intervalId);
@@ -60,6 +60,9 @@ export const Hooks = () => {
     () => ({
       apiUrl: "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
       wsOptions: {
+        onReconnect: () => {
+          console.log("reconnect");
+        },
         url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
       },
       authorization: auth,

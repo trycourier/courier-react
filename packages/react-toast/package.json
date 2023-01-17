@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-toast",
-  "version": "1.59.2",
+  "version": "1.60.0",
   "description": "Beautiful, easy React toast notifications",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",

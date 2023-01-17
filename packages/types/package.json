@@ -1,7 +1,7 @@
 {
   "name": "@trycourier/types",
   "private": true,
-  "version": "1.59.2",
+  "version": "1.60.0",
   "main": "index.d.ts",
   "types": "index.d.ts",
   "scripts": {}
