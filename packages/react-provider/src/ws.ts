@@ -19,6 +19,7 @@ export class WS {
   private connectionTimeout?: number;
   private onError?: ErrorEventHandler;
   private onClose?: () => void;
+  private debug?: boolean;
   private onReconnectionHandlers: Array<{
     id: string;
     callback: () => void;
@@ -59,6 +60,7 @@ export class WS {
     this.connectionTimeout = options?.connectionTimeout;
     this.onError = options?.onError;
     this.onClose = options?.onClose;
+    this.debug = options?.debug;
   }
 
   close(): void {
@@ -80,7 +82,7 @@ export class WS {
   connect(): void {
     this.connection = new ReconnectingWebSocket(this.getUrl.bind(this), [], {
       connectionTimeout: this.connectionTimeout,
-      debug: true,
+      debug: this.debug,
     });
 
     this.connection.onopen = this._onOpen.bind(this);

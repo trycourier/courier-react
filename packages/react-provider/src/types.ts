@@ -27,11 +27,12 @@ export interface IMessage {
 }
 
 export type WSOptions = {
-  url?: string;
-  onError?: ErrorEventHandler;
-  onClose?: () => void;
-  onReconnect?: () => void;
   connectionTimeout?: number;
+  debug?: boolean;
+  onClose?: () => void;
+  onError?: ErrorEventHandler;
+  onReconnect?: () => void;
+  url?: string;
 };
 
 export interface Brand {
