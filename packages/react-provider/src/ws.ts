@@ -80,6 +80,7 @@ export class WS {
   connect(): void {
     this.connection = new ReconnectingWebSocket(this.getUrl.bind(this), [], {
       connectionTimeout: this.connectionTimeout,
+      debug: true,
     });
 
     this.connection.onopen = this._onOpen.bind(this);
@@ -94,8 +95,6 @@ export class WS {
     } else {
       console.error("Error Connecting to Courier Push");
     }
-
-    this.connection?.close();
   }
 
   private _onClose(): void {
