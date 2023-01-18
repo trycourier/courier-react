@@ -118,6 +118,10 @@ const FooterContainer = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
+  > div {
+    height: 80px;
+    padding: 10px;
+  }
 `;
 
 const getText = (required: boolean) => {
@@ -161,9 +165,7 @@ export const UnsubscribePage: React.FunctionComponent<{
   }
 
   if ((!preferences.preferencePage && !preferences.isLoading) || !topic) {
-    return (
-      <div>This page is not avaliable. Please contact your administrator.</div>
-    );
+    return <div>You have been unsubscribed.</div>;
   }
 
   return (
