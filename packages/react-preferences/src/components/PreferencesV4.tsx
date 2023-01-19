@@ -158,6 +158,11 @@ const ChannelPreferenceStyles = styled.div`
   }
 `;
 
+const SubscriptionDivider = styled.hr`
+  width: 100%;
+  border-bottom: 1px #f5f5f5 solid;
+`;
+
 const Checkmark = () => {
   return (
     <Check viewBox="0 0 9 8" height="10px" width="10px">
@@ -369,7 +374,7 @@ export const PreferenceSections: React.FunctionComponent<{
   return (
     <>
       <SectionHeader>{section.name}</SectionHeader>
-      {memoizedTopics.map(({ topic, recipientPreference }) => (
+      {memoizedTopics.map(({ topic, recipientPreference }, index) => (
         <>
           <PreferenceTopic
             topic={topic}
@@ -379,6 +384,7 @@ export const PreferenceSections: React.FunctionComponent<{
             status={recipientPreference?.status}
             routingPreferences={recipientPreference?.routingPreferences ?? []}
           />
+          {index < memoizedTopics.length - 1 && <SubscriptionDivider />}
         </>
       ))}
     </>
