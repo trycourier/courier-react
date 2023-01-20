@@ -385,11 +385,6 @@ export const PreferenceSections: React.FunctionComponent<{
   );
 };
 
-// const Divider = styled.div`
-//   border-bottom: 1px solid #e5e5e5;
-//   margin: 10px 0;
-// `;
-
 const PreferenceList = styled.ul`
   padding: 0;
   margin: 0;
@@ -432,7 +427,6 @@ export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
         {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
           <PreferenceListItem key={i}>
             <PreferenceSections section={section} />
-            {/* <Divider /> */}
           </PreferenceListItem>
         ))}
       </PreferenceList>
