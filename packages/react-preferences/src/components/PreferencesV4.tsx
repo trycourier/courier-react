@@ -385,6 +385,11 @@ export const PreferenceSections: React.FunctionComponent<{
   );
 };
 
+const Divider = styled.div`
+  border-bottom: 1px solid #e5e5e5;
+  margin: 10px 0;
+`;
+
 // Doesn't include header or footer
 export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
   const preferences = usePreferences();
@@ -409,7 +414,10 @@ export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
   return (
     <PreferenceSectionWrapper>
       {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
-        <PreferenceSections key={i} section={section} />
+        <>
+          <PreferenceSections section={section} />
+          <Divider />
+        </>
       ))}
     </PreferenceSectionWrapper>
   );

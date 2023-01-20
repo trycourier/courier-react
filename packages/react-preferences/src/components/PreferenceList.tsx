@@ -14,7 +14,7 @@ export const StyledList = styled.div`
 `;
 
 const PreferenceV4Wrapper = styled.div`
-  padding: 10px;
+  padding: ${(props) => (props.theme.name === "2.0" ? "10px" : "0 38px")};
   background: white;
 `;
 
