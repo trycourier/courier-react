@@ -13,6 +13,11 @@ export const StyledList = styled.div`
   background: rgba(255, 255, 255, 0.2);
 `;
 
+const PreferenceV4Wrapper = styled.div`
+  padding: ${(props) => (props.theme.name === "2.0" ? "10px" : "0 38px")};
+  background: white;
+`;
+
 export const PreferenceList: React.FunctionComponent<{
   // TODO: define Preferences theming
   theme?: ThemeProps<any>;
@@ -35,7 +40,11 @@ export const PreferenceList: React.FunctionComponent<{
       preferences.preferencePage?.sections?.nodes &&
       preferences.preferencePage?.sections?.nodes.length > 0
     ) {
-      return <PreferencesV4 />;
+      return (
+        <PreferenceV4Wrapper>
+          <PreferencesV4 />
+        </PreferenceV4Wrapper>
+      );
     }
 
     // TODO: Handle Backfilled preferences. (https://linear.app/trycourier/issue/C-6836/cleanup-react-preference-section-template-renderer-after-backfill)

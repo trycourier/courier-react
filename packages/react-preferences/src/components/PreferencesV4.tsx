@@ -385,6 +385,21 @@ export const PreferenceSections: React.FunctionComponent<{
   );
 };
 
+const PreferenceList = styled.ul`
+  padding: 0;
+  margin: 0;
+`;
+const PreferenceListItem = styled.li`
+  list-style: none;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 10px 0;
+  margin: 0;
+
+  :last-child {
+    border-bottom: none;
+  }
+`;
+
 // Doesn't include header or footer
 export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
   const preferences = usePreferences();
@@ -408,9 +423,13 @@ export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
 
   return (
     <PreferenceSectionWrapper>
-      {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
-        <PreferenceSections key={i} section={section} />
-      ))}
+      <PreferenceList>
+        {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
+          <PreferenceListItem key={i}>
+            <PreferenceSections section={section} />
+          </PreferenceListItem>
+        ))}
+      </PreferenceList>
     </PreferenceSectionWrapper>
   );
 };
