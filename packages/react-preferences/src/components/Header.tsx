@@ -11,6 +11,7 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
   }, []);
 
   const HeaderWrapper = styled.div`
+    margin-top: 60px;
     padding-top: 16px;
     width: 100%;
   `;
@@ -60,7 +61,7 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
 
   const SubHeader = styled.p`
     margin: 0;
-    padding: 0 0 16px 0;
+    padding: 16px 0;
     color: #73819b;
     font-weight: 300;
     font-size: 12px;
