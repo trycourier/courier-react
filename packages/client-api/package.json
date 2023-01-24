@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/client-api",
-  "version": "1.60.2",
+  "version": "1.60.3",
   "description": "",
   "main": "dist/index.js",
   "private": true,
