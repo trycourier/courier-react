@@ -14,7 +14,6 @@
   },
   "peerDependencies": {
     "@trycourier/react-provider": "^1.48.1",
-    "@trycourier/react-hooks": "1.60.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
@@ -25,6 +24,7 @@
   "license": "ISC",
   "dependencies": {
     "react-toggle": "^4.1.2",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "@trycourier/react-hooks": "1.60.2"
   }
 }
