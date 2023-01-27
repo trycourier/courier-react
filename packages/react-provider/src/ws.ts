@@ -6,6 +6,14 @@ import {
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
 
+function extractStatusCode(str) {
+  let matches = str.match(/\d{3}/);
+  if (matches) {
+    return parseInt(matches[0]);
+  }
+  return null;
+}
+
 export class WS {
   connection?: ReconnectingWebSocket;
   private subscriptions: Array<{
@@ -95,7 +103,11 @@ export class WS {
       console.error("Error Connecting to Courier Push");
     }
 
-    this.connection?.close();
+    const statusCode = extractStatusCode(event.message);
+    // we could also check for 403, but that would require a new connection
+    if (statusCode && !isNaN(statusCode) && statusCode !== 429) {
+      this.connection?.close();
+    }
   }
 
   private _onClose(): void {
