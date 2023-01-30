@@ -124,7 +124,7 @@ const FooterContainer = styled.div`
   }
 `;
 
-const getText = (required: boolean, list: boolean) => {
+const getText = (required: boolean, list?: boolean) => {
   if (list) {
     if (required) {
       return "You may still receive this notification as it has been marked required for your account. If you wish to unsubscribe, please contact your account administrator.";
@@ -140,8 +140,8 @@ const getText = (required: boolean, list: boolean) => {
 export const UnsubscribePage: React.FunctionComponent<{
   topicId: string;
   preferencePageUrl: string;
-  list: boolean;
-}> = ({ topicId, preferencePageUrl, list }) => {
+  list?: boolean;
+}> = ({ topicId, preferencePageUrl, list = false }) => {
   const [toggle, setToggle] = useState(list ? true : false);
 
   const preferences = usePreferences();
