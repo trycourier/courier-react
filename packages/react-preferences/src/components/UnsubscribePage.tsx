@@ -52,6 +52,10 @@ const Body = styled.div`
   display: flex;
   justify-content: center;
 
+  h4 {
+    padding-top: 12px;
+  }
+
   > div {
     width: 100%;
     max-width: 544px;
@@ -124,7 +128,13 @@ const FooterContainer = styled.div`
   }
 `;
 
-const getText = (required: boolean) => {
+const getText = (required: boolean, list?: boolean) => {
+  if (list) {
+    if (required) {
+      return "You may still receive this notification as it has been marked required for your account. If you wish to unsubscribe, please contact your account administrator.";
+    }
+    return "You may still receive this notification. If you do not wish to receive this notification, you may unsubscribe below";
+  }
   if (required) {
     return `Your account is required to receive this communication. If you'd like to opt out of this notification, please contact your account administrator.`;
   }
@@ -134,8 +144,9 @@ const getText = (required: boolean) => {
 export const UnsubscribePage: React.FunctionComponent<{
   topicId: string;
   preferencePageUrl: string;
-}> = ({ topicId, preferencePageUrl }) => {
-  const [toggle, setToggle] = useState(false);
+  list?: boolean;
+}> = ({ topicId, preferencePageUrl, list = false }) => {
+  const [toggle, setToggle] = useState(list ? true : false);
 
   const preferences = usePreferences();
 
@@ -226,7 +237,8 @@ export const UnsubscribePage: React.FunctionComponent<{
       </Header>
       <Body>
         <div>
-          <p>{getText(topic?.defaultStatus === "REQUIRED")}</p>
+          {list && <h4>You've been unsubscribed from this list.</h4>}
+          <p>{getText(topic?.defaultStatus === "REQUIRED", list)}</p>
           <TopicWrapper>
             <div>
               <h1>{topic?.templateName}</h1>
