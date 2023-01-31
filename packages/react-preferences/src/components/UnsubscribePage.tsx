@@ -52,6 +52,10 @@ const Body = styled.div`
   display: flex;
   justify-content: center;
 
+  h4 {
+    padding-top: 12px;
+  }
+
   > div {
     width: 100%;
     max-width: 544px;
