@@ -27,7 +27,7 @@ const server = setupServer(
       return res(ctx.json({}));
     }
   ),
-  graphql.query("InitialState", (_, res, ctx) => {
+  graphql.query("MessageCount", (_, res, ctx) => {
     return res(
       ctx.data({
         messageCount: 0,

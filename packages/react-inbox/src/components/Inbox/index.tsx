@@ -154,6 +154,10 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       isOpen: props.isOpen,
       tabs: propTabs,
     });
+
+    if (!props.brand || Object.entries(props.brand).length === 0) {
+      courierContext.getBrand(courierContext.brandId);
+    }
   }, [props.brand, props.isOpen, propTabs]);
   useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
 
