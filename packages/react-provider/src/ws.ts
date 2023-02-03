@@ -224,7 +224,13 @@ export class WS {
 
   onReconnection(handler: { id: string; callback: () => void }): void {
     if (this.onReconnectionHandlers.find((h) => h.id === handler.id)) {
-      return;
+      this.onReconnectionHandlers = this.onReconnectionHandlers?.map((h) => {
+        if (h.id === handler.id) {
+          return handler;
+        }
+
+        return h;
+      });
     }
 
     this.onReconnectionHandlers.push(handler);
