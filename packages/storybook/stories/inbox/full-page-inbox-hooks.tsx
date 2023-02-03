@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useElementalInbox } from "@trycourier/react-hooks";
-
+import { useCourier } from "@trycourier/react-provider";
 export const FullPageInboxHooks: React.FunctionComponent = () => {
   const {
     fetchMessages,
@@ -12,7 +12,34 @@ export const FullPageInboxHooks: React.FunctionComponent = () => {
     markMessageUnread,
     messages = [],
     unreadMessageCount,
+    renewSession,
   } = useElementalInbox();
+
+  const courier = useCourier();
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("close");
+      courier.transport.closeConnection();
+    }, 5000);
+
+    setTimeout(() => {
+      console.log("renew");
+      renewSession(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6NzBmNmE0ZjQtMjkwNy00NTE4LWI4ZjMtYjljZmFiMjI0NzY0IGluYm94OnJlYWQ6bWVzc2FnZXMgaW5ib3g6d3JpdGU6ZXZlbnRzIiwidGVuYW50X3Njb3BlIjoicHVibGlzaGVkL3Byb2R1Y3Rpb24iLCJ0ZW5hbnRfaWQiOiI3NjgyNTFjZi0zZWI4LTQyNmEtOTJlYi1mYWEwZTc2Nzg3NjgiLCJpYXQiOjE2NzU0NTM1MDQsImp0aSI6IjZiYjYzMTkyLTE1NWEtNGQwYS04ODhjLWE5N2E5ZjNlMDM1NCJ9.Crj_YzZoadasiAKLxt5I-LXEoXgLPQwjP2z6jolTb1w"
+      );
+    }, 10000);
+  });
+
+  useEffect(() => {
+    console.log("newgetUnreadMessageCount");
+    courier.transport.onReconnection({
+      id: "refetch",
+      callback: () => {
+        getUnreadMessageCount();
+      },
+    });
+  }, [getUnreadMessageCount]);
 
   function getState() {
     getUnreadMessageCount();
