@@ -10,7 +10,6 @@ import { IInbox, ITab } from "./types";
 import {
   createCourierClient,
   Events,
-  InitialState,
   Messages,
 } from "@trycourier/client-graphql";
 
@@ -45,7 +44,6 @@ interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
-  fetchInitialState: (inbox: IInbox) => void;
   markAllAsRead: () => void;
   markMessageArchived: (
     messageId: string,
@@ -66,7 +64,6 @@ const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
     authorization,
-    brandId,
     clientSourceId,
     clientKey,
     dispatch,
@@ -89,45 +86,32 @@ const useInboxActions = (): IInboxActions => {
 
   const events = Events({ client: courierClient });
   const messages = Messages({ client: courierClient });
-  const initialState = InitialState({ client: courierClient });
 
   useEffect(() => {
     const inboxMiddleware = createMiddleware({
       events,
       messages,
-      initialState,
     });
 
     registerReducer("inbox", reducer);
     registerMiddleware("inbox", inboxMiddleware as Middleware);
   }, []);
 
+  const handleGetUnreadMessageCount: IInboxActions["getUnreadMessageCount"] =
+    () => {
+      dispatch({
+        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
+        payload: () =>
+          messages.getMessageCount({
+            from: inbox?.from,
+            isRead: false,
+          }),
+      });
+    };
+
   const handleInit: IInboxActions["init"] = async (payload) => {
     dispatch(initInbox(payload));
-    handleFetchInitialState(payload);
-  };
-
-  const handleFetchInitialState: IInboxActions["fetchInitialState"] = async (
-    payload
-  ) => {
-    const response = await initialState.getInitialState({
-      brandId,
-      skipFetchBrand: payload.brand
-        ? Object.entries(payload.brand).length > 0
-        : false,
-    });
-
-    if (response?.brand) {
-      dispatch({
-        type: "root/GET_BRAND/DONE",
-        payload: response.brand,
-      });
-    }
-
-    dispatch({
-      type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE",
-      payload: response?.unreadMessageCount,
-    });
+    handleGetUnreadMessageCount();
 
     if (payload.isOpen) {
       const meta = {
@@ -157,7 +141,6 @@ const useInboxActions = (): IInboxActions => {
 
   return {
     init: handleInit,
-    fetchInitialState: handleFetchInitialState,
     resetLastFetched: () => {
       dispatch(resetLastFetched());
       dispatch(fetchUnreadMessageCount());
@@ -212,16 +195,7 @@ const useInboxActions = (): IInboxActions => {
         payload: () => messages.getMessageLists(listParams),
       });
     },
-    getUnreadMessageCount: () => {
-      dispatch({
-        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
-        payload: () =>
-          messages.getMessageCount({
-            from: inbox?.from,
-            isRead: false,
-          }),
-      });
-    },
+    getUnreadMessageCount: handleGetUnreadMessageCount,
     markMessageRead: async (messageId: string, trackingId?: string) => {
       dispatch(markMessageRead(messageId));
       if (trackingId) {
