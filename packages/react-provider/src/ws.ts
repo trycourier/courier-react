@@ -231,6 +231,7 @@ export class WS {
 
         return h;
       });
+      return;
     }
 
     this.onReconnectionHandlers.push(handler);
