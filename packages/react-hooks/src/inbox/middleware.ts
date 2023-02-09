@@ -20,7 +20,7 @@ export default (api) => (store) => (next) => async (action) => {
     case INBOX_FETCH_UNREAD_MESSAGE_COUNT: {
       store.dispatch(fetchUnreadMessageCountPending());
 
-      const messageCount = await api.messages.getMessageCount({
+      const messageCount = await api.inboxClient.getMessageCount({
         from: state?.from,
         isRead: false,
       });

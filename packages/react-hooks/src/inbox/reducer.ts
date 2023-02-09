@@ -113,6 +113,7 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
+  console.log("action", action);
   switch (action?.type) {
     case INBOX_INIT: {
       return {
@@ -156,7 +157,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE: {
       return {
         ...state,
-        unreadMessageCount: action.payload,
+        unreadMessageCount: action.payload.count,
       };
     }
 

@@ -8,9 +8,9 @@ import {
 import { IInbox, ITab } from "./types";
 
 import {
-  createCourierClient,
   Events,
-  Messages,
+  IGetInboxMessagesParams,
+  Inbox,
 } from "@trycourier/client-graphql";
 
 import { IGetMessagesParams } from "@trycourier/client-graphql";
@@ -64,10 +64,11 @@ const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
     authorization,
-    clientSourceId,
     clientKey,
+    clientSourceId,
     dispatch,
     inbox,
+    inboxApiUrl,
     userId,
     userSignature,
   } =
@@ -75,22 +76,29 @@ const useInboxActions = (): IInboxActions => {
       inbox: IInbox;
     }>();
 
-  const courierClient = createCourierClient({
+  const clientParams = {
     apiUrl,
     authorization,
     clientSourceId,
     clientKey,
     userId,
     userSignature,
+  };
+
+  const events = Events({
+    ...clientParams,
+    apiUrl,
   });
 
-  const events = Events({ client: courierClient });
-  const messages = Messages({ client: courierClient });
+  const inboxClient = Inbox({
+    ...clientParams,
+    apiUrl: inboxApiUrl,
+  });
 
   useEffect(() => {
     const inboxMiddleware = createMiddleware({
       events,
-      messages,
+      inboxClient,
     });
 
     registerReducer("inbox", reducer);
@@ -102,9 +110,9 @@ const useInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
-          messages.getMessageCount({
+          inboxClient.getInboxCount({
             from: inbox?.from,
-            isRead: false,
+            status: "unread",
           }),
       });
     };
@@ -114,19 +122,30 @@ const useInboxActions = (): IInboxActions => {
     handleGetUnreadMessageCount();
 
     if (payload.isOpen) {
+      const searchParams: IGetInboxMessagesParams = {
+        ...inbox?.currentTab?.filters,
+        from: inbox?.from,
+      };
+
       const meta = {
         tabId: inbox?.currentTab?.id,
-        searchParams: {
-          ...inbox?.currentTab?.filters,
-          from: inbox?.from,
-        },
+        searchParams,
       };
 
       if (payload.tabs) {
         dispatch({
           type: "inbox/FETCH_MESSAGE_LISTS",
           meta,
-          payload: () => messages.getMessageLists(payload.tabs),
+          payload: () =>
+            inboxClient.getMessageLists(
+              payload.tabs?.map((t) => ({
+                id: t.id,
+                filters: {
+                  ...t.filters,
+                  status: t.filters.isRead ? "read" : "unread",
+                },
+              }))
+            ),
         });
         return;
       }
@@ -134,7 +153,7 @@ const useInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         meta,
-        payload: () => messages.getMessages(meta.searchParams),
+        payload: () => inboxClient.getMessages(meta.searchParams),
       });
     }
   };
@@ -162,17 +181,22 @@ const useInboxActions = (): IInboxActions => {
       dispatch(setCurrentTab(newTab));
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {
+      const searchParams: IGetInboxMessagesParams = {
+        ...payload?.params,
+        from: inbox?.from,
+      };
+
+      console.log("searchParams", searchParams);
+
       const meta = {
         tabId: inbox?.currentTab?.id,
-        searchParams: {
-          ...payload?.params,
-          from: inbox?.from,
-        },
+        searchParams,
       };
 
       dispatch({
         meta,
-        payload: () => messages.getMessages(meta.searchParams, payload?.after),
+        payload: () =>
+          inboxClient.getMessages(meta.searchParams, payload?.after),
         type: "inbox/FETCH_MESSAGES",
       });
     },
@@ -192,7 +216,7 @@ const useInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_MESSAGE_LISTS",
         meta: listParams,
-        payload: () => messages.getMessageLists(listParams),
+        payload: () => inboxClient.getMessageLists(listParams),
       });
     },
     getUnreadMessageCount: handleGetUnreadMessageCount,

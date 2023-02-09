@@ -4,29 +4,37 @@ export interface IGetInboxMessagesParams {
   status?: "read" | "unread";
   limit?: number;
   tags?: string[];
+  from?: string | number;
 }
+
+export const messagesProps = `
+  totalCount
+  pageInfo {
+    startCursor
+    hasNextPage
+  }
+  nodes {
+    title
+    preview
+    messageId
+    read
+    created
+    actions {
+      background_color
+      content
+      href
+      style
+    }
+    tags
+    opened
+    data
+  }
+`;
 
 export const GET_INBOX_MESSAGES = `
   query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String){
     messages(params: $params, limit: $limit, after: $after) {
-      totalCount
-      pageInfo {
-        startCursor
-        hasNextPage
-      }
-      nodes {
-        title
-        preview
-        messageId
-        read
-        created
-        actions {
-          background_color
-          content
-          href
-          style
-        }
-      }
+      ${messagesProps}
     }
   }
 `;

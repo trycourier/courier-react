@@ -57,13 +57,14 @@ export const CourierContext =
 
 export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
   ({
-    id,
     apiUrl,
     authorization,
     brand,
     brandId,
     children,
     clientKey,
+    id,
+    inboxApiUrl,
     localStorage = typeof window !== "undefined"
       ? window?.localStorage
       : undefined,
@@ -116,8 +117,9 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       authorization,
       brand,
       brandId,
-      clientSourceId,
       clientKey,
+      clientSourceId,
+      inboxApiUrl,
       localStorage,
       middleware,
       transport,
@@ -196,6 +198,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
         authorization,
         brandId,
         clientKey,
+        inboxApiUrl,
         localStorage,
         transport,
         userId,
@@ -208,6 +211,7 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       authorization,
       brandId,
       clientKey,
+      inboxApiUrl,
       localStorage,
       transport,
       userId,
