@@ -4,6 +4,16 @@
   "description": "",
   "main": "index.js",
   "private": true,
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true"
+    }
+  },
   "scripts": {
     "analyze:components": "yarn run build && ANALYZE=true lerna run build:components --scope @trycourier/components --stream",
     "build:components": "lerna run build:components --stream",
@@ -11,6 +21,7 @@
     "build": "lerna run build --stream && yarn types",
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
     "eslint": "eslint './packages/**/*.{ts,tsx}' --fix",
+    "commit": "cz",
     "export:storybook": "lerna run build && lerna run export:storybook",
     "lerna:publish": "lerna publish from-package --no-verify-access --yes",
     "lerna:publish:internal": "lerna publish --yes --canary --dist-tag internal --no-verify-access --force-publish=* --preid",
@@ -75,7 +86,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.2",
     "fetch-mock": "^9.11.0",
-    "husky": "^6.0.0",
+    "husky": "^8.0.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-styled-components": "^7.0.3",
@@ -95,5 +106,8 @@
     "packages": [
       "packages/*"
     ]
+  },
+  "dependencies": {
+    "commitizen": "^4.3.0"
   }
 }
