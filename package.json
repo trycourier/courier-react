@@ -15,6 +15,7 @@
     }
   },
   "scripts": {
+    "husky": "husky install",
     "analyze:components": "yarn run build && ANALYZE=true lerna run build:components --scope @trycourier/components --stream",
     "build:components": "lerna run build:components --stream",
     "build:watch": "lerna run build:watch --stream --parallel",
