@@ -1,5 +1,5 @@
 global.fetch = jest.fn();
-
+import pkg from "../../package.json";
 const fetchMock = global.fetch as jest.Mock;
 import Messages from "../messages";
 
@@ -36,6 +36,8 @@ describe("getMessages", () => {
         "headers": Object {
           "content-type": "application/json",
           "x-courier-client-key": "CLIENT_KEY",
+          "x-courier-client-platform": "web",
+          "x-courier-client-version": "${pkg.version}",
           "x-courier-user-id": "USER_ID",
         },
         "method": "POST",
@@ -85,6 +87,8 @@ describe("getMessages", () => {
         "headers": Object {
           "content-type": "application/json",
           "x-courier-client-key": "CLIENT_KEY",
+          "x-courier-client-platform": "web",
+          "x-courier-client-version": "${pkg.version}",
           "x-courier-user-id": "USER_ID",
         },
         "method": "POST",
@@ -164,6 +168,8 @@ describe("getMessageLists", () => {
         "headers": Object {
           "content-type": "application/json",
           "x-courier-client-key": "CLIENT_KEY",
+          "x-courier-client-platform": "web",
+          "x-courier-client-version": "${pkg.version}",
           "x-courier-user-id": "USER_ID",
         },
         "method": "POST",
@@ -201,6 +207,8 @@ describe("getMessageCount", () => {
         "headers": Object {
           "content-type": "application/json",
           "x-courier-client-key": "CLIENT_KEY",
+          "x-courier-client-platform": "web",
+          "x-courier-client-version": "${pkg.version}",
           "x-courier-user-id": "USER_ID",
         },
         "method": "POST",
@@ -237,6 +245,8 @@ describe("getMessageCount", () => {
         "headers": Object {
           "content-type": "application/json",
           "x-courier-client-key": "CLIENT_KEY",
+          "x-courier-client-platform": "web",
+          "x-courier-client-version": "${pkg.version}",
           "x-courier-user-id": "USER_ID",
         },
         "method": "POST",

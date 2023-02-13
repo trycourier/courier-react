@@ -1,4 +1,5 @@
 require("isomorphic-fetch");
+import pkg from "../package.json";
 
 import { Client, createClient } from "urql";
 import {
@@ -57,6 +58,13 @@ export const createCourierClient = (
       return;
     }
   }
+
+  // add client version and platform
+  headers = {
+    ...headers,
+    "x-courier-client-version": pkg.version,
+    "x-courier-client-platform": "web",
+  };
 
   return createClient({
     url:
