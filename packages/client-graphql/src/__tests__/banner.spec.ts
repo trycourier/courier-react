@@ -45,7 +45,6 @@ describe("banner", () => {
     expect(thisCall.headers).toEqual({
       "content-type": "application/json",
       "x-courier-client-key": "CLIENT_KEY",
-      "x-courier-client-platform": "web",
       "x-courier-client-version": pkg.version,
       "x-courier-user-id": "USER_ID",
     });
@@ -94,7 +93,7 @@ describe("banner", () => {
     expect(thisCall.headers).toEqual({
       authorization: "Bearer abc123",
       "content-type": "application/json",
-      "x-courier-client-platform": "web",
+
       "x-courier-client-version": pkg.version,
     });
     expect(thisCall.method).toBe("POST");

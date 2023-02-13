@@ -26,7 +26,6 @@ describe("trackEvent", () => {
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
-            "x-courier-client-platform": "web",
             "x-courier-client-version": "${pkg.version}",
             "x-courier-user-id": "USER_ID",
           },
@@ -49,7 +48,6 @@ describe("trackEvent", () => {
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
-            "x-courier-client-platform": "web",
             "x-courier-client-version": "${pkg.version}",
             "x-courier-user-id": "USER_ID",
           },
@@ -72,7 +70,6 @@ describe("trackEvent", () => {
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
-            "x-courier-client-platform": "web",
             "x-courier-client-version": "${pkg.version}",
             "x-courier-user-id": "USER_ID",
           },

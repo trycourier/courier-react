@@ -17,7 +17,6 @@ export default (
       "x-courier-client-key": clientKey,
       "x-courier-user-id": userId,
       "x-courier-client-version": pkg.version,
-      "x-courier-client-platform": "web",
     };
 
     if (userSignature) {

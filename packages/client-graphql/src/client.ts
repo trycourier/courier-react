@@ -63,7 +63,6 @@ export const createCourierClient = (
   headers = {
     ...headers,
     "x-courier-client-version": pkg.version,
-    "x-courier-client-platform": "web",
   };
 
   return createClient({
