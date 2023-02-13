@@ -1,3 +1,0 @@
-# .husky/prepare-commit-msg (v8)
-# ...
-exec < /dev/tty && npx cz --hook || true
