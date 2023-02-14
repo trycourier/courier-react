@@ -46,7 +46,7 @@ const useInbox = () => {
 
         switch (data.event) {
           case "read": {
-            actions.markMessageRead(data.messageId);
+            actions.markMessageRead(data.messageId, true);
             return;
           }
 
@@ -61,7 +61,7 @@ const useInbox = () => {
           }
 
           case "archive": {
-            actions.markMessageArchived(data.messageId);
+            actions.markMessageArchived(data.messageId, true);
             return;
           }
         }

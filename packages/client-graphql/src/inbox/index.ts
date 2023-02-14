@@ -25,6 +25,7 @@ export default (
   markAllRead: MarkAllRead;
   markArchive: TrackEvent;
   markRead: TrackEvent;
+  markOpened: TrackEvent;
   markUnread: TrackEvent;
 } => {
   const client = createCourierClient(params, {
@@ -39,6 +40,7 @@ export default (
     getMessages: messages.getInboxMessages(client),
     markAllRead: markAllRead(client),
     markArchive: trackEvent(client)("archive"),
+    markOpened: trackEvent(client)("opened"),
     markRead: trackEvent(client)("read"),
     markUnread: trackEvent(client)("unread"),
   };

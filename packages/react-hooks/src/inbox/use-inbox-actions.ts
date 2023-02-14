@@ -45,13 +45,10 @@ interface IInboxActions {
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
-  markMessageArchived: (
-    messageId: string,
-    trackingId?: string
-  ) => Promise<void>;
-  markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
-  markMessageUnread: (messageId: string, trackingId?: string) => Promise<void>;
-  markMessageOpened: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageOpened: (messageId: string, fromWS: boolean) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
   setCurrentTab: (newTab: ITab) => void;
@@ -186,8 +183,6 @@ const useInboxActions = (): IInboxActions => {
         from: inbox?.from,
       };
 
-      console.log("searchParams", searchParams);
-
       const meta = {
         tabId: inbox?.currentTab?.id,
         searchParams,
@@ -220,32 +215,34 @@ const useInboxActions = (): IInboxActions => {
       });
     },
     getUnreadMessageCount: handleGetUnreadMessageCount,
-    markMessageRead: async (messageId: string, trackingId?: string) => {
-      dispatch(markMessageRead(messageId));
-      if (trackingId) {
-        await events.trackEvent(trackingId);
-      }
-    },
     markAllAsRead: async () => {
       dispatch({
         type: "inbox/MARK_ALL_READ",
-        payload: () => events.trackEventBatch("read"),
+        payload: () => inboxClient.markAllRead(),
       });
     },
-    markMessageUnread: async (messageId: string, trackingId?: string) => {
-      dispatch(markMessageUnread(messageId));
-      if (trackingId) {
-        await events.trackEvent(trackingId);
+    markMessageRead: async (messageId: string, fromWS?: boolean) => {
+      dispatch(markMessageRead(messageId));
+      if (!fromWS) {
+        await inboxClient.markRead(messageId);
       }
     },
-    markMessageOpened: async (messageId: string, trackingId: string) => {
-      dispatch(markMessageOpened(messageId));
-      await events.trackEvent(trackingId);
+    markMessageUnread: async (messageId: string, fromWS?: boolean) => {
+      dispatch(markMessageUnread(messageId));
+      if (!fromWS) {
+        await inboxClient.markUnread(messageId);
+      }
     },
-    markMessageArchived: async (messageId: string, trackingId?: string) => {
+    markMessageOpened: async (messageId: string, fromWS?: boolean) => {
+      dispatch(markMessageOpened(messageId));
+      if (!fromWS) {
+        await inboxClient.markOpened(messageId);
+      }
+    },
+    markMessageArchived: async (messageId: string, fromWS?: boolean) => {
       dispatch(markMessageArchived(messageId));
-      if (trackingId) {
-        await events.trackEvent(trackingId);
+      if (!fromWS) {
+        await inboxClient.markArchive(messageId);
       }
     },
     newMessage: (message: ICourierMessage) => {
