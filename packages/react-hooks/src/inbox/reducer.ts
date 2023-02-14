@@ -277,12 +277,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_FETCH_MESSAGES_DONE: {
-      console.log("action", action);
       const mappedMessages = action.payload.messages.map((message) =>
         mapMessage(message, state.lastMarkedAllRead)
       );
-
-      console.log("mappedMessages", mappedMessages);
 
       if (!state.tabs) {
         const newMessages = action.payload.appendMessages
