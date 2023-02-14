@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
@@ -14,10 +14,12 @@ import deepExtend from "deep-extend";
 import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
+import { useOnScreen } from "~/hooks/use-on-screen";
 
 export interface IMessageProps {
   blocks?: Array<ITextBlock | IActionBlock>;
   created: string;
+  opened?: string;
   icon?: string;
   messageId?: string;
   read?: boolean;
@@ -157,6 +159,7 @@ const MessageWrapper: React.FunctionComponent<
   blocks,
   created,
   data,
+  opened,
   defaultIcon,
   formatDate,
   messageId,
@@ -169,7 +172,7 @@ const MessageWrapper: React.FunctionComponent<
 }) => {
   const [messageHoverRef, isMessageHovered] = useHover();
   const [areActionsHovered, setAreActionsHovered] = useState(false);
-  const { brand, markMessageRead } = useInbox();
+  const { brand, markMessageRead, markMessageOpened } = useInbox();
 
   const handleClickMessage = (event?: React.MouseEvent) => {
     event?.preventDefault();
@@ -183,6 +186,14 @@ const MessageWrapper: React.FunctionComponent<
       markMessageRead(messageId);
     }
   };
+
+  useOnScreen(messageHoverRef, () => {
+    if (opened || !messageId) {
+      return;
+    }
+
+    //markMessageOpened(messageId);
+  });
 
   const renderedIcon = getIcon(
     /* priority:
