@@ -2,6 +2,7 @@ global.fetch = jest.fn();
 
 const fetchMock = global.fetch as jest.Mock;
 import Banner from "../banner";
+import pkg from "../../package.json";
 
 describe("banner", () => {
   afterEach(() => {
@@ -44,6 +45,7 @@ describe("banner", () => {
     expect(thisCall.headers).toEqual({
       "content-type": "application/json",
       "x-courier-client-key": "CLIENT_KEY",
+      "x-courier-client-version": pkg.version,
       "x-courier-user-id": "USER_ID",
     });
     expect(thisCall.method).toBe("POST");
@@ -91,6 +93,8 @@ describe("banner", () => {
     expect(thisCall.headers).toEqual({
       authorization: "Bearer abc123",
       "content-type": "application/json",
+
+      "x-courier-client-version": pkg.version,
     });
     expect(thisCall.method).toBe("POST");
   });

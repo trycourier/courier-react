@@ -110,5 +110,8 @@
     "packages": [
       "packages/*"
     ]
+  },
+  "dependencies": {
+    "pkg-dir": "^7.0.0"
   }
 }

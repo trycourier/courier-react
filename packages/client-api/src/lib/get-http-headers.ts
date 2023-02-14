@@ -1,4 +1,5 @@
 import { ICourierClientBasicParams, ICourierClientJWTParams } from "~/types";
+import pkg from "../../package.json";
 
 export default (
   params: ICourierClientBasicParams | ICourierClientJWTParams
@@ -15,6 +16,7 @@ export default (
     headers = {
       "x-courier-client-key": clientKey,
       "x-courier-user-id": userId,
+      "x-courier-client-version": pkg.version,
     };
 
     if (userSignature) {

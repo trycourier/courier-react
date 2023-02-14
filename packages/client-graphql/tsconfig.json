@@ -1,12 +1,17 @@
 {
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
     "declarationDir": "./typings",
     "paths": {
       "~/*": ["./src/*"]
     }
   },
-  "include": ["../types/@types/*/index.d.ts", "./src/**/*.tsx", "./src/**/*.ts"]
+  "include": [
+    "../types/@types/*/index.d.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./package.json"
+  ]
 }
