@@ -18,42 +18,39 @@ interface IMessageOptions {
 }
 
 const useMessageOptions = ({
-  archiveTrackingId,
   labels,
   messageId,
   read,
-  readTrackingId,
   showArchived,
-  unreadTrackingId,
 }: IMessageOptions): Array<IMessageOption> => {
   const { markMessageRead, markMessageUnread, markMessageArchived } =
     useInbox();
 
   const messageOptions: Array<IMessageOption> = [];
 
-  if (!read && readTrackingId && messageId) {
+  if (!read && messageId) {
     messageOptions.push({
       label: labels?.markAsRead ?? MESSAGE_LABELS.MARK_AS_READ,
       onClick: () => {
-        markMessageRead(messageId, readTrackingId);
+        markMessageRead(messageId);
       },
     });
   }
 
-  if (read && unreadTrackingId && messageId) {
+  if (read && messageId) {
     messageOptions.push({
       label: labels?.markAsUnread ?? MESSAGE_LABELS.MARK_AS_UNREAD,
       onClick: () => {
-        markMessageUnread(messageId, unreadTrackingId);
+        markMessageUnread(messageId);
       },
     });
   }
 
-  if (showArchived && archiveTrackingId && messageId) {
+  if (showArchived && messageId) {
     messageOptions.push({
       label: labels?.archiveMessage ?? MESSAGE_LABELS.ARCHIVE_MESSAGE,
       onClick: () => {
-        markMessageArchived(messageId, archiveTrackingId);
+        markMessageArchived(messageId);
       },
     });
   }

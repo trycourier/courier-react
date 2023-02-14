@@ -64,13 +64,23 @@ import {
 } from "./actions/set-current-tab";
 
 export const mapMessage = (
-  message: IGraphMessageResponse,
+  message: any,
   lastMarkedAllRead?: number
 ): IMessage => ({
-  blocks: message.content.blocks,
-  body: message.content.body,
+  blocks: [
+    {
+      type: "text",
+      text: message.preview,
+    },
+    ...message.actions.map((a) => ({
+      type: "action",
+      text: a.content,
+      url: a.href,
+    })),
+  ],
+  body: message.preview,
   created: message.created,
-  data: message.content.data,
+  data: message.data,
   messageId: message.messageId,
   opened: message.opened,
   read: lastMarkedAllRead
@@ -78,8 +88,8 @@ export const mapMessage = (
       ? true
       : message.read
     : message.read,
-  title: message.content.title,
-  trackingIds: message.content.trackingIds,
+  title: message.title,
+  //trackingIds: message.content.trackingIds,
 });
 
 export const initialState: IInbox = {
@@ -113,7 +123,6 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
-  console.log("action", action);
   switch (action?.type) {
     case INBOX_INIT: {
       return {
@@ -268,9 +277,12 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_FETCH_MESSAGES_DONE: {
+      console.log("action", action);
       const mappedMessages = action.payload.messages.map((message) =>
         mapMessage(message, state.lastMarkedAllRead)
       );
+
+      console.log("mappedMessages", mappedMessages);
 
       if (!state.tabs) {
         const newMessages = action.payload.appendMessages

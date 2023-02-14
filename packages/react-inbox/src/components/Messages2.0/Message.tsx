@@ -235,7 +235,7 @@ const MessageWrapper: React.FunctionComponent<
     }
 
     return blocksByType.action[0].url;
-  }, []);
+  }, [data?.clickAction, blocksByType?.action]);
 
   let containerProps: {
     href?: string;

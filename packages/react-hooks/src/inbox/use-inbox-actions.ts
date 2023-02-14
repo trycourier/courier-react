@@ -48,7 +48,7 @@ interface IInboxActions {
   markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
-  markMessageOpened: (messageId: string, fromWS: boolean) => Promise<void>;
+  markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
   setCurrentTab: (newTab: ITab) => void;
