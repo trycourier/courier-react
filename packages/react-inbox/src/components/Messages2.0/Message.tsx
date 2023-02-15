@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import classNames from "classnames";
 import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
@@ -192,7 +192,7 @@ const MessageWrapper: React.FunctionComponent<
       return;
     }
 
-    //markMessageOpened(messageId);
+    markMessageOpened(messageId);
   });
 
   const renderedIcon = getIcon(

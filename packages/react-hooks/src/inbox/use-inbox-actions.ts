@@ -7,11 +7,7 @@ import {
 } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
-import {
-  Events,
-  IGetInboxMessagesParams,
-  Inbox,
-} from "@trycourier/client-graphql";
+import { IGetInboxMessagesParams, Inbox } from "@trycourier/client-graphql";
 
 import { IGetMessagesParams } from "@trycourier/client-graphql";
 import { initInbox } from "./actions/init";
@@ -82,11 +78,6 @@ const useInboxActions = (): IInboxActions => {
     userSignature,
   };
 
-  const events = Events({
-    ...clientParams,
-    apiUrl,
-  });
-
   const inboxClient = Inbox({
     ...clientParams,
     apiUrl: inboxApiUrl,
@@ -94,7 +85,6 @@ const useInboxActions = (): IInboxActions => {
 
   useEffect(() => {
     const inboxMiddleware = createMiddleware({
-      events,
       inboxClient,
     });
 

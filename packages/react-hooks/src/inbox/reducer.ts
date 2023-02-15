@@ -1,4 +1,3 @@
-import { IGraphMessageResponse } from "@trycourier/client-graphql";
 import { IMessage } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
