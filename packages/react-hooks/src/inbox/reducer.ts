@@ -122,6 +122,7 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
+  console.log("action", action);
   switch (action?.type) {
     case INBOX_INIT: {
       return {

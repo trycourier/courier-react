@@ -120,6 +120,7 @@ const useInboxActions = (): IInboxActions => {
       };
 
       if (payload.tabs) {
+        console.log("payload.tabs", payload.tabs);
         dispatch({
           type: "inbox/FETCH_MESSAGE_LISTS",
           meta,
@@ -129,7 +130,13 @@ const useInboxActions = (): IInboxActions => {
                 id: t.id,
                 filters: {
                   ...t.filters,
-                  status: t.filters.isRead ? "read" : "unread",
+                  status:
+                    t.filters.isRead === false
+                      ? "unread"
+                      : t.filters.isRead === true
+                      ? "read"
+                      : undefined,
+                  isRead: undefined,
                 },
               }))
             ),
@@ -186,11 +193,19 @@ const useInboxActions = (): IInboxActions => {
       });
     },
     fetchMessageLists: (tabs?: ITab[]) => {
+      console.log("tabs", tabs);
       const listParams = tabs?.map((tab) => ({
         ...tab,
         filters: {
           from: inbox.from,
+          status:
+            tab.filters.isRead === false
+              ? "unread"
+              : tab.filters.isRead === true
+              ? "read"
+              : undefined,
           ...tab.filters,
+          isRead: undefined,
         },
       }));
 
