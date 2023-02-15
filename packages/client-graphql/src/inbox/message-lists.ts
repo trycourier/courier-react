@@ -28,8 +28,6 @@ export const getMessageLists =
       return Promise.resolve(undefined);
     }
 
-    console.log("lists", lists);
-
     const initialReduction: {
       args: string[];
       queries: string[];
@@ -55,13 +53,10 @@ export const getMessageLists =
       ${queries.join("")}
     }`;
 
-    console.log("QUERY", QUERY);
-    console.log({ ...variables, limit });
     const results = await client
       .query(QUERY, { ...variables, limit })
       .toPromise();
 
-    console.log("results", results);
     const response = Object.keys(results.data)?.reduce((acc, listName) => {
       acc[listName] = {
         messages: results.data[listName].nodes,

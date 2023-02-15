@@ -1,5 +1,5 @@
 import { IMessage } from "@trycourier/react-provider";
-import { IGraphMessageResponse } from "@trycourier/client-graphql";
+import { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 import reducer, { initialState, mapMessage } from "../reducer";
 import { initInbox, INBOX_INIT } from "../actions/init";
@@ -70,52 +70,18 @@ const mockMessage: IMessage = {
   body: "mockBody",
 };
 
-const mockGraphMessage: IGraphMessageResponse = {
-  id: "mockId",
+const mockGraphMessage: IInboxMessagePreview = {
   messageId: "mockMessageId",
   created: new Date().toISOString(),
-  content: {
-    title: "mockTitle",
-    body: "mockBody",
-    blocks: [
-      {
-        type: "text",
-        text: "mockBody",
-      },
-    ],
-    trackingIds: {
-      openTrackingId: "mockOpenTrackingId",
-      archiveTrackingId: "mockArchiveTrackingId",
-      clickTrackingId: "mockClickTrackingId",
-      deliverTrackingId: "mockDeliverTrackingId",
-      readTrackingId: "mockReadTrackingId",
-      unreadTrackingId: "mockUnreadTrackingId",
-    },
-  },
+  title: "mockTitle",
+  preview: "mockBody",
 };
 
-const mockGraphMessage2: IGraphMessageResponse = {
-  id: "mockId2",
+const mockGraphMessage2: IInboxMessagePreview = {
   messageId: "mockMessageId2",
   created: new Date().toISOString(),
-  content: {
-    title: "mockTitle2",
-    body: "mockBody2",
-    blocks: [
-      {
-        type: "text",
-        text: "mockBody2",
-      },
-    ],
-    trackingIds: {
-      openTrackingId: "mockOpenTrackingId2",
-      archiveTrackingId: "mockArchiveTrackingId2",
-      clickTrackingId: "mockClickTrackingId2",
-      deliverTrackingId: "mockDeliverTrackingId2",
-      readTrackingId: "mockReadTrackingId2",
-      unreadTrackingId: "mockUnreadTrackingId2",
-    },
-  },
+  title: "mockTitle2",
+  preview: "mockBody2",
 };
 
 const mockDate = new Date().getTime();

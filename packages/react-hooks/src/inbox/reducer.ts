@@ -61,9 +61,10 @@ import {
   SetCurrentTab,
   INBOX_SET_CURRENT_TAB,
 } from "./actions/set-current-tab";
+import { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export const mapMessage = (
-  message: any,
+  message: IInboxMessagePreview,
   lastMarkedAllRead?: number
 ): IMessage => ({
   blocks: [
@@ -71,7 +72,7 @@ export const mapMessage = (
       type: "text",
       text: message.preview,
     },
-    ...message.actions.map((a) => ({
+    ...(message?.actions ?? []).map((a) => ({
       type: "action",
       text: a.content,
       url: a.href,
@@ -122,7 +123,6 @@ type InboxAction =
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
-  console.log("action", action);
   switch (action?.type) {
     case INBOX_INIT: {
       return {

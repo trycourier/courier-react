@@ -1,4 +1,5 @@
 import { Client } from "urql";
+import { IActionElemental } from "./message";
 
 export interface IGetInboxMessagesParams {
   status?: "read" | "unread";
@@ -14,20 +15,20 @@ export const messagesProps = `
     hasNextPage
   }
   nodes {
-    title
-    preview
-    messageId
-    read
-    created
     actions {
       background_color
       content
       href
       style
     }
-    tags
-    opened
+    created
     data
+    messageId
+    opened
+    preview
+    read
+    tags
+    title
   }
 `;
 
@@ -40,11 +41,14 @@ export const GET_INBOX_MESSAGES = `
 `;
 
 export interface IInboxMessagePreview {
-  created?: string;
+  actions?: IActionElemental[];
+  created: string;
+  data?: Record<string, any>;
   messageId: string;
+  opened?: string;
   preview?: string;
-  /** ISO 8601 date the message was read */
   read?: string;
+  tags?: string[];
   title?: string;
 }
 

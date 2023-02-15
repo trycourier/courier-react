@@ -53,6 +53,33 @@ interface IInboxActions {
   newMessage: (transportMessage: ICourierMessage) => void;
 }
 
+const tabsToFilters = (tabs?: ITab[], from?: number) => {
+  return tabs?.map((tab) => {
+    const filters: {
+      from?: number;
+      status?: "read" | "unread";
+    } = {
+      from,
+      status:
+        tab.filters.isRead === false
+          ? "unread"
+          : tab.filters.isRead === true
+          ? "read"
+          : undefined,
+      ...tab.filters,
+    };
+
+    if ((filters as any).isRead) {
+      delete (filters as any).isRead;
+    }
+
+    return {
+      ...tab,
+      filters,
+    };
+  });
+};
+
 const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
@@ -120,25 +147,12 @@ const useInboxActions = (): IInboxActions => {
       };
 
       if (payload.tabs) {
-        console.log("payload.tabs", payload.tabs);
         dispatch({
           type: "inbox/FETCH_MESSAGE_LISTS",
           meta,
           payload: () =>
             inboxClient.getMessageLists(
-              payload.tabs?.map((t) => ({
-                id: t.id,
-                filters: {
-                  ...t.filters,
-                  status:
-                    t.filters.isRead === false
-                      ? "unread"
-                      : t.filters.isRead === true
-                      ? "read"
-                      : undefined,
-                  isRead: undefined,
-                },
-              }))
+              tabsToFilters(payload.tabs, inbox.from)
             ),
         });
         return;
@@ -193,21 +207,7 @@ const useInboxActions = (): IInboxActions => {
       });
     },
     fetchMessageLists: (tabs?: ITab[]) => {
-      console.log("tabs", tabs);
-      const listParams = tabs?.map((tab) => ({
-        ...tab,
-        filters: {
-          from: inbox.from,
-          status:
-            tab.filters.isRead === false
-              ? "unread"
-              : tab.filters.isRead === true
-              ? "read"
-              : undefined,
-          ...tab.filters,
-          isRead: undefined,
-        },
-      }));
+      const listParams = tabsToFilters(tabs, inbox.from);
 
       if (!listParams) {
         return;

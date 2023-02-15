@@ -1,4 +1,4 @@
-import { IGraphMessageResponse } from "@trycourier/client-graphql";
+import { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export const INBOX_FETCH_MESSAGE_LISTS = "inbox/FETCH_MESSAGE_LISTS";
 
@@ -28,7 +28,7 @@ export const INBOX_FETCH_MESSAGE_LISTS_DONE = "inbox/FETCH_MESSAGE_LISTS/DONE";
 
 type FetchMessageListsDonePayload = {
   [listId: string]: {
-    messages: IGraphMessageResponse[];
+    messages: IInboxMessagePreview[];
     startCursor?: string;
   };
 };

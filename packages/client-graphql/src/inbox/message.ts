@@ -59,7 +59,6 @@ export type GetInboxMessage = (messageId: string) => Promise<
 export const getInboxMessage =
   (client?: Client): GetInboxMessage =>
   async (messageId?: string) => {
-    console.log("client", client);
     if (!client) {
       return Promise.resolve(undefined);
     }
