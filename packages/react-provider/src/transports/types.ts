@@ -11,12 +11,20 @@ export interface IActionBlock {
 }
 
 export interface ICourierEventMessage {
-  event: "read" | "unread" | "archive" | "mark-all-read";
+  event: "read" | "unread" | "archive" | "mark-all-read" | "opened";
   type: "event";
   messageId?: string;
   error?: string;
 }
+
+interface IActionElemental {
+  type: "text";
+  content: string;
+  href: string;
+}
 export interface ICourierMessage {
+  actions?: IActionElemental[];
+  preview?: string;
   blocks?: Array<ITextBlock | IActionBlock>;
   body?: string;
   data?: {

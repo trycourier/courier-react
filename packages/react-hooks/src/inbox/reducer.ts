@@ -89,7 +89,7 @@ export const mapMessage = (
       : message.read
     : message.read,
   title: message.title,
-  //trackingIds: message.content.trackingIds,
+  trackingIds: message.trackingIds,
 });
 
 export const initialState: IInbox = {

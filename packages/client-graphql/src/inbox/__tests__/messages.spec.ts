@@ -21,11 +21,11 @@ describe("getMessages", () => {
       Array [
         "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
         Object {
-          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      actions {\\\\n        background_color\\\\n        content\\\\n        href\\\\n        style\\\\n        __typename\\\\n      }\\\\n      created\\\\n      data\\\\n      messageId\\\\n      opened\\\\n      preview\\\\n      read\\\\n      tags\\\\n      title\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{}}}",
+          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      actions {\\\\n        background_color\\\\n        content\\\\n        href\\\\n        style\\\\n        __typename\\\\n      }\\\\n      created\\\\n      data\\\\n      messageId\\\\n      opened\\\\n      preview\\\\n      read\\\\n      tags\\\\n      title\\\\n      trackingIds {\\\\n        openTrackingId\\\\n        archiveTrackingId\\\\n        clickTrackingId\\\\n        deliverTrackingId\\\\n        readTrackingId\\\\n        unreadTrackingId\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{}}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
-            "x-courier-client-version": "${pkg.version}",
+            "x-courier-client-version": "1.61.0",
             "x-courier-user-id": "USER_ID",
           },
           "method": "POST",
@@ -51,11 +51,11 @@ describe("getMessages", () => {
       Array [
         "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
         Object {
-          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      actions {\\\\n        background_color\\\\n        content\\\\n        href\\\\n        style\\\\n        __typename\\\\n      }\\\\n      created\\\\n      data\\\\n      messageId\\\\n      opened\\\\n      preview\\\\n      read\\\\n      tags\\\\n      title\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{\\"status\\":\\"read\\",\\"tags\\":[\\"abc\\",\\"123\\"]}}}",
+          "body": "{\\"query\\":\\"query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String) {\\\\n  messages(params: $params, limit: $limit, after: $after) {\\\\n    totalCount\\\\n    pageInfo {\\\\n      startCursor\\\\n      hasNextPage\\\\n      __typename\\\\n    }\\\\n    nodes {\\\\n      actions {\\\\n        background_color\\\\n        content\\\\n        href\\\\n        style\\\\n        __typename\\\\n      }\\\\n      created\\\\n      data\\\\n      messageId\\\\n      opened\\\\n      preview\\\\n      read\\\\n      tags\\\\n      title\\\\n      trackingIds {\\\\n        openTrackingId\\\\n        archiveTrackingId\\\\n        clickTrackingId\\\\n        deliverTrackingId\\\\n        readTrackingId\\\\n        unreadTrackingId\\\\n        __typename\\\\n      }\\\\n      __typename\\\\n    }\\\\n    __typename\\\\n  }\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxMessages\\",\\"variables\\":{\\"params\\":{\\"status\\":\\"read\\",\\"tags\\":[\\"abc\\",\\"123\\"]}}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
-            "x-courier-client-version": "${pkg.version}",
+            "x-courier-client-version": "1.61.0",
             "x-courier-user-id": "USER_ID",
           },
           "method": "POST",

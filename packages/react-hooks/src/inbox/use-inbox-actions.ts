@@ -4,6 +4,8 @@ import {
   registerReducer,
   registerMiddleware,
   Middleware,
+  IActionBlock,
+  ITextBlock,
 } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
@@ -41,10 +43,26 @@ interface IInboxActions {
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: () => void;
-  markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
-  markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
-  markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
-  markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageArchived: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
+  markMessageRead: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
+  markMessageUnread: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
+  markMessageOpened: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
   setCurrentTab: (newTab: ITab) => void;
@@ -69,7 +87,7 @@ const tabsToFilters = (tabs?: ITab[], from?: number) => {
       ...tab.filters,
     };
 
-    if ((filters as any).isRead) {
+    if (typeof (filters as any).isRead !== "undefined") {
       delete (filters as any).isRead;
     }
 
@@ -191,8 +209,17 @@ const useInboxActions = (): IInboxActions => {
     fetchMessages: (payload?: IFetchMessagesParams) => {
       const searchParams: IGetInboxMessagesParams = {
         ...payload?.params,
+        status: payload?.params?.isRead
+          ? "read"
+          : payload?.params?.isRead === false
+          ? "unread"
+          : undefined,
         from: inbox?.from,
       };
+
+      if (typeof (searchParams as any).isRead !== "undefined") {
+        delete (searchParams as any).isRead;
+      }
 
       const meta = {
         tabId: inbox?.currentTab?.id,
@@ -226,25 +253,25 @@ const useInboxActions = (): IInboxActions => {
         payload: () => inboxClient.markAllRead(),
       });
     },
-    markMessageRead: async (messageId: string, fromWS?: boolean) => {
+    markMessageRead: async (messageId, _trackingId, fromWS) => {
       dispatch(markMessageRead(messageId));
       if (!fromWS) {
         await inboxClient.markRead(messageId);
       }
     },
-    markMessageUnread: async (messageId: string, fromWS?: boolean) => {
+    markMessageUnread: async (messageId, _trackingId, fromWS) => {
       dispatch(markMessageUnread(messageId));
       if (!fromWS) {
         await inboxClient.markUnread(messageId);
       }
     },
-    markMessageOpened: async (messageId: string, fromWS?: boolean) => {
+    markMessageOpened: async (messageId, _trackingId, fromWS) => {
       dispatch(markMessageOpened(messageId));
       if (!fromWS) {
         await inboxClient.markOpened(messageId);
       }
     },
-    markMessageArchived: async (messageId: string, fromWS?: boolean) => {
+    markMessageArchived: async (messageId, _trackingId, fromWS) => {
       dispatch(markMessageArchived(messageId));
       if (!fromWS) {
         await inboxClient.markArchive(messageId);
@@ -260,8 +287,20 @@ const useInboxActions = (): IInboxActions => {
           icon: message.icon,
           messageId: message.messageId,
           created: new Date().toISOString(),
-          body: message.body,
-          blocks: message.blocks,
+          body: message.body ?? message?.preview,
+          blocks:
+            message.blocks ??
+            ([
+              {
+                type: "text",
+                text: message.preview,
+              },
+              ...(message?.actions ?? []).map((a) => ({
+                type: "action",
+                text: a.content,
+                url: a.href,
+              })),
+            ] as Array<IActionBlock | ITextBlock>),
           title: message.title,
           trackingIds: message.data?.trackingIds,
           data: {

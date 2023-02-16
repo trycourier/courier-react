@@ -29,6 +29,14 @@ export const messagesProps = `
     read
     tags
     title
+    trackingIds {
+      openTrackingId
+      archiveTrackingId
+      clickTrackingId
+      deliverTrackingId
+      readTrackingId
+      unreadTrackingId
+    }
   }
 `;
 
