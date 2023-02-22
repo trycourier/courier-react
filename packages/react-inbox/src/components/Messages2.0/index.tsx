@@ -249,7 +249,7 @@ const Messages: React.ForwardRefExoticComponent<
             )}
           </MessageList>
         ) : (
-          <PreferenceList />
+          <PreferenceList theme={{ name: "2.0" }} />
         )}
         <Gradient disableCourierFooter={brand?.inapp?.disableCourierFooter} />
         {renderFooter
