@@ -5,4 +5,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.61.1](https://github.com/trycourier/courier-react/compare/v1.61.0...v1.61.1) (2023-02-22)
 
-**Note:** Version bump only for package @trycourier/react-toast
+### Bug Fixes
+
+- fix preferences theme 2.0 styling ([faf9e25](https://github.com/trycourier/courier-react/commit/faf9e25f79099a5b295699bac2181c6e7de63318))

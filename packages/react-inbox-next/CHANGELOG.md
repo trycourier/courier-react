@@ -5,4 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.61.1](https://github.com/trycourier/courier-react/compare/v1.61.0...v1.61.1) (2023-02-22)
 
-**Note:** Version bump only for package @trycourier/react-toast
+**Note:** Version bump only for package @trycourier/react-inbox-next
