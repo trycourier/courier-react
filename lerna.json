@@ -1,6 +1,6 @@
 {
   "packages": ["packages/*"],
-  "version": "1.61.0",
+  "version": "independent",
   "npmClient": "yarn",
   "useNx": true,
   "useWorkspaces": true,
