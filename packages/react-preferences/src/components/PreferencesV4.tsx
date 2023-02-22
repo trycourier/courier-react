@@ -322,7 +322,7 @@ export const PreferenceTopic: React.FunctionComponent<{
           onChange={handleStatusChange}
         />
       </StyledToggle>
-      {statusToggle && defaultHasCustomRouting && defaultStatus !== "REQUIRED" && (
+      {statusToggle && defaultHasCustomRouting && (
         <ChannelPreferenceStyles
           theme={{ primary: preferencePage?.brand.settings.colors.primary }}
         >
