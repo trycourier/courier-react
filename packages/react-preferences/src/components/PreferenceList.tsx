@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
-import styled, { ThemeProvider, ThemeProps } from "styled-components";
+import styled from "styled-components";
 import { PreferenceTemplate } from "./PreferenceTemplate";
 import { PreferencesV4 } from "./PreferencesV4";
 
@@ -20,7 +20,7 @@ const PreferenceV4Wrapper = styled.div`
 
 export const PreferenceList: React.FunctionComponent<{
   // TODO: define Preferences theming
-  theme?: ThemeProps<any>;
+  theme?: any;
   draft?: boolean;
 }> = ({ theme, draft }) => {
   const { brand } = useCourier();
@@ -41,7 +41,7 @@ export const PreferenceList: React.FunctionComponent<{
       preferences.preferencePage?.sections?.nodes.length > 0
     ) {
       return (
-        <PreferenceV4Wrapper>
+        <PreferenceV4Wrapper theme={theme}>
           <PreferencesV4 />
         </PreferenceV4Wrapper>
       );
@@ -67,14 +67,7 @@ export const PreferenceList: React.FunctionComponent<{
 
   return (
     <>
-      <ThemeProvider
-        theme={{
-          ...theme,
-          brand,
-        }}
-      >
-        <StyledList>{renderPreferences()}</StyledList>
-      </ThemeProvider>
+      <StyledList>{renderPreferences()}</StyledList>
     </>
   );
 };
