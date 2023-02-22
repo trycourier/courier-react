@@ -19,7 +19,7 @@ const PreferenceV4Wrapper = styled.div`
 `;
 
 export const PreferenceList: React.FunctionComponent<{
-  theme: any;
+  theme?: any;
   draft?: boolean;
 }> = ({ theme, draft }) => {
   const { brand } = useCourier();
