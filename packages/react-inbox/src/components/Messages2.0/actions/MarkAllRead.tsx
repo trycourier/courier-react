@@ -32,7 +32,7 @@ const MarkAllRead: React.FunctionComponent<{
 }> = ({ onClick }) => {
   return (
     <StyledTippy content={"Mark All as Read"}>
-      <StyledButton onClick={onClick}>
+      <StyledButton title="mark all as read" onClick={onClick}>
         <svg
           width="24"
           height="24"

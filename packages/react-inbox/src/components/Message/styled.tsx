@@ -64,6 +64,10 @@ export const TextBlock = styled.div(({ theme }) =>
       textAlign: "left",
       overflow: "hidden",
       textOverflow: "ellipsis",
+      whiteSpace: "pre",
+      p: {
+        margin: 0,
+      },
     },
     theme.message?.textBlock
   )

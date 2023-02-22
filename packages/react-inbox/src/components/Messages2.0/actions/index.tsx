@@ -116,6 +116,7 @@ const MessageActions: React.FunctionComponent<{
 
         <CloseAction
           size="small"
+          title="archive message"
           onClick={handleEvent("archive")}
           tooltip="Archive Message"
         />
