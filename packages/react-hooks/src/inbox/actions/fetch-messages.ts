@@ -1,6 +1,6 @@
 import {
   IGetMessagesParams,
-  IGraphMessageResponse,
+  IInboxMessagePreview,
 } from "@trycourier/client-graphql";
 
 export const INBOX_FETCH_MESSAGES = "inbox/FETCH_MESSAGES";
@@ -27,7 +27,7 @@ export const fetchMessagesError = (): FetchMessagesError => ({
 export const INBOX_FETCH_MESSAGES_DONE = "inbox/FETCH_MESSAGES/DONE";
 
 interface FetchMessagesDonePayload {
-  messages: IGraphMessageResponse[];
+  messages: IInboxMessagePreview[];
   appendMessages?: boolean;
   startCursor?: string;
 }

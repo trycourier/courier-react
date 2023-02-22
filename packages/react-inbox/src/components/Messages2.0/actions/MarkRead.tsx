@@ -49,7 +49,7 @@ const MarkRead: React.FunctionComponent<{
 }> = ({ onClick }) => {
   return (
     <StyledTippy content="Mark as Read">
-      <StyledButton onClick={onClick}>
+      <StyledButton title="mark as read" onClick={onClick}>
         <Checkmark />
       </StyledButton>
     </StyledTippy>

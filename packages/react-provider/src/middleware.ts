@@ -69,6 +69,10 @@ const dynamicMiddlewaresInstance = createDynamicMiddlewares();
 export const { registerMiddleware } = dynamicMiddlewaresInstance;
 
 const asyncMiddleware = (store) => (next) => async (action) => {
+  if (action.type.includes("ERROR")) {
+    console.error(action);
+  }
+
   if (typeof action.payload !== "function") {
     next(action);
     return;

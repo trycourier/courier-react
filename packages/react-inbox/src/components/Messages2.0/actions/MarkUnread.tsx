@@ -30,7 +30,7 @@ const MarkUnread: React.FunctionComponent<{
 }> = ({ onClick }) => {
   return (
     <StyledTippy content="Mark Unread">
-      <StyledButton onClick={onClick}>
+      <StyledButton title="mark as unread" onClick={onClick}>
         <svg
           width="24"
           height="24"

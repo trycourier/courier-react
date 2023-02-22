@@ -9,10 +9,12 @@ export const GET_INBOX_COUNT = `
 export interface IInboxCountParams {
   status: "read" | "unread";
   tags?: string[];
+  from?: string | number;
 }
 export type GetInboxCount = (
   params?: IInboxCountParams
 ) => Promise<{ count: number }>;
+
 export const getInboxCount =
   (client?: Client): GetInboxCount =>
   async (params) => {

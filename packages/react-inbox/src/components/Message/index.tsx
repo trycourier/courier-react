@@ -85,7 +85,7 @@ const Message: React.FunctionComponent<
       return;
     }
 
-    markMessageOpened(messageId, openTrackingId);
+    markMessageOpened(messageId);
   });
 
   return (

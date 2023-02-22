@@ -26,12 +26,16 @@ export const INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE =
 
 export type FetchUnreadMessageCountDone = {
   type: "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE";
-  payload: number;
+  payload: {
+    count: number;
+  };
 };
 
 export const fetchUnreadMessageCountDone = (
   unreadMessageCount: number
 ): FetchUnreadMessageCountDone => ({
   type: INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE,
-  payload: unreadMessageCount,
+  payload: {
+    count: unreadMessageCount,
+  },
 });

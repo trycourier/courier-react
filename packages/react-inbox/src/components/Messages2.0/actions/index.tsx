@@ -65,7 +65,6 @@ const MessageActions: React.FunctionComponent<{
   messageId,
   read,
   setAreActionsHovered,
-  trackingIds,
 }) => {
   const [actionsHoverRef, areActionsHovered] = useHover();
 
@@ -78,32 +77,23 @@ const MessageActions: React.FunctionComponent<{
 
   const handleEvent = (eventName: string) => (event: React.MouseEvent) => {
     event?.preventDefault();
+    if (!messageId) {
+      return;
+    }
 
     switch (eventName) {
       case "archive": {
-        if (!trackingIds?.archiveTrackingId || !messageId) {
-          return;
-        }
-
-        markMessageArchived(messageId, trackingIds.archiveTrackingId);
+        markMessageArchived(messageId);
         break;
       }
 
       case "read": {
-        if (!trackingIds?.readTrackingId || !messageId) {
-          return;
-        }
-
-        markMessageRead(messageId, trackingIds.readTrackingId);
+        markMessageRead(messageId);
         break;
       }
 
       case "unread": {
-        if (!trackingIds?.unreadTrackingId || !messageId) {
-          return;
-        }
-
-        markMessageUnread(messageId, trackingIds.unreadTrackingId);
+        markMessageUnread(messageId);
         break;
       }
     }
@@ -121,19 +111,15 @@ const MessageActions: React.FunctionComponent<{
           visible: isMessageHovered,
         })}
       >
-        {!read && trackingIds?.readTrackingId && (
-          <MarkRead onClick={handleEvent("read")} />
-        )}
-        {read && trackingIds?.unreadTrackingId && (
-          <MarkUnread onClick={handleEvent("unread")} />
-        )}
-        {trackingIds?.archiveTrackingId && (
-          <CloseAction
-            size="small"
-            onClick={handleEvent("archive")}
-            tooltip="Archive Message"
-          />
-        )}
+        {!read && <MarkRead onClick={handleEvent("read")} />}
+        {read && <MarkUnread onClick={handleEvent("unread")} />}
+
+        <CloseAction
+          size="small"
+          title="archive message"
+          onClick={handleEvent("archive")}
+          tooltip="Archive Message"
+        />
       </div>
       <div
         className={classNames({

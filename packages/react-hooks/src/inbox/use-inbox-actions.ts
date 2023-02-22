@@ -4,14 +4,12 @@ import {
   registerReducer,
   registerMiddleware,
   Middleware,
+  IActionBlock,
+  ITextBlock,
 } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
-import {
-  createCourierClient,
-  Events,
-  Messages,
-} from "@trycourier/client-graphql";
+import { IGetInboxMessagesParams, Inbox } from "@trycourier/client-graphql";
 
 import { IGetMessagesParams } from "@trycourier/client-graphql";
 import { initInbox } from "./actions/init";
@@ -47,11 +45,24 @@ interface IInboxActions {
   markAllAsRead: () => void;
   markMessageArchived: (
     messageId: string,
-    trackingId?: string
+    trackingId?: string,
+    fromWS?: boolean
   ) => Promise<void>;
-  markMessageRead: (messageId: string, trackingId?: string) => Promise<void>;
-  markMessageUnread: (messageId: string, trackingId?: string) => Promise<void>;
-  markMessageOpened: (messageId: string, trackingId: string) => Promise<void>;
+  markMessageRead: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
+  markMessageUnread: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
+  markMessageOpened: (
+    messageId: string,
+    trackingId?: string,
+    fromWS?: boolean
+  ) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
   setCurrentTab: (newTab: ITab) => void;
@@ -60,14 +71,42 @@ interface IInboxActions {
   newMessage: (transportMessage: ICourierMessage) => void;
 }
 
+const tabsToFilters = (tabs?: ITab[], from?: number) => {
+  return tabs?.map((tab) => {
+    const filters: {
+      from?: number;
+      status?: "read" | "unread";
+    } = {
+      from,
+      status:
+        tab.filters.isRead === false
+          ? "unread"
+          : tab.filters.isRead === true
+          ? "read"
+          : undefined,
+      ...tab.filters,
+    };
+
+    if (typeof (filters as any).isRead !== "undefined") {
+      delete (filters as any).isRead;
+    }
+
+    return {
+      ...tab,
+      filters,
+    };
+  });
+};
+
 const useInboxActions = (): IInboxActions => {
   const {
     apiUrl,
     authorization,
-    clientSourceId,
     clientKey,
+    clientSourceId,
     dispatch,
     inbox,
+    inboxApiUrl,
     userId,
     userSignature,
   } =
@@ -75,22 +114,23 @@ const useInboxActions = (): IInboxActions => {
       inbox: IInbox;
     }>();
 
-  const courierClient = createCourierClient({
+  const clientParams = {
     apiUrl,
     authorization,
     clientSourceId,
     clientKey,
     userId,
     userSignature,
-  });
+  };
 
-  const events = Events({ client: courierClient });
-  const messages = Messages({ client: courierClient });
+  const inboxClient = Inbox({
+    ...clientParams,
+    apiUrl: inboxApiUrl,
+  });
 
   useEffect(() => {
     const inboxMiddleware = createMiddleware({
-      events,
-      messages,
+      inboxClient,
     });
 
     registerReducer("inbox", reducer);
@@ -102,9 +142,9 @@ const useInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
-          messages.getMessageCount({
+          inboxClient.getInboxCount({
             from: inbox?.from,
-            isRead: false,
+            status: "unread",
           }),
       });
     };
@@ -114,19 +154,24 @@ const useInboxActions = (): IInboxActions => {
     handleGetUnreadMessageCount();
 
     if (payload.isOpen) {
+      const searchParams: IGetInboxMessagesParams = {
+        ...inbox?.currentTab?.filters,
+        from: inbox?.from,
+      };
+
       const meta = {
         tabId: inbox?.currentTab?.id,
-        searchParams: {
-          ...inbox?.currentTab?.filters,
-          from: inbox?.from,
-        },
+        searchParams,
       };
 
       if (payload.tabs) {
         dispatch({
           type: "inbox/FETCH_MESSAGE_LISTS",
           meta,
-          payload: () => messages.getMessageLists(payload.tabs),
+          payload: () =>
+            inboxClient.getMessageLists(
+              tabsToFilters(payload.tabs, inbox.from)
+            ),
         });
         return;
       }
@@ -134,7 +179,7 @@ const useInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_MESSAGES",
         meta,
-        payload: () => messages.getMessages(meta.searchParams),
+        payload: () => inboxClient.getMessages(meta.searchParams),
       });
     }
   };
@@ -162,28 +207,34 @@ const useInboxActions = (): IInboxActions => {
       dispatch(setCurrentTab(newTab));
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {
+      const searchParams: IGetInboxMessagesParams = {
+        ...payload?.params,
+        status: payload?.params?.isRead
+          ? "read"
+          : payload?.params?.isRead === false
+          ? "unread"
+          : undefined,
+        from: inbox?.from,
+      };
+
+      if (typeof (searchParams as any).isRead !== "undefined") {
+        delete (searchParams as any).isRead;
+      }
+
       const meta = {
         tabId: inbox?.currentTab?.id,
-        searchParams: {
-          ...payload?.params,
-          from: inbox?.from,
-        },
+        searchParams,
       };
 
       dispatch({
         meta,
-        payload: () => messages.getMessages(meta.searchParams, payload?.after),
+        payload: () =>
+          inboxClient.getMessages(meta.searchParams, payload?.after),
         type: "inbox/FETCH_MESSAGES",
       });
     },
     fetchMessageLists: (tabs?: ITab[]) => {
-      const listParams = tabs?.map((tab) => ({
-        ...tab,
-        filters: {
-          from: inbox.from,
-          ...tab.filters,
-        },
-      }));
+      const listParams = tabsToFilters(tabs, inbox.from);
 
       if (!listParams) {
         return;
@@ -192,36 +243,38 @@ const useInboxActions = (): IInboxActions => {
       dispatch({
         type: "inbox/FETCH_MESSAGE_LISTS",
         meta: listParams,
-        payload: () => messages.getMessageLists(listParams),
+        payload: () => inboxClient.getMessageLists(listParams),
       });
     },
     getUnreadMessageCount: handleGetUnreadMessageCount,
-    markMessageRead: async (messageId: string, trackingId?: string) => {
-      dispatch(markMessageRead(messageId));
-      if (trackingId) {
-        await events.trackEvent(trackingId);
-      }
-    },
     markAllAsRead: async () => {
       dispatch({
         type: "inbox/MARK_ALL_READ",
-        payload: () => events.trackEventBatch("read"),
+        payload: () => inboxClient.markAllRead(),
       });
     },
-    markMessageUnread: async (messageId: string, trackingId?: string) => {
-      dispatch(markMessageUnread(messageId));
-      if (trackingId) {
-        await events.trackEvent(trackingId);
+    markMessageRead: async (messageId, _trackingId, fromWS) => {
+      dispatch(markMessageRead(messageId));
+      if (!fromWS) {
+        await inboxClient.markRead(messageId);
       }
     },
-    markMessageOpened: async (messageId: string, trackingId: string) => {
-      dispatch(markMessageOpened(messageId));
-      await events.trackEvent(trackingId);
+    markMessageUnread: async (messageId, _trackingId, fromWS) => {
+      dispatch(markMessageUnread(messageId));
+      if (!fromWS) {
+        await inboxClient.markUnread(messageId);
+      }
     },
-    markMessageArchived: async (messageId: string, trackingId?: string) => {
+    markMessageOpened: async (messageId, _trackingId, fromWS) => {
+      dispatch(markMessageOpened(messageId));
+      if (!fromWS) {
+        await inboxClient.markOpened(messageId);
+      }
+    },
+    markMessageArchived: async (messageId, _trackingId, fromWS) => {
       dispatch(markMessageArchived(messageId));
-      if (trackingId) {
-        await events.trackEvent(trackingId);
+      if (!fromWS) {
+        await inboxClient.markArchive(messageId);
       }
     },
     newMessage: (message: ICourierMessage) => {
@@ -234,8 +287,20 @@ const useInboxActions = (): IInboxActions => {
           icon: message.icon,
           messageId: message.messageId,
           created: new Date().toISOString(),
-          body: message.body,
-          blocks: message.blocks,
+          body: message.body ?? message?.preview,
+          blocks:
+            message.blocks ??
+            ([
+              {
+                type: "text",
+                text: message.preview,
+              },
+              ...(message?.actions ?? []).map((a) => ({
+                type: "action",
+                text: a.content,
+                url: a.href,
+              })),
+            ] as Array<IActionBlock | ITextBlock>),
           title: message.title,
           trackingIds: message.data?.trackingIds,
           data: {

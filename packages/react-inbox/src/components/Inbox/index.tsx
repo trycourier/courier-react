@@ -222,6 +222,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         isOpen={isOpen ?? false}
         onClick={handleIconOnClick}
         role="button"
+        title={props.title ?? "inbox"}
         tabIndex={0}
       >
         {props.renderIcon ? (

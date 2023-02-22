@@ -4,6 +4,7 @@ import { createCourierClient } from "../client";
 
 import { GetInboxCount, getInboxCount } from "./count";
 import * as message from "./message";
+import * as messageLists from "./message-lists";
 import * as messages from "./messages";
 import { MarkAllRead, markAllRead } from "./mark-all-read";
 import { TrackEvent, trackEvent } from "./track-event";
@@ -19,10 +20,12 @@ export default (
 ): {
   getInboxCount: GetInboxCount;
   getMessage: message.GetInboxMessage;
+  getMessageLists: messageLists.GetInboxMessageLists;
   getMessages: messages.GetInboxMessages;
   markAllRead: MarkAllRead;
   markArchive: TrackEvent;
   markRead: TrackEvent;
+  markOpened: TrackEvent;
   markUnread: TrackEvent;
 } => {
   const client = createCourierClient(params, {
@@ -33,9 +36,11 @@ export default (
   return {
     getInboxCount: getInboxCount(client),
     getMessage: message.getInboxMessage(client),
+    getMessageLists: messageLists.getMessageLists(client),
     getMessages: messages.getInboxMessages(client),
     markAllRead: markAllRead(client),
     markArchive: trackEvent(client)("archive"),
+    markOpened: trackEvent(client)("opened"),
     markRead: trackEvent(client)("read"),
     markUnread: trackEvent(client)("unread"),
   };

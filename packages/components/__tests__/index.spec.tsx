@@ -27,14 +27,14 @@ const server = setupServer(
       return res(ctx.json({}));
     }
   ),
-  graphql.query("MessageCount", (_, res, ctx) => {
+  graphql.query("GetInboxCount", (_, res, ctx) => {
     return res(
       ctx.data({
-        messageCount: 0,
+        count: 0,
       })
     );
   }),
-  graphql.query("GetMessages", (_, res, ctx) => {
+  graphql.query("GetInboxMessages", (_, res, ctx) => {
     return res(
       ctx.data({
         messages: {

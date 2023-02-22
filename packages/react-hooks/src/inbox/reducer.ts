@@ -1,4 +1,3 @@
-import { IGraphMessageResponse } from "@trycourier/client-graphql";
 import { IMessage } from "@trycourier/react-provider";
 import { IInbox, ITab } from "./types";
 
@@ -62,15 +61,26 @@ import {
   SetCurrentTab,
   INBOX_SET_CURRENT_TAB,
 } from "./actions/set-current-tab";
+import { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export const mapMessage = (
-  message: IGraphMessageResponse,
+  message: IInboxMessagePreview,
   lastMarkedAllRead?: number
 ): IMessage => ({
-  blocks: message.content.blocks,
-  body: message.content.body,
+  blocks: [
+    {
+      type: "text",
+      text: message.preview,
+    },
+    ...(message?.actions ?? []).map((a) => ({
+      type: "action",
+      text: a.content,
+      url: a.href,
+    })),
+  ],
+  body: message.preview,
   created: message.created,
-  data: message.content.data,
+  data: message.data,
   messageId: message.messageId,
   opened: message.opened,
   read: lastMarkedAllRead
@@ -78,8 +88,8 @@ export const mapMessage = (
       ? true
       : message.read
     : message.read,
-  title: message.content.title,
-  trackingIds: message.content.trackingIds,
+  title: message.title,
+  trackingIds: message.trackingIds,
 });
 
 export const initialState: IInbox = {
@@ -156,7 +166,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE: {
       return {
         ...state,
-        unreadMessageCount: action.payload,
+        unreadMessageCount: action.payload.count,
       };
     }
 
