@@ -977,7 +977,6 @@ describe("inbox reducer", () => {
         ...initialState,
         unreadMessageCount: 0,
         lastMarkedAllRead: mockDate,
-        markingAllAsRead: false,
         messages: [
           {
             ...mappedMessage,
@@ -1029,7 +1028,6 @@ describe("inbox reducer", () => {
         currentTab: unreadTab,
         unreadMessageCount: 0,
         lastMarkedAllRead: mockDate,
-        markingAllAsRead: false,
         messages: [],
         tabs: [
           {
@@ -1107,7 +1105,6 @@ describe("inbox reducer", () => {
         unreadMessageCount: 0,
         messages: readMessages,
         lastMarkedAllRead: mockDate,
-        markingAllAsRead: false,
         tabs: [
           {
             ...unreadTab,

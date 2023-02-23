@@ -9,7 +9,6 @@ import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
-import LoadingIndicator from "./LoadingIndicator";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
@@ -176,7 +175,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
-  const { view, setView, tabs, toggleInbox, markingAllAsRead } = useInbox();
+  const { view, setView, tabs, toggleInbox } = useInbox();
   const handleSetView =
     (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
@@ -284,12 +283,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       )}
       <div className="actions">
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
-          tabs === undefined) &&
-          (markingAllAsRead ? (
-            <LoadingIndicator size={24} />
-          ) : (
-            <MarkAllRead onClick={markAllAsRead} />
-          ))}
+          tabs === undefined) && <MarkAllRead onClick={markAllAsRead} />}
         <CloseInbox onClick={handleCloseInbox} tooltip="Close Inbox" />
       </div>
     </Container>
