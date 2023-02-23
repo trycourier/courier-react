@@ -16,6 +16,7 @@ import { initInbox } from "./actions/init";
 import { toggleInbox } from "./actions/toggle-inbox";
 import { setView } from "./actions/set-view";
 import { setCurrentTab } from "./actions/set-current-tab";
+import { markAllRead } from "./actions/mark-all-read";
 import { markMessageRead } from "./actions/mark-message-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
 import { markMessageArchived } from "./actions/mark-message-archived";
@@ -42,7 +43,7 @@ interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
-  markAllAsRead: () => void;
+  markAllAsRead: (fromWS?: boolean) => void;
   markMessageArchived: (
     messageId: string,
     trackingId?: string,
@@ -247,11 +248,11 @@ const useInboxActions = (): IInboxActions => {
       });
     },
     getUnreadMessageCount: handleGetUnreadMessageCount,
-    markAllAsRead: async () => {
-      dispatch({
-        type: "inbox/MARK_ALL_READ",
-        payload: () => inboxClient.markAllRead(),
-      });
+    markAllAsRead: async (fromWS) => {
+      dispatch(markAllRead());
+      if (!fromWS) {
+        await inboxClient.markAllRead();
+      }
     },
     markMessageRead: async (messageId, _trackingId, fromWS) => {
       dispatch(markMessageRead(messageId));

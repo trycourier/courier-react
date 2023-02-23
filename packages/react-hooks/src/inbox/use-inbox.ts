@@ -40,7 +40,15 @@ const useInbox = () => {
       type: "event",
       listener: (courierEvent) => {
         const data = courierEvent?.data as ICourierEventMessage;
-        if (!dispatch || !data || !data?.event || !data?.messageId) {
+        if (!dispatch || !data || !data?.event) {
+          return;
+        }
+
+        if (data.event === "mark-all-read") {
+          actions.markAllAsRead(true);
+        }
+
+        if (!data?.messageId) {
           return;
         }
 

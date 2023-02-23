@@ -20,7 +20,6 @@ export interface IInbox<T = IMessage> {
   isOpen?: boolean;
   lastMarkedAllRead?: number;
   lastMessagesFetched?: number;
-  markingAllAsRead?: boolean;
   messages?: Array<T>;
   startCursor?: string;
   tabs?: ITab[];

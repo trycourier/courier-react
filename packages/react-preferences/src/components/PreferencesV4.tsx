@@ -8,7 +8,7 @@ import {
 } from "~/types";
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
-import type { PreferenceSection } from "@trycourier/react-hooks/typings/preferences/types";
+import { PreferenceSection } from "@trycourier/react-hooks";
 
 export const ChannelOption = styled.div`
   display: flex;
