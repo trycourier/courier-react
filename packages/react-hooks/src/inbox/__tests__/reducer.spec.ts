@@ -34,7 +34,7 @@ import {
 import { ITab } from "../types";
 import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
 
-import { INBOX_MARK_ALL_READ, markAllReadDone } from "../actions/mark-all-read";
+import { INBOX_MARK_ALL_READ, markAllRead } from "../actions/mark-all-read";
 import {
   fetchMessageListsPending,
   fetchMessageListsDone,
@@ -968,9 +968,7 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mappedMessage, mappedMessage2],
         },
-        markAllReadDone({
-          ids: [mappedMessage.messageId, mappedMessage2.messageId],
-        })
+        markAllRead()
       );
 
       expect(state).toEqual({
@@ -1018,9 +1016,7 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mappedMessage, mappedMessage2],
         },
-        markAllReadDone({
-          ids: [mappedMessage.messageId, mappedMessage2.messageId],
-        })
+        markAllRead()
       );
 
       expect(state).toEqual({
@@ -1083,9 +1079,7 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mappedMessage, mappedMessage2],
         },
-        markAllReadDone({
-          ids: [mappedMessage.messageId, mappedMessage2.messageId],
-        })
+        markAllRead()
       );
 
       const readMessages = [
