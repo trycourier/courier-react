@@ -27,9 +27,11 @@ Breaking Changes:
 - New Default UI Styling (See Below)
 
 _Classic Theme:_
+
 ![image](https://user-images.githubusercontent.com/7017640/207160099-5f0d1229-4832-4c41-be3f-a0873fafba46.png)
 
 _Updated Theme:_
+
 ![image](https://user-images.githubusercontent.com/7017640/207160274-ade22e0d-e919-4b4b-af27-f06cdd26b47d.png)
 
 > To opt out of the new theme, pass `theme.name === 'classic'` as a property to you <Inbox /> component
@@ -47,12 +49,18 @@ Inbox is a React component that you can add to your application and show a user 
 1. `Opened`
    When the Inbox is opened and a message is in view, we will fire off `opened` events. One event per message. We will not send > 1 opened per message.
 2. `Read/Unread`
+
    ![image](https://user-images.githubusercontent.com/7017640/207160891-c4c7d339-d88d-40eb-af70-700a2db13824.png)
+
    ![image](https://user-images.githubusercontent.com/7017640/207160948-b2df9e76-c6f2-4d88-9eb7-6efc4ed8905d.png)
+
 3. `Clicked`
    If a message has a click action associated with it, we will track clicks in the Courier Studio. The message will have a hover effect if the message is clickable as seen below.
+
    ![image](https://user-images.githubusercontent.com/7017640/207162041-56161fdc-443e-49df-9040-7c0eb3c1f9ef.png)
+
 4. `Archive`
+
    ![image](https://user-images.githubusercontent.com/7017640/207161575-3731bad0-1677-485f-b927-df08b2388155.png)
 
 <a name="1installationmd"></a>
