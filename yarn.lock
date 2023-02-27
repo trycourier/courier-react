@@ -4481,12 +4481,52 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
+"@trycourier/client-graphql@^1.62.2":
+  version "1.62.2"
+  resolved "https://registry.yarnpkg.com/@trycourier/client-graphql/-/client-graphql-1.62.2.tgz#81de4425a6fc2fb3739af705230a9fb9fca62bdc"
+  integrity sha512-xP4fk/OZ6E0t5n4gqtAArYMpGXe5IXkh6WKMxT/XziBhnk7+IyEd/+0mFAb2iIRtV4uNQ9XrhPiXqCmIPEJqCg==
+  dependencies:
+    graphql "^15.5.0"
+    isomorphic-fetch "^3.0.0"
+    rimraf "^3.0.2"
+    urql "^2.0.1"
+
 "@trycourier/courier@^1.3.0":
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/@trycourier/courier/-/courier-1.7.3.tgz#d3116c59e3ce4b551a616a3108e5b44b9a5a2b9d"
   integrity sha512-OgR/MPnCvtWIG/jG788aayuIt2+vL0mK8zfqBdOdGHIi+jACIP9edpicG1YB55yuOmB6FLbrmw9ixJXc52725w==
   dependencies:
     axios "^0.21.1"
+
+"@trycourier/react-elements@^1.61.0":
+  version "1.62.2"
+  resolved "https://registry.yarnpkg.com/@trycourier/react-elements/-/react-elements-1.62.2.tgz#ff010ffbcfa0b21dad87636a652b17451900a6ad"
+  integrity sha512-dF5kTmfO7agHWhbltzRPTyuhIqXEICc/c4Vvd+csRH75+ZTtc5X8AkCsCQZ/h0tWkvOXac66BCEDAyOJM4hEJw==
+  dependencies:
+    rimraf "^3.0.2"
+
+"@trycourier/react-hooks@^1.61.0":
+  version "1.62.2"
+  resolved "https://registry.yarnpkg.com/@trycourier/react-hooks/-/react-hooks-1.62.2.tgz#9417b3687697b884d37bf7eb5355a4a5a8b745b6"
+  integrity sha512-u3ln3gM8C+M5tMI9+VAbDu+Qov+Rq9KW+ckcs0z8bUlGfmn7WD3InieOmIFe3nw50t0Ou7AOIDpLjdkPxH318Q==
+  dependencies:
+    "@trycourier/client-graphql" "^1.62.2"
+    deep-extend "^0.6.0"
+    rimraf "^3.0.2"
+
+"@trycourier/react-provider@^1.61.0":
+  version "1.62.2"
+  resolved "https://registry.yarnpkg.com/@trycourier/react-provider/-/react-provider-1.62.2.tgz#32a17c656e7bd3634fc7dc32d7e2a284fcb0dd22"
+  integrity sha512-7x8pqLkiKlC9hsyvhjkZ0z6BoOCq62aRQ2esN0NhGAySRZKB7KY7Kn1w8YrmyVkZs+zTX+Nww6TokH+qM9hv2Q==
+  dependencies:
+    "@trycourier/client-graphql" "^1.62.2"
+    buffer "^6.0.3"
+    jwt-decode "^3.1.2"
+    react-use "^17.2.1"
+    reconnecting-websocket "^4.4.0"
+    rimraf "^3.0.2"
+    urql "^2.0.1"
+    uuid "^9.0.0"
 
 "@trysound/sax@0.1.1":
   version "0.1.1"
