@@ -114,13 +114,20 @@ const MessageActions: React.FunctionComponent<{
           visible: isMessageHovered,
         })}
       >
-        {!read && <MarkRead onClick={handleEvent("read")} />}
-        {read && <MarkUnread onClick={handleEvent("unread")} />}
+        {!read && (
+          <MarkRead label={labels?.markAsRead} onClick={handleEvent("read")} />
+        )}
+        {read && (
+          <MarkUnread
+            label={labels?.markAsUnread}
+            onClick={handleEvent("unread")}
+          />
+        )}
         <CloseAction
           size="small"
-          title="archive message"
+          title={labels?.archiveMessage ?? "archive message"}
           onClick={handleEvent("archive")}
-          tooltip="Archive Message"
+          tooltip={labels?.archiveMessage ?? "Archive Message"}
         />
       </div>
       <div

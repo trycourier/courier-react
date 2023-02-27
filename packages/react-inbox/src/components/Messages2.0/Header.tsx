@@ -285,7 +285,10 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <div className="actions">
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
           tabs === undefined) && (
-          <MarkAllRead onClick={() => markAllAsRead()} />
+          <MarkAllRead
+            label={labels?.markAllAsRead}
+            onClick={() => markAllAsRead()}
+          />
         )}
         <CloseInbox onClick={handleCloseInbox} tooltip="Close Inbox" />
       </div>
