@@ -11,7 +11,7 @@ interface IMessageOptions {
   archiveTrackingId?: string;
   labels: InboxProps["labels"];
   messageId?: string;
-  read?: boolean;
+  read?: string;
   readTrackingId?: string;
   showArchived?: boolean;
   unreadTrackingId?: string;

@@ -145,7 +145,6 @@ const Messages: React.ForwardRefExoticComponent<
       isMobile,
       labels,
       openLinksInNewTab,
-      renderBlocks,
       renderFooter,
       renderHeader,
       renderMessage,
@@ -158,7 +157,6 @@ const Messages: React.ForwardRefExoticComponent<
 
     const {
       brand,
-      currentTab,
       fetchMessages,
       isLoading,
       markAllAsRead,
@@ -199,7 +197,6 @@ const Messages: React.ForwardRefExoticComponent<
         {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
         {renderHeader ? (
           renderHeader({
-            currentTab,
             labels,
             markAllAsRead,
             messages,
@@ -208,7 +205,6 @@ const Messages: React.ForwardRefExoticComponent<
           })
         ) : (
           <Header
-            currentTab={currentTab}
             labels={labels}
             markAllAsRead={markAllAsRead}
             messages={messages}
@@ -233,7 +229,6 @@ const Messages: React.ForwardRefExoticComponent<
                   key={message.messageId}
                   labels={labels}
                   openLinksInNewTab={openLinksInNewTab}
-                  renderBlocks={renderBlocks}
                 />
               )
             )}

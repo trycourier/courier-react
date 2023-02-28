@@ -1,7 +1,7 @@
 import {
   ICourierEventCallback,
   ICourierEventMessage,
-  ICourierMessage,
+  IInboxMessagePreview,
 } from "./transports/types";
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
@@ -131,7 +131,10 @@ export class WS {
   }
 
   private _onMessage({ data }: { data: string }): void {
-    let message: ICourierMessage | ICourierEventMessage;
+    let message: (IInboxMessagePreview | ICourierEventMessage) & {
+      error?: string;
+      event?: string;
+    };
 
     try {
       message = JSON.parse(data);

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import {
   useCourier,
   registerReducer,
-  ICourierMessage,
+  IInboxMessagePreview,
 } from "@trycourier/react-provider";
 
 import toastCss from "react-toastify/dist/ReactToastify.css";
@@ -40,13 +40,13 @@ export const Toast: React.FunctionComponent<
   const brand = config?.brand ?? courierBrand;
 
   const handleToast = useCallback(
-    (message: ICourierMessage | string) => {
+    (message: IInboxMessagePreview | string) => {
       message =
         typeof message === "string"
           ? ({
-              body: message,
+              preview: message,
               icon: undefined,
-            } as ICourierMessage)
+            } as IInboxMessagePreview)
           : message;
 
       toast(

@@ -1,30 +1,9 @@
 import { CourierTransport, Transport } from "./transports";
-import { IActionBlock, Interceptor, ITextBlock } from "./transports/types";
+import { Interceptor } from "./transports/types";
 import { ErrorEvent } from "reconnecting-websocket";
+export { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export type ErrorEventHandler = (event: ErrorEvent) => void;
-
-export interface IMessage {
-  blocks?: Array<IActionBlock | ITextBlock>;
-  body?: string;
-  created: string;
-  icon?: string;
-  messageId: string;
-  opened?: string;
-  read?: boolean;
-  title?: string;
-  data?: {
-    clickAction?: string;
-  };
-  trackingIds?: {
-    archiveTrackingId: string;
-    clickTrackingId: string;
-    deliverTrackingId: string;
-    openTrackingId: string;
-    readTrackingId: string;
-    unreadTrackingId: string;
-  };
-}
 
 export type WSOptions = {
   url?: string;

@@ -9,7 +9,6 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     messages,
     rehydrateMessages,
     startCursor,
-    tabs,
     unreadMessageCount,
   } = useInbox();
 
@@ -33,14 +32,12 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
           lastMessagesFetched,
           unreadMessageCount,
           messages,
-          tabs,
           startCursor,
         } = JSON.parse(localStorageState);
         rehydrateMessages({
           lastMessagesFetched,
           messages,
           startCursor,
-          tabs,
           unreadMessageCount,
         });
       } catch (ex) {
@@ -61,20 +58,6 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
         messages,
         startCursor,
         unreadMessageCount,
-        tabs: tabs?.map((tab) => {
-          if (!tab.state) {
-            return tab;
-          }
-
-          const tabState = tab.state;
-          return {
-            ...tab,
-            state: {
-              messages: tabState?.messages,
-              startCursor: tabState.startCursor,
-            },
-          };
-        }),
       })
     );
   }, [
@@ -82,7 +65,6 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     localStorage,
     messages,
     startCursor,
-    tabs,
     unreadMessageCount,
   ]);
 };

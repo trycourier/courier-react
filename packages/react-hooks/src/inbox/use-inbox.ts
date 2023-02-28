@@ -1,6 +1,6 @@
 import {
   ICourierEventMessage,
-  ICourierMessage,
+  IInboxMessagePreview,
   useCourier,
 } from "@trycourier/react-provider";
 import { useEffect } from "react";
@@ -31,7 +31,7 @@ const useInbox = () => {
           return;
         }
 
-        actions.newMessage(courierEvent?.data as ICourierMessage);
+        actions.newMessage(courierEvent?.data as IInboxMessagePreview);
       },
     });
 
@@ -64,12 +64,7 @@ const useInbox = () => {
           }
 
           case "unread": {
-            /* 
-              intentionally do not patch unread as if the unread message that is referenced is not in state,
-              then we will be screwing with the local state.  instead just reset last fetched so we fetch new data 
-              the next time the inbox is open and closed
-            */
-            actions.resetLastFetched();
+            actions.markMessageUnread(data.messageId, undefined, true);
             return;
           }
 

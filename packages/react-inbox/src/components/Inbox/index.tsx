@@ -13,12 +13,10 @@ import {
 } from "~/hooks";
 import BellSvg, { Bell } from "./Bell";
 import LazyTippy from "./LazyTippy";
-import Messages from "../Messages";
 import Messages2 from "../Messages2.0";
 
 import TippyGlobalStyle from "./TippyGlobalStyle";
 
-import { DEFAULT_TABS } from "~/constants";
 import { InboxProps } from "../../types";
 
 const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
@@ -61,10 +59,7 @@ const StyledTippy = styled(LazyTippy)<{
       width: theme.name !== "classic" ? "396px" : "483px",
       maxWidth: "initial !important",
 
-      borderRadius:
-        theme?.brand?.inapp?.borderRadius ?? theme.name !== "classic"
-          ? "12px"
-          : "24px",
+      borderRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
       outline: "none",
       overflow: "hidden",
       margin: ["left", "right"].includes(String(placement))
@@ -94,49 +89,31 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   // set defaults
   props = useMemo(() => {
-    if (props.theme?.name != "classic") {
-      if (props.tabs) {
-        delete props.tabs;
-      }
-
-      return deepExtend(
-        {},
-        {
-          openLinksInNewTab: true,
-          title: "Notifications",
-          theme: {
-            brand: props.brand ?? {
-              colors: {
-                primary: "#9121c2",
-              },
+    return deepExtend(
+      {},
+      {
+        openLinksInNewTab: true,
+        title: "Notifications",
+        theme: {
+          brand: props.brand ?? {
+            colors: {
+              primary: "#9121c2",
             },
           },
         },
-        props
-      );
-    }
-    return {
-      openLinksInNewTab: true,
-      tabs: DEFAULT_TABS,
-      title: "Inbox",
-      ...props,
-    };
+      },
+      props
+    );
   }, [props]);
-
-  const propTabs = props.tabs === false ? undefined : props.tabs;
-  const currentTab = propTabs?.[0] ?? DEFAULT_TABS?.[0];
 
   const windowSize = useWindowSize();
   const {
     brand,
-    fetchMessageLists,
     fetchMessages,
     init,
     isOpen: isOpenState,
     lastMessagesFetched,
-    setCurrentTab,
     setView,
-    tabs,
     toggleInbox,
     unreadMessageCount = 0,
   } = useInbox();
@@ -153,19 +130,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     init({
       brand: props.brand,
       isOpen: props.isOpen,
-      tabs: propTabs,
     });
 
     if (!props.brand || Object.entries(props.brand).length === 0) {
       courierContext.getBrand(courierContext.brandId);
     }
-  }, [props.brand, props.isOpen, propTabs]);
+  }, [props.brand, props.isOpen]);
+
   useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
 
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
-      let myCurrentTab = currentTab;
       if (!isOpen) {
         const now = new Date().getTime();
         const dateDiff = lastMessagesFetched
@@ -173,23 +149,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
           : undefined;
 
         setView("messages");
-        myCurrentTab = tabs?.[0] ?? DEFAULT_TABS[1];
-        setCurrentTab(myCurrentTab);
 
         if (!dateDiff || dateDiff > 3600000) {
-          if (tabs) {
-            fetchMessageLists(tabs);
-          } else {
-            fetchMessages({
-              params: myCurrentTab.filters,
-            });
-          }
+          fetchMessages();
         }
       }
 
       toggleInbox();
     },
-    [lastMessagesFetched, tabs, isOpen, setView, setCurrentTab]
+    [lastMessagesFetched, isOpen, setView]
   );
 
   const handleClickOutside = useCallback(
@@ -268,14 +236,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       : bell;
   };
 
-  const MessageList = useMemo(() => {
-    if (props.theme?.name !== "classic") {
-      return Messages2;
-    }
-
-    return Messages;
-  }, [props.theme?.name]);
-
   if (!courierContext?.inbox) {
     return null;
   }
@@ -291,11 +251,11 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         {tippyProps.visible ? (
           <>
             {isMobile ? (
-              <MessageList ref={ref} isMobile={true} {...props} />
+              <Messages2 ref={ref} isMobile={true} {...props} />
             ) : (
               <StyledTippy
                 {...tippyProps}
-                content={<MessageList ref={ref} {...props} />}
+                content={<Messages2 ref={ref} {...props} />}
               >
                 {BellWrapper()}
               </StyledTippy>

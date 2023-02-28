@@ -1,13 +1,11 @@
-import { IMessage } from "@trycourier/react-provider";
-import { ITab } from "../types";
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 
 export type RehydrateMessages = {
   type: "inbox/REHYDRATE_MESSAGES";
   payload: {
     lastMessagesFetched?: number;
-    messages?: IMessage[];
+    messages?: IInboxMessagePreview[];
     startCursor?: string;
-    tabs?: ITab[];
     unreadMessageCount?: number;
   };
 };

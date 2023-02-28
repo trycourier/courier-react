@@ -1,20 +1,7 @@
-import { Brand, IMessage } from "@trycourier/react-provider";
+import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
 
-export interface ITab {
-  filters: {
-    isRead?: boolean;
-  };
-  label: string;
-  id: string;
-  state?: {
-    messages?: IMessage[];
-    startCursor?: string;
-  };
-}
-
-export interface IInbox<T = IMessage> {
+export interface IInbox<T = IInboxMessagePreview> {
   brand?: Brand;
-  currentTab?: ITab;
   from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
@@ -22,7 +9,6 @@ export interface IInbox<T = IMessage> {
   lastMessagesFetched?: number;
   messages?: Array<T>;
   startCursor?: string;
-  tabs?: ITab[];
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
 }

@@ -6,12 +6,12 @@ import { useInbox } from "@trycourier/react-hooks";
 import { TimeAgo } from "~/components/Message/styled";
 import useHover from "~/hooks/use-hover";
 
-import { IMessageProps } from "../Message";
 import CloseAction from "./Close";
 import MarkRead, { Checkmark } from "./MarkRead";
 import MarkUnread from "./MarkUnread";
 import styled from "styled-components";
 import { InboxProps } from "~/types";
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Styled = styled.div((_props) => {
@@ -56,10 +56,10 @@ const MessageActions: React.FunctionComponent<{
   hasBody?: boolean;
   isMessageHovered?: boolean;
   labels: InboxProps["labels"];
-  messageId?: string;
-  read?: boolean;
+  messageId?: IInboxMessagePreview["messageId"];
+  read?: IInboxMessagePreview["read"];
   setAreActionsHovered: (hovered: boolean) => void;
-  trackingIds?: IMessageProps["trackingIds"];
+  trackingIds?: IInboxMessagePreview["trackingIds"];
 }> = ({
   formattedTime,
   hasBody,
