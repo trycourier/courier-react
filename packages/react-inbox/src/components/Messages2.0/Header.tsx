@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { useInbox } from "@trycourier/react-hooks";
-import { useCourier, IMessage } from "@trycourier/react-provider";
+import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
-import { ITab, InboxProps } from "~/types";
+import { InboxProps } from "~/types";
 import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
@@ -12,10 +12,9 @@ import tinycolor2 from "tinycolor2";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
-  currentTab?: ITab;
   labels: InboxProps["labels"];
   markAllAsRead: () => void;
-  messages: IMessage[];
+  messages: IInboxMessagePreview[];
   title?: string;
   unreadMessageCount?: number;
 }
@@ -166,7 +165,6 @@ const DownCarrot: React.FunctionComponent = () => (
 );
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
-  currentTab,
   labels,
   markAllAsRead,
   messages = [],
@@ -176,7 +174,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
-  const { view, setView, tabs, toggleInbox } = useInbox();
+  const { view, setView, toggleInbox } = useInbox();
   const handleSetView =
     (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
@@ -283,8 +281,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         </HeadingDropdownOptions>
       )}
       <div className="actions">
-        {((currentTab?.filters?.isRead === false && messages.length > 0) ||
-          tabs === undefined) && (
+        {messages.length > 0 && (
           <MarkAllRead
             label={labels?.markAllAsRead}
             onClick={() => markAllAsRead()}

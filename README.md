@@ -10,6 +10,10 @@ This repository, also called **In-App**, is a set of features and components tha
 
 Want to use packages with other frameworks/libraries? Check out how to do [Embedded Integration](https://www.courier.com/docs/guides/providers/in-app/courier-push/#embedded-integration)
 
+## 2.0 and 3.0 Releases
+
+We've recently created both 2.0 and 3.0
+
 ## Table of Contents
 
 1. [Contributing](https://github.com/trycourier/courier-react/tree/main/CONTRIBUTING.md)

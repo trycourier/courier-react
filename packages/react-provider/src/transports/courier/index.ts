@@ -1,6 +1,6 @@
 import { WS } from "../../ws";
 import { Transport } from "../base";
-import { Interceptor, ICourierMessage } from "../types";
+import { Interceptor } from "../types";
 import { ITransportOptions } from "./types";
 
 export class CourierTransport extends Transport {
@@ -55,7 +55,7 @@ export class CourierTransport extends Transport {
     });
   }
 
-  send(message: ICourierMessage): void {
+  send(message): void {
     this.ws.send({
       ...message,
       data: {

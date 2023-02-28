@@ -1,13 +1,13 @@
-import { IMessage } from "@trycourier/react-provider";
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 
 export type NewMessage = {
   type: "inbox/NEW_MESSAGE";
-  payload: IMessage;
+  payload: IInboxMessagePreview;
 };
 
 export const INBOX_NEW_MESSAGE = "inbox/NEW_MESSAGE";
 
-export const newMessage = (message: IMessage): NewMessage => ({
+export const newMessage = (message: IInboxMessagePreview): NewMessage => ({
   type: INBOX_NEW_MESSAGE,
   payload: message,
 });

@@ -1,8 +1,6 @@
 import {
-  IActionBlock,
   ICourierContext,
-  ICourierMessage,
-  ITextBlock,
+  IInboxMessagePreview,
   useCourier,
 } from "@trycourier/react-provider";
 import { useEffect } from "react";
@@ -43,21 +41,7 @@ export const useListenForTransportEvent = (
       id: "toast-listener",
       type: "message",
       listener: (courierEvent) => {
-        const courierMessage = courierEvent?.data as ICourierMessage;
-        courierMessage.body = courierMessage.body ?? courierMessage.preview;
-        courierMessage.blocks =
-          courierMessage.blocks ??
-          ([
-            {
-              type: "text",
-              text: courierMessage.preview,
-            },
-            ...(courierMessage?.actions ?? []).map((a) => ({
-              type: "action",
-              text: a.content,
-              url: a.href,
-            })),
-          ] as Array<IActionBlock | ITextBlock>);
+        const courierMessage = courierEvent?.data as IInboxMessagePreview;
         const courierData = courierMessage?.data;
         if (courierData?.trackingIds?.deliverTrackingId) {
           createTrackEvent(courierData?.trackingIds?.deliverTrackingId);

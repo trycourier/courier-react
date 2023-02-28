@@ -1,6 +1,6 @@
 import React, { ReactNode, useMemo, useState } from "react";
 import classNames from "classnames";
-import { IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
 import { TextBlock, getIcon, Title } from "../Message/styled";
@@ -15,28 +15,6 @@ import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
-
-export interface IMessageProps {
-  blocks?: Array<ITextBlock | IActionBlock>;
-  created: string;
-  opened?: string;
-  icon?: string;
-  messageId?: string;
-  read?: boolean;
-  title?: string;
-  unread?: number;
-  data?: {
-    clickAction?: string;
-  };
-  trackingIds?: {
-    archiveTrackingId: string;
-    clickTrackingId: string;
-    deliverTrackingId: string;
-    openTrackingId: string;
-    readTrackingId: string;
-    unreadTrackingId: string;
-  };
-}
 
 const ClickableContainer = styled.a(({ theme }) => {
   const primaryColor = theme.brand?.colors?.primary;
@@ -62,23 +40,25 @@ const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-const UnreadIndicator = styled.div<{ read?: boolean }>(({ theme, read }) => {
-  const primaryColor = theme.brand?.colors?.primary;
+const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
+  ({ theme, read }) => {
+    const primaryColor = theme.brand?.colors?.primary;
 
-  return deepExtend(
-    {
-      visibility: read ? "hidden" : "visible",
-      height: "auto",
-      width: 2,
-      background: primaryColor,
-      position: "absolute",
-      left: "1px",
-      top: "1px",
-      bottom: "1px",
-    },
-    theme?.message?.unreadIndicator
-  );
-});
+    return deepExtend(
+      {
+        visibility: read ? "hidden" : "visible",
+        height: "auto",
+        width: 2,
+        background: primaryColor,
+        position: "absolute",
+        left: "1px",
+        top: "1px",
+        bottom: "1px",
+      },
+      theme?.message?.unreadIndicator
+    );
+  }
+);
 
 const MessageContainer = styled.div(({ theme }) => {
   return deepExtend(
@@ -105,18 +85,16 @@ const MessageContainer = styled.div(({ theme }) => {
 const Message: React.FunctionComponent<{
   areActionsHovered?: boolean;
   isMessageHovered?: boolean;
-  read?: boolean;
+  read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
-  renderTextBlock?: React.FunctionComponent<ITextBlock>;
-  textBlocks: ITextBlock[];
+  preview?: string;
   title?: string;
 }> = ({
   areActionsHovered,
   isMessageHovered,
   read,
   renderedIcon,
-  renderTextBlock,
-  textBlocks,
+  preview,
   title,
 }) => {
   return (
@@ -130,33 +108,21 @@ const Message: React.FunctionComponent<{
       {renderedIcon}
       <Contents>
         <Title read={read}>{title}</Title>
-        {textBlocks?.map((block: ITextBlock, index: number) => {
-          if (renderTextBlock) {
-            const Block = renderTextBlock;
-            return <Block {...block} key={index} />;
-          }
-
-          return (
-            <TextBlock key={index} data-testid="message-body">
-              {block.text && <Markdown>{block.text}</Markdown>}
-            </TextBlock>
-          );
-        })}
+        <TextBlock>{preview ? <Markdown>{preview}</Markdown> : null}</TextBlock>
       </Contents>
     </MessageContainer>
   );
 };
 
 const MessageWrapper: React.FunctionComponent<
-  IMessageProps & {
+  IInboxMessagePreview & {
     labels: InboxProps["labels"];
     formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
-    renderBlocks: InboxProps["renderBlocks"];
   }
 > = ({
-  blocks,
+  actions,
   created,
   data,
   opened,
@@ -167,7 +133,7 @@ const MessageWrapper: React.FunctionComponent<
   messageId,
   openLinksInNewTab,
   read,
-  renderBlocks,
+  preview,
   title,
   trackingIds,
 }) => {
@@ -214,40 +180,17 @@ const MessageWrapper: React.FunctionComponent<
     ? formatDate(created)
     : getTimeAgoShort(created);
 
-  const blocksByType = useMemo(() => {
-    return blocks?.reduce(
-      (acc, cur) => {
-        if (cur.type === "text") {
-          acc.text.push(cur);
-        }
-
-        if (cur.type === "action") {
-          acc.action.push(cur);
-        }
-
-        return acc;
-      },
-      {
-        action: [],
-        text: [],
-      } as {
-        action: IActionBlock[];
-        text: ITextBlock[];
-      }
-    );
-  }, [blocks]);
-
   const clickAction = useMemo(() => {
     if (data?.clickAction) {
       return data.clickAction;
     }
 
-    if (!blocksByType?.action.length || blocksByType.action?.length > 1) {
+    if (!actions?.length || actions?.length > 1) {
       return;
     }
 
-    return blocksByType.action[0].url;
-  }, [data?.clickAction, blocksByType?.action]);
+    return actions[0].href;
+  }, [data?.clickAction, actions]);
 
   let containerProps: {
     href?: string;
@@ -276,20 +219,18 @@ const MessageWrapper: React.FunctionComponent<
         isMessageHovered={isMessageHovered}
         read={read}
         renderedIcon={renderedIcon}
-        renderTextBlock={renderBlocks?.text}
-        textBlocks={blocksByType?.text ?? []}
+        preview={preview}
         title={title}
       />
     );
   }, [
     areActionsHovered,
-    blocksByType?.text,
     formattedTime,
     isMessageHovered,
     read,
-    renderBlocks?.text,
     renderedIcon,
     title,
+    preview,
   ]);
 
   return (
@@ -309,7 +250,6 @@ const MessageWrapper: React.FunctionComponent<
       )}
       <MessageActions
         formattedTime={formattedTime}
-        hasBody={Boolean(renderBlocks?.text?.length)}
         isMessageHovered={isMessageHovered}
         labels={labels}
         messageId={messageId}

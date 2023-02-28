@@ -12,16 +12,14 @@ import {
   Brand,
   ICourierContext,
   ICourierProviderProps,
-  IMessage,
   WSOptions,
 } from "./types";
 import { CourierTransport } from "./transports/courier";
 import {
-  IActionBlock,
+  IActionElemental,
   ICourierEventMessage,
-  ICourierMessage,
   IInboxMessagePreview,
-  ITextBlock,
+  ITextElemental,
 } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
@@ -41,13 +39,11 @@ export const registerMiddleware = _registerMiddleware;
 
 export type {
   Brand,
-  IActionBlock,
+  IActionElemental,
   ICourierContext,
   ICourierEventMessage,
-  ICourierMessage,
   IInboxMessagePreview,
-  IMessage,
-  ITextBlock,
+  ITextElemental,
   Middleware,
   WSOptions,
 };

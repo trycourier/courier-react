@@ -11,7 +11,10 @@ import {
   Title,
   UnreadIndicator,
 } from "./styled";
-import { IActionBlock, ITextBlock, IMessage } from "@trycourier/react-provider";
+import {
+  IActionElemental,
+  IInboxMessagePreview,
+} from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
 import { InboxProps } from "../../types";
@@ -21,16 +24,15 @@ import { useMessageOptions, useOnScreen } from "~/hooks";
 import Markdown from "markdown-to-jsx";
 
 const Message: React.FunctionComponent<
-  IMessage & {
+  IInboxMessagePreview & {
     labels: InboxProps["labels"];
     formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
-    renderBlocks: InboxProps["renderBlocks"];
   }
 > = ({
-  blocks,
-  body,
+  actions,
+  preview,
   created,
   data,
   defaultIcon,
@@ -41,7 +43,6 @@ const Message: React.FunctionComponent<
   opened,
   openLinksInNewTab,
   read,
-  renderBlocks,
   title,
   trackingIds = {},
 }) => {
@@ -100,68 +101,50 @@ const Message: React.FunctionComponent<
       {renderedIcon}
       <Contents>
         <Title>{title}</Title>
-        {blocks?.length ? (
-          blocks?.map((block: ITextBlock | IActionBlock, index: number) => {
-            if (block.type === "text") {
-              if (renderBlocks?.text) {
-                const Block = renderBlocks?.text;
-                return <Block {...block} key={index} />;
-              }
+        <TextBlock>{preview && <Markdown>{preview}</Markdown>}</TextBlock>
+        {data?.clickAction && (
+          <ActionBlock>
+            <a href={data?.clickAction} target="_blank" rel="noreferrer">
+              View Details
+            </a>
+          </ActionBlock>
+        )}
+        {actions?.map(
+          (
+            e: IActionElemental & {
+              openInNewTab?: boolean;
+            },
+            index: number
+          ) => {
+            let actionProps: {
+              target?: string;
+              rel?: string;
+              onClick: (event: React.MouseEvent) => void;
+            } = {
+              onClick: handleMarkAsReadOnClick,
+            };
 
-              return (
-                <TextBlock key={index} data-testid="message-body">
-                  {block.text && <Markdown>{block.text}</Markdown>}
-                </TextBlock>
-              );
-            }
+            const openInNewTab =
+              typeof e.openInNewTab === "boolean"
+                ? e.openInNewTab
+                : openLinksInNewTab;
 
-            if (block.type === "action") {
-              if (renderBlocks?.action) {
-                const Block = renderBlocks?.action;
-                return <Block {...block} key={index} />;
-              }
-
-              let actionProps: {
-                target?: string;
-                rel?: string;
-                onClick: (event: React.MouseEvent) => void;
-              } = {
-                onClick: handleMarkAsReadOnClick,
+            if (openInNewTab) {
+              actionProps = {
+                ...actionProps,
+                target: "_blank",
+                rel: "noreferrer",
               };
-
-              const openInNewTab =
-                typeof block.openInNewTab === "boolean"
-                  ? block.openInNewTab
-                  : openLinksInNewTab;
-
-              if (openInNewTab) {
-                actionProps = {
-                  ...actionProps,
-                  target: "_blank",
-                  rel: "noreferrer",
-                };
-              }
-
-              return (
-                <ActionBlock key={index}>
-                  <a href={block.url} {...actionProps}>
-                    {block.text}
-                  </a>
-                </ActionBlock>
-              );
             }
-          })
-        ) : (
-          <>
-            <TextBlock>{body && <Markdown>{body}</Markdown>}</TextBlock>
-            {data?.clickAction && (
-              <ActionBlock>
-                <a href={data?.clickAction} target="_blank" rel="noreferrer">
-                  View Details
+
+            return (
+              <ActionBlock key={index}>
+                <a href={e.href} {...actionProps}>
+                  {e.content}
                 </a>
               </ActionBlock>
-            )}
-          </>
+            );
+          }
         )}
       </Contents>
       <TimeAgo title={prettyDate}>{formattedTime}</TimeAgo>

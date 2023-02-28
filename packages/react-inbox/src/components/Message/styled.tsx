@@ -33,7 +33,7 @@ export const Contents = styled.div(({ theme }) => ({
   ...theme.message?.contents,
 }));
 
-export const Title = styled.div<{ read?: boolean }>(({ theme, read }) =>
+export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
   deepExtend(
     {
       fontSize: "12px",

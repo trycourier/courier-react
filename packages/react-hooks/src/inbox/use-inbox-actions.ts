@@ -1,13 +1,11 @@
 import {
   useCourier,
-  ICourierMessage,
+  IInboxMessagePreview,
   registerReducer,
   registerMiddleware,
   Middleware,
-  IActionBlock,
-  ITextBlock,
 } from "@trycourier/react-provider";
-import { IInbox, ITab } from "./types";
+import { IInbox } from "./types";
 
 import { IGetInboxMessagesParams, Inbox } from "@trycourier/client-graphql";
 
@@ -15,7 +13,6 @@ import { IGetMessagesParams } from "@trycourier/client-graphql";
 import { initInbox } from "./actions/init";
 import { toggleInbox } from "./actions/toggle-inbox";
 import { setView } from "./actions/set-view";
-import { setCurrentTab } from "./actions/set-current-tab";
 import { markAllRead } from "./actions/mark-all-read";
 import { markMessageRead } from "./actions/mark-message-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
@@ -39,7 +36,6 @@ export interface IFetchMessagesParams {
 }
 
 interface IInboxActions {
-  fetchMessageLists: (tabs?: ITab[]) => void;
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
@@ -66,38 +62,10 @@ interface IInboxActions {
   ) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
-  setCurrentTab: (newTab: ITab) => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
-  newMessage: (transportMessage: ICourierMessage) => void;
+  newMessage: (transportMessage: IInboxMessagePreview) => void;
 }
-
-const tabsToFilters = (tabs?: ITab[], from?: number) => {
-  return tabs?.map((tab) => {
-    const filters: {
-      from?: number;
-      status?: "read" | "unread";
-    } = {
-      from,
-      status:
-        tab.filters.isRead === false
-          ? "unread"
-          : tab.filters.isRead === true
-          ? "read"
-          : undefined,
-      ...tab.filters,
-    };
-
-    if (typeof (filters as any).isRead !== "undefined") {
-      delete (filters as any).isRead;
-    }
-
-    return {
-      ...tab,
-      filters,
-    };
-  });
-};
 
 const useInboxActions = (): IInboxActions => {
   const {
@@ -156,26 +124,12 @@ const useInboxActions = (): IInboxActions => {
 
     if (payload.isOpen) {
       const searchParams: IGetInboxMessagesParams = {
-        ...inbox?.currentTab?.filters,
         from: inbox?.from,
       };
 
       const meta = {
-        tabId: inbox?.currentTab?.id,
         searchParams,
       };
-
-      if (payload.tabs) {
-        dispatch({
-          type: "inbox/FETCH_MESSAGE_LISTS",
-          meta,
-          payload: () =>
-            inboxClient.getMessageLists(
-              tabsToFilters(payload.tabs, inbox.from)
-            ),
-        });
-        return;
-      }
 
       dispatch({
         type: "inbox/FETCH_MESSAGES",
@@ -200,13 +154,6 @@ const useInboxActions = (): IInboxActions => {
     setView: (view: "messages" | "preferences") => {
       dispatch(setView(view));
     },
-    setCurrentTab: (newTab: ITab) => {
-      if (newTab?.id === inbox?.currentTab?.id) {
-        return;
-      }
-
-      dispatch(setCurrentTab(newTab));
-    },
     fetchMessages: (payload?: IFetchMessagesParams) => {
       const searchParams: IGetInboxMessagesParams = {
         ...payload?.params,
@@ -223,7 +170,6 @@ const useInboxActions = (): IInboxActions => {
       }
 
       const meta = {
-        tabId: inbox?.currentTab?.id,
         searchParams,
       };
 
@@ -232,19 +178,6 @@ const useInboxActions = (): IInboxActions => {
         payload: () =>
           inboxClient.getMessages(meta.searchParams, payload?.after),
         type: "inbox/FETCH_MESSAGES",
-      });
-    },
-    fetchMessageLists: (tabs?: ITab[]) => {
-      const listParams = tabsToFilters(tabs, inbox.from);
-
-      if (!listParams) {
-        return;
-      }
-
-      dispatch({
-        type: "inbox/FETCH_MESSAGE_LISTS",
-        meta: listParams,
-        payload: () => inboxClient.getMessageLists(listParams),
       });
     },
     getUnreadMessageCount: handleGetUnreadMessageCount,
@@ -278,37 +211,8 @@ const useInboxActions = (): IInboxActions => {
         await inboxClient.markArchive(messageId);
       }
     },
-    newMessage: (message: ICourierMessage) => {
-      if (!message.messageId) {
-        return;
-      }
-
-      dispatch(
-        newMessage({
-          icon: message.icon,
-          messageId: message.messageId,
-          created: new Date().toISOString(),
-          body: message.body ?? message?.preview,
-          blocks:
-            message.blocks ??
-            ([
-              {
-                type: "text",
-                text: message.preview,
-              },
-              ...(message?.actions ?? []).map((a) => ({
-                type: "action",
-                text: a.content,
-                url: a.href,
-              })),
-            ] as Array<IActionBlock | ITextBlock>),
-          title: message.title,
-          trackingIds: message.data?.trackingIds,
-          data: {
-            clickAction: message.data?.clickAction,
-          },
-        })
-      );
+    newMessage: (message: IInboxMessagePreview) => {
+      dispatch(newMessage(message));
     },
   };
 };

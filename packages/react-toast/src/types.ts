@@ -1,5 +1,9 @@
 import { ToastPosition } from "react-toastify";
-import { Brand, IActionBlock, ITextBlock } from "@trycourier/react-provider";
+import {
+  Brand,
+  IActionElemental,
+  IInboxMessagePreview,
+} from "@trycourier/react-provider";
 
 export type Theme = {
   body?: React.CSSProperties;
@@ -27,8 +31,6 @@ export interface IToastConfig {
   role?: string;
   theme?: Theme;
   transition?: string;
-  renderBlocks?: {
-    action?: React.FunctionComponent<IActionBlock>;
-    text?: React.FunctionComponent<ITextBlock>;
-  };
+  renderAction?: React.FunctionComponent<IActionElemental>;
+  renderMessage?: React.FunctionComponent<IInboxMessagePreview>;
 }

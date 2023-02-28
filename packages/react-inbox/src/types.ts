@@ -1,21 +1,15 @@
 import { TippyProps } from "@tippyjs/react";
-import {
-  Brand,
-  IActionBlock,
-  ITextBlock,
-  IMessage,
-} from "@trycourier/react-provider";
+import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
 
-import { IHeaderProps } from "./components/Messages/Header/types";
-export interface ITab {
+import { IHeaderProps } from "./components/Messages2.0/types";
+
+type IView = {
   filters: {
     isRead?: boolean;
   };
   label: string;
   id: string;
-}
-
-type IView = ITab;
+};
 
 export interface InboxProps {
   brand?: Brand;
@@ -32,15 +26,12 @@ export interface InboxProps {
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
-    tabs?: string[];
   };
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
-  tabs?: Array<ITab> | false;
   views?: Array<IView>;
   theme?: {
-    name?: "classic" | "2.0" | undefined;
     container?: React.CSSProperties;
     footer?: React.CSSProperties;
     header?: React.CSSProperties;
@@ -73,25 +64,17 @@ export interface InboxProps {
   title?: string;
   trigger?: TippyProps["trigger"];
   renderContainer?: React.FunctionComponent;
-  renderTabs?: React.FunctionComponent<{
-    currentTab?: ITab;
-    tabs?: ITab[];
-  }>;
   renderBell?: React.FunctionComponent<{
     className?: string;
     isOpen: boolean;
     onClick?: (event: React.MouseEvent) => void;
   }>;
-  renderBlocks?: {
-    action?: React.FunctionComponent<IActionBlock>;
-    text?: React.FunctionComponent<ITextBlock>;
-  };
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderIcon?: React.FunctionComponent<{
     isOpen: boolean;
     unreadMessageCount?: number;
   }>;
-  renderMessage?: React.FunctionComponent<IMessage>;
+  renderMessage?: React.FunctionComponent<IInboxMessagePreview>;
   renderNoMessages?: React.FunctionComponent;
 }
