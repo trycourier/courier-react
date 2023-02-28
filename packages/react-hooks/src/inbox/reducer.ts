@@ -157,7 +157,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE: {
       return {
         ...state,
-        unreadMessageCount: action.payload.count,
+        unreadMessageCount: action.payload?.count ?? 0,
       };
     }
 
