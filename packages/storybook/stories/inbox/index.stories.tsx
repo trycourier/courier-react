@@ -1,9 +1,9 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import propsMd from "@trycourier/react-inbox/docs/0.props.md";
-import themeMd from "@trycourier/react-inbox/docs/1.theme.md";
-import renderPropsMd from "@trycourier/react-inbox/docs/2.render-props.md";
-import hooksMd from "@trycourier/react-inbox/docs/3.hooks.md";
+import propsMd from "@trycourier/react-inbox/docs/3.props.md";
+import themeMd from "@trycourier/react-inbox/docs/4.theme.md";
+import renderPropsMd from "@trycourier/react-inbox/docs/5.render-props.md";
+import hooksMd from "@trycourier/react-inbox/docs/4.hooks.md";
 
 import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
