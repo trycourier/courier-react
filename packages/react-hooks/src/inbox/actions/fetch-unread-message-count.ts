@@ -32,10 +32,8 @@ export type FetchUnreadMessageCountDone = {
 };
 
 export const fetchUnreadMessageCountDone = (
-  unreadMessageCount: number
+  payload: FetchUnreadMessageCountDone["payload"]
 ): FetchUnreadMessageCountDone => ({
   type: INBOX_FETCH_UNREAD_MESSAGE_COUNT_DONE,
-  payload: {
-    count: unreadMessageCount,
-  },
+  payload,
 });

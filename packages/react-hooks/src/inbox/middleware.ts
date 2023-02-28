@@ -25,7 +25,7 @@ export default (api) => (store) => (next) => async (action) => {
         status: "unread",
       });
 
-      store.dispatch(fetchUnreadMessageCountDone(result.count));
+      store.dispatch(fetchUnreadMessageCountDone(result));
       break;
     }
   }
