@@ -236,7 +236,7 @@ describe("inbox reducer", () => {
 
       const readMessage = {
         ...mockGraphMessage,
-        read: true,
+        read: new Date(mockDate).toISOString(),
       };
 
       expect(state).toEqual({
@@ -295,7 +295,7 @@ describe("inbox reducer", () => {
   });
 
   describe(`action ${INBOX_MARK_ALL_READ}`, () => {
-    it("will mark all read without tabs", () => {
+    it("will mark all read", () => {
       const state = reducer(
         {
           ...initialState,
@@ -312,11 +312,11 @@ describe("inbox reducer", () => {
         messages: [
           {
             ...mockGraphMessage,
-            read: true,
+            read: new Date(mockDate).toISOString(),
           },
           {
             ...mockGraphMessage,
-            read: true,
+            read: new Date(mockDate).toISOString(),
           },
         ],
       });
