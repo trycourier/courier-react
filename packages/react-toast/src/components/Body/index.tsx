@@ -5,6 +5,45 @@ import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import Markdown from "markdown-to-jsx";
+import styled from "styled-components";
+import deepExtend from "deep-extend";
+import tinycolor2 from "tinycolor2";
+
+const containerStyles = {
+  height: "100%",
+  padding: "0 12px",
+};
+
+const ClickableContainer = styled.a(({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  return deepExtend(
+    {
+      ...containerStyles,
+      display: "flex",
+      "*, &": {
+        "text-decoration": "none",
+      },
+      "&:hover": {
+        background: tcPrimaryColor.setAlpha(0.14),
+      },
+      borderRadius: theme.brand.inapp.toast.borderRadius,
+    },
+    theme.message?.clickableContainer ?? {}
+  );
+});
+
+const NonClickableContainer = styled.div(({ theme }) => {
+  return deepExtend(
+    {
+      ...containerStyles,
+      display: "flex",
+      borderRadius: theme.brand.inapp.toast.borderRadius,
+    },
+    theme.message?.nonClickableContainer ?? {}
+  );
+});
 
 const Body: React.FunctionComponent<
   Omit<IInboxMessagePreview, "title" | "preview"> & {
@@ -63,7 +102,7 @@ const Body: React.FunctionComponent<
       return data.clickAction;
     }
 
-    if (!actions?.length || actions?.length > 1) {
+    if (!actions?.length) {
       return;
     }
 
@@ -90,9 +129,9 @@ const Body: React.FunctionComponent<
     }
   }
 
-  return (
-    <Container>
-      <a {...containerProps}>
+  const renderedMessage = useMemo(() => {
+    return (
+      <>
         {Icon && <Icon data-testid="message-icon" />}
         <Message data-testid="message">
           {title && <Title data-testid="message-title">{title}</Title>}
@@ -104,7 +143,19 @@ const Body: React.FunctionComponent<
             )}
           </TextBlock>
         </Message>
-      </a>
+      </>
+    );
+  }, [title, preview]);
+
+  return (
+    <Container>
+      {containerProps.href ? (
+        <ClickableContainer {...containerProps}>
+          {renderedMessage}
+        </ClickableContainer>
+      ) : (
+        <NonClickableContainer>{renderedMessage}</NonClickableContainer>
+      )}
       <Dismiss data-testid="dismiss" onClick={handleOnClickDismiss}>
         X
       </Dismiss>

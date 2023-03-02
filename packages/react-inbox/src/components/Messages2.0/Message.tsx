@@ -185,7 +185,7 @@ const MessageWrapper: React.FunctionComponent<
       return data.clickAction;
     }
 
-    if (!actions?.length || actions?.length > 1) {
+    if (!actions?.length) {
       return;
     }
 

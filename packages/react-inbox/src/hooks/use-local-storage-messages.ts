@@ -12,12 +12,21 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     unreadMessageCount,
   } = useInbox();
 
+  useEffect(() => {
+    if (!localStorage) {
+      return;
+    }
+
+    // remove old 1.X LS Key
+    localStorage.removeItem(`${clientKey}/${userId}/messages`);
+  }, [clientKey, userId, localStorage]);
+
   const localStorageKey = useMemo(() => {
     if (!clientKey || !userId) {
       return;
     }
 
-    return `${clientKey}/${userId}/messages`;
+    return `${clientKey}/${userId}/inbox`;
   }, [clientKey, userId]);
 
   useEffect(() => {

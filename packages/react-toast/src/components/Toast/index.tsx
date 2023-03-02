@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { toast } from "react-toastify";
 
@@ -15,6 +15,8 @@ import reducer from "~/reducer";
 import { IToastConfig } from "~/types";
 import { useListenForTransportEvent } from "~/hooks";
 import Body from "~/components/Body";
+import deepExtend from "deep-extend";
+import { themeDefaults } from "~/constants";
 
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
@@ -24,7 +26,6 @@ export const Toast: React.FunctionComponent<
   }
 > = (props) => {
   const courierContext = useCourier();
-  const config = props.config ?? props;
 
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
@@ -37,7 +38,14 @@ export const Toast: React.FunctionComponent<
     brand: courierBrand,
   } = courierContext;
 
-  const brand = config?.brand ?? courierBrand;
+  const brand = props?.brand ?? courierBrand;
+
+  const theme = useMemo(() => {
+    return {
+      ...props.theme,
+      brand: deepExtend({}, themeDefaults, brand),
+    };
+  }, [props.theme, brand]);
 
   const handleToast = useCallback(
     (message: IInboxMessagePreview | string) => {
@@ -55,17 +63,17 @@ export const Toast: React.FunctionComponent<
           icon={
             typeof message?.icon === "string"
               ? message.icon
-              : typeof config?.defaultIcon === "string"
-              ? config.defaultIcon
+              : typeof props?.defaultIcon === "string"
+              ? props.defaultIcon
               : undefined
           }
         />,
         {
-          role: config?.role ?? "status",
+          role: props?.role ?? "status",
         }
       );
     },
-    [config]
+    [props]
   );
 
   useEffect(() => {
@@ -76,32 +84,27 @@ export const Toast: React.FunctionComponent<
     dispatch({
       type: "toast/INIT",
       payload: {
-        config,
+        config: props,
         toast: handleToast,
       },
     });
-  }, [config, dispatch, handleToast]);
+  }, [props, dispatch, handleToast]);
 
   useListenForTransportEvent(clientKey, transport, handleToast);
 
-  const autoClose = config?.autoClose ?? brand?.inapp?.toast?.timerAutoClose;
+  const autoClose = props?.autoClose ?? brand?.inapp?.toast?.timerAutoClose;
 
   return (
     <>
       <GlobalStyle />
-      <ThemeProvider
-        theme={{
-          ...props.theme,
-          brand: props.brand ?? brand,
-        }}
-      >
+      <ThemeProvider theme={theme}>
         <ToastStyled
           data-testid="crt-toast-container"
           closeButton={false}
           closeOnClick={false}
           autoClose={autoClose ? Number(autoClose) : undefined}
-          {...config}
-          transition={getTransition(config?.transition)}
+          {...props}
+          transition={getTransition(props?.transition)}
         />
       </ThemeProvider>
     </>

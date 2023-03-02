@@ -11,7 +11,7 @@ export const iconStyles = ({ theme }) =>
       maxHeight: "40px !important",
       maxWidth: "40px !important",
       path: {
-        fill: theme?.brand?.colors?.primary ?? "#9121c2",
+        fill: theme?.brand?.colors?.primary,
       },
     },
     theme?.message?.icon
@@ -31,7 +31,7 @@ export const Dismiss = styled.button(({ theme }) =>
       width: 30,
       height: 30,
       zIndex: 50,
-      color: theme?.brand?.colors?.primary ?? "#9121c2",
+      color: theme?.brand?.colors?.primary,
       background: "rgba(255, 255, 255, 0.8)",
       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
       transition: "opacity 100ms ease-in",
@@ -48,14 +48,8 @@ export const Dismiss = styled.button(({ theme }) =>
 );
 
 export const Container = styled.div`
-  a {
-    display: flex;
-  }
-
-  padding: 0 12px;
   width: 100%;
   position: relative;
-  border-radius: 5px;
 
   &:hover ${Dismiss} {
     opacity: 1;
@@ -72,6 +66,7 @@ export const Message = styled.div(({ theme }) =>
       lineHeight: "14px",
       alignSelf: "center",
       color: "#73819B",
+      overflow: "hidden",
     },
     theme?.message?.contents
   )
@@ -109,6 +104,10 @@ export const TextBlock = styled.div(({ theme }) =>
       lineHeight: "16px",
       letterSpacing: "0em",
       textAlign: "left",
+      whiteSpace: "pre-wrap",
+      p: {
+        margin: 0,
+      },
     },
     theme.message?.textBlock
   )
@@ -123,7 +122,7 @@ export const ActionBlock = styled.div(({ theme }) =>
         border: "none",
         fontSize: 12,
         color: "white",
-        backgroundColor: theme?.brand?.colors?.primary ?? "#9121c2",
+        backgroundColor: theme?.brand?.colors?.primary,
         padding: "6px 15px",
         marginTop: 3,
         boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",

@@ -1,5 +1,5 @@
 export { default as Toast } from "./Toast";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useMemo } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import toastCss from "react-toastify/dist/ReactToastify.css";
 import {
@@ -11,6 +11,8 @@ import { Theme } from "../types";
 
 import Body from "./Body";
 import { toastStyles } from "./Toast/styled";
+import deepExtend from "deep-extend";
+import { themeDefaults } from "~/constants";
 
 const Styled = styled.div(toastStyles);
 const GlobalStyle = createGlobalStyle`${toastCss}`;
@@ -24,19 +26,20 @@ export const ToastBody: React.FunctionComponent<
   }
 > = ({ theme, ...props }) => {
   const { brand: remoteBrand } = useCourier();
-
   props.brand = props.brand ?? remoteBrand;
   props.icon = props.icon ?? props?.brand?.inapp?.icons?.message;
+
+  theme = useMemo(() => {
+    return {
+      ...theme,
+      brand: deepExtend({}, themeDefaults, props.brand),
+    };
+  }, [theme, props.brand]);
 
   return (
     <>
       <GlobalStyle />
-      <ThemeProvider
-        theme={{
-          ...theme,
-          brand: props.brand,
-        }}
-      >
+      <ThemeProvider theme={theme}>
         <Styled
           className="Toastify__toast-container"
           style={{

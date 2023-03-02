@@ -10,7 +10,7 @@ export interface IElementalInbox {
   isLoading?: boolean;
   isOpen?: boolean;
   lastMessagesFetched?: number;
-  messages?: Array<IElementalInboxMessagePreview>;
+  messages?: Array<IInboxMessagePreview>;
   startCursor?: string;
   unreadMessageCount?: number;
   view?: "messages" | "preferences";
