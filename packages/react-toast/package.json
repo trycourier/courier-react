@@ -28,7 +28,8 @@
     "markdown-to-jsx": "^7.1.7",
     "react-toastify": "^6.2.0",
     "rimraf": "^3.0.2",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "tinycolor2": "^1.4.2"
   },
   "peerDependencies": {
     "@trycourier/react-provider": "^1.48.1",

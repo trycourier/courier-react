@@ -19,45 +19,6 @@ export const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
     )
 );
 
-export const DismissInbox = styled.button(({ theme }) =>
-  deepExtend(
-    {
-      border: "none",
-      borderRadius: "50%",
-      position: "absolute",
-      top: 6,
-      right: 8,
-      cursor: "pointer",
-      width: 42,
-      height: 42,
-      background: "rgba(115, 129, 155, 0.6)",
-      color: "white",
-      transition: "background 100ms ease-in",
-
-      "&:hover": {
-        background: "rgba(115, 129, 155, 0.8)",
-      },
-    },
-    theme?.dismissInbox
-  )
-);
-
-export const MessageListContainer = styled.div<{ isMobile?: boolean }>(
-  ({ theme }) =>
-    deepExtend(
-      {
-        background:
-          theme.brand?.inapp?.widgetBackground?.topColor &&
-          theme.brand?.inapp?.widgetBackground?.bottomColor
-            ? `linear-gradient(180deg, ${theme.brand?.inapp?.widgetBackground?.topColor} 0%, ${theme.brand?.inapp?.widgetBackground?.bottomColor} 100%)`
-            : theme.brand?.colors?.secondary ?? "#9121c2",
-        padding: 17,
-        paddingBottom: 0,
-      },
-      theme?.container
-    )
-);
-
 export const MessageList = styled.div<{ isMobile?: boolean }>(
   ({ isMobile, theme }) => {
     const defaultHeight = 392;
@@ -98,31 +59,6 @@ export const Header = styled.div(({ theme }) =>
       lineHeight: "25px",
     },
     theme?.header
-  )
-);
-
-export const MarkAllAsRead = styled.a`
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 19px;
-  letter-spacing: 0em;
-  color: #9121c2;
-`;
-
-export const Empty = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      fontSize: "18px",
-      fontStyle: "normal",
-      fontWeight: 700,
-      lineHeight: "25px",
-      letterSpacing: "0em",
-      textAlign: "center",
-      color: theme?.brand?.inapp?.emptyState?.textColor ?? "white",
-      margin: "auto",
-    },
-    theme?.emptyState
   )
 );
 

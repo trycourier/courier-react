@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  ToastProvider,
-  Toast,
-  useToast,
-  ToastBody,
-} from "@trycourier/react-toast";
+import { Toast, useToast, ToastBody } from "@trycourier/react-toast";
 import { CourierProvider } from "@trycourier/react-provider";
 
 import { Button } from "./styled";
@@ -22,9 +17,9 @@ export function Default({
   bodyText: string;
 }): React.ReactElement {
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="abc" userId="123">
       <ToastBody
-        body={bodyText}
+        preview={bodyText}
         title="Title"
         brand={{
           inapp: {
@@ -49,10 +44,10 @@ export function CustomTitleAndBody(): React.ReactElement {
     console.log("click");
   };
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="abc" userId="123">
       <ToastBody
         onClick={handleOnClick}
-        body={<h3>Hello World</h3>}
+        preview={<h3>Hello World</h3>}
         title={<h1>Title</h1>}
         brand={{
           inapp: {
@@ -71,35 +66,22 @@ export function CustomTitleAndBody(): React.ReactElement {
   );
 }
 
-export function WithBlocks(): React.ReactElement {
+export function WithAction(): React.ReactElement {
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="abc" userId="123">
       <ToastBody
-        blocks={[
+        actions={[
           {
-            type: "text",
-            text: "Hello World",
-          },
-          {
-            type: "text",
-            text: "**markdown** wooo _italic_ ~~strikethrough~~",
-          },
-          {
-            type: "text",
-            text: "links work [click me](https://www.courier.com)",
-          },
-          {
-            type: "action",
-            text: "View Details",
+            content: "View Details",
             openInNewTab: false,
-            url: "https://www.courier.com",
+            href: "https://www.courier.com",
           },
           {
-            type: "action",
-            text: "View Details2",
-            url: "https://www.courier.com",
+            content: "View Details2",
+            href: "https://www.courier.com",
           },
         ]}
+        preview="hello world"
         title="This is a really long title lalalalalala"
       />
     </CourierProvider>
@@ -108,9 +90,9 @@ export function WithBlocks(): React.ReactElement {
 
 export function MultiLineMessage(): React.ReactElement {
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="abc" userId="123">
       <ToastBody
-        body="This is a really long message lalalalalalalalalalalala lalalalalala"
+        preview="This is a really long message lalalalalalalalalalalala lalalalalala"
         title="This is a really long title lalalalalala lalalalalala lalalalalala"
       />
     </CourierProvider>
@@ -124,7 +106,7 @@ export function WithCourierProvider(): React.ReactElement {
   }
 
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="abc" userId="123">
       <Toast
         brand={{
           inapp: {
@@ -154,20 +136,17 @@ export function NoIcon({ bodyText }: { bodyText: string }): React.ReactElement {
   function DefaultComponent({ body }: { body: string }) {
     const [toast] = useToast();
     return (
-      <Button onClick={() => toast({ body, title: "Title" })}>
+      <Button onClick={() => toast({ preview: body, title: "Title" })}>
         Show Toast
       </Button>
     );
   }
 
   return (
-    <ToastProvider
-      config={{
-        defaultIcon: false,
-      }}
-    >
+    <CourierProvider clientKey="abc" userId="123">
+      <Toast defaultIcon={false} />
       <DefaultComponent body={bodyText} />
-    </ToastProvider>
+    </CourierProvider>
   );
 }
 
@@ -179,21 +158,17 @@ export function NoAutoClose({
   function DefaultComponent({ body }: { body: string }) {
     const [toast] = useToast();
     return (
-      <Button onClick={() => toast({ body, title: "Title" })}>
+      <Button onClick={() => toast({ preview: body, title: "Title" })}>
         Show Toast
       </Button>
     );
   }
 
   return (
-    <ToastProvider
-      clientKey="client-key"
-      config={{
-        autoClose: false,
-      }}
-    >
+    <CourierProvider clientKey="abc" userId="123">
+      <Toast autoClose={false} />
       <DefaultComponent body={bodyText} />
-    </ToastProvider>
+    </CourierProvider>
   );
 }
 
@@ -205,7 +180,7 @@ export function WithClickAction({
   function DefaultComponent({ body }: { body: string }) {
     const notification = {
       title: "Courier",
-      body,
+      preview: body,
       data: {
         clickAction: "https://app.courier.com",
         clickedUrl: "https://example.com/e/clicked",
@@ -220,8 +195,9 @@ export function WithClickAction({
   }
 
   return (
-    <ToastProvider>
+    <CourierProvider clientKey="abc" userId="123">
+      <Toast />
       <DefaultComponent body={bodyText} />
-    </ToastProvider>
+    </CourierProvider>
   );
 }

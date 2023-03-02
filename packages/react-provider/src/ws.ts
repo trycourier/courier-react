@@ -6,6 +6,7 @@ import {
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
 
+const SUBSCRIPTION_VERSION = 4;
 export class WS {
   connection?: ReconnectingWebSocket;
   private subscriptions: Array<{
@@ -124,7 +125,7 @@ export class WS {
           clientKey: this.clientKey,
           event: sub.event,
           userSignature: this.userSignature,
-          version: "3",
+          version: SUBSCRIPTION_VERSION,
         },
       });
     }
@@ -173,11 +174,11 @@ export class WS {
         action: "subscribe",
         data: {
           channel,
-          clientSourceId: this.clientSourceId,
           clientKey: this.clientKey,
+          clientSourceId: this.clientSourceId,
           event,
           userSignature: this.userSignature,
-          version: "3",
+          version: SUBSCRIPTION_VERSION,
         },
       });
     }
@@ -200,11 +201,11 @@ export class WS {
     this.send({
       action: "unsubscribe",
       data: {
-        version: "3",
         channel,
-        event,
         clientKey: this.clientKey,
+        event,
         userSignature: this.userSignature,
+        version: SUBSCRIPTION_VERSION,
       },
     });
   }
@@ -219,8 +220,8 @@ export class WS {
     this.send({
       action: "renewSession",
       data: {
-        version: "3",
         auth: newAuthorization,
+        version: SUBSCRIPTION_VERSION,
       },
     });
   }
