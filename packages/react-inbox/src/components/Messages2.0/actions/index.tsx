@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import { useInbox } from "@trycourier/react-hooks";
 
-import { TimeAgo } from "~/components/Message/styled";
+import { TimeAgo } from "~/components/Messages2.0/styled";
 import useHover from "~/hooks/use-hover";
 
 import CloseAction from "./Close";

@@ -50,7 +50,7 @@ export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
   )
 );
 
-export const TextBlock = styled.div(({ theme }) =>
+export const TextElement = styled.div(({ theme }) =>
   deepExtend(
     {
       color: "rgb(28, 39, 58) ",
@@ -69,37 +69,7 @@ export const TextBlock = styled.div(({ theme }) =>
         margin: 0,
       },
     },
-    theme.message?.textBlock
-  )
-);
-
-export const ActionBlock = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      a: {
-        display: "inline-block",
-        cursor: "pointer",
-        border: "none",
-        fontSize: 12,
-        color: "white",
-        backgroundColor: theme?.brand?.colors?.primary ?? "#9121C2",
-        padding: "6px 15px",
-        marginTop: 3,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-        textDecoration: "none",
-        "&:active": {
-          boxShadow: "none",
-        },
-
-        "&:hover": {
-          color: "#73819B",
-          background: "rgb(0 0 0 / 10%)",
-        },
-
-        borderRadius: 4,
-      },
-    },
-    theme?.message?.actionBlock
+    theme.message?.textElement
   )
 );
 
@@ -183,3 +153,107 @@ export const getIcon = (icon?: false | string, big?: boolean) => {
     return <CourierIcon />;
   }, [icon]);
 };
+
+export const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
+  ({ theme, isMobile }) =>
+    deepExtend(
+      {
+        ...(isMobile
+          ? {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+            }
+          : {}),
+      },
+      theme?.container
+    )
+);
+
+export const MessageList = styled.div<{ isMobile?: boolean }>(
+  ({ isMobile, theme }) => {
+    const defaultHeight = 392;
+
+    const height = (() => {
+      if (!isMobile) {
+        return defaultHeight;
+      }
+
+      return `Calc(100vh - 205px)`;
+    })();
+
+    return deepExtend(
+      {
+        background: "rgba(255, 255, 255, 0.2)",
+        overflow: "scroll",
+        display: "flex",
+        height,
+        maxHeight: height,
+        flexDirection: "column",
+        borderTop: "1px solid rgba(203,213,224,.5)",
+      },
+      theme?.messageList?.container
+    );
+  }
+);
+
+export const Header = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      padding: "18px 20px 12px 20px",
+      userSelect: "none",
+      display: "flex",
+      color: "#24324b",
+      justifyContent: "space-between",
+      fontSize: "18px",
+      fontWeight: "700",
+      lineHeight: "25px",
+    },
+    theme?.header
+  )
+);
+
+export const Footer = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      alignItems: "center",
+      background: "white",
+      display: "flex",
+      fontSize: "10px",
+      fontStyle: "normal",
+      letterSpacing: ".1rem",
+      position: "relative",
+      zIndex: 1,
+      boxShadow: "0 14px 11px 18px #3445632e",
+      fontWeight: "700",
+      height: 45,
+      justifyContent: "center",
+      paddingRight: 18,
+      svg: {
+        marginTop: 2,
+        marginLeft: -1,
+      },
+
+      a: {
+        display: "inherit",
+        color: "#B9C0CD",
+      },
+    },
+    theme?.footer
+  )
+);
+
+export const Line = styled.div(({ theme }) => ({
+  backgroundColor: theme?.brand?.colors?.primary ?? "#9121c2",
+  height: "4px",
+  flex: 1,
+  opacity: "0.18",
+  ":first-child": {
+    marginRight: "15px",
+  },
+  ":last-child": {
+    marginLeft: "15px",
+  },
+}));

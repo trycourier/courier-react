@@ -15,6 +15,7 @@ function useHover(cb?: (event: Event) => boolean | void) {
     () => {
       const node = ref.current;
       if (node) {
+        node.addEventListener("focus", handleMouseOver);
         node.addEventListener("mouseenter", handleMouseOver);
         node.addEventListener("mouseleave", handleMouseOut);
         return () => {

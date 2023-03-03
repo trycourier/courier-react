@@ -40,26 +40,10 @@ interface IInboxActions {
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox: IInbox) => void;
   markAllAsRead: (fromWS?: boolean) => void;
-  markMessageArchived: (
-    messageId: string,
-    trackingId?: string,
-    fromWS?: boolean
-  ) => Promise<void>;
-  markMessageRead: (
-    messageId: string,
-    trackingId?: string,
-    fromWS?: boolean
-  ) => Promise<void>;
-  markMessageUnread: (
-    messageId: string,
-    trackingId?: string,
-    fromWS?: boolean
-  ) => Promise<void>;
-  markMessageOpened: (
-    messageId: string,
-    trackingId?: string,
-    fromWS?: boolean
-  ) => Promise<void>;
+  markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
   rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
   setView: (view: "messages" | "preferences") => void;
@@ -187,25 +171,25 @@ const useInboxActions = (): IInboxActions => {
         await inboxClient.markAllRead();
       }
     },
-    markMessageRead: async (messageId, _trackingId, fromWS) => {
+    markMessageRead: async (messageId, fromWS) => {
       dispatch(markMessageRead(messageId));
       if (!fromWS) {
         await inboxClient.markRead(messageId);
       }
     },
-    markMessageUnread: async (messageId, _trackingId, fromWS) => {
+    markMessageUnread: async (messageId, fromWS) => {
       dispatch(markMessageUnread(messageId));
       if (!fromWS) {
         await inboxClient.markUnread(messageId);
       }
     },
-    markMessageOpened: async (messageId, _trackingId, fromWS) => {
+    markMessageOpened: async (messageId, fromWS) => {
       dispatch(markMessageOpened(messageId));
       if (!fromWS) {
         await inboxClient.markOpened(messageId);
       }
     },
-    markMessageArchived: async (messageId, _trackingId, fromWS) => {
+    markMessageArchived: async (messageId, fromWS) => {
       dispatch(markMessageArchived(messageId));
       if (!fromWS) {
         await inboxClient.markArchive(messageId);

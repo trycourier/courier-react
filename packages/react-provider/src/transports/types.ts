@@ -46,5 +46,5 @@ export interface ICourierEvent {
 export type ICourierEventCallback = (event: ICourierEvent) => void;
 
 export type Interceptor = (
-  message?: IInboxMessagePreview | ICourierEventMessage | IInboxMessagePreview
+  message?: ICourierEventMessage | IInboxMessagePreview
 ) => IInboxMessagePreview | ICourierEventMessage | undefined;

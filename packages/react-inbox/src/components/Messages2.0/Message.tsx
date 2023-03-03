@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
-import { TextBlock, getIcon, Title } from "../Message/styled";
+import { TextElement, getIcon, Title } from "./styled";
 import { InboxProps } from "../../types";
 
 import { getTimeAgoShort } from "~/lib";
@@ -108,7 +108,9 @@ const Message: React.FunctionComponent<{
       {renderedIcon}
       <Contents>
         <Title read={read}>{title}</Title>
-        <TextBlock>{preview ? <Markdown>{preview}</Markdown> : null}</TextBlock>
+        <TextElement>
+          {preview ? <Markdown>{preview}</Markdown> : null}
+        </TextElement>
       </Contents>
     </MessageContainer>
   );
