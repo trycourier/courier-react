@@ -3,14 +3,6 @@ import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
 
-type IView = {
-  filters: {
-    isRead?: boolean;
-  };
-  label: string;
-  id: string;
-};
-
 export interface InboxProps {
   brand?: Brand;
   className?: string;
@@ -30,7 +22,6 @@ export interface InboxProps {
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
-  views?: Array<IView>;
   theme?: {
     container?: React.CSSProperties;
     footer?: React.CSSProperties;
@@ -53,10 +44,6 @@ export interface InboxProps {
       icon?: React.CSSProperties;
       title?: React.CSSProperties;
       unreadIndicator?: React.CSSProperties;
-    };
-    tabList?: {
-      container?: React.CSSProperties;
-      tab?: React.CSSProperties;
     };
     root?: React.CSSProperties;
     unreadIndicator?: React.CSSProperties;

@@ -32,7 +32,7 @@ export const ToastBody: React.FunctionComponent<
   theme = useMemo(() => {
     return {
       ...theme,
-      brand: deepExtend({}, themeDefaults, props.brand),
+      brand: deepExtend({}, themeDefaults, props.brand ?? {}),
     };
   }, [theme, props.brand]);
 
