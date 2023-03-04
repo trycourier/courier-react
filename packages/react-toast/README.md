@@ -2,11 +2,14 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [What is Toast?](#what-is-toast)
-  - [What is a `toast`?](#what-is-a-toast)
-  - [How does @trycourier/react-toast work?](#how-does-trycourierreact-toast-work)
+- [How does it work?](#how-does-it-work)
+- [3.X Breaking Changes](#3x-breaking-changes)
+  - [Message Interface](#message-interface)
+  - [[2.X]](#2x)
 - [Client Install](#client-install)
 - [Courier Integration](#courier-integration)
 - [Client Setup](#client-setup)
+- [Using Courier's API](#using-couriers-api)
 - [Props](#props)
 - [Theme](#theme)
 - [Using Hook](#using-hook)
@@ -15,15 +18,13 @@
 
 <a name="1overviewmd"></a>
 
-## What is Toast?
+## [What is Toast?](#what-is-toast)
 
 Toast aims to be the easiest way to create in-app notifications. With a simple integration and straight forward API we make it easy for anyone to integrate fast.
 
-### What is a `toast`?
+Toast is a buzz word for a notification that happens in-app and slides in or pops up. The appearance is usually that of a rectangle in the top right of an application.
 
-A toast is just a buzz word for a notification that happens in-app. The appearance is usually that of a rectangle (which is where the toast name comes from).
-
-### How does @trycourier/react-toast work?
+## [How does it work?](#how-does-it-work)
 
 There are two ways to use this library:
 
@@ -34,9 +35,41 @@ You can use the [Courier Push integration](https://app.courier.com/integrations/
 
 A channel/event combination is simply a stream on which a particular client is listening for toast notifications. A client must be subscribed to a channel and event in order to receive a notification.
 
-If you do not need a push provider such as Courier you can skip ahead to instructions on how to use the standalone toast <a href="#using-hook">interface<a>
+## [3.X Breaking Changes](#3x-breaking-changes)
 
-Below is a step by step setup to use `@trycourier/react-toast` using Courier as a Push Provider.
+We've implemented a new API which has a little bit different format for the messages that come through the websocket and this in turn means some of the function calls and hooks have a different API.
+
+### Message Interface
+
+The format of the message has changd, so if you have any code that utilizes any of the following you will need to update:
+
+1. Interacting with `useToast`
+2. Intercepting messages with Courier Provider prop onMessage
+3. Implemented `renderMessage` or `renderAction`
+
+This is a contrived example of the changes:
+
+> Note we are utilized our new [elemental](https://www.courier.com/docs/elemental/elements/) standard:
+
+```ts
+interface OldMessage {
+  title: string;
+  body: string;
+  blocks: Array<TextBlock | ActionBlock>;
+}
+
+interface NewMessage {
+  title: string;
+  preview: string;
+  actions: Array<ActionElement>;
+}
+```
+
+The new toast component also does _not_ show any buttons. The actual toast is clickable and will highlight a background color to let users know it has a link associated with it.
+
+### [2.X]
+
+You can revert and use the 2.X releases to prevent having the above breaking changes. You will need both `@trycourier/react-toast` and `@trycourier/react-provider` to be on the same 2.X version.
 
 <a name="2installationmd"></a>
 
@@ -48,23 +81,76 @@ yarn add @trycourier/react-toast
 
 ## [Courier Integration](#courier-integration)
 
-We will need to install the [Courier Push Provider](https://app.courier.com/integrations/courier) to trigger a toast from an API request.
+We will need to install the [Courier Push Integration](https://app.courier.com/integrations/courier) to trigger a toast from an API request.
 Make sure to copy the Client Key from the integration page after installing.
 
 ![image](https://user-images.githubusercontent.com/16184018/109491559-8f8ee600-7a3e-11eb-9aa4-742639274fde.png)
 
-Next, create your notification on the Courier Push Designer
+## [Client Setup](#client-setup)
 
-![image](https://user-images.githubusercontent.com/16184018/109492317-a41fae00-7a3f-11eb-9368-fd424699d640.png)
+Now that you have a notification ready to be sent lets setup the client to listen for the notification and invoke it when triggered. Pass your userId and clientKey into your CourierProvider and we will handle all of the network connections
 
-Once your notification is created, you also have the option to map an EVENT_ID to a specific notification. This will allow you to use the Courier Designer for test sending.
-To do this access the settings pane near the top left corner next to the "Notifications" label. Navigate to "Events" and select an event or create a new one to send the toast on.
+```js
+import { CourierProvider } from "@trycourier/react-provider";
+import { Toast } from "@trycourier/react-toast";
 
-![image](https://user-images.githubusercontent.com/16184018/109494158-5d7f8300-7a42-11eb-96e8-078023daa14d.png)
+const App: React.FunctionComponent = () => {
+  return (
+    <CourierProvider userId={USER_ID} clientKey={CLIENT_KEY}>
+      <Toast />
+    </CourierProvider>
+  );
+};
+```
 
-## Client Setup
+## Using Courier's API
 
-Now that you have a notification ready to be sent lets setup the client to listen for the notification and invoke it when triggered.
+Now that we have the Courier Provider installed and we have our React application listening to messages, we can trigger a send to the Courier API.
+
+```js
+import { CourierClient } from "@trycourier/courier";
+
+const courier = CourierClient({
+  authorizationToken: process.env.COURIER_AUTH_TOKEN,
+});
+
+await courier.send({
+	"message": {
+		"to": {
+			"user_id": "USER_ID"
+		},
+		"content": {
+      "title": "Hello World",
+      "body": "{{foo}}"
+    }
+		"data": {
+			"foo": "bar",
+		},
+	}
+});
+```
+
+If you want to use the [template designer](https://app.courier.com/designer) an api call would instead look like the following:
+
+```js
+import { CourierClient } from "@trycourier/courier";
+
+const courier = CourierClient({
+  authorizationToken: process.env.COURIER_AUTH_TOKEN,
+});
+
+await courier.send({
+  message: {
+    to: {
+      user_id: "USER_ID",
+    },
+    template: "TEMPLATE_ID",
+    data: {
+      foo: "bar",
+    },
+  },
+});
+```
 
 <a name="3propsmd"></a>
 
@@ -105,7 +191,6 @@ interface ITheme {
   toast?: React.CSSProperties;
   dismiss?: React.CSSProperties;
   message?: {
-    actionBlock?: React.CSSProperties;
     textBlock?: React.CSSProperties;
     body?: React.CSSProperties;
     contents?: React.CSSProperties;
@@ -132,10 +217,10 @@ import { Toast, useToast } from "@trycourier/react-toast";
 
 const MyComponent: React.FunctionComponent = () => {
   //We can access this because the parent is a `CourierProvider`
-  const [show] = useToast();
+  const [toast] = useToast();
 
   return (
-    <button onClick={() => show("You just made a notification 🎉")}></button>
+    <button onClick={() => toast("You just made a notification 🎉")}></button>
   );
 };
 

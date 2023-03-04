@@ -92,7 +92,7 @@ export const Title = styled.div(({ theme }) =>
   )
 );
 
-export const TextBlock = styled.div(({ theme }) =>
+export const TextElement = styled.div(({ theme }) =>
   deepExtend(
     {
       color: "#73819B",
@@ -109,36 +109,6 @@ export const TextBlock = styled.div(({ theme }) =>
         margin: 0,
       },
     },
-    theme.message?.textBlock
-  )
-);
-
-export const ActionBlock = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      a: {
-        display: "inline-block",
-        cursor: "pointer",
-        border: "none",
-        fontSize: 12,
-        color: "white",
-        backgroundColor: theme?.brand?.colors?.primary,
-        padding: "6px 15px",
-        marginTop: 3,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-        textDecoration: "none",
-        "&:active": {
-          boxShadow: "none",
-        },
-
-        "&:hover": {
-          color: "#73819B",
-          background: "rgb(0 0 0 / 10%)",
-        },
-
-        borderRadius: 4,
-      },
-    },
-    theme?.message?.actionBlock
+    theme.message?.textElement
   )
 );

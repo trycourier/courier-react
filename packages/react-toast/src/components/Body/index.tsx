@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
 import { toast, ToastProps } from "react-toastify";
-import { Container, Message, Title, TextBlock, Dismiss } from "./styled";
+import { Container, Message, Title, TextElement, Dismiss } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
@@ -135,13 +135,13 @@ const Body: React.FunctionComponent<
         {Icon && <Icon data-testid="message-icon" />}
         <Message data-testid="message">
           {title && <Title data-testid="message-title">{title}</Title>}
-          <TextBlock data-testid="message-body">
+          <TextElement data-testid="message-body">
             {typeof preview === "string" ? (
               <Markdown>{preview as string}</Markdown>
             ) : (
               preview
             )}
-          </TextBlock>
+          </TextElement>
         </Message>
       </>
     );
