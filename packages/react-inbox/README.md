@@ -1,8 +1,9 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [New Inbox Styling](#new-inbox-styling)
 - [What is Inbox?](#what-is-inbox)
+  - [3.X Breaking Changes:](#3x-breaking-changes)
+  - [Message Interface](#message-interface)
 - [Installation](#installation)
   - [Courier Provider](#courier-provider)
 - [Authentication](#authentication)
@@ -18,21 +19,34 @@
 
 <a name="0overviewmd"></a>
 
-## New Inbox Styling
+## [What is Inbox?](#what-is-inbox)
 
-2022-02-27: We've released a new styling of Inbox (seen below). The new Inbox is streamlined and simplified and focuses on a single list of messages instead of the multi tabbed approach. There should be no changes required of you to utilize these new designs.
+Inbox is a React component that you can add to your application and show a user a list of recent messages they have received. Each message supports the following events:
 
-Breaking Changes:
+1. `Opened`
+   When the Inbox is opened and a message is in view, we will fire off `opened` events. One event per message. We will not send > 1 opened per message.
+2. `Read/Unread`
 
-- New Default UI Styling (See Below)
+   ![image](https://user-images.githubusercontent.com/7017640/207160891-c4c7d339-d88d-40eb-af70-700a2db13824.png)
 
-_Classic Theme:_
-![image](https://user-images.githubusercontent.com/7017640/207160099-5f0d1229-4832-4c41-be3f-a0873fafba46.png)
+   ![image](https://user-images.githubusercontent.com/7017640/207160948-b2df9e76-c6f2-4d88-9eb7-6efc4ed8905d.png)
+
+3. `Clicked`
+   If a message has a click action associated with it, we will track clicks in the Courier Studio. The message will have a hover effect if the message is clickable as seen below.
+
+   ![image](https://user-images.githubusercontent.com/7017640/207162041-56161fdc-443e-49df-9040-7c0eb3c1f9ef.png)
+
+4. `Archive`
+
+   ![image](https://user-images.githubusercontent.com/7017640/207161575-3731bad0-1677-485f-b927-df08b2388155.png)
+
+### [3.X Breaking Changes](#3x-breaking-changes):
+
+The _classic_ styling of the inbox has been deprecated. You can find more information about the old styling [here](https://github.com/trycourier/courier-react/tree/v2.0.1/packages/react-inbox). In summary, you can access the old styling and non-breaking changes by installing the 2.0.1 version linked above for `@trycourier/react-inbox` and `@trycourier/react-provider`.
 
 _Updated Theme:_
-![image](https://user-images.githubusercontent.com/7017640/207160274-ade22e0d-e919-4b4b-af27-f06cdd26b47d.png)
 
-> To opt out of the new theme, pass `theme.name === 'classic'` as a property to you <Inbox /> component
+![image](https://user-images.githubusercontent.com/7017640/207160274-ade22e0d-e919-4b4b-af27-f06cdd26b47d.png)
 
 Some of the main differences are the following:
 
@@ -40,20 +54,45 @@ Some of the main differences are the following:
 2.  Messages with one action block will now be clickable instead of rendering a button. There is a hover effect on the message to let the user know they can click on the entire message.
 3.  Archiving is message is now available via the UI
 
-## What is Inbox?
+### [Message Interface](#message-interface)
 
-Inbox is a React component that you can add to your application and show a user a list of recent messages they have received. Each message supports the following events:
+The format of the message has changd, so if you have any code that utilizes any of the following you will need to update:
 
-1. `Opened`
-   When the Inbox is opened and a message is in view, we will fire off `opened` events. One event per message. We will not send > 1 opened per message.
-2. `Read/Unread`
-   ![image](https://user-images.githubusercontent.com/7017640/207160891-c4c7d339-d88d-40eb-af70-700a2db13824.png)
-   ![image](https://user-images.githubusercontent.com/7017640/207160948-b2df9e76-c6f2-4d88-9eb7-6efc4ed8905d.png)
-3. `Clicked`
-   If a message has a click action associated with it, we will track clicks in the Courier Studio. The message will have a hover effect if the message is clickable as seen below.
-   ![image](https://user-images.githubusercontent.com/7017640/207162041-56161fdc-443e-49df-9040-7c0eb3c1f9ef.png)
-4. `Archive`
-   ![image](https://user-images.githubusercontent.com/7017640/207161575-3731bad0-1677-485f-b927-df08b2388155.png)
+1. Interacting with `useInbox`. See
+2. Intercepting messages with Courier Provider prop onMessage
+3. Implemented `renderMessage` or `renderAction`
+
+This is a contrived example of the changes:
+
+> Note we are utilized our new [elemental](https://www.courier.com/docs/elemental/elements/) standard:
+
+```ts
+interface ActionBlock {
+  type: "text";
+  text: string;
+  url: string;
+}
+
+interface OldMessage {
+  title: string;
+  body: string;
+  read?: boolean;
+  blocks: Array<TextBlock | ActionBlock>;
+}
+
+interface ActionElement {
+  type: "text";
+  content: string;
+  href: string;
+}
+
+interface NewMessage {
+  title: string;
+  preview: string;
+  read?: string;
+  actions: Array<ActionElement>;
+}
+```
 
 <a name="1installationmd"></a>
 

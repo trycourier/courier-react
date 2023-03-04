@@ -1,14 +1,39 @@
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/trycourier/courier-react/Test?label=Unit%20Tests)
-[![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg?label=Stability)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-[![codecov](https://codecov.io/gh/trycourier/courier-react/branch/main/graph/badge.svg?token=NVTDWY9UH4)](https://codecov.io/gh/trycourier/courier-react)
-
 ## What is `courier-react`?
 
 This repository, also called **In-App**, is a set of features and components that can work inside our customers websites. Courier is a powerful application but integrating all of the features into your frontend manually can be overwhelming and time consuming. This is where In-App steps up and can superpower your application by providing Realtime Messaging (Toast), an Inbox, Notification Preferences, and many more coming soon!
 
 ## Embedded Integration
 
-Want to use packages with other frameworks/libraries? Check out how to do [Embedded Integration](https://www.courier.com/docs/guides/providers/in-app/courier-push/#embedded-integration)
+Want to use packages with other frameworks/libraries like _angular_ or _vue_? Check out how to do [Embedded Integration](https://www.courier.com/docs/guides/providers/in-app/courier-push/#embedded-integration)
+
+## 2.0 and 3.0 Releases
+
+We've recently created both 2.X and 3.X releases related to this monorepository. This is because we've migrated to a new simpler, streamlined style for our components and there are breaking changes with _props_ and _api_. Below is a short description of each of our versions:
+
+### 1.X
+
+The 1.X versions will consist of our old UX, and use our legacy APIs. If you are a _free_ tier customer your data retention on 1.X will be limited to 30 days and subject to change.
+
+### 2.X
+
+We introduced a new _theme_ that makes the UX smaller and simplifies the UX. Some of the notable changes are:
+
+1. Single list design - no more tabs
+2. Entire message is clickable vs having action buttons
+3. Make all actions (read/unread/archive) displayable without having to click into a menu
+4. Expose "archive" as an action
+
+The 2.X version will now default to this new theme and will utilize our new API that does not have the same data retention as the legacy API.
+
+You can still access the 1.X designs by passing theme.name === "classic" to the Inbox component
+
+### 3.X
+
+We created a separate breaking change branch to make sure our bundles are small and optimized. We didn't want to bundle any uneccesary code to support the "classic" theme so 3.0 has removed all the deprecated code. There are breaking changes and a
+
+- [Inbox migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox/docs/0.overview.md)
+- [Toast migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-toast/docs/0.overview.md)
+- [Hooks migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks/0.overview.md)
 
 ## Table of Contents
 
