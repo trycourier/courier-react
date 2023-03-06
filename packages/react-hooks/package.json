@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-hooks",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -20,7 +20,7 @@
     "concat-md": "^0.3.5"
   },
   "dependencies": {
-    "@trycourier/client-graphql": "^2.0.1",
+    "@trycourier/client-graphql": "^3.0.0",
     "deep-extend": "^0.6.0",
     "rimraf": "^3.0.2"
   },
