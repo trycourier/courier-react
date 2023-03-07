@@ -25,8 +25,8 @@
     "rimraf": "^3.0.2"
   },
   "peerDependencies": {
-    "@trycourier/react-provider": "^1.48.1",
-    "react": "^17.0.1"
+    "@trycourier/react-provider": ">=3.X.X",
+    "react": ">=17.X.X"
   },
   "files": [
     "dist/",
