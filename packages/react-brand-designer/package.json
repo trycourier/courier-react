@@ -37,8 +37,8 @@
   },
   "peerDependencies": {
     "deep-extend": "0.6.x",
-    "react": "^18.x",
-    "react-dom": "^18.x",
+    "react": ">=17.X.X",
+    "react-dom": ">=17.X.X",
     "styled-components": "5.x"
   }
 }
