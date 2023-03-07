@@ -15,7 +15,7 @@ declare global {
       toast?: {
         mergeConfig?: (config: ToastProps) => void;
         setConfig?: (config: ToastProps) => void;
-        add?: (message: { title: string; body: string }) => void;
+        add?: (message: { title?: string; preview?: string }) => void;
       };
       inbox?: {
         mergeConfig?: (config: InboxProps) => void;
@@ -36,6 +36,7 @@ interface ICourierConfig {
   authorization?: string;
   brandId?: string;
   clientKey: string;
+  onRouteChange?: (route: string) => void;
   components?: {
     inbox?: any;
     toast?: any;
@@ -62,6 +63,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
     brandId,
     clientKey,
     inboxApiUrl,
+    onRouteChange,
     userId,
     userSignature,
     wsOptions,
@@ -85,6 +87,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       brandId={brandId}
       clientKey={clientKey}
       inboxApiUrl={inboxApiUrl}
+      onRouteChange={onRouteChange}
       userId={userId}
       userSignature={userSignature}
       wsOptions={wsOptions}

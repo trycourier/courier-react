@@ -1,6 +1,6 @@
 import React, { ReactNode, useMemo, useState } from "react";
 import classNames from "classnames";
-import { IInboxMessagePreview } from "@trycourier/react-provider";
+import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
 import { TextElement, getIcon, Title } from "./styled";
@@ -25,6 +25,7 @@ const ClickableContainer = styled.a(({ theme }) => {
       "*, &": {
         "text-decoration": "none",
       },
+      cursor: "pointer",
       ".message-container.hover": {
         background: tcPrimaryColor.setAlpha(0.14),
       },
@@ -139,22 +140,10 @@ const MessageWrapper: React.FunctionComponent<
   title,
   trackingIds,
 }) => {
+  const courier = useCourier();
   const [messageHoverRef, isMessageHovered] = useHover();
   const [areActionsHovered, setAreActionsHovered] = useState(false);
   const { brand, markMessageRead, markMessageOpened } = useInbox();
-
-  const handleClickMessage = (event?: React.MouseEvent) => {
-    event?.preventDefault();
-    if (!messageId) {
-      return;
-    }
-
-    if (!read && trackingIds?.clickTrackingId && trackingIds?.readTrackingId) {
-      // mark message read, but don't fire the event as the backend will do it for us,
-      // we just want to set the message as read here in our local state
-      markMessageRead(messageId);
-    }
-  };
 
   useOnScreen(messageHoverRef, () => {
     if (opened || !messageId) {
@@ -194,6 +183,22 @@ const MessageWrapper: React.FunctionComponent<
     return actions[0].href;
   }, [data?.clickAction, actions]);
 
+  const handleClickMessage = (event?: React.MouseEvent) => {
+    event?.preventDefault();
+
+    if (!messageId) {
+      return;
+    }
+
+    if (!read) {
+      markMessageRead(messageId);
+    }
+
+    if (clickAction && courier.onRouteChange) {
+      courier.onRouteChange(clickAction);
+    }
+  };
+
   let containerProps: {
     href?: string;
     onMouseDown?: (event: React.MouseEvent) => void;
@@ -202,16 +207,19 @@ const MessageWrapper: React.FunctionComponent<
   } = {};
 
   if (clickAction) {
-    containerProps.href = clickAction;
-    containerProps.onMouseDown = handleClickMessage;
+    if (!courier.onRouteChange) {
+      containerProps.href = clickAction;
 
-    if (openLinksInNewTab) {
-      containerProps = {
-        ...containerProps,
-        target: "_blank",
-        rel: "noreferrer",
-      };
+      if (openLinksInNewTab) {
+        containerProps = {
+          ...containerProps,
+          target: "_blank",
+          rel: "noreferrer",
+        };
+      }
     }
+
+    containerProps.onMouseDown = handleClickMessage;
   }
 
   const renderedMessage = useMemo(() => {
@@ -243,7 +251,7 @@ const MessageWrapper: React.FunctionComponent<
         position: "relative",
       }}
     >
-      {containerProps.href ? (
+      {courier.onRouteChange || containerProps.href ? (
         <ClickableContainer {...containerProps}>
           {renderedMessage}
         </ClickableContainer>
