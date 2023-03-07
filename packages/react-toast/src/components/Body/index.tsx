@@ -8,6 +8,7 @@ import Markdown from "markdown-to-jsx";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 import tinycolor2 from "tinycolor2";
+import { themeDefaults } from "~/constants";
 
 const containerStyles = {
   height: "100%",
@@ -28,7 +29,9 @@ const ClickableContainer = styled.a(({ theme }) => {
       "&:hover": {
         background: tcPrimaryColor.setAlpha(0.14),
       },
-      borderRadius: theme.brand.inapp.toast.borderRadius,
+      borderRadius:
+        theme.brand?.inapp?.toast?.borderRadius ??
+        themeDefaults.inapp.toast.borderRadius,
     },
     theme.message?.clickableContainer ?? {}
   );
@@ -39,7 +42,9 @@ const NonClickableContainer = styled.div(({ theme }) => {
     {
       ...containerStyles,
       display: "flex",
-      borderRadius: theme.brand.inapp.toast.borderRadius,
+      borderRadius:
+        theme.brand?.inapp?.toast?.borderRadius ??
+        themeDefaults.inapp.toast.borderRadius,
     },
     theme.message?.nonClickableContainer ?? {}
   );
