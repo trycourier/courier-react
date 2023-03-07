@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
+import { themeDefaults } from "../../constants";
 
 export const toastStyles = ({ theme }) => ({
   ["&.Toastify__toast-container"]: {
@@ -14,8 +15,12 @@ export const toastStyles = ({ theme }) => ({
     minHeight: 65,
     padding: 0,
     borderRadius: "6px",
-    borderBottomLeftRadius: theme?.brand?.inapp?.toast?.borderRadius,
-    borderBottomRightRadius: theme?.brand?.inapp?.toast?.borderRadius,
+    borderBottomLeftRadius:
+      theme?.brand?.inapp?.toast?.borderRadius ??
+      themeDefaults.inapp.toast.borderRadius,
+    borderBottomRightRadius:
+      theme?.brand?.inapp?.toast?.borderRadius ??
+      themeDefaults.inapp.toast.borderRadius,
     overflow: "visible",
     ...theme?.toast,
   },
@@ -31,8 +36,12 @@ export const toastStyles = ({ theme }) => ({
     height: 3,
     top: 0,
     zIndex: 25,
-    borderTopLeftRadius: theme?.brand?.inapp?.toast?.borderRadius,
-    borderTopRightRadius: theme?.brand?.inapp?.toast?.borderRadius,
+    borderTopLeftRadius:
+      theme?.brand?.inapp?.toast?.borderRadius ??
+      themeDefaults.inapp.toast.borderRadius,
+    borderTopRightRadius:
+      theme?.brand?.inapp?.toast?.borderRadius ??
+      themeDefaults.inapp.toast.borderRadius,
     ...theme?.progressBar,
   },
 });
