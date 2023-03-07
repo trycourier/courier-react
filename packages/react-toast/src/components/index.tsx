@@ -18,7 +18,7 @@ const Styled = styled.div(toastStyles);
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
 export const ToastBody: React.FunctionComponent<
-  Omit<IInboxMessagePreview, "title" | "preview"> & {
+  Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
     theme?: Theme;
     brand?: Brand;
     title?: IInboxMessagePreview["title"] | ReactElement;
