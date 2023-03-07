@@ -46,7 +46,7 @@ const NonClickableContainer = styled.div(({ theme }) => {
 });
 
 const Body: React.FunctionComponent<
-  Omit<IInboxMessagePreview, "title" | "preview"> & {
+  Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
     toastProps?: ToastProps;
     onClick?: (event: React.MouseEvent) => void;
     title?: IInboxMessagePreview["title"] | ReactElement;
