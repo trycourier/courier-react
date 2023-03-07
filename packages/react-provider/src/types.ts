@@ -44,16 +44,17 @@ export interface Brand {
 }
 
 export interface ICourierProviderProps {
-  id?: string;
   apiUrl?: string;
-  inboxApiUrl?: string;
   authorization?: string;
   brand?: Brand;
   brandId?: string;
   clientKey?: string;
-  middleware?: any;
+  id?: string;
+  inboxApiUrl?: string;
   localStorage?: Storage;
+  middleware?: any;
   onMessage?: Interceptor;
+  onRouteChange?: (route: string) => void;
   transport?: CourierTransport | Transport;
   userId?: string;
   userSignature?: string;

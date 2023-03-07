@@ -29,6 +29,7 @@ const ClickableContainer = styled.a(({ theme }) => {
       "&:hover": {
         background: tcPrimaryColor.setAlpha(0.14),
       },
+      cursor: "pointer",
       borderRadius:
         theme.brand?.inapp?.toast?.borderRadius ??
         themeDefaults.inapp.toast.borderRadius,
@@ -58,8 +59,10 @@ const Body: React.FunctionComponent<
     preview?: IInboxMessagePreview["preview"] | ReactElement;
   }
 > = ({ title, preview, actions, icon, data, onClick, messageId, ...props }) => {
-  const { toastProps } = props as { toastProps: any };
+  const courier = useCourier();
   const [, { config }] = useToast();
+
+  const { toastProps } = props;
   const { brand: courierBrand, dispatch } = useCourier();
 
   const brand = config?.brand ?? courierBrand;
@@ -82,26 +85,6 @@ const Body: React.FunctionComponent<
       : (icon || config?.defaultIcon) ?? brand?.inapp?.icons?.message
   );
 
-  const handleClickMessage = (event: React.MouseEvent) => {
-    event?.preventDefault();
-
-    if (
-      data?.trackingIds?.clickTrackingId &&
-      data?.trackingIds?.readTrackingId
-    ) {
-      dispatch({
-        type: "inbox/MARK_MESSAGE_READ",
-        payload: {
-          messageId,
-        },
-      });
-    }
-
-    if (onClick) {
-      onClick(event);
-    }
-  };
-
   const clickAction = useMemo(() => {
     if (data?.clickAction) {
       return data.clickAction;
@@ -114,6 +97,26 @@ const Body: React.FunctionComponent<
     return actions[0].href;
   }, [actions]);
 
+  const handleClickMessage = (event: React.MouseEvent) => {
+    event?.preventDefault();
+
+    dispatch({
+      type: "inbox/MARK_MESSAGE_READ",
+      payload: {
+        messageId,
+      },
+    });
+
+    if (onClick) {
+      onClick(event);
+      return;
+    }
+
+    if (clickAction && courier.onRouteChange) {
+      courier.onRouteChange(clickAction);
+    }
+  };
+
   let containerProps: {
     href?: string;
     onMouseDown?: (event: React.MouseEvent) => void;
@@ -122,16 +125,19 @@ const Body: React.FunctionComponent<
   } = {};
 
   if (clickAction) {
-    containerProps.href = clickAction;
-    containerProps.onMouseDown = handleClickMessage;
+    if (!courier.onRouteChange) {
+      containerProps.href = clickAction;
 
-    if (openLinksInNewTab) {
-      containerProps = {
-        ...containerProps,
-        target: "_blank",
-        rel: "noreferrer",
-      };
+      if (openLinksInNewTab) {
+        containerProps = {
+          ...containerProps,
+          target: "_blank",
+          rel: "noreferrer",
+        };
+      }
     }
+
+    containerProps.onMouseDown = handleClickMessage;
   }
 
   const renderedMessage = useMemo(() => {
@@ -154,7 +160,7 @@ const Body: React.FunctionComponent<
 
   return (
     <Container>
-      {containerProps.href ? (
+      {courier.onRouteChange || containerProps.href ? (
         <ClickableContainer {...containerProps}>
           {renderedMessage}
         </ClickableContainer>
