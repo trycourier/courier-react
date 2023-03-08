@@ -211,14 +211,16 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         }) => (
           <DropdownOptionButton
             active={active}
-            disabled={disabled}
             onClick={onClick ?? handleSetView("messages")}
             selected={selected}
             showDropdown={showDropdown}
           >
             {title}
             {unreadMessageCount ? (
-              <span className="message-count">
+              <span
+                aria-label={`unread message count ${unreadMessageCount}`}
+                className="message-count"
+              >
                 {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
               </span>
             ) : undefined}

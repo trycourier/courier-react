@@ -1,7 +1,13 @@
 import { TippyProps } from "@tippyjs/react";
 import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
-import React, { useEffect, useRef, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  KeyboardEventHandler,
+} from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useInbox } from "@trycourier/react-hooks";
 
@@ -139,25 +145,40 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
   useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
 
+  const handleIconEvent = useCallback(() => {
+    if (!isOpen) {
+      const now = new Date().getTime();
+      const dateDiff = lastMessagesFetched
+        ? now - lastMessagesFetched
+        : undefined;
+
+      setView("messages");
+
+      if (!dateDiff || dateDiff > 3600000) {
+        fetchMessages();
+      }
+    }
+
+    toggleInbox();
+  }, [lastMessagesFetched, isOpen, setView]);
+
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
-      event.preventDefault();
-      if (!isOpen) {
-        const now = new Date().getTime();
-        const dateDiff = lastMessagesFetched
-          ? now - lastMessagesFetched
-          : undefined;
+      event?.preventDefault();
+      handleIconEvent();
+    },
+    [handleIconEvent]
+  );
 
-        setView("messages");
-
-        if (!dateDiff || dateDiff > 3600000) {
-          fetchMessages();
-        }
+  const handleIconOnKeyDown: KeyboardEventHandler<HTMLDivElement> = useCallback(
+    (event) => {
+      if (event.key !== "Enter") {
+        return;
       }
 
-      toggleInbox();
+      handleIconEvent();
     },
-    [lastMessagesFetched, isOpen, setView]
+    [handleIconEvent]
   );
 
   const handleClickOutside = useCallback(
@@ -185,11 +206,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const bell = useMemo(() => {
     return (
       <Bell
-        aria-pressed="false"
+        aria-pressed={isOpen}
         data-testid="bell"
         className={`inbox-bell ${props.className ?? ""}`}
         isOpen={isOpen ?? false}
         onClick={handleIconOnClick}
+        onKeyDown={handleIconOnKeyDown}
         role="button"
         title={props.title ?? "inbox"}
         tabIndex={0}
@@ -220,7 +242,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         )}
       </Bell>
     );
-  }, [props, brand, isOpen, handleIconOnClick]);
+  }, [props, brand, isOpen, handleIconOnClick, handleIconOnKeyDown]);
 
   useClickOutside(ref, handleClickOutside);
 

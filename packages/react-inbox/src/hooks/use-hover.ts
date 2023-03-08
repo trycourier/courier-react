@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-function useHover(cb?: (event: Event) => boolean | void) {
+function useHover(
+  ref: React.RefObject<HTMLDivElement>,
+  cb?: (event: Event) => boolean | void
+) {
   const [value, setValue] = useState(false);
-  const ref: React.RefObject<HTMLDivElement> = useRef(null);
   const handleMouseOver = (event: Event) => {
     let shouldHover = true;
     if (cb) {
@@ -13,9 +15,9 @@ function useHover(cb?: (event: Event) => boolean | void) {
   const handleMouseOut = () => setValue(false);
   useEffect(
     () => {
-      const node = ref.current;
+      const node = ref?.current;
+
       if (node) {
-        node.addEventListener("focus", handleMouseOver);
         node.addEventListener("mouseenter", handleMouseOver);
         node.addEventListener("mouseleave", handleMouseOut);
         return () => {
@@ -24,10 +26,10 @@ function useHover(cb?: (event: Event) => boolean | void) {
         };
       }
     },
-    [ref.current] // Recall only if ref changes
+    [ref?.current] // Recall only if ref changes
   );
-  const returnVal: [React.RefObject<HTMLDivElement>, boolean] = [ref, value];
-  return returnVal;
+
+  return value;
 }
 
 export default useHover;

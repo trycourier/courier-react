@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 
 import { useInbox } from "@trycourier/react-hooks";
@@ -29,18 +29,22 @@ const Styled = styled.div((_props) => {
     },
 
     "> div": {
-      display: "flex",
-      alignItems: "center",
-      transition: "opacity 200ms ease-in-out",
-      visibility: "hidden",
       opacity: 0,
-      "&:not(.visible)": {
-        position: "absolute",
-      },
-      "&.visible": {
+      top: 4,
+      right: 0,
+      position: "absolute",
+      visibility: "hidden",
+      transition: "opacity 200ms ease-in-out",
+
+      "&:not(.hidden)": {
         opacity: 1,
         visibility: "visible",
       },
+    },
+
+    ".message-actions": {
+      display: "flex",
+      alignItems: "center",
     },
     "&.hasBody": {
       top: 12,
@@ -54,22 +58,25 @@ const Styled = styled.div((_props) => {
 const MessageActions: React.FunctionComponent<{
   formattedTime: string;
   hasBody?: boolean;
-  isMessageHovered?: boolean;
+  isMessageActive?: boolean;
   labels: InboxProps["labels"];
   messageId?: IInboxMessagePreview["messageId"];
   read?: IInboxMessagePreview["read"];
+  readableTimeAgo: string;
   setAreActionsHovered: (hovered: boolean) => void;
   trackingIds?: IInboxMessagePreview["trackingIds"];
 }> = ({
   formattedTime,
   hasBody,
-  isMessageHovered,
+  isMessageActive,
   labels,
   messageId,
   read,
+  readableTimeAgo,
   setAreActionsHovered,
 }) => {
-  const [actionsHoverRef, areActionsHovered] = useHover();
+  const actionsHoverRef = useRef(null);
+  const areActionsHovered = useHover(actionsHoverRef);
 
   useEffect(() => {
     setAreActionsHovered(areActionsHovered);
@@ -111,28 +118,41 @@ const MessageActions: React.FunctionComponent<{
     >
       <div
         className={classNames({
-          visible: isMessageHovered,
+          hidden: !isMessageActive,
         })}
       >
-        {!read && (
-          <MarkRead label={labels?.markAsRead} onClick={handleEvent("read")} />
-        )}
-        {read && (
-          <MarkUnread
-            label={labels?.markAsUnread}
-            onClick={handleEvent("unread")}
+        <TimeAgo
+          tabIndex={0}
+          aria-label={`created ${readableTimeAgo}`}
+          style={{ textAlign: "right" }}
+        >
+          {formattedTime}
+        </TimeAgo>
+
+        <div className="message-actions">
+          {!read && (
+            <MarkRead
+              label={labels?.markAsRead}
+              onClick={handleEvent("read")}
+            />
+          )}
+          {read && (
+            <MarkUnread
+              label={labels?.markAsUnread}
+              onClick={handleEvent("unread")}
+            />
+          )}
+          <CloseAction
+            size="small"
+            title={labels?.archiveMessage ?? "archive message"}
+            onClick={handleEvent("archive")}
+            tooltip={labels?.archiveMessage ?? "Archive Message"}
           />
-        )}
-        <CloseAction
-          size="small"
-          title={labels?.archiveMessage ?? "archive message"}
-          onClick={handleEvent("archive")}
-          tooltip={labels?.archiveMessage ?? "Archive Message"}
-        />
+        </div>
       </div>
       <div
         className={classNames({
-          visible: !isMessageHovered,
+          hidden: isMessageActive,
         })}
       >
         <TimeAgo>{formattedTime}</TimeAgo>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { PreferenceList } from "@trycourier/react-preferences";
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
@@ -153,6 +153,7 @@ const Messages: React.ForwardRefExoticComponent<
     },
     ref
   ) => {
+    const [focusedMessageId, setFocusedMessageId] = useState<string>("");
     const { fetchRecipientPreferences } = usePreferences();
 
     const {
@@ -224,6 +225,8 @@ const Messages: React.ForwardRefExoticComponent<
               ) : (
                 <Message
                   {...message}
+                  isMessageFocused={focusedMessageId === message.messageId}
+                  setFocusedMessageId={setFocusedMessageId}
                   defaultIcon={defaultIcon}
                   formatDate={formatDate}
                   key={message.messageId}
