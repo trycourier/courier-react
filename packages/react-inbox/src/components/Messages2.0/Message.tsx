@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
@@ -6,7 +6,7 @@ import { useInbox } from "@trycourier/react-hooks";
 import { TextElement, getIcon, Title } from "./styled";
 import { InboxProps } from "../../types";
 
-import { getTimeAgoShort } from "~/lib";
+import { getTimeAgoShort, getTimeAgo } from "~/lib";
 import useHover from "~/hooks/use-hover";
 import Markdown from "markdown-to-jsx";
 
@@ -85,14 +85,14 @@ const MessageContainer = styled.div(({ theme }) => {
 
 const Message: React.FunctionComponent<{
   areActionsHovered?: boolean;
-  isMessageHovered?: boolean;
+  isMessageActive?: boolean;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
   preview?: string;
   title?: string;
 }> = ({
   areActionsHovered,
-  isMessageHovered,
+  isMessageActive,
   read,
   renderedIcon,
   preview,
@@ -101,15 +101,17 @@ const Message: React.FunctionComponent<{
   return (
     <MessageContainer
       className={classNames("message-container", {
-        hover: isMessageHovered && !areActionsHovered,
+        hover: isMessageActive && !areActionsHovered,
         read,
       })}
     >
       <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents>
-        <Title read={read}>{title}</Title>
-        <TextElement>
+        <Title aria-label={`message title ${title}`} read={read}>
+          {title}
+        </Title>
+        <TextElement aria-label={`message body ${preview}`}>
           {preview ? <Markdown>{preview}</Markdown> : null}
         </TextElement>
       </Contents>
@@ -119,6 +121,10 @@ const Message: React.FunctionComponent<{
 
 const MessageWrapper: React.FunctionComponent<
   IInboxMessagePreview & {
+    isMessageFocused: boolean;
+    setFocusedMessageId: React.Dispatch<
+      React.SetStateAction<string | undefined>
+    >;
     labels: InboxProps["labels"];
     formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
@@ -127,6 +133,8 @@ const MessageWrapper: React.FunctionComponent<
 > = ({
   actions,
   created,
+  isMessageFocused,
+  setFocusedMessageId,
   data,
   opened,
   defaultIcon,
@@ -141,11 +149,27 @@ const MessageWrapper: React.FunctionComponent<
   trackingIds,
 }) => {
   const courier = useCourier();
-  const [messageHoverRef, isMessageHovered] = useHover();
+  const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
+  const isMessageHovered = useHover(messageRef);
   const [areActionsHovered, setAreActionsHovered] = useState(false);
   const { brand, markMessageRead, markMessageOpened } = useInbox();
 
-  useOnScreen(messageHoverRef, () => {
+  useEffect(() => {
+    const handleFocus = () => {
+      setFocusedMessageId(messageId);
+    };
+
+    const node = messageRef?.current;
+
+    if (node) {
+      node.addEventListener("focusin", handleFocus);
+      return () => {
+        node.removeEventListener("focusin", handleFocus);
+      };
+    }
+  }, [messageRef?.current]);
+
+  useOnScreen(messageRef, () => {
     if (opened || !messageId) {
       return;
     }
@@ -170,6 +194,8 @@ const MessageWrapper: React.FunctionComponent<
   const formattedTime = formatDate
     ? formatDate(created)
     : getTimeAgoShort(created);
+
+  const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
 
   const clickAction = useMemo(() => {
     if (data?.clickAction) {
@@ -204,7 +230,10 @@ const MessageWrapper: React.FunctionComponent<
     onMouseDown?: (event: React.MouseEvent) => void;
     rel?: string;
     target?: string;
-  } = {};
+    tabIndex: number;
+  } = {
+    tabIndex: 0,
+  };
 
   if (clickAction) {
     if (!courier.onRouteChange) {
@@ -226,7 +255,7 @@ const MessageWrapper: React.FunctionComponent<
     return (
       <Message
         areActionsHovered={areActionsHovered}
-        isMessageHovered={isMessageHovered}
+        isMessageActive={isMessageFocused || isMessageHovered}
         read={read}
         renderedIcon={renderedIcon}
         preview={preview}
@@ -235,7 +264,7 @@ const MessageWrapper: React.FunctionComponent<
     );
   }, [
     areActionsHovered,
-    formattedTime,
+    isMessageFocused,
     isMessageHovered,
     read,
     renderedIcon,
@@ -245,7 +274,7 @@ const MessageWrapper: React.FunctionComponent<
 
   return (
     <div
-      ref={messageHoverRef}
+      ref={messageRef}
       data-testid="inbox-message"
       style={{
         position: "relative",
@@ -256,11 +285,12 @@ const MessageWrapper: React.FunctionComponent<
           {renderedMessage}
         </ClickableContainer>
       ) : (
-        renderedMessage
+        <div tabIndex={0}>renderedMessage</div>
       )}
       <MessageActions
+        readableTimeAgo={readableTimeAgo}
         formattedTime={formattedTime}
-        isMessageHovered={isMessageHovered}
+        isMessageActive={isMessageFocused || isMessageHovered}
         labels={labels}
         messageId={messageId}
         read={read}
