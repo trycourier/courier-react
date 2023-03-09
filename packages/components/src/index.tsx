@@ -44,7 +44,7 @@ interface ICourierConfig {
   unsubscribePage?: {
     topicId: string;
     preferencePageUrl: string;
-    list?: boolean;
+    list?: string;
   };
   initOnLoad?: boolean;
   userId?: string;
