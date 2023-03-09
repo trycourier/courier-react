@@ -209,7 +209,7 @@ export const CourierComponents: React.FunctionComponent = () => {
             <UnsubscribePage
               preferencePageUrl={unsubscribePageConfig?.preferencePageUrl!}
               topicId={unsubscribePageConfig?.topicId!}
-              list={unsubscribePageConfig?.list!}
+              list={unsubscribePageConfig?.list === "true" ? true : false}
             />
           </Suspense>,
           unsubscribePage

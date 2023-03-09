@@ -144,7 +144,7 @@ const getText = (required: boolean, list?: boolean) => {
 export const UnsubscribePage: React.FunctionComponent<{
   topicId: string;
   preferencePageUrl: string;
-  list?: boolean;
+  list: boolean;
 }> = ({ topicId, preferencePageUrl, list = false }) => {
   const [toggle, setToggle] = useState(list ? true : false);
 
