@@ -5,7 +5,7 @@ export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
   currentTab?: ITab;
   labels: InboxProps["labels"];
-  markAllAsRead?: () => any;
+  markAllAsRead: () => any;
   messages: IMessage[];
   title?: string;
   unreadMessageCount?: number;
