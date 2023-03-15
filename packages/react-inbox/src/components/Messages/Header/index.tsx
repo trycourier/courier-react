@@ -52,7 +52,10 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <div className="actions">
         {((currentTab?.filters?.isRead === false && messages.length > 0) ||
           tabs === undefined) && (
-          <MarkAllAsRead onClick={markAllAsRead} style={{ cursor: "pointer" }}>
+          <MarkAllAsRead
+            onClick={() => markAllAsRead()}
+            style={{ cursor: "pointer" }}
+          >
             {labels?.markAllAsRead ?? "Mark all as read"}
           </MarkAllAsRead>
         )}
