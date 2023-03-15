@@ -14,7 +14,6 @@ import deepExtend from "deep-extend";
 import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
-import { useOnScreen } from "~/hooks/use-on-screen";
 
 const ClickableContainer = styled.a(({ theme }) => {
   const primaryColor = theme.brand?.colors?.primary;
@@ -148,9 +147,17 @@ const MessageWrapper: React.FunctionComponent<
 }) => {
   const courier = useCourier();
   const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
-  const isMessageHovered = useHover(messageRef);
+
   const [areActionsHovered, setAreActionsHovered] = useState(false);
   const { brand, markMessageRead, markMessageOpened } = useInbox();
+
+  const isMessageHovered = useHover(messageRef, () => {
+    if (opened || !messageId) {
+      return;
+    }
+
+    markMessageOpened(messageId);
+  });
 
   useEffect(() => {
     const handleFocus = () => {
@@ -166,14 +173,6 @@ const MessageWrapper: React.FunctionComponent<
       };
     }
   }, [messageRef?.current]);
-
-  useOnScreen(messageRef, () => {
-    if (opened || !messageId) {
-      return;
-    }
-
-    markMessageOpened(messageId);
-  });
 
   const renderedIcon = getIcon(
     /* priority:

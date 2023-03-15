@@ -225,13 +225,13 @@ const Messages: React.ForwardRefExoticComponent<
               ) : (
                 <Message
                   {...message}
-                  isMessageFocused={focusedMessageId === message.messageId}
-                  setFocusedMessageId={setFocusedMessageId}
                   defaultIcon={defaultIcon}
                   formatDate={formatDate}
+                  isMessageFocused={focusedMessageId === message.messageId}
                   key={message.messageId}
                   labels={labels}
                   openLinksInNewTab={openLinksInNewTab}
+                  setFocusedMessageId={setFocusedMessageId}
                 />
               )
             )}
