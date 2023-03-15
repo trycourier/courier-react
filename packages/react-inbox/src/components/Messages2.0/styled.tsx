@@ -64,7 +64,7 @@ export const TextElement = styled.div(({ theme }) =>
       textAlign: "left",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "pre",
+      whiteSpace: "pre-line",
       p: {
         margin: 0,
       },
