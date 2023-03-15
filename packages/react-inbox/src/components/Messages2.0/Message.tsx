@@ -122,9 +122,7 @@ const Message: React.FunctionComponent<{
 const MessageWrapper: React.FunctionComponent<
   IInboxMessagePreview & {
     isMessageFocused: boolean;
-    setFocusedMessageId: React.Dispatch<
-      React.SetStateAction<string | undefined>
-    >;
+    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
     labels: InboxProps["labels"];
     formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];

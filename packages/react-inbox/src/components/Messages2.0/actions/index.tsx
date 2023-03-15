@@ -45,6 +45,7 @@ const Styled = styled.div((_props) => {
     ".message-actions": {
       display: "flex",
       alignItems: "center",
+      marginTop: 2,
     },
     "&.hasBody": {
       top: 12,
