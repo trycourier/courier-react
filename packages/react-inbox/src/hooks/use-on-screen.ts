@@ -1,16 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const useOnScreen = (ref, cb) => {
+export const useOnScreen = (ref, options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Update our state when observer callback fires
-        if (entry.isIntersecting) {
-          cb();
-        }
+        setIsIntersecting(entry.isIntersecting);
       },
       {
         rootMargin: "0px",
+        ...options,
       }
     );
     if (ref.current) {
@@ -23,5 +22,6 @@ export const useOnScreen = (ref, cb) => {
 
       observer.unobserve(ref.current);
     };
-  }, []); // Empty array ensures that effect is only run on mount and unmount
+  }, []);
+  return isIntersecting;
 };
