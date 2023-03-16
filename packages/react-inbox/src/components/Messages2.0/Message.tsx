@@ -14,6 +14,7 @@ import deepExtend from "deep-extend";
 import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
+import { useOnScreen } from "~/hooks/use-on-screen";
 
 const ClickableContainer = styled.a(({ theme }) => {
   const primaryColor = theme.brand?.colors?.primary;
@@ -130,34 +131,29 @@ const MessageWrapper: React.FunctionComponent<
 > = ({
   actions,
   created,
-  isMessageFocused,
-  setFocusedMessageId,
   data,
-  opened,
   defaultIcon,
   formatDate,
   icon,
+  isMessageFocused,
   labels,
   messageId,
+  opened,
   openLinksInNewTab,
-  read,
   preview,
+  read,
+  setFocusedMessageId,
   title,
   trackingIds,
 }) => {
   const courier = useCourier();
+  const [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout>();
   const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   const [areActionsHovered, setAreActionsHovered] = useState(false);
   const { brand, markMessageRead, markMessageOpened } = useInbox();
 
-  const isMessageHovered = useHover(messageRef, () => {
-    if (opened || !messageId) {
-      return;
-    }
-
-    markMessageOpened(messageId);
-  });
+  const isMessageHovered = useHover(messageRef);
 
   useEffect(() => {
     const handleFocus = () => {
@@ -173,6 +169,54 @@ const MessageWrapper: React.FunctionComponent<
       };
     }
   }, [messageRef?.current]);
+
+  const isVisible = useOnScreen(messageRef, {
+    root: document.querySelector("#inbox-message-list"),
+    threshold: 0.6,
+  });
+
+  useEffect(
+    function handleMessageVisibility() {
+      if (opened || !messageId) {
+        return;
+      }
+
+      if (activeTimeout) {
+        if (isVisible) {
+          return;
+        }
+
+        clearTimeout(activeTimeout);
+        setActiveTimeout(undefined);
+        return;
+      }
+
+      if (!isVisible) {
+        return;
+      }
+
+      const THROTTLE_TIMEOUT = 1000;
+      const newTimeout = setTimeout(() => {
+        markMessageOpened(messageId);
+      }, THROTTLE_TIMEOUT);
+
+      setActiveTimeout(newTimeout);
+    },
+    [opened, messageId, isVisible, activeTimeout]
+  );
+
+  useEffect(
+    function handleMessageUnmount() {
+      return () => {
+        if (!activeTimeout) {
+          return;
+        }
+
+        clearTimeout(activeTimeout);
+      };
+    },
+    [activeTimeout]
+  );
 
   const renderedIcon = getIcon(
     /* priority:
