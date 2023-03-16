@@ -326,7 +326,7 @@ const MessageWrapper: React.FunctionComponent<
           {renderedMessage}
         </ClickableContainer>
       ) : (
-        <div tabIndex={0}>renderedMessage</div>
+        <div tabIndex={0}>{renderedMessage}</div>
       )}
       <MessageActions
         readableTimeAgo={readableTimeAgo}
