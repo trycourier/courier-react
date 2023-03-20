@@ -6,12 +6,13 @@
 - [3.X Breaking Changes](#3x-breaking-changes)
   - [Message Interface](#message-interface)
   - [[2.X]](#2x)
+  - [Theme](#theme)
 - [Client Install](#client-install)
 - [Courier Integration](#courier-integration)
 - [Client Setup](#client-setup)
 - [Using Courier's API](#using-couriers-api)
 - [Props](#props)
-- [Theme](#theme)
+- [Theme](#theme-1)
 - [Using Hook](#using-hook)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -71,6 +72,13 @@ The new toast component also does _not_ show any buttons. The actual toast is cl
 
 You can revert and use the 2.X releases to prevent having the above breaking changes. You will need both `@trycourier/react-toast` and `@trycourier/react-provider` to be on the same 2.X version.
 
+### [Theme](#theme)
+
+- theme.message.actionBlock -> deprecated
+  - the entire message is now clickable
+- theme.message.textBlock -> theme.message.textElement
+- `theme.message.clickableContainer`: when a message has an action href, we now make the entire message clickable instead of rendering an explicit button. this theme property allows access to this component. `theme.message.container` will still apply to this component but if you want to target the clickableContainer separatly you can target `theme.message.clickableContainer` which will be an `anchor` element instead of a `div`;
+
 <a name="2installationmd"></a>
 
 ## [Client Install](#client-install)
@@ -115,18 +123,18 @@ const courier = CourierClient({
 });
 
 await courier.send({
-	"message": {
-		"to": {
-			"user_id": "USER_ID"
-		},
-		"content": {
-      "title": "Hello World",
-      "body": "{{foo}}"
-    }
-		"data": {
-			"foo": "bar",
-		},
-	}
+  message: {
+    to: {
+      user_id: "USER_ID",
+    },
+    content: {
+      title: "Hello World",
+      body: "{{foo}}",
+    },
+    data: {
+      foo: "bar",
+    },
+  },
 });
 ```
 
@@ -191,10 +199,11 @@ interface ITheme {
   toast?: React.CSSProperties;
   dismiss?: React.CSSProperties;
   message?: {
-    textBlock?: React.CSSProperties;
-    body?: React.CSSProperties;
+    clickableContainer?: React.CSSProperties;
+    container?: React.CSSProperties;
     contents?: React.CSSProperties;
     icon?: React.CSSProperties;
+    textElement?: React.CSSProperties;
     title?: React.CSSProperties;
   };
   progressBar?: React.CSSProperties;

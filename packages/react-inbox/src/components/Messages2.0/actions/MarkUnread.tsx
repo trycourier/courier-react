@@ -1,28 +1,18 @@
+import deepExtend from "deep-extend";
 import React from "react";
 import styled from "styled-components";
-import tinycolor2 from "tinycolor2";
 import StyledTippy from "../../StyledTippy";
+import { getStyles } from "./styles";
 
 const StyledButton = styled.button(({ theme }) => {
-  const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
-
-  return {
-    cursor: "pointer",
-    border: "none",
-    background: "transparent",
-    borderRadius: "6px",
-    padding: 0,
-    marginTop: -3,
-    height: "24px",
-    width: "24px",
-    opacity: 1,
-    transition: "background 200ms ease-in-out",
-
-    "&:hover": {
-      background: tcPrimaryColor.setAlpha(0.14),
+  return deepExtend(
+    {},
+    getStyles(theme),
+    {
+      marginTop: -3,
     },
-  };
+    theme.action
+  );
 });
 
 const MarkUnread: React.FunctionComponent<{

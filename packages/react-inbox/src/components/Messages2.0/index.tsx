@@ -91,15 +91,6 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
   }
 );
 
-const Gradient = styled.div<{ disableCourierFooter?: boolean }>`
-  width: 100%;
-  height: 36px;
-  position: absolute;
-  bottom: ${({ disableCourierFooter }) =>
-    disableCourierFooter ? "0px" : "36px"};
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-`;
-
 export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
@@ -249,7 +240,6 @@ const Messages: React.ForwardRefExoticComponent<
         ) : (
           <PreferenceList theme={{ name: "2.0" }} />
         )}
-        <Gradient disableCourierFooter={brand?.inapp?.disableCourierFooter} />
         {renderFooter
           ? renderFooter({})
           : !brand?.inapp?.disableCourierFooter && (

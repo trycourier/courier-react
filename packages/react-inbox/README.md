@@ -4,6 +4,7 @@
 - [What is Inbox?](#what-is-inbox)
   - [3.X Breaking Changes:](#3x-breaking-changes)
   - [Message Interface](#message-interface)
+  - [Theme](#theme)
 - [Installation](#installation)
   - [Courier Provider](#courier-provider)
 - [Authentication](#authentication)
@@ -12,7 +13,7 @@
   - [HMAC Authentication (Legacy)](#hmac-authentication-legacy)
   - [Props](#props)
   - [Hooks](#hooks)
-  - [Theme](#theme)
+  - [Theme](#theme-1)
   - [Render Props](#render-props)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -93,6 +94,19 @@ interface NewMessage {
   actions: Array<ActionElement>;
 }
 ```
+
+### [Theme](#theme)
+
+- theme.tabList -> deprecated
+- theme.message.actionBlock -> deprecated
+  - the entire message is now clickable
+- theme.message.textBlock -> theme.message.textElement
+
+New Theme Properties:
+
+- `theme.tooltip`: accesses background and colors of tooltips
+- `theme.menu`: clicking on the inbox title opens a dropdown menu with options to edit `preferences`
+- `theme.message.clickableContainer`: when a message has an action href, we now make the entire message clickable instead of rendering an explicit button. this theme property allows access to this component. `theme.message.container` will still apply to this component but if you want to target the clickableContainer separatly you can target `theme.message.clickableContainer` which will be an `anchor` element instead of a `div`;
 
 <a name="1installationmd"></a>
 
@@ -347,11 +361,12 @@ See https://github.com/trycourier/courier-react/tree/main/packages/react-hooks
 
 ```
 interface ITheme {
+  brand?: Brand;
   container?: React.CSSProperties;
-  dismissInbox?: React.CSSProperties;
-  emptyState?: React.CSSProperties;
   footer?: React.CSSProperties;
   header?: React.CSSProperties;
+  menu?: React.CSSProperties;
+  tooltip?: React.CSSProperties;
   icon?: React.CSSProperties & {
     open?: string;
     closed?: string;
@@ -360,18 +375,16 @@ interface ITheme {
     container?: React.CSSProperties;
   };
   message?: {
-    actions?: {
-      container?: React.CSSProperties;
-      details?: React.CSSProperties;
-      dismiss?: React.CSSProperties;
-    }
-    body?: React.CSSProperties;
+    clickableContainer?: React.CSSProperties;
     container?: React.CSSProperties;
+    content?: React.CSSProperties;
     icon?: React.CSSProperties;
+    timeAgo?: React.CSSProperties;
     title?: React.CSSProperties;
     unreadIndicator?: React.CSSProperties;
   };
   root?: React.CSSProperties;
+  unreadIndicator?: React.CSSProperties;
 }
 ```
 
