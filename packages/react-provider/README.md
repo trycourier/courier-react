@@ -22,7 +22,9 @@ interface ICourierProvider {
   brandId?: string;
 
   /** Allows the browser to modify or react to a received message before the message is displayed to the user */
-  onMessage?: (message?: ICourierMessage) => ICourierMessage | undefined;
+  onMessage?: (
+    message?: IInboxMessagePrpeview
+  ) => IInboxMessagePrpeview | undefined;
 
   /** Courier client key. Along with userId and userSignature this can be used as an alternative to the authorization field / token. */
   clientKey?: string;
@@ -50,10 +52,6 @@ interface Brand {
     emptyState?: {
       textColor?: string;
       text?: string;
-    };
-    widgetBackground?: {
-      topColor?: string;
-      bottomColor?: string;
     };
     icons?: {
       bell?: string;
@@ -84,7 +82,7 @@ There are a few ways to listen for messages and being able react.
 import { CourierProvider } from "@trycourier/react-provider";
 
 const MyApp = ({ children }) => {
-  const handleOnMessage = (messsage: ICourierMessage) => {
+  const handleOnMessage = (messsage: IInboxMessagePreview) => {
     console.log(message);
     return message;
   };

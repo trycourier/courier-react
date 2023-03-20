@@ -7,9 +7,11 @@ export type Theme = {
   toast?: React.CSSProperties;
   dismiss?: React.CSSProperties;
   message?: {
-    textBlock?: React.CSSProperties;
+    clickableContainer?: React.CSSProperties;
+    container?: React.CSSProperties;
     contents?: React.CSSProperties;
     icon?: React.CSSProperties;
+    textElement?: React.CSSProperties;
     title?: React.CSSProperties;
   };
   progressBar?: React.CSSProperties;

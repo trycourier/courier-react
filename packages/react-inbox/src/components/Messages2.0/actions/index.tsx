@@ -12,6 +12,7 @@ import MarkUnread from "./MarkUnread";
 import styled from "styled-components";
 import { InboxProps } from "~/types";
 import { IInboxMessagePreview } from "@trycourier/react-provider";
+import { getTimeAgo, getTimeAgoShort } from "~/lib";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Styled = styled.div((_props) => {
@@ -57,23 +58,23 @@ const Styled = styled.div((_props) => {
 });
 
 const MessageActions: React.FunctionComponent<{
-  formattedTime: string;
+  created: string;
+  formatDate?: InboxProps["formatDate"];
   hasBody?: boolean;
   isMessageActive?: boolean;
   labels: InboxProps["labels"];
   messageId?: IInboxMessagePreview["messageId"];
   read?: IInboxMessagePreview["read"];
-  readableTimeAgo: string;
   setAreActionsHovered: (hovered: boolean) => void;
   trackingIds?: IInboxMessagePreview["trackingIds"];
 }> = ({
-  formattedTime,
+  created,
+  formatDate,
   hasBody,
   isMessageActive,
   labels,
   messageId,
   read,
-  readableTimeAgo,
   setAreActionsHovered,
 }) => {
   const actionsHoverRef = useRef(null);
@@ -110,6 +111,12 @@ const MessageActions: React.FunctionComponent<{
     }
   };
 
+  const formattedTime = formatDate
+    ? formatDate(created)
+    : getTimeAgoShort(created);
+
+  const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
+
   return (
     <Styled
       ref={actionsHoverRef}
@@ -124,6 +131,7 @@ const MessageActions: React.FunctionComponent<{
       >
         <TimeAgo
           tabIndex={0}
+          title={created}
           aria-label={`created ${readableTimeAgo}`}
           style={{ textAlign: "right" }}
         >

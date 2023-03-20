@@ -6,7 +6,6 @@ import { useInbox } from "@trycourier/react-hooks";
 import { TextElement, getIcon, Title } from "./styled";
 import { InboxProps } from "../../types";
 
-import { getTimeAgoShort, getTimeAgo } from "~/lib";
 import useHover from "~/hooks/use-hover";
 import Markdown from "markdown-to-jsx";
 
@@ -15,31 +14,6 @@ import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
-
-const ClickableContainer = styled.a(({ theme }) => {
-  const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
-
-  return deepExtend(
-    {
-      "*, &": {
-        "text-decoration": "none",
-      },
-      cursor: "pointer",
-      ".message-container.hover": {
-        background: tcPrimaryColor.setAlpha(0.14),
-      },
-    },
-    theme.message?.clickableContainer ?? {}
-  );
-});
-
-const Contents = styled.div(({ theme }) => ({
-  marginRight: "auto",
-  textAlign: "left",
-  marginLeft: 12,
-  ...theme.message?.contents,
-}));
 
 const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
   ({ theme, read }) => {
@@ -60,6 +34,25 @@ const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
     );
   }
 );
+
+const ClickableContainer = styled.a(({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  return deepExtend(
+    {
+      "*, &": {
+        "text-decoration": "none",
+      },
+      cursor: "pointer",
+      ".message-container.hover": {
+        background: tcPrimaryColor.setAlpha(0.14),
+      },
+    },
+    theme?.message?.container,
+    theme?.message?.clickableContainer
+  );
+});
 
 const MessageContainer = styled.div(({ theme }) => {
   return deepExtend(
@@ -82,6 +75,13 @@ const MessageContainer = styled.div(({ theme }) => {
     theme?.message?.container
   );
 });
+
+const Contents = styled.div(({ theme }) => ({
+  marginRight: "auto",
+  textAlign: "left",
+  marginLeft: 12,
+  ...theme.message?.contents,
+}));
 
 const Message: React.FunctionComponent<{
   areActionsHovered?: boolean;
@@ -232,12 +232,6 @@ const MessageWrapper: React.FunctionComponent<
     true // 36px icon
   );
 
-  const formattedTime = formatDate
-    ? formatDate(created)
-    : getTimeAgoShort(created);
-
-  const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
-
   const clickAction = useMemo(() => {
     if (data?.clickAction) {
       return data.clickAction;
@@ -329,8 +323,8 @@ const MessageWrapper: React.FunctionComponent<
         <div tabIndex={0}>{renderedMessage}</div>
       )}
       <MessageActions
-        readableTimeAgo={readableTimeAgo}
-        formattedTime={formattedTime}
+        created={created}
+        formatDate={formatDate}
         isMessageActive={isMessageFocused || isMessageHovered}
         labels={labels}
         messageId={messageId}

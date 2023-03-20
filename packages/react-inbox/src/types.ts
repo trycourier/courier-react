@@ -3,6 +3,32 @@ import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
 
+export interface InboxTheme {
+  brand?: Brand;
+  container?: React.CSSProperties;
+  footer?: React.CSSProperties;
+  header?: React.CSSProperties;
+  menu?: React.CSSProperties;
+  tooltip?: React.CSSProperties;
+  icon?: React.CSSProperties & {
+    open?: string;
+    closed?: string;
+  };
+  messageList?: {
+    container?: React.CSSProperties;
+  };
+  message?: {
+    clickableContainer?: React.CSSProperties;
+    container?: React.CSSProperties;
+    content?: React.CSSProperties;
+    icon?: React.CSSProperties;
+    timeAgo?: React.CSSProperties;
+    title?: React.CSSProperties;
+    unreadIndicator?: React.CSSProperties;
+  };
+  root?: React.CSSProperties;
+  unreadIndicator?: React.CSSProperties;
+}
 export interface InboxProps {
   brand?: Brand;
   className?: string;
@@ -22,32 +48,7 @@ export interface InboxProps {
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
-  theme?: {
-    container?: React.CSSProperties;
-    footer?: React.CSSProperties;
-    header?: React.CSSProperties;
-    icon?: React.CSSProperties & {
-      open?: string;
-      closed?: string;
-    };
-    messageList?: {
-      container?: React.CSSProperties;
-    };
-    message?: {
-      actions?: {
-        container?: React.CSSProperties;
-        details?: React.CSSProperties;
-        dismiss?: React.CSSProperties;
-      };
-      body?: React.CSSProperties;
-      container?: React.CSSProperties;
-      icon?: React.CSSProperties;
-      title?: React.CSSProperties;
-      unreadIndicator?: React.CSSProperties;
-    };
-    root?: React.CSSProperties;
-    unreadIndicator?: React.CSSProperties;
-  };
+  theme?: InboxTheme;
   title?: string;
   trigger?: TippyProps["trigger"];
   renderContainer?: React.FunctionComponent;

@@ -38,6 +38,7 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
 
       borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
       borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
+
       ".actions": {
         width: 54,
         display: "flex",
@@ -48,6 +49,10 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
     theme?.header
   )
 );
+
+const Title = styled.div(({ theme }) => {
+  return theme?.message?.title;
+});
 
 const DropdownOptionButton = styled.button<{
   active?: boolean;
@@ -136,20 +141,24 @@ const HeadingDropdownButtonContainer = styled.div<{
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const HeadingDropdownOptions = styled.div((_) => {
-  return {
-    position: "absolute",
-    top: "42px",
-    left: 0,
-    background: "white",
-    width: "100%",
-    zIndex: 2,
-    height: "343px",
-
-    [DropdownOptionButton]: {
+const HeadingDropdownOptions = styled.div(({ theme }) => {
+  return deepExtend(
+    {},
+    {
+      position: "absolute",
+      top: "42px",
+      left: 0,
+      background: "white",
       width: "100%",
+      zIndex: 2,
+      height: "343px",
+
+      [DropdownOptionButton]: {
+        width: "100%",
+      },
     },
-  };
+    theme.menu
+  );
 });
 
 const DownCarrot: React.FunctionComponent = () => (
@@ -215,7 +224,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
             selected={selected}
             showDropdown={showDropdown}
           >
-            {title}
+            <Title role="heading">{title}</Title>
             {unreadMessageCount ? (
               <span
                 aria-label={`unread message count ${unreadMessageCount}`}

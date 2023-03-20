@@ -34,7 +34,8 @@ const ClickableContainer = styled.a(({ theme }) => {
         theme.brand?.inapp?.toast?.borderRadius ??
         themeDefaults.inapp.toast.borderRadius,
     },
-    theme.message?.clickableContainer ?? {}
+    theme.message?.container,
+    theme?.message?.clickableContainer
   );
 });
 
@@ -47,7 +48,7 @@ const NonClickableContainer = styled.div(({ theme }) => {
         theme.brand?.inapp?.toast?.borderRadius ??
         themeDefaults.inapp.toast.borderRadius,
     },
-    theme.message?.nonClickableContainer ?? {}
+    theme.message?.container ?? {}
   );
 });
 
