@@ -363,6 +363,7 @@ See https://github.com/trycourier/courier-react/tree/main/packages/react-hooks
 interface ITheme {
   brand?: Brand;
   container?: React.CSSProperties;
+  emptyState?: React.CSSProperties;
   footer?: React.CSSProperties;
   header?: React.CSSProperties;
   menu?: React.CSSProperties;
