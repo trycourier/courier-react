@@ -13,18 +13,13 @@ const Styled = styled.div(({ theme }) =>
       width: "100%",
       height: "100%",
       background: "white",
+      fontSize: 14,
+      fontWeight: 600,
+      color: theme?.brand?.inapp?.emptyState?.textColor ?? "#1C273A",
     },
     theme?.emptyState
   )
 );
-
-const StyledLabel = styled.div`
-  margin-top: 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: ${(props) =>
-    props.theme?.brand?.inapp?.emptyState?.textColor ?? "#1C273A"};
-`;
 
 const LoadingMessages: React.FunctionComponent<{
   labels: InboxProps["labels"];
@@ -35,11 +30,9 @@ const LoadingMessages: React.FunctionComponent<{
   return (
     <Styled>
       <LoadingIndicator finished={noResults}>
-        <StyledLabel>
-          {labels?.emptyState ??
-            brand?.inapp?.emptyState?.text ??
-            "You’re all caught up"}
-        </StyledLabel>
+        {labels?.emptyState ??
+          brand?.inapp?.emptyState?.text ??
+          "You’re all caught up"}
       </LoadingIndicator>
     </Styled>
   );

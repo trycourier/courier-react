@@ -6,6 +6,7 @@ import { IHeaderProps } from "./components/Messages2.0/types";
 export interface InboxTheme {
   brand?: Brand;
   container?: React.CSSProperties;
+  emptyState?: React.CSSProperties;
   footer?: React.CSSProperties;
   header?: React.CSSProperties;
   menu?: React.CSSProperties;
