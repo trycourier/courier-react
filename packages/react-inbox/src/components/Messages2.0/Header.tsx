@@ -19,8 +19,10 @@ export interface IHeaderProps {
   unreadMessageCount?: number;
 }
 
-const Container = styled.div<{ view?: string }>(({ theme }) =>
-  deepExtend(
+const Container = styled.div<{ view?: string }>(({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary || "#9121C2";
+
+  return deepExtend(
     {
       padding: "9px 6px",
       userSelect: "none",
@@ -39,6 +41,21 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
       borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
 
+      ".message-count": {
+        fontSize: 14,
+        fontWeight: 400,
+        margin: "0 3px",
+        background: primaryColor,
+        color: "white",
+        borderRadius: "17px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 18,
+        padding: "0 6px",
+        minWidth: 28,
+      },
+
       ".actions": {
         width: 54,
         display: "flex",
@@ -47,8 +64,8 @@ const Container = styled.div<{ view?: string }>(({ theme }) =>
       },
     },
     theme?.header
-  )
-);
+  );
+});
 
 const Title = styled.div(({ theme }) => {
   return theme?.message?.title;
@@ -85,22 +102,14 @@ const DropdownOptionButton = styled.button<{
           }
         : {}),
     },
-
-    ".message-count": {
-      fontSize: 14,
-      fontWeight: 400,
-      margin: "0 3px",
-      background: selected ? primaryColor : "white",
-      color: selected ? "white" : primaryColor,
-      borderRadius: "17px",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: 18,
-      padding: "0 6px",
-      minWidth: 28,
-    },
   };
+
+  if (!selected) {
+    cssProps[".message-count"] = {
+      background: "white",
+      color: primaryColor,
+    };
+  }
 
   if (!active && !selected) {
     cssProps["&:hover"] = {
@@ -111,18 +120,15 @@ const DropdownOptionButton = styled.button<{
   return cssProps;
 });
 
-const HeadingDropdownButtonContainer = styled.div<{
-  flexDirection?: "column";
-  alignItems?: "center";
+const HeadingContainer = styled.div<{
   hasDropdownOptions?: boolean;
-}>(({ theme, flexDirection, alignItems, hasDropdownOptions }) => {
+}>(({ theme, hasDropdownOptions }) => {
   const primaryColor = theme.brand?.colors?.primary;
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   const styles = {
     display: "flex",
-    flexDirection,
-    alignItems,
+    alignItems: "center",
     borderRadius: 6,
     transition: "background 200ms ease-in-out",
 
@@ -172,6 +178,25 @@ const DownCarrot: React.FunctionComponent = () => (
     <path d="M4.0025 4.9925C3.7425 4.9925 3.4925 4.8925 3.2925 4.7025L0.2925 1.7025C-0.0975 1.3125 -0.0975 0.6825 0.2925 0.2925C0.6825 -0.0975 1.3125 -0.0975 1.7025 0.2925L3.6425 2.2325C3.8425 2.4325 4.1525 2.4325 4.3525 2.2325L6.2925 0.2925C6.6825 -0.0975 7.3125 -0.0975 7.7025 0.2925C8.0925 0.6825 8.0925 1.3125 7.7025 1.7025L4.7025 4.7025C4.5025 4.9025 4.2525 4.9925 3.9925 4.9925H4.0025Z" />
   </svg>
 );
+
+const TitleWrapper: React.FunctionComponent<{
+  title?: string;
+  unreadMessageCount?: number;
+}> = ({ title, unreadMessageCount }) => {
+  return (
+    <>
+      <Title role="heading">{title}</Title>
+      {unreadMessageCount ? (
+        <span
+          aria-label={`unread message count ${unreadMessageCount}`}
+          className="message-count"
+        >
+          {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
+        </span>
+      ) : undefined}
+    </>
+  );
+};
 
 const Header: React.FunctionComponent<IHeaderProps> = ({
   labels,
@@ -224,15 +249,10 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
             selected={selected}
             showDropdown={showDropdown}
           >
-            <Title role="heading">{title}</Title>
-            {unreadMessageCount ? (
-              <span
-                aria-label={`unread message count ${unreadMessageCount}`}
-                className="message-count"
-              >
-                {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
-              </span>
-            ) : undefined}
+            <TitleWrapper
+              title={title}
+              unreadMessageCount={unreadMessageCount}
+            />
             {onClick && !disabled && <DownCarrot />}
           </DropdownOptionButton>
         ),
@@ -269,27 +289,32 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
 
   return (
     <Container data-testid="header">
-      <HeadingDropdownButtonContainer
-        alignItems="center"
-        hasDropdownOptions={hasDropdownOptions}
-      >
-        {ActiveOption && (
-          <ActiveOption
-            selected={true}
-            showDropdown={showDropdown}
-            disabled={!hasDropdownOptions}
-            onClick={handleShowDropdown}
-          />
-        )}
-      </HeadingDropdownButtonContainer>
-      {showDropdown && (
-        <HeadingDropdownOptions>
-          {options
-            .map((o) => {
-              return <o.Component active={o.id === view} key={o.id} />;
-            })
-            .filter(Boolean)}
-        </HeadingDropdownOptions>
+      {hasDropdownOptions ? (
+        <>
+          <HeadingContainer hasDropdownOptions={hasDropdownOptions}>
+            {ActiveOption && (
+              <ActiveOption
+                selected={true}
+                showDropdown={showDropdown}
+                disabled={!hasDropdownOptions}
+                onClick={handleShowDropdown}
+              />
+            )}
+          </HeadingContainer>
+          {showDropdown && (
+            <HeadingDropdownOptions>
+              {options
+                .map((o) => {
+                  return <o.Component active={o.id === view} key={o.id} />;
+                })
+                .filter(Boolean)}
+            </HeadingDropdownOptions>
+          )}
+        </>
+      ) : (
+        <HeadingContainer tabIndex={0}>
+          <TitleWrapper title={title} unreadMessageCount={unreadMessageCount} />
+        </HeadingContainer>
       )}
       <div className="actions">
         {messages.length > 0 && (
