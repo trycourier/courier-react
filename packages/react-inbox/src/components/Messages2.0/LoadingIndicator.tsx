@@ -39,6 +39,7 @@ const StyledContent = styled.div<{ showSmiley: boolean }>`
   visibility: ${(props) => (props.showSmiley ? "visible" : "hidden")};
   transform: translateY(${(props) => (props.showSmiley ? 0 : "25%")});
   text-align: center;
+  padding: ${(props) => (props.showSmiley ? "6px" : 0)};
 `;
 
 const LoadingIndicator: React.FunctionComponent<{

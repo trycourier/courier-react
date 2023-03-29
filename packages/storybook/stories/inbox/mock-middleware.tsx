@@ -32,89 +32,35 @@ export default () => (next) => (action) => {
             {
               messageId: 123,
               created: "2021-04-06T18:02:28.065Z",
-              read: false,
-              content: {
-                trackingIds: {
-                  clickTrackingId: 123,
-                  archiveTrackingId: 123,
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
-                },
-                title: "Unread Message",
-                body: "This Message is Unread",
-              },
+              title: "Unread Message",
+              preview: "This Message is Unread",
             },
             {
               messageId: 456,
               created: "2021-04-06T18:02:28.065Z",
-              read: true,
-              content: {
-                trackingIds: {
-                  clickTrackingId: 123,
-                  archiveTrackingId: 123,
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
-                },
-                title: "Read Message",
-                body: "This Message is Read",
-              },
+              read: "2021-04-06T18:02:28.065Z",
+              title: "Read Message",
+              preview: "This Message is Read",
             },
             {
               messageId: 789,
               created: "2021-04-06T18:02:28.065Z",
-              read: false,
-              content: {
-                trackingIds: {
-                  clickTrackingId: 123,
-                  archiveTrackingId: 123,
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
+              title: "Blocks",
+              preview: "I'm a text block",
+              actions: [
+                {
+                  type: "action",
+                  url: "https://www.courier.com",
+                  text: "Click Me",
                 },
-                title: "Blocks",
-                blocks: [
-                  {
-                    type: "text",
-                    text: "I'm a text block",
-                  },
-                  {
-                    type: "action",
-                    url: "https://www.courier.com",
-                    text: "Click Me",
-                  },
-                ],
-              },
+              ],
             },
             {
               messageId: 78910,
               created: "2021-04-06T18:02:28.065Z",
-              read: false,
-              content: {
-                trackingIds: {
-                  archiveTrackingId: 123,
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
-                },
-                title: "Markdown",
-                blocks: [
-                  {
-                    type: "text",
-                    text: "I can understand *markdown* **woooo** [click here](https://www.courier.com)",
-                  },
-                ],
-              },
-            },
-            {
-              messageId: 101,
-              created: "2021-04-06T18:02:28.065Z",
-              read: false,
-              content: {
-                trackingIds: {
-                  clickTrackingId: 123,
-                  readTrackingId: 123,
-                  unreadTrackingId: 123,
-                },
-                title: "Markdown",
-              },
+              title: "Markdown",
+              preview:
+                "I can understand *markdown* **woooo** [click here](https://www.courier.com)",
             },
           ],
         },
