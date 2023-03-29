@@ -76,10 +76,10 @@ const MessageContainer = styled.div(({ theme }) => {
   );
 });
 
-const Contents = styled.div(({ theme }) => ({
+const Contents = styled.div<{ hasIcon: boolean }>(({ theme, hasIcon }) => ({
   marginRight: "auto",
   textAlign: "left",
-  marginLeft: 12,
+  marginLeft: hasIcon ? 12 : 0,
   ...theme.message?.contents,
 }));
 
@@ -107,7 +107,7 @@ const Message: React.FunctionComponent<{
     >
       <UnreadIndicator read={read} />
       {renderedIcon}
-      <Contents>
+      <Contents hasIcon={Boolean(renderedIcon)}>
         <Title aria-label={`message title ${title}`} read={read}>
           {title}
         </Title>

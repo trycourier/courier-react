@@ -57,7 +57,6 @@ const Container = styled.div<{ view?: string }>(({ theme }) => {
       },
 
       ".actions": {
-        width: 54,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -141,6 +140,8 @@ const HeadingContainer = styled.div<{
     styles["&:hover"] = {
       background: tcPrimaryColor.setAlpha(0.14),
     };
+  } else {
+    styles["paddingLeft"] = 6;
   }
 
   return styles;

@@ -11,7 +11,7 @@ export const getStyles = (theme: InboxTheme) => {
     background: "transparent",
     borderRadius: "6px",
     padding: 0,
-    marginRight: "6px",
+    marginLeft: "6px",
     height: "24px",
     width: "24px",
     transition: "background 200ms ease-in-out",
