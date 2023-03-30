@@ -184,8 +184,6 @@ const Messages: React.ForwardRefExoticComponent<
       toggleInbox(false);
     };
 
-    console.log("messages", messages);
-
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>
         {isMobile && <DismissInbox onClick={handleCloseInbox}>X</DismissInbox>}
