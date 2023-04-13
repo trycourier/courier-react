@@ -15,8 +15,9 @@ export const messagesProps = `
     hasNextPage
   }
   nodes {
-    actions {
+    actions(version: 2) {
       background_color
+      data
       content
       href
       style

@@ -151,7 +151,7 @@ const MessageWrapper: React.FunctionComponent<
   const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   const [areActionsHovered, setAreActionsHovered] = useState(false);
-  const { brand, markMessageRead, markMessageOpened } = useInbox();
+  const { brand, markMessageOpened, trackClick } = useInbox();
 
   const isMessageHovered = useHover(messageRef);
 
@@ -232,36 +232,26 @@ const MessageWrapper: React.FunctionComponent<
     true // 36px icon
   );
 
-  const clickAction = useMemo(() => {
+  const clickActionDetails = useMemo(() => {
     if (data?.clickAction) {
-      return data.clickAction;
+      return {
+        href: data.clickAction,
+      };
     }
 
     if (!actions?.length) {
       return;
     }
 
-    return actions[0].href;
+    return {
+      trackingId: actions[0].data?.trackingId,
+      href: actions[0].href,
+    };
   }, [data?.clickAction, actions]);
-
-  const handleClickMessage = (event?: React.MouseEvent) => {
-    event?.preventDefault();
-
-    if (!messageId) {
-      return;
-    }
-
-    if (!read) {
-      markMessageRead(messageId);
-    }
-
-    if (clickAction && courier.onRouteChange) {
-      courier.onRouteChange(clickAction);
-    }
-  };
 
   let containerProps: {
     href?: string;
+    onClick?: (event: React.MouseEvent) => void;
     onMouseDown?: (event: React.MouseEvent) => void;
     rel?: string;
     target?: string;
@@ -270,20 +260,37 @@ const MessageWrapper: React.FunctionComponent<
     tabIndex: 0,
   };
 
-  if (clickAction) {
-    if (!courier.onRouteChange) {
-      containerProps.href = clickAction;
+  if (clickActionDetails?.href) {
+    containerProps.href = clickActionDetails?.href;
 
-      if (openLinksInNewTab) {
-        containerProps = {
-          ...containerProps,
-          target: "_blank",
-          rel: "noreferrer",
-        };
-      }
+    if (openLinksInNewTab) {
+      containerProps = {
+        ...containerProps,
+        target: "_blank",
+        rel: "noreferrer",
+      };
     }
 
-    containerProps.onMouseDown = handleClickMessage;
+    containerProps.onClick = async (event) => {
+      event.preventDefault();
+
+      if (clickActionDetails?.trackingId) {
+        await trackClick(messageId, clickActionDetails?.href);
+      }
+
+      if (courier.onRouteChange) {
+        courier.onRouteChange(clickActionDetails?.href);
+        return;
+      }
+
+      if (openLinksInNewTab) {
+        window.open(clickActionDetails?.href, "_blank");
+      } else {
+        window.location.href = clickActionDetails?.href;
+      }
+    };
+
+    //containerProps.onMouseDown = handleClickMessage;
   }
 
   const renderedMessage = useMemo(() => {

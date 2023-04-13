@@ -14,6 +14,7 @@ export interface IActionElemental {
   type: "action";
   content: string;
   href: string;
+  data?: Record<string, any>;
 }
 
 export interface IInboxMessagePreview {

@@ -33,6 +33,7 @@ import useClientSourceId from "./hooks/use-client-source-id";
 
 export * from "./transports";
 export * from "./hooks";
+export * from "./lib";
 
 export const registerReducer = _registerReducer;
 export const registerMiddleware = _registerMiddleware;

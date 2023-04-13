@@ -1,5 +1,5 @@
 import { TippyProps } from "@tippyjs/react";
-import { useCourier } from "@trycourier/react-provider";
+import { useCourier, getDateDiff } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
 import React, {
   useEffect,
@@ -132,8 +132,14 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     interactive: true,
   };
 
+  const localStorageState = useLocalStorageMessages(
+    courierContext.clientKey,
+    courierContext.userId
+  );
+
   useEffect(() => {
     init({
+      ...localStorageState,
       brand: props.brand,
       isOpen: props.isOpen,
     });
@@ -141,19 +147,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     if (!props.brand || Object.entries(props.brand).length === 0) {
       courierContext.getBrand(courierContext.brandId);
     }
-  }, [props.brand, props.isOpen]);
-
-  useLocalStorageMessages(courierContext.clientKey, courierContext.userId);
+  }, [localStorageState, props.brand, props.isOpen]);
 
   const handleIconEvent = useCallback(() => {
     if (!isOpen) {
-      const now = new Date().getTime();
-      const dateDiff = lastMessagesFetched
-        ? now - lastMessagesFetched
-        : undefined;
-
       setView("messages");
 
+      const dateDiff = getDateDiff(lastMessagesFetched);
       if (!dateDiff || dateDiff > 3600000) {
         fetchMessages();
       }

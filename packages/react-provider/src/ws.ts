@@ -6,7 +6,7 @@ import {
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
 
-const SUBSCRIPTION_VERSION = 4;
+const SUBSCRIPTION_VERSION = 5;
 export class WS {
   connection?: ReconnectingWebSocket;
   private subscriptions: Array<{

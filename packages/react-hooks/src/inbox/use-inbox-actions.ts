@@ -4,6 +4,7 @@ import {
   registerReducer,
   registerMiddleware,
   Middleware,
+  getDateDiff,
 } from "@trycourier/react-provider";
 import { IInbox } from "./types";
 
@@ -19,10 +20,6 @@ import { markMessageUnread } from "./actions/mark-message-unread";
 import { markMessageArchived } from "./actions/mark-message-archived";
 import { resetLastFetched } from "./actions/reset-last-fetched";
 
-import {
-  rehydrateMessages,
-  RehydrateMessages,
-} from "./actions/rehydrate-messages";
 import { newMessage } from "./actions/new-message";
 import { markMessageOpened } from "./actions/mark-message-opened";
 import { useEffect } from "react";
@@ -41,14 +38,14 @@ interface IInboxActions {
   init: (inbox: IInbox) => void;
   markAllAsRead: (fromWS?: boolean) => void;
   markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
+  markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
-  markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
-  rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
+  newMessage: (transportMessage: IInboxMessagePreview) => void;
   resetLastFetched: () => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
-  newMessage: (transportMessage: IInboxMessagePreview) => void;
+  trackClick: (messageId: string, trackingId: string) => Promise<void>;
 }
 
 const useInboxActions = (): IInboxActions => {
@@ -102,9 +99,19 @@ const useInboxActions = (): IInboxActions => {
       });
     };
 
+  const handleMarkAsRead = async (messageId: string, fromWS?: boolean) => {
+    dispatch(markMessageRead(messageId));
+    if (!fromWS) {
+      await inboxClient.markRead(messageId);
+    }
+  };
+
   const handleInit: IInboxActions["init"] = async (payload) => {
     dispatch(initInbox(payload));
-    handleGetUnreadMessageCount();
+    const dateDiff = getDateDiff(payload.lastMessagesFetched);
+    if (!dateDiff || dateDiff > 3600000) {
+      handleGetUnreadMessageCount();
+    }
 
     if (payload.isOpen) {
       const searchParams: IGetInboxMessagesParams = {
@@ -128,9 +135,6 @@ const useInboxActions = (): IInboxActions => {
     resetLastFetched: () => {
       dispatch(resetLastFetched());
       dispatch(fetchUnreadMessageCount());
-    },
-    rehydrateMessages: (payload) => {
-      dispatch(rehydrateMessages(payload));
     },
     toggleInbox: (isOpen?: boolean) => {
       dispatch(toggleInbox(isOpen));
@@ -171,12 +175,13 @@ const useInboxActions = (): IInboxActions => {
         await inboxClient.markAllRead();
       }
     },
-    markMessageRead: async (messageId, fromWS) => {
-      dispatch(markMessageRead(messageId));
-      if (!fromWS) {
-        await inboxClient.markRead(messageId);
-      }
+    trackClick: async (messageId, trackingId) => {
+      await Promise.all([
+        handleMarkAsRead(messageId),
+        inboxClient.trackClick(messageId, trackingId),
+      ]);
     },
+    markMessageRead: handleMarkAsRead,
     markMessageUnread: async (messageId, fromWS) => {
       dispatch(markMessageUnread(messageId));
       if (!fromWS) {
