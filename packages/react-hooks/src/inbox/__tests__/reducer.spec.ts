@@ -31,10 +31,6 @@ import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
 import { INBOX_MARK_ALL_READ, markAllRead } from "../actions/mark-all-read";
 
 import {
-  rehydrateMessages,
-  INBOX_REHYDRATE_MESSAGES,
-} from "../actions/rehydrate-messages";
-import {
   INBOX_MARK_MESSAGE_OPENED,
   markMessageOpened,
 } from "../actions/mark-message-opened";
@@ -115,26 +111,6 @@ describe("inbox reducer", () => {
     expect(state).toEqual({
       ...initialState,
       unreadMessageCount: 100,
-    });
-  });
-
-  describe(`action ${INBOX_REHYDRATE_MESSAGES}`, () => {
-    it("will rehydrate without tabs", () => {
-      const state = reducer(
-        initialState,
-        rehydrateMessages({
-          messages: [mockGraphMessage],
-          startCursor: "abc123",
-          unreadMessageCount: 1,
-        })
-      );
-
-      expect(state).toEqual({
-        ...initialState,
-        messages: [mockGraphMessage],
-        startCursor: "abc123",
-        unreadMessageCount: 1,
-      });
     });
   });
 

@@ -10,7 +10,7 @@ export default (api) => (store) => (next) => async (action) => {
   const state = store.getState();
 
   switch (action.type) {
-    case "root/PAGE_VISIBLE":
+    //case "root/PAGE_VISIBLE":
     case "root/WS_RECONNECTED": {
       store.dispatch(resetLastFetched());
       store.dispatch(fetchUnreadMessageCount());

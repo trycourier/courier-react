@@ -24,9 +24,10 @@ export default (
   getMessages: messages.GetInboxMessages;
   markAllRead: MarkAllRead;
   markArchive: TrackEvent;
-  markRead: TrackEvent;
   markOpened: TrackEvent;
+  markRead: TrackEvent;
   markUnread: TrackEvent;
+  trackClick: TrackEvent;
 } => {
   const client = createCourierClient(params, {
     apiUrl:
@@ -43,5 +44,6 @@ export default (
     markOpened: trackEvent(client)("opened"),
     markRead: trackEvent(client)("read"),
     markUnread: trackEvent(client)("unread"),
+    trackClick: trackEvent(client)("clicked"),
   };
 };

@@ -5,10 +5,7 @@ import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
 import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
 import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
-import {
-  RehydrateMessages,
-  INBOX_REHYDRATE_MESSAGES,
-} from "./actions/rehydrate-messages";
+
 import {
   ResetLastFetched,
   INBOX_RESET_LAST_FETCHED,
@@ -63,7 +60,6 @@ type InboxAction =
   | MarkMessageUnread
   | NewMessage
   | ResetLastFetched
-  | RehydrateMessages
   | ToggleInbox;
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
@@ -115,24 +111,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         lastMessagesFetched: undefined,
-      };
-    }
-
-    case INBOX_REHYDRATE_MESSAGES: {
-      if (action.payload.messages) {
-        return {
-          ...state,
-          lastMessagesFetched: action.payload.lastMessagesFetched,
-          messages: action.payload.messages,
-          startCursor: action.payload.startCursor,
-          unreadMessageCount: action.payload.unreadMessageCount,
-        };
-      }
-
-      return {
-        ...state,
-        lastMessagesFetched: action.payload.lastMessagesFetched,
-        unreadMessageCount: action.payload.unreadMessageCount,
       };
     }
 

@@ -121,7 +121,6 @@ interface IInboxActions {
   markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
   newMessage: (transportMessage: IInboxMessagePreview) => void;
-  rehydrateMessages: (payload: RehydrateMessages["payload"]) => void;
   resetLastFetched: () => void;
   setView: (view: "messages" | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;

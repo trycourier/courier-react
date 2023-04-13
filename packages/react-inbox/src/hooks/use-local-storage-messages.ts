@@ -4,13 +4,8 @@ import { useCourier } from "@trycourier/react-provider";
 
 const useLocalStorageMessages = (clientKey: string, userId: string) => {
   const { localStorage } = useCourier();
-  const {
-    lastMessagesFetched,
-    messages,
-    rehydrateMessages,
-    startCursor,
-    unreadMessageCount,
-  } = useInbox();
+  const { lastMessagesFetched, messages, startCursor, unreadMessageCount } =
+    useInbox();
 
   useEffect(() => {
     if (!localStorage) {
@@ -29,29 +24,15 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     return `${clientKey}/${userId}/inbox`;
   }, [clientKey, userId]);
 
-  useEffect(() => {
+  const localStorageState = useMemo(() => {
     if (!localStorageKey || !localStorage) {
       return;
     }
 
-    const localStorageState = localStorage.getItem(localStorageKey);
-    if (localStorageState) {
-      try {
-        const {
-          lastMessagesFetched,
-          unreadMessageCount,
-          messages,
-          startCursor,
-        } = JSON.parse(localStorageState);
-        rehydrateMessages({
-          lastMessagesFetched,
-          messages,
-          startCursor,
-          unreadMessageCount,
-        });
-      } catch (ex) {
-        console.log("error", ex);
-      }
+    try {
+      return JSON.parse(localStorage.getItem(localStorageKey));
+    } catch {
+      // do nothing
     }
   }, [localStorageKey, localStorage]);
 
@@ -76,6 +57,8 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     startCursor,
     unreadMessageCount,
   ]);
+
+  return localStorageState;
 };
 
 export default useLocalStorageMessages;

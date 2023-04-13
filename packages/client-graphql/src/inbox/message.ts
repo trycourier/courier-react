@@ -38,6 +38,7 @@ export interface IActionElemental {
   type: "text";
   content: string;
   href: string;
+  data?: Record<string, any>;
 }
 export interface IInboxMessage {
   messageId: string;
