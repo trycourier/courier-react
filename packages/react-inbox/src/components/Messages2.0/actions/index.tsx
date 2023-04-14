@@ -40,6 +40,7 @@ const Styled = styled.div((_props) => {
       "&:not(.hidden)": {
         opacity: 1,
         visibility: "visible",
+        textAlign: "right",
       },
     },
 

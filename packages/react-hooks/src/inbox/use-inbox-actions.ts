@@ -99,13 +99,6 @@ const useInboxActions = (): IInboxActions => {
       });
     };
 
-  const handleMarkAsRead = async (messageId: string, fromWS?: boolean) => {
-    dispatch(markMessageRead(messageId));
-    if (!fromWS) {
-      await inboxClient.markRead(messageId);
-    }
-  };
-
   const handleInit: IInboxActions["init"] = async (payload) => {
     dispatch(initInbox(payload));
     const dateDiff = getDateDiff(payload.lastMessagesFetched);
@@ -176,12 +169,14 @@ const useInboxActions = (): IInboxActions => {
       }
     },
     trackClick: async (messageId, trackingId) => {
-      await Promise.all([
-        handleMarkAsRead(messageId),
-        inboxClient.trackClick(messageId, trackingId),
-      ]);
+      await inboxClient.trackClick(messageId, trackingId);
     },
-    markMessageRead: handleMarkAsRead,
+    markMessageRead: async (messageId: string, fromWS?: boolean) => {
+      dispatch(markMessageRead(messageId));
+      if (!fromWS) {
+        await inboxClient.markRead(messageId);
+      }
+    },
     markMessageUnread: async (messageId, fromWS) => {
       dispatch(markMessageUnread(messageId));
       if (!fromWS) {

@@ -24,6 +24,7 @@
     "concat-md": "^0.3.5"
   },
   "dependencies": {
+    "@trycourier/react-hooks": "^3.2.0",
     "deep-extend": "^0.6.0",
     "markdown-to-jsx": "^7.1.7",
     "react-toastify": "^6.2.0",
@@ -32,7 +33,7 @@
     "tinycolor2": "^1.4.2"
   },
   "peerDependencies": {
-    "@trycourier/react-provider": "^1.48.1",
+    "@trycourier/react-provider": "^3.X.X",
     "react": ">=17.X.X",
     "react-dom": ">=17.X.X"
   },
