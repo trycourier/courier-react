@@ -151,7 +151,7 @@ const MessageWrapper: React.FunctionComponent<
   const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   const [areActionsHovered, setAreActionsHovered] = useState(false);
-  const { brand, markMessageOpened, trackClick } = useInbox();
+  const { brand, markMessageOpened, markMessageRead, trackClick } = useInbox();
 
   const isMessageHovered = useHover(messageRef);
 
@@ -274,8 +274,14 @@ const MessageWrapper: React.FunctionComponent<
     containerProps.onClick = async (event) => {
       event.preventDefault();
 
-      if (clickActionDetails?.trackingId) {
-        await trackClick(messageId, clickActionDetails?.href);
+      const promises = [
+        !read && markMessageRead(messageId),
+        clickActionDetails?.trackingId &&
+          trackClick(messageId, clickActionDetails?.trackingId),
+      ].filter(Boolean);
+
+      if (promises.length) {
+        await Promise.all(promises);
       }
 
       if (courier.onRouteChange) {
@@ -289,8 +295,6 @@ const MessageWrapper: React.FunctionComponent<
         window.location.href = clickActionDetails?.href;
       }
     };
-
-    //containerProps.onMouseDown = handleClickMessage;
   }
 
   const renderedMessage = useMemo(() => {

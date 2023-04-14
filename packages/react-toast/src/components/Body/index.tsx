@@ -3,6 +3,7 @@ import { toast, ToastProps } from "react-toastify";
 import { Container, Message, Title, TextElement, Dismiss } from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
+import { useInbox } from "@trycourier/react-hooks";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import Markdown from "markdown-to-jsx";
 import styled from "styled-components";
@@ -64,7 +65,8 @@ const Body: React.FunctionComponent<
   const [, { config }] = useToast();
 
   const { toastProps } = props;
-  const { brand: courierBrand, dispatch } = useCourier();
+  const { brand: courierBrand } = useCourier();
+  const { markMessageRead, trackClick } = useInbox();
 
   const brand = config?.brand ?? courierBrand;
   const { openLinksInNewTab } = config;
@@ -86,59 +88,74 @@ const Body: React.FunctionComponent<
       : (icon || config?.defaultIcon) ?? brand?.inapp?.icons?.message
   );
 
-  const clickAction = useMemo(() => {
+  const clickActionDetails = useMemo(() => {
     if (data?.clickAction) {
-      return data.clickAction;
+      return {
+        href: data.clickAction,
+      };
     }
 
     if (!actions?.length) {
       return;
     }
 
-    return actions[0].href;
-  }, [actions]);
-
-  const handleClickMessage = (event: React.MouseEvent) => {
-    event?.preventDefault();
-
-    dispatch({
-      type: "inbox/MARK_MESSAGE_READ",
-      payload: {
-        messageId,
-      },
-    });
-
-    if (onClick) {
-      onClick(event);
-      return;
-    }
-
-    if (clickAction && courier.onRouteChange) {
-      courier.onRouteChange(clickAction);
-    }
-  };
+    return {
+      trackingId: actions[0].data?.trackingId,
+      href: actions[0].href,
+    };
+  }, [data?.clickAction, actions]);
 
   let containerProps: {
     href?: string;
-    onMouseDown?: (event: React.MouseEvent) => void;
+    onClick?: (event: React.MouseEvent) => void;
     rel?: string;
     target?: string;
   } = {};
 
-  if (clickAction) {
-    if (!courier.onRouteChange) {
-      containerProps.href = clickAction;
+  if (clickActionDetails?.href) {
+    containerProps.href = clickActionDetails?.href;
 
-      if (openLinksInNewTab) {
-        containerProps = {
-          ...containerProps,
-          target: "_blank",
-          rel: "noreferrer",
-        };
-      }
+    if (openLinksInNewTab) {
+      containerProps = {
+        ...containerProps,
+        target: "_blank",
+        rel: "noreferrer",
+      };
     }
 
-    containerProps.onMouseDown = handleClickMessage;
+    containerProps.onClick = async (event) => {
+      event.preventDefault();
+
+      if (!messageId) {
+        return;
+      }
+
+      const promises = [
+        markMessageRead(messageId),
+        clickActionDetails?.trackingId &&
+          trackClick(messageId, clickActionDetails?.trackingId),
+      ].filter(Boolean);
+
+      if (promises.length) {
+        await Promise.all(promises);
+      }
+
+      if (onClick) {
+        onClick(event);
+        return;
+      }
+
+      if (courier.onRouteChange) {
+        courier.onRouteChange(clickActionDetails?.href);
+        return;
+      }
+
+      if (openLinksInNewTab) {
+        window.open(clickActionDetails?.href, "_blank");
+      } else {
+        window.location.href = clickActionDetails?.href;
+      }
+    };
   }
 
   const renderedMessage = useMemo(() => {
