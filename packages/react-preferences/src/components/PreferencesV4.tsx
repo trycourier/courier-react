@@ -9,6 +9,7 @@ import {
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
 import { PreferenceSection } from "@trycourier/react-hooks";
+import DigestSchedule from "./DigestSchedule";
 
 export const ChannelOption = styled.div`
   display: flex;
@@ -60,6 +61,10 @@ const StyledItem = styled.div`
     width: 100%;
     margin-bottom: 6px;
     font-weight: bold;
+  }
+
+  .digest-schedules {
+    margin-top: 16px;
   }
 `;
 
@@ -322,6 +327,18 @@ export const PreferenceTopic: React.FunctionComponent<{
           onChange={handleStatusChange}
         />
       </StyledToggle>
+      <div className="digest-schedules">
+        {topic.digestSchedules?.map((schedule, index) => (
+          <DigestSchedule
+            period={schedule.period}
+            repetition={schedule.repetition}
+            isActive={!!index}
+            checkedColor={
+              preferencePage?.brand.settings.colors.primary ?? "#9121c2"
+            }
+          />
+        ))}
+      </div>
       {statusToggle && defaultHasCustomRouting && defaultStatus !== "REQUIRED" && (
         <ChannelPreferenceStyles
           theme={{ primary: preferencePage?.brand.settings.colors.primary }}
