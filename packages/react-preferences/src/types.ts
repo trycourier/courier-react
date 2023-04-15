@@ -30,10 +30,17 @@ export interface IPreference {
   channel_preferences?: Array<ChannelClassification>;
 }
 
+export interface DigestSchedule {
+  period: string;
+  repetition: string;
+  digestId: string;
+}
+
 export interface IPreferenceTemplate {
   templateName: string;
   templateId: string;
   defaultStatus: PreferenceStatus;
+  digestSchedules?: DigestSchedule[];
 }
 
 export interface IRecipientPreference {
