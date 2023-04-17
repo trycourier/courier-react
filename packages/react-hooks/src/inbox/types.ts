@@ -8,6 +8,7 @@ export interface IInbox<T = IInboxMessagePreview> {
   lastMarkedAllRead?: number;
   lastMessagesFetched?: number;
   messages?: Array<T>;
+  pinned?: Array<T>;
   startCursor?: string;
   unreadMessageCount?: number;
   view?: "messages" | "preferences";

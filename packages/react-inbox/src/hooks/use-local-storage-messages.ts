@@ -4,8 +4,13 @@ import { useCourier } from "@trycourier/react-provider";
 
 const useLocalStorageMessages = (clientKey: string, userId: string) => {
   const { localStorage } = useCourier();
-  const { lastMessagesFetched, messages, startCursor, unreadMessageCount } =
-    useInbox();
+  const {
+    lastMessagesFetched,
+    messages,
+    pinned,
+    startCursor,
+    unreadMessageCount,
+  } = useInbox();
 
   useEffect(() => {
     if (!localStorage) {
@@ -46,6 +51,7 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
       JSON.stringify({
         lastMessagesFetched,
         messages,
+        pinned,
         startCursor,
         unreadMessageCount,
       })

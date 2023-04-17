@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 
 import { PreferenceList } from "@trycourier/react-preferences";
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
+import tinycolor2 from "tinycolor2";
 
-import { useAtBottom } from "~/hooks/use-at-bottom";
+import { useOnScroll } from "~/hooks/use-on-scroll";
 import Header from "./Header";
 import LoadingMessages from "./LoadingMessages";
 import LoadingMore from "./LoadingMore";
@@ -15,6 +16,7 @@ import { InboxProps } from "../../types";
 import CourierLogo from "~/assets/courier-text-logo2.svg";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
+import { PositionRelative } from "./styled";
 
 const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
   ({ theme, isMobile }) =>
@@ -79,6 +81,7 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
 
     return deepExtend(
       {
+        position: "relative",
         background: "rgb(242, 246, 249)",
         overflow: "scroll",
         display: "flex",
@@ -123,6 +126,54 @@ export const Footer = styled.div(({ theme }) =>
   )
 );
 
+const ScrollTop = styled.button<{ text: "string" }>(({ theme, text }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+  const lighten30 = tcPrimaryColor.lighten(30);
+
+  return {
+    position: "sticky",
+    top: "-1px",
+    width: "100%",
+    height: "3px",
+    zIndex: 1,
+    fontSize: "12px",
+    cursor: "pointer",
+    background: lighten30.toString(),
+    transition: "all 150ms ease-in",
+
+    "&.hidden": {
+      opacity: 0,
+      visibility: "hidden",
+    },
+
+    "&::before": {
+      transition: "all 150ms ease-in",
+      boxSizing: "border-box",
+      marginTop: "-10px",
+      content: `'${text}'`,
+      position: "absolute",
+      left: "50%",
+      transform: "translateX(-50%)",
+      padding: "2px 8px",
+      display: "inline-block",
+      borderRadius: "10px",
+      background: lighten30.toString(),
+      height: "18px",
+      "&:hover": {
+        background: lighten30.darken(10).toString(),
+      },
+    },
+    "&.stickied": {
+      "&::before": {
+        marginTop: "6px",
+      },
+      boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
+    },
+    border: "none",
+  };
+});
+
 const Messages: React.ForwardRefExoticComponent<
   InboxProps & {
     isMobile?: boolean;
@@ -153,26 +204,59 @@ const Messages: React.ForwardRefExoticComponent<
       isLoading,
       markAllAsRead,
       messages = [],
+      pinned = [],
       startCursor,
       toggleInbox,
       unreadMessageCount,
       view,
+      resetLastFetched,
+      init,
     } = useInbox();
 
+    const scrollTopRef = useRef<HTMLButtonElement>(null);
     const messageListRef = useRef<HTMLDivElement>(null);
 
-    useAtBottom(
+    useOnScroll(
       messageListRef,
-      () => {
-        if (isLoading || !startCursor) {
-          return;
-        }
+      {
+        onScroll: (element) => {
+          if (!element || !scrollTopRef.current) {
+            return;
+          }
 
-        fetchMessages({
-          after: startCursor,
-        });
+          const classList: Element["classList"] =
+            scrollTopRef?.current?.classList;
+
+          if (element.scrollTop < 10 && !classList?.contains("hidden")) {
+            classList.add("hidden");
+          }
+
+          if (element.scrollTop >= 10 && classList?.contains("hidden")) {
+            classList.remove("hidden");
+          }
+
+          const isSticky =
+            scrollTopRef?.current?.offsetTop - element?.scrollTop < 7;
+
+          if (isSticky && !classList?.contains("stickied")) {
+            scrollTopRef?.current?.classList.add("stickied");
+          }
+
+          if (!isSticky && classList?.contains("stickied")) {
+            scrollTopRef?.current?.classList.remove("stickied");
+          }
+        },
+        atBottom: () => {
+          if (isLoading || !startCursor) {
+            return;
+          }
+
+          fetchMessages({
+            after: startCursor,
+          });
+        },
       },
-      [isLoading, startCursor]
+      [scrollTopRef.current, isLoading, startCursor]
     );
 
     useEffect(() => {
@@ -183,6 +267,23 @@ const Messages: React.ForwardRefExoticComponent<
       event.preventDefault();
       toggleInbox(false);
     };
+
+    const handleClickScrollTop = () => {
+      resetLastFetched();
+      init();
+
+      if (messageListRef.current) {
+        messageListRef.current.scrollTop = 0;
+      }
+    };
+
+    const scrollTopMessage = useMemo(() => {
+      if (pinned.length) {
+        return `${pinned.length} Pinned`;
+      }
+
+      return "Scroll Top";
+    }, [pinned.length]);
 
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>
@@ -204,42 +305,67 @@ const Messages: React.ForwardRefExoticComponent<
             unreadMessageCount={unreadMessageCount}
           />
         )}
-        {view === "messages" ? (
-          <MessageList
-            ref={messageListRef}
-            isMobile={isMobile}
-            data-testid="messages"
-          >
-            {messages?.map((message) =>
-              renderMessage ? (
-                renderMessage(message)
-              ) : (
-                <Message
-                  {...message}
-                  defaultIcon={defaultIcon}
-                  formatDate={formatDate}
-                  isMessageFocused={focusedMessageId === message.messageId}
-                  key={message.messageId}
-                  labels={labels}
-                  openLinksInNewTab={openLinksInNewTab}
-                  setFocusedMessageId={setFocusedMessageId}
-                />
-              )
-            )}
-            {!messages?.length &&
-              (isLoading || !renderNoMessages ? (
-                <LoadingMessages labels={labels} noResults={!isLoading} />
-              ) : (
-                renderNoMessages({})
-              ))}
-            {((isLoading && messages?.length > 0) ||
-              (!startCursor && messages.length > 5)) && (
-              <LoadingMore noResults={!isLoading} />
-            )}
-          </MessageList>
-        ) : (
-          <PreferenceList theme={{ name: "2.0" }} />
-        )}
+        <PositionRelative>
+          {view === "messages" ? (
+            <MessageList
+              ref={messageListRef}
+              isMobile={isMobile}
+              data-testid="messages"
+            >
+              {pinned?.map((message) =>
+                renderMessage ? (
+                  renderMessage(message)
+                ) : (
+                  <Message
+                    {...message}
+                    defaultIcon={defaultIcon}
+                    formatDate={formatDate}
+                    isMessageFocused={focusedMessageId === message.messageId}
+                    key={message.messageId}
+                    labels={labels}
+                    openLinksInNewTab={openLinksInNewTab}
+                    setFocusedMessageId={setFocusedMessageId}
+                  />
+                )
+              )}
+              <ScrollTop
+                className="hidden"
+                disabled={isLoading}
+                ref={scrollTopRef}
+                onClick={handleClickScrollTop}
+                text={scrollTopMessage}
+              />
+              {messages?.map((message) =>
+                renderMessage ? (
+                  renderMessage(message)
+                ) : (
+                  <Message
+                    {...message}
+                    defaultIcon={defaultIcon}
+                    formatDate={formatDate}
+                    isMessageFocused={focusedMessageId === message.messageId}
+                    key={message.messageId}
+                    labels={labels}
+                    openLinksInNewTab={openLinksInNewTab}
+                    setFocusedMessageId={setFocusedMessageId}
+                  />
+                )
+              )}
+              {!messages?.length &&
+                (isLoading || !renderNoMessages ? (
+                  <LoadingMessages labels={labels} noResults={!isLoading} />
+                ) : (
+                  renderNoMessages({})
+                ))}
+              {((isLoading && messages?.length > 0) ||
+                (!startCursor && messages.length > 5)) && (
+                <LoadingMore noResults={!isLoading} />
+              )}
+            </MessageList>
+          ) : (
+            <PreferenceList theme={{ name: "2.0" }} />
+          )}
+        </PositionRelative>
         {renderFooter
           ? renderFooter({})
           : !brand?.inapp?.disableCourierFooter && (

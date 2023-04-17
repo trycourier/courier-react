@@ -24,8 +24,10 @@ export const messagesProps = `
     }
     created
     data
+    icon
     messageId
     opened
+    pinned
     preview
     read
     icon
@@ -42,8 +44,19 @@ export const messagesProps = `
   }
 `;
 
-export const GET_INBOX_MESSAGES = `
-  query GetInboxMessages($params: FilterParamsInput, $limit: Int = 10, $after: String){
+export const createGetInboxMessagesQuery = (includePinned?: boolean) => `
+  query GetInboxMessages($params: FilterParamsInput, ${
+    includePinned ? "$pinnedParams: FilterParamsInput, " : ""
+  } $limit: Int = 10, $after: String){
+    ${
+      includePinned
+        ? `
+      pinned: messages(params: $pinnedParams, limit: $limit, after: $after) {
+        ${messagesProps}
+      }
+    `
+        : ""
+    }
     messages(params: $params, limit: $limit, after: $after) {
       ${messagesProps}
     }
@@ -83,15 +96,29 @@ export const getInboxMessages =
 
     const { limit, ...restParams } = params ?? {};
     const results = await client
-      .query(GET_INBOX_MESSAGES, { after, limit, params: restParams })
+      .query(createGetInboxMessagesQuery(!after), {
+        after,
+        limit,
+        params: {
+          ...restParams,
+          pinned: false,
+        },
+        pinnedParams: {
+          ...restParams,
+          pinned: true,
+        },
+      })
       .toPromise();
 
     const messages = results?.data?.messages?.nodes;
+    const pinned = results?.data?.pinned?.nodes;
+
     const startCursor = results?.data?.messages?.pageInfo?.startCursor;
 
     return {
       appendMessages: Boolean(after),
       messages,
+      pinned,
       startCursor,
     };
   };
