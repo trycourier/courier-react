@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
-import { TextElement, getIcon, Title } from "./styled";
+import { TextElement, getIcon, Title, PositionRelative } from "./styled";
 import { InboxProps } from "../../types";
 
 import useHover from "~/hooks/use-hover";
@@ -14,6 +14,7 @@ import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
+import Thumbtack from "~/assets/thumbtack.svg";
 
 const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
   ({ theme, read }) => {
@@ -55,6 +56,9 @@ const ClickableContainer = styled.a(({ theme }) => {
 });
 
 const MessageContainer = styled.div(({ theme }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
   return deepExtend(
     {
       transition: "background 200ms ease-in-out",
@@ -62,8 +66,10 @@ const MessageContainer = styled.div(({ theme }) => {
       position: "relative",
       padding: "12px",
       minHeight: 60,
-      backgroundColor: "#F9FAFB",
       borderBottom: "1px solid rgb(222, 232, 240)",
+      "&.pinned": {
+        background: tcPrimaryColor.setAlpha(0.45),
+      },
       "&.read": {
         background: "#F2F6F9",
         ".icon": {
@@ -83,31 +89,50 @@ const Contents = styled.div<{ hasIcon: boolean }>(({ theme, hasIcon }) => ({
   ...theme.message?.contents,
 }));
 
+const Pinned = styled.div`
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  color: rgb(115, 129, 155);
+  svg {
+    padding-right: 3px;
+  }
+`;
+
 const Message: React.FunctionComponent<{
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
+  pinned?: boolean;
+  preview?: string;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
-  preview?: string;
   title?: string;
 }> = ({
   areActionsHovered,
   isMessageActive,
+  pinned,
+  preview,
   read,
   renderedIcon,
-  preview,
   title,
 }) => {
   return (
     <MessageContainer
       className={classNames("message-container", {
         hover: isMessageActive && !areActionsHovered,
+        pinned,
         read,
       })}
     >
       <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
+        {pinned && (
+          <Pinned>
+            <Thumbtack />
+            <em>Pinned</em>
+          </Pinned>
+        )}
         <Title aria-label={`message title ${title}`} read={read}>
           {title}
         </Title>
@@ -140,6 +165,7 @@ const MessageWrapper: React.FunctionComponent<
   messageId,
   opened,
   openLinksInNewTab,
+  pinned,
   preview,
   read,
   setFocusedMessageId,
@@ -302,9 +328,10 @@ const MessageWrapper: React.FunctionComponent<
       <Message
         areActionsHovered={areActionsHovered}
         isMessageActive={isMessageFocused || isMessageHovered}
+        pinned={pinned}
+        preview={preview}
         read={read}
         renderedIcon={renderedIcon}
-        preview={preview}
         title={title}
       />
     );
@@ -319,12 +346,10 @@ const MessageWrapper: React.FunctionComponent<
   ]);
 
   return (
-    <div
+    <PositionRelative
       ref={messageRef}
       data-testid="inbox-message"
-      style={{
-        position: "relative",
-      }}
+      className={classNames({ pinned })}
     >
       {courier.onRouteChange || containerProps.href ? (
         <ClickableContainer {...containerProps}>
@@ -343,7 +368,7 @@ const MessageWrapper: React.FunctionComponent<
         setAreActionsHovered={setAreActionsHovered}
         trackingIds={trackingIds}
       />
-    </div>
+    </PositionRelative>
   );
 };
 

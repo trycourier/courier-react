@@ -124,6 +124,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
+        pinned: action.payload.appendMessages
+          ? state.pinned
+          : action.payload.pinned,
         startCursor: action.payload.startCursor,
       };
     }
@@ -134,8 +137,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         (state.unreadMessageCount ?? 0) - 1
       );
 
-      // not on unread tab
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkRead = (message) => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
@@ -144,11 +146,12 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         }
 
         return message;
-      });
+      };
 
       return {
         ...state,
-        messages: newMessages,
+        pinned: state.pinned?.map(handleMarkRead),
+        messages: state.messages?.map(handleMarkRead),
         unreadMessageCount,
       };
     }
@@ -156,7 +159,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_MARK_MESSAGE_UNREAD: {
       const unreadMessageCount = (state.unreadMessageCount ?? 0) + 1;
 
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkUnread = (message) => {
         if (message.messageId !== action.payload.messageId) {
           return message;
         }
@@ -167,17 +170,18 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         };
 
         return newMessage;
-      });
+      };
 
       return {
         ...state,
-        messages: newMessages,
+        messages: state.messages?.map(handleMarkUnread),
+        pinned: state.pinned?.map(handleMarkUnread),
         unreadMessageCount,
       };
     }
 
     case INBOX_MARK_MESSAGE_OPENED: {
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkOpened = (message) => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
@@ -186,29 +190,31 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         }
 
         return message;
-      });
+      };
 
       return {
         ...state,
-        messages: newMessages,
+        messages: state.messages?.map(handleMarkOpened),
+        pinned: state.pinned?.map(handleMarkOpened),
       };
     }
 
     case INBOX_MARK_MESSAGE_ARCHIVED: {
       let unreadMessageCount = state.unreadMessageCount ?? 0;
 
-      const newMessages = state.messages?.filter((message) => {
+      const handleArchived = (message) => {
         const isMatching = message.messageId === action.payload.messageId;
         if (isMatching && !message.read) {
           unreadMessageCount = Math.max(unreadMessageCount - 1, 0);
         }
 
         return !isMatching;
-      });
+      };
 
       return {
         ...state,
-        messages: newMessages,
+        pinned: state.pinned?.filter(handleArchived),
+        messages: state.messages?.filter(handleArchived),
         unreadMessageCount,
       };
     }
@@ -219,12 +225,18 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         created: new Date().toISOString(),
       };
 
-      const newMessages = [newMessage, ...(state.messages ?? [])];
+      if (newMessage.pinned) {
+        return {
+          ...state,
+          unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
+          pinned: [newMessage, ...(state.pinned ?? [])],
+        };
+      }
 
       return {
         ...state,
         unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
-        messages: newMessages,
+        messages: [newMessage, ...(state.messages ?? [])],
       };
     }
 

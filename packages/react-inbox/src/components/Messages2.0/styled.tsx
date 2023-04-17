@@ -4,6 +4,10 @@ import styled from "styled-components";
 import CourierSvg from "~/assets/courier_icon.svg";
 import CourierBigSvg from "~/assets/courier_big_icon.svg";
 
+export const PositionRelative = styled.div`
+  position: relative;
+`;
+
 export const Container = styled.div(({ theme }) =>
   deepExtend(
     {
