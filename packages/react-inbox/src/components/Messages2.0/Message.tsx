@@ -62,9 +62,6 @@ const ClickableContainer = styled.a(({ theme }) => {
 });
 
 const MessageContainer = styled.div(({ theme }) => {
-  const primaryColor = theme.brand?.colors?.primary;
-  const tcPrimaryColor = tinycolor2(primaryColor);
-
   return deepExtend(
     {
       transition: "background 200ms ease-in-out",
@@ -73,9 +70,6 @@ const MessageContainer = styled.div(({ theme }) => {
       padding: "12px",
       minHeight: 60,
       borderBottom: "1px solid rgb(222, 232, 240)",
-      "&.pinned": {
-        background: tcPrimaryColor.setAlpha(0.45),
-      },
       "&.read": {
         background: "#F2F6F9",
         ".icon": {

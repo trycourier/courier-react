@@ -154,24 +154,7 @@ const useInboxActions = (): IInboxActions => {
 
       dispatch({
         meta,
-        payload: () =>
-          inboxClient.getMessages({
-            ...meta.searchParams,
-            pinned: true,
-          }),
-        type: "inbox/FETCH_PINNED_MESSAGES",
-      });
-
-      dispatch({
-        meta,
-        payload: () =>
-          inboxClient.getMessages(
-            {
-              ...meta.searchParams,
-              pinned: false,
-            },
-            payload?.after
-          ),
+        payload: () => inboxClient.getMessages(searchParams, payload?.after),
         type: "inbox/FETCH_MESSAGES",
       });
     },
