@@ -46,12 +46,50 @@ export default () => (next) => (action) => {
               messageId: 789,
               created: "2021-04-06T18:02:28.065Z",
               title: "Blocks",
-              preview: "I'm a text block",
+              preview: "I'm a text block with 1 action",
               actions: [
                 {
                   type: "action",
-                  url: "https://www.courier.com",
-                  text: "Click Me",
+                  href: "https://www.courier.com",
+                  content: "Click Me",
+                },
+              ],
+            },
+            {
+              messageId: 790,
+              created: "2021-04-06T18:02:28.065Z",
+              title: "Blocks",
+              preview: "I'm a text block with 2 actions",
+              actions: [
+                {
+                  type: "action",
+                  href: "https://www.courier.com",
+                  content: "Approve",
+                },
+                {
+                  type: "action",
+                  href: "https://www.courier.com",
+                  content: "Reject",
+                },
+              ],
+            },
+            {
+              messageId: 790,
+              created: "2021-04-06T18:02:28.065Z",
+              title: "Blocks",
+              preview: "I'm a text block with 2 actions and custom color",
+              actions: [
+                {
+                  type: "action",
+                  href: "https://www.courier.com",
+                  background_color: "red",
+                  content: "Approve",
+                },
+                {
+                  type: "action",
+                  background_color: "blue",
+                  href: "https://www.courier.com",
+                  content: "Reject",
                 },
               ],
             },

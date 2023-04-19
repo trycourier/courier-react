@@ -11,6 +11,7 @@ export interface ITextElemental {
 }
 
 export interface IActionElemental {
+  background_color?: string;
   type: "action";
   content: string;
   href: string;

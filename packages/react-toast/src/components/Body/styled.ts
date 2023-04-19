@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import deepExtend from "deep-extend";
+import { IActionElemental } from "@trycourier/react-provider";
+import tinycolor2 from "tinycolor2";
 
 export const iconStyles = ({ theme }) =>
   deepExtend(
@@ -112,3 +114,38 @@ export const TextElement = styled.div(({ theme }) =>
     theme.message?.textElement
   )
 );
+
+export const ActionElement = styled.button<{
+  primary?: boolean;
+  backgroundColor: IActionElemental["background_color"];
+}>(({ theme, primary, backgroundColor }) => {
+  const primaryColor = backgroundColor ?? theme?.brand?.colors?.primary;
+  const tcPrimaryColor = tinycolor2(primaryColor);
+
+  return deepExtend(
+    {
+      borderRadius: 6,
+      color: primary ? "white" : "rgba(28, 39, 58, 1)",
+      background: primary ? primaryColor : "white",
+      wordBreak: "break-word",
+      fontSize: "12px",
+      fontStyle: "normal",
+      fontWeight: "400",
+      lineHeight: "16px",
+      height: "24px",
+      padding: "0 16px",
+      cursor: "pointer",
+      border: `1px solid ${primary ? "transparent" : "rgba(28, 39, 58, 1)"}`,
+      marginRight: "12px",
+      marginTop: "6px",
+      transition: "all 100ms ease-in",
+      "&:hover": {
+        color: "white",
+        background: primary
+          ? tcPrimaryColor.lighten(10)
+          : "rgba(28, 39, 58, 1)",
+      },
+    },
+    theme.message?.actionElement
+  );
+});

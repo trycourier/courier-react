@@ -40,13 +40,9 @@ export function Default({
 }
 
 export function CustomTitleAndBody(): React.ReactElement {
-  const handleOnClick = () => {
-    console.log("click");
-  };
   return (
     <CourierProvider clientKey="abc" userId="123">
       <ToastBody
-        onClick={handleOnClick}
         preview={<h3>Hello World</h3>}
         title={<h1>Title</h1>}
         brand={{
@@ -72,12 +68,31 @@ export function WithAction(): React.ReactElement {
       <ToastBody
         actions={[
           {
+            type: "action",
             content: "View Details",
-            openInNewTab: false,
+            href: "https://www.courier.com",
+          },
+        ]}
+        preview="hello world"
+        title="This is a really long title lalalalalala"
+      />
+    </CourierProvider>
+  );
+}
+
+export function WithMultipleAction(): React.ReactElement {
+  return (
+    <CourierProvider clientKey="abc" userId="123">
+      <ToastBody
+        actions={[
+          {
+            type: "action",
+            content: "Approve",
             href: "https://www.courier.com",
           },
           {
-            content: "View Details2",
+            type: "action",
+            content: "Deny",
             href: "https://www.courier.com",
           },
         ]}
@@ -110,15 +125,12 @@ export function WithCourierProvider(): React.ReactElement {
       <Toast
         brand={{
           inapp: {
-            colors: {
-              invertButtons: true,
-            },
             icons: {
               message:
                 "https://d33wubrfki0l68.cloudfront.net/ca2747f11cc64d0e424e27b4a804b9d981b22453/9ab46/_next/static/images/logo@2x-5d5af82635bfdd3ad24e54f9eb364097.png",
             },
             toast: {
-              timerAutoClose: "0",
+              timerAutoClose: 0,
             },
           },
           colors: {

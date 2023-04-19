@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
-import { TextElement, getIcon, Title } from "./styled";
+import { TextElement, ActionElement, getIcon, Title } from "./styled";
 import { InboxProps } from "../../types";
 
 import useHover from "~/hooks/use-hover";
@@ -84,20 +84,55 @@ const Contents = styled.div<{ hasIcon: boolean }>(({ theme, hasIcon }) => ({
 }));
 
 const Message: React.FunctionComponent<{
+  actions?: IInboxMessagePreview["actions"];
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
+  messageId: string;
+  openLinksInNewTab?: boolean;
+  preview?: string;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
-  preview?: string;
   title?: string;
 }> = ({
+  actions,
   areActionsHovered,
   isMessageActive,
+  messageId,
+  openLinksInNewTab,
+  preview,
   read,
   renderedIcon,
-  preview,
   title,
 }) => {
+  const courier = useCourier();
+  const renderActionButtons = (actions?.length ?? 0) > 1;
+  const { markMessageRead, trackClick } = useInbox();
+
+  const handleActionClick = (action) => async (event) => {
+    event.preventDefault();
+
+    const promises = [
+      !read && markMessageRead(messageId),
+      action?.data?.trackingId &&
+        trackClick(messageId, action?.data?.trackingId),
+    ].filter(Boolean);
+
+    if (promises.length) {
+      await Promise.all(promises);
+    }
+
+    if (courier.onRouteChange) {
+      courier.onRouteChange(action?.href);
+      return;
+    }
+
+    if (openLinksInNewTab) {
+      window.open(action?.href, "_blank");
+    } else {
+      window.location.href = action?.href;
+    }
+  };
+
   return (
     <MessageContainer
       className={classNames("message-container", {
@@ -114,6 +149,18 @@ const Message: React.FunctionComponent<{
         <TextElement aria-label={`message body ${preview}`}>
           {preview ? <Markdown>{preview}</Markdown> : null}
         </TextElement>
+        {renderActionButtons
+          ? actions?.slice(0, 2)?.map((action, index) => (
+              <ActionElement
+                primary={index === 0}
+                backgroundColor={action.background_color}
+                key={action.href}
+                onClick={handleActionClick(action)}
+              >
+                {action.content}
+              </ActionElement>
+            ))
+          : undefined}
       </Contents>
     </MessageContainer>
   );
@@ -239,7 +286,7 @@ const MessageWrapper: React.FunctionComponent<
       };
     }
 
-    if (!actions?.length) {
+    if (!actions?.length || actions.length > 1) {
       return;
     }
 
@@ -300,22 +347,28 @@ const MessageWrapper: React.FunctionComponent<
   const renderedMessage = useMemo(() => {
     return (
       <Message
+        actions={actions}
         areActionsHovered={areActionsHovered}
         isMessageActive={isMessageFocused || isMessageHovered}
+        messageId={messageId}
+        openLinksInNewTab={openLinksInNewTab}
+        preview={preview}
         read={read}
         renderedIcon={renderedIcon}
-        preview={preview}
         title={title}
       />
     );
   }, [
+    actions,
     areActionsHovered,
     isMessageFocused,
     isMessageHovered,
+    messageId,
+    openLinksInNewTab,
+    preview,
     read,
     renderedIcon,
     title,
-    preview,
   ]);
 
   return (
