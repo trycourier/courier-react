@@ -17,10 +17,9 @@ export default {
 
 const mockMessages = [
   {
-    body: "This Message is Unread",
+    preview: "This Message is Unread",
     created: "2021-04-06T18:02:28.065Z",
     messageId: 123,
-    read: false,
     title: "Unread Message",
     trackingIds: {
       archiveTrackingId: 123,
@@ -29,7 +28,7 @@ const mockMessages = [
     },
   },
   {
-    body: "This Message is Read",
+    preview: "This Message is Read",
     created: "2021-04-06T18:02:28.065Z",
     messageId: 456,
     read: true,
@@ -41,7 +40,7 @@ const mockMessages = [
     },
   },
   {
-    body: "This Message is Read",
+    preview: "This Message is Read",
     created: "2021-04-06T18:02:28.065Z",
     messageId: 457,
     read: true,
@@ -53,7 +52,7 @@ const mockMessages = [
     },
   },
   {
-    body: "This Message is Read",
+    preview: "This Message is Read",
     created: "2021-04-06T18:02:28.065Z",
     messageId: 458,
     read: true,
@@ -65,7 +64,7 @@ const mockMessages = [
     },
   },
   {
-    body: "This Message is Read",
+    preview: "This Message is Read",
     created: "2021-04-06T18:02:28.065Z",
     messageId: 459,
     read: true,
@@ -78,7 +77,7 @@ const mockMessages = [
     },
   },
   {
-    body: "This Message is Read",
+    preview: "This Message is Read",
     created: "2021-04-06T18:02:28.065Z",
     messageId: 4510,
     read: true,
@@ -117,11 +116,7 @@ export const LiveVersion2 = () => {
           clientKey={CLIENT_KEY}
           userId={USER_ID}
         >
-          <Inbox
-            theme={{
-              name: "2.0",
-            }}
-          />
+          <Inbox />
         </CourierProvider>
       </div>
     </>
@@ -154,12 +149,7 @@ export const Version2 = () => {
           clientKey={CLIENT_KEY}
           userId={USER_ID}
         >
-          <Inbox
-            isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
-          />
+          <Inbox isOpen={true} />
         </CourierProvider>
       </div>
     </>
@@ -207,9 +197,6 @@ export const Loading = () => {
         >
           <Inbox
             isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
             brand={{
               colors: {
                 primary: "#FF93CD",
@@ -264,9 +251,6 @@ export const LoadingMore = () => {
         >
           <Inbox
             isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
             brand={{
               colors: {
                 primary: "#FF93CD",
@@ -321,9 +305,6 @@ export const PaginationEnd = () => {
         >
           <Inbox
             isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
             brand={{
               colors: {
                 primary: "#FF93CD",
@@ -378,9 +359,6 @@ export const NoCourierFooter = () => {
         >
           <Inbox
             isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
             brand={{
               colors: {
                 primary: "#FF93CD",
@@ -438,9 +416,6 @@ export const NoMessages = () => {
         >
           <Inbox
             isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
             brand={{
               colors: {
                 primary: "#FF93CD",
@@ -515,9 +490,6 @@ export const WithPreferences = () => {
         >
           <Inbox
             isOpen={true}
-            theme={{
-              name: "2.0",
-            }}
             brand={{
               colors: {
                 primary: "#FF93CD",

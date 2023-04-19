@@ -1,6 +1,13 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
 import { toast, ToastProps } from "react-toastify";
-import { Container, Message, Title, TextElement, Dismiss } from "./styled";
+import {
+  Container,
+  Message,
+  Title,
+  TextElement,
+  Dismiss,
+  ActionElement,
+} from "./styled";
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useInbox } from "@trycourier/react-hooks";
@@ -95,7 +102,7 @@ const Body: React.FunctionComponent<
       };
     }
 
-    if (!actions?.length) {
+    if (!actions?.length || actions.length > 1) {
       return;
     }
 
@@ -159,6 +166,33 @@ const Body: React.FunctionComponent<
   }
 
   const renderedMessage = useMemo(() => {
+    const renderActionButtons = (actions?.length ?? 0) > 1;
+    const handleActionClick = (action) => async (event) => {
+      event.preventDefault();
+
+      const promises = [
+        messageId && markMessageRead(messageId),
+        messageId &&
+          action?.data?.trackingId &&
+          trackClick(messageId, action?.data?.trackingId),
+      ].filter(Boolean);
+
+      if (promises.length) {
+        await Promise.all(promises);
+      }
+
+      if (courier.onRouteChange) {
+        courier.onRouteChange(action?.href);
+        return;
+      }
+
+      if (openLinksInNewTab) {
+        window.open(action?.href, "_blank");
+      } else {
+        window.location.href = action?.href;
+      }
+    };
+
     return (
       <>
         {Icon && <Icon data-testid="message-icon" />}
@@ -171,10 +205,22 @@ const Body: React.FunctionComponent<
               preview
             )}
           </TextElement>
+          {renderActionButtons
+            ? actions?.slice(0, 2)?.map((action, index) => (
+                <ActionElement
+                  primary={index === 0}
+                  backgroundColor={action.background_color}
+                  key={action.href}
+                  onClick={handleActionClick(action)}
+                >
+                  {action.content}
+                </ActionElement>
+              ))
+            : undefined}
         </Message>
       </>
     );
-  }, [title, preview]);
+  }, [actions, title, preview]);
 
   return (
     <Container>

@@ -35,10 +35,11 @@ export interface ITextElemental {
   content: string;
 }
 export interface IActionElemental {
-  type: "text";
+  background_color?: string;
   content: string;
-  href: string;
   data?: Record<string, any>;
+  href: string;
+  type: "text";
 }
 export interface IInboxMessage {
   messageId: string;
