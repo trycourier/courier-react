@@ -126,7 +126,7 @@ export const Footer = styled.div(({ theme }) =>
   )
 );
 
-const ScrollTop = styled.button<{ text: "string" }>(({ theme, text }) => {
+const ScrollTop = styled.button<{ text: string }>(({ theme, text }) => {
   const primaryColor = theme.brand?.colors?.primary;
   const tcPrimaryColor = tinycolor2(primaryColor);
   const lighten30 = tcPrimaryColor.lighten(30);
