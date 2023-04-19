@@ -36,14 +36,20 @@
         });
       };*/
       window.courierConfig = {
-        clientKey: "YmY5MjkxYTMtOTlhNC00NDMyLTkwNzgtZWE2OGNjYWU5NDky",
-        userSignature:
-          "7fd3682d88befdb915368fa67bb5c12e6bb85af8d2352c7db5ae0a4ec7b65a63",
+        inboxApiUrl:
+          "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
+        apiUrl:
+          "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q",
+        wsOptions: {
+          url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+        },
+        clientKey: "NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4",
+
         // JWT SMOKEY
         //clientKey: "YzQzMGM3OGYtYzQ2NC00NTdjLThkM2QtNWIwYzI4OTdmYmE5",
         //userId: "smokey12345",
 
-        userId: "5eeded00555345520000006c",
+        userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
       };
 
       window.addInbox = () => {
