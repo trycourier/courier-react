@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-provider",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -16,7 +16,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@trycourier/client-graphql": "^3.4.0",
+    "@trycourier/client-graphql": "^3.4.1",
     "buffer": "^6.0.3",
     "jwt-decode": "^3.1.2",
     "react-use": "^17.2.1",
