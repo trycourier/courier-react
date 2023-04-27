@@ -133,18 +133,16 @@ const Body: React.FunctionComponent<
     containerProps.onClick = async (event) => {
       event.preventDefault();
 
-      if (!messageId) {
-        return;
-      }
+      if (messageId) {
+        const promises = [
+          markMessageRead(messageId),
+          clickActionDetails?.trackingId &&
+            trackClick(messageId, clickActionDetails?.trackingId),
+        ].filter(Boolean);
 
-      const promises = [
-        markMessageRead(messageId),
-        clickActionDetails?.trackingId &&
-          trackClick(messageId, clickActionDetails?.trackingId),
-      ].filter(Boolean);
-
-      if (promises.length) {
-        await Promise.all(promises);
+        if (promises.length) {
+          await Promise.all(promises);
+        }
       }
 
       if (onClick) {
