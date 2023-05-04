@@ -27,7 +27,7 @@ export const messagesProps = `
     icon
     messageId
     opened
-    pinned
+    pinnedSlot
     preview
     read
     icon

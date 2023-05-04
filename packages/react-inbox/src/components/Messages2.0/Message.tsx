@@ -20,7 +20,8 @@ import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
-import Thumbtack from "~/assets/thumbtack.svg";
+
+import { SlotIcon } from "./pins";
 
 const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
   ({ theme, read }) => {
@@ -89,15 +90,26 @@ const Contents = styled.div<{ hasIcon: boolean }>(({ theme, hasIcon }) => ({
   ...theme.message?.contents,
 }));
 
-const Pinned = styled.div`
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  color: rgb(115, 129, 155);
-  svg {
-    padding-right: 3px;
-  }
-`;
+const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
+  deepExtend(
+    {
+      fontSize: "12px",
+      fontWeight: 600,
+      display: "flex",
+      alignItems: "center",
+      color: color ?? "rgb(115, 129, 155)",
+      svg: {
+        paddingRight: "3px",
+      },
+
+      img: {
+        width: "18px",
+        paddingRight: "3px",
+      },
+    },
+    theme?.message?.pinned
+  )
+);
 
 const Message: React.FunctionComponent<{
   actions?: IInboxMessagePreview["actions"];
@@ -105,7 +117,7 @@ const Message: React.FunctionComponent<{
   isMessageActive?: boolean;
   messageId: string;
   openLinksInNewTab?: boolean;
-  pinned?: boolean;
+  pinnedSlot?: string;
   preview?: string;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
@@ -116,7 +128,7 @@ const Message: React.FunctionComponent<{
   isMessageActive,
   messageId,
   openLinksInNewTab,
-  pinned,
+  pinnedSlot,
   preview,
   read,
   renderedIcon,
@@ -124,7 +136,13 @@ const Message: React.FunctionComponent<{
 }) => {
   const courier = useCourier();
   const renderActionButtons = (actions?.length ?? 0) > 1;
-  const { markMessageRead, trackClick } = useInbox();
+  const { brand, markMessageRead, trackClick } = useInbox();
+
+  const pinDetails = pinnedSlot
+    ? brand?.inapp?.slots?.find((s) => s.id === pinnedSlot) ??
+      brand?.inapp?.slots?.find((s) => s.id === "default")
+    : undefined;
+  const isPinned = Boolean(pinnedSlot);
 
   const handleActionClick = (action) => async (event) => {
     event.preventDefault();
@@ -155,17 +173,20 @@ const Message: React.FunctionComponent<{
     <MessageContainer
       className={classNames("message-container", {
         hover: isMessageActive && !areActionsHovered,
-        pinned,
+        pinned: isPinned,
         read,
       })}
     >
       <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
-        {pinned && (
-          <Pinned>
-            <Thumbtack />
-            <em>Pinned</em>
+        {isPinned && (
+          <Pinned color={pinDetails?.label?.color} className={pinDetails?.id}>
+            <SlotIcon
+              icon={pinDetails?.icon?.value ?? "default"}
+              color={pinDetails?.icon?.color}
+            />
+            {pinDetails?.label?.value ?? "Pinned"}
           </Pinned>
         )}
         <Title aria-label={`message title ${title}`} read={read}>
@@ -212,7 +233,7 @@ const MessageWrapper: React.FunctionComponent<
   messageId,
   opened,
   openLinksInNewTab,
-  pinned,
+  pinnedSlot,
   preview,
   read,
   setFocusedMessageId,
@@ -378,7 +399,7 @@ const MessageWrapper: React.FunctionComponent<
         isMessageActive={isMessageFocused || isMessageHovered}
         messageId={messageId}
         openLinksInNewTab={openLinksInNewTab}
-        pinned={pinned}
+        pinnedSlot={pinnedSlot}
         preview={preview}
         read={read}
         renderedIcon={renderedIcon}
@@ -387,6 +408,7 @@ const MessageWrapper: React.FunctionComponent<
     );
   }, [
     actions,
+    pinnedSlot,
     areActionsHovered,
     isMessageFocused,
     isMessageHovered,
@@ -402,7 +424,7 @@ const MessageWrapper: React.FunctionComponent<
     <PositionRelative
       ref={messageRef}
       data-testid="inbox-message"
-      className={classNames({ pinned })}
+      className={classNames({ pinned: Boolean(pinnedSlot) })}
     >
       {courier.onRouteChange || containerProps.href ? (
         <ClickableContainer {...containerProps}>

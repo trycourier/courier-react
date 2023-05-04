@@ -1,3 +1,4 @@
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { IInbox } from "./types";
 
 import { InboxInit, INBOX_INIT } from "./actions/init";
@@ -61,6 +62,40 @@ type InboxAction =
   | NewMessage
   | ResetLastFetched
   | ToggleInbox;
+
+const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
+  const configuredSlots = brand?.inapp?.slots?.map((s) => s.id);
+
+  const pinnedBySlot = pinned?.reduce(
+    (acc, curr) => {
+      if (!curr.pinnedSlot) {
+        return acc;
+      }
+
+      if (configuredSlots?.includes(curr?.pinnedSlot)) {
+        acc[curr?.pinnedSlot] = acc[curr?.pinnedSlot] || [];
+        acc[curr?.pinnedSlot].push(curr);
+      } else {
+        acc.unconfigured.push(curr);
+      }
+
+      return acc;
+    },
+    {
+      unconfigured: [],
+    } as {
+      unconfigured: IInboxMessagePreview[];
+      [key: string]: IInboxMessagePreview[];
+    }
+  );
+
+  const mappedPinnedMessages = (configuredSlots ?? [])
+    .map((slotId) => pinnedBySlot?.[slotId] ?? [])
+    .filter(Boolean)
+    .flat();
+
+  return [...mappedPinnedMessages, ...(pinnedBySlot?.unconfigured ?? [])];
+};
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
   switch (action?.type) {
@@ -126,7 +161,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         messages: newMessages,
         pinned: action.payload.appendMessages
           ? state.pinned
-          : action.payload.pinned,
+          : sortPinned(action.payload.pinned, state.brand),
         startCursor: action.payload.startCursor,
       };
     }
@@ -225,11 +260,14 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         created: new Date().toISOString(),
       };
 
-      if (newMessage.pinned) {
+      if (newMessage.pinnedSlot) {
         return {
           ...state,
           unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
-          pinned: [newMessage, ...(state.pinned ?? [])],
+          pinned: sortPinned(
+            [newMessage, ...(state.pinned ?? [])],
+            state.brand
+          ),
         };
       }
 

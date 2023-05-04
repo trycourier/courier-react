@@ -279,11 +279,16 @@ const Messages: React.ForwardRefExoticComponent<
 
     const scrollTopMessage = useMemo(() => {
       if (pinned.length) {
-        return `${pinned.length} Pinned`;
+        const label =
+          brand?.inapp?.slots?.length === 1
+            ? brand?.inapp?.slots?.[0]?.label?.value
+            : "Important";
+
+        return `${pinned.length} ${label ?? "Important"}`;
       }
 
       return "Scroll Top";
-    }, [pinned.length]);
+    }, [pinned.length, brand]);
 
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>

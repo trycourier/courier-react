@@ -34,6 +34,17 @@ settings {
       timerAutoClose
       borderRadius
     }
+    slots {
+      id
+      label {
+        value
+        color
+      }
+      icon {
+        value
+        color
+      }
+    }
   }
 }
 preferenceTemplates {
