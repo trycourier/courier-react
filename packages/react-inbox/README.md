@@ -98,8 +98,9 @@ interface NewMessage {
 ### [Theme](#theme)
 
 - theme.tabList -> deprecated
-- theme.message.actionBlock -> deprecated
-  - the entire message is now clickable
+- theme.message.actionBlock
+  - the entire message is now clickable when you have 1 button
+  - when 2 buttons you use theme.message.actionElement to style
 - theme.message.textBlock -> theme.message.textElement
 
 New Theme Properties:
@@ -376,10 +377,12 @@ interface ITheme {
     container?: React.CSSProperties;
   };
   message?: {
+    actionElement?: React.CSSProperties;
     clickableContainer?: React.CSSProperties;
     container?: React.CSSProperties;
     content?: React.CSSProperties;
     icon?: React.CSSProperties;
+    textElement?: React.CSSProperties;
     timeAgo?: React.CSSProperties;
     title?: React.CSSProperties;
     unreadIndicator?: React.CSSProperties;

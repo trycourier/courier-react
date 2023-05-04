@@ -19,10 +19,12 @@ export interface InboxTheme {
     container?: React.CSSProperties;
   };
   message?: {
+    actionElement?: React.CSSProperties;
     clickableContainer?: React.CSSProperties;
     container?: React.CSSProperties;
     content?: React.CSSProperties;
     icon?: React.CSSProperties;
+    textElement?: React.CSSProperties;
     timeAgo?: React.CSSProperties;
     title?: React.CSSProperties;
     unreadIndicator?: React.CSSProperties;
