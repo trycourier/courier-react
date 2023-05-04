@@ -42,6 +42,7 @@ const PREFERENCE_PAGE = `
               defaultStatus
               templateName
               templateId
+              digestSchedules
             }
           }
         }
