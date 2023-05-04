@@ -22,7 +22,7 @@ export interface IInboxMessagePreview {
   type: "message";
   created: string;
   messageId: string;
-  pinned?: boolean;
+  pinnedSlot?: string;
   actions?: Array<IActionElemental>;
   preview?: string;
   icon?: string;

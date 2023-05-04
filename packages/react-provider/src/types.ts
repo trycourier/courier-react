@@ -31,6 +31,17 @@ export interface Brand {
       bell?: string;
       message?: string;
     };
+    slots?: Array<{
+      id: string;
+      label: {
+        value: string;
+        color: string;
+      };
+      icon: {
+        value: string;
+        color: string;
+      };
+    }>;
     toast?: {
       borderRadius?: string;
       timerAutoClose?: number;
