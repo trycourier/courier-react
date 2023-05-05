@@ -72,7 +72,6 @@ const MessageContainer = styled.div(({ theme }) => {
       minHeight: 60,
       borderBottom: "1px solid rgb(222, 232, 240)",
       "&.read": {
-        background: "#F2F6F9",
         ".icon": {
           filter: "grayscale(100%)",
           opacity: "0.3",
@@ -181,7 +180,7 @@ const Message: React.FunctionComponent<{
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
         {isPinned && (
-          <Pinned color={pinDetails?.label?.color} className={pinDetails?.id}>
+          <Pinned color={pinDetails?.label?.color} className={pinnedSlot}>
             <SlotIcon
               icon={pinDetails?.icon?.value ?? "default"}
               color={pinDetails?.icon?.color}

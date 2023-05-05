@@ -163,6 +163,7 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
+          pinned: [],
           lastMessagesFetched: mockDate,
           messages: [mockGraphMessage],
           isLoading: false,
