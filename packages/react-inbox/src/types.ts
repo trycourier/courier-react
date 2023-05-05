@@ -2,35 +2,36 @@ import { TippyProps } from "@tippyjs/react";
 import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
+import { CSSObject } from "styled-components";
 
 export interface InboxTheme {
   brand?: Brand;
-  container?: React.CSSProperties;
-  emptyState?: React.CSSProperties;
-  footer?: React.CSSProperties;
-  header?: React.CSSProperties;
-  menu?: React.CSSProperties;
-  tooltip?: React.CSSProperties;
-  icon?: React.CSSProperties & {
+  container?: CSSObject;
+  emptyState?: CSSObject;
+  footer?: CSSObject;
+  header?: CSSObject;
+  menu?: CSSObject;
+  tooltip?: CSSObject;
+  icon?: CSSObject & {
     open?: string;
     closed?: string;
   };
   messageList?: {
-    container?: React.CSSProperties;
+    container?: CSSObject;
   };
   message?: {
-    actionElement?: React.CSSProperties;
-    clickableContainer?: React.CSSProperties;
-    container?: React.CSSProperties;
-    content?: React.CSSProperties;
-    icon?: React.CSSProperties;
-    textElement?: React.CSSProperties;
-    timeAgo?: React.CSSProperties;
-    title?: React.CSSProperties;
-    unreadIndicator?: React.CSSProperties;
+    actionElement?: CSSObject;
+    clickableContainer?: CSSObject;
+    container?: CSSObject;
+    content?: CSSObject;
+    icon?: CSSObject;
+    textElement?: CSSObject;
+    timeAgo?: CSSObject;
+    title?: CSSObject;
+    unreadIndicator?: CSSObject;
   };
-  root?: React.CSSProperties;
-  unreadIndicator?: React.CSSProperties;
+  root?: CSSObject;
+  unreadIndicator?: CSSObject;
 }
 export interface InboxProps {
   brand?: Brand;
