@@ -28,6 +28,7 @@ export const messagesProps = `
     opened
     preview
     read
+    icon
     tags
     title
     trackingIds {
