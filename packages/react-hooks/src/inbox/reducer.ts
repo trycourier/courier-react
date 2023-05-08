@@ -68,13 +68,13 @@ const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
 
   const pinnedBySlot = pinned?.reduce(
     (acc, curr) => {
-      if (!curr.pinnedSlot) {
+      if (!curr.pinned || !curr.pinned?.slotId) {
         return acc;
       }
 
-      if (configuredSlots?.includes(curr?.pinnedSlot)) {
-        acc[curr?.pinnedSlot] = acc[curr?.pinnedSlot] || [];
-        acc[curr?.pinnedSlot].push(curr);
+      if (configuredSlots?.includes(curr?.pinned?.slotId)) {
+        acc[curr?.pinned?.slotId] = acc[curr?.pinned?.slotId] || [];
+        acc[curr?.pinned?.slotId].push(curr);
       } else {
         acc.unconfigured.push(curr);
       }
@@ -260,7 +260,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         created: new Date().toISOString(),
       };
 
-      if (newMessage.pinnedSlot) {
+      if (newMessage.pinned?.slotId) {
         return {
           ...state,
           unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,

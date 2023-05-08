@@ -15,6 +15,7 @@
   - [Hooks](#hooks)
   - [Theme](#theme-1)
   - [Render Props](#render-props)
+  - [Pinning](#pinning)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -279,11 +280,11 @@ const MyComponent = (props) => {
 
 ```
 interface IHeaderProps {
-  title: string;
+  labels: InboxProps["labels"];
+  markAllAsRead: () => void;
+  messages: IInboxMessagePreview[];
+  title?: string;
   unreadMessageCount?: number;
-  markAllAsRead?: () => any;
-  currentTab?: ITab;
-  messages: IMessage[];
 }
 
 interface ITextBlock {
@@ -335,6 +336,7 @@ interface InboxProps {
   }
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
+  renderPin?: React.FunctionComponent<PinDetails>;
   renderIcon?: React.FunctionComponent<{
     isOpen: boolean;
     unreadMessageCount?: number;
@@ -392,6 +394,23 @@ interface ITheme {
 }
 ```
 
+> Since we are themeing with CSSObject from styled components, there are some themes that you may need to target by specifiying classNames. For example, to theme the `read` message styling you would do:
+
+```typescript
+const theme = {
+  message: {
+    container: {
+      "&.read": {
+        background: "red",
+      },
+      "&:not(.read):hover": {
+        background: "blue",
+      },
+    },
+  },
+};
+```
+
 <a name="5render-propsmd"></a>
 
 ### [Render Props](#render-props)
@@ -414,7 +433,8 @@ To overrwrite the rendering of each of these you can supply your own react compo
     onMouseEnter?: (event: React.MouseEvent) => void;
   }>;
   renderFooter?: React.FunctionComponent;
-  renderHeader?: React.FunctionComponent;
+  renderHeader?: React.FunctionComponent<IHeaderProps>;
+  renderPin?: React.FunctionComponent<PinDetails>;
   renderIcon?: React.FunctionComponent<{
     isOpen: boolean;
     unreadMessageCount?: number;
@@ -422,3 +442,35 @@ To overrwrite the rendering of each of these you can supply your own react compo
   renderMessage?: React.FunctionComponent<IMessage>;
   renderNoMessages?: React.FunctionComponent;
 ```
+
+<a name="6pinningmd"></a>
+
+### [Pinning](#pinning)
+
+Pinning is a new feature as of 3.6.0 that allows you to "pin" certain messages to the top of their inbox. The pins are configured into `slots` by editing your brand in the [Courier Studio]("https://app.courier.com/brands) or by passing in a brand object with the correct pin slots. A pin slot is defined as:
+
+```typescript
+interface PinSlot {
+  id: string;
+  label: {
+    value?: string;
+    color?: string;
+  };
+  icon: {
+    value?: string;
+    color?: string;
+  };
+}
+```
+
+The default Pin looks like:
+
+![image](https://user-images.githubusercontent.com/7017640/236919801-fae03134-41e6-4fb4-9e8d-62c55ebca6a9.png)
+
+They can be configured to look like:
+
+![image](https://user-images.githubusercontent.com/7017640/236103836-eccc0fb8-26b2-4ca0-8b28-8474a9ddbd18.png)
+
+---
+
+You can override the styling of the Pin through css accessing `theme?.message?.pinned` or by passing in a `renderPin(pinSlot)` as a property to the <Inbox> component.

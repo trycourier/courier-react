@@ -13,6 +13,17 @@ export type WSOptions = {
   connectionTimeout?: number;
 };
 
+export interface PinDetails {
+  id: string;
+  label: {
+    value: string;
+    color: string;
+  };
+  icon: {
+    value: string;
+    color: string;
+  };
+}
 export interface Brand {
   inapp?: {
     disableCourierFooter?: boolean;
@@ -31,17 +42,7 @@ export interface Brand {
       bell?: string;
       message?: string;
     };
-    slots?: Array<{
-      id: string;
-      label: {
-        value: string;
-        color: string;
-      };
-      icon: {
-        value: string;
-        color: string;
-      };
-    }>;
+    slots?: Array<PinDetails>;
     toast?: {
       borderRadius?: string;
       timerAutoClose?: number;

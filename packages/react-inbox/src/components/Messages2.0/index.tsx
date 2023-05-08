@@ -191,6 +191,7 @@ const Messages: React.ForwardRefExoticComponent<
       renderHeader,
       renderMessage,
       renderNoMessages,
+      renderPin,
       title,
     },
     ref
@@ -329,6 +330,7 @@ const Messages: React.ForwardRefExoticComponent<
                     key={message.messageId}
                     labels={labels}
                     openLinksInNewTab={openLinksInNewTab}
+                    renderPin={renderPin}
                     setFocusedMessageId={setFocusedMessageId}
                   />
                 )
@@ -352,6 +354,7 @@ const Messages: React.ForwardRefExoticComponent<
                     key={message.messageId}
                     labels={labels}
                     openLinksInNewTab={openLinksInNewTab}
+                    renderPin={renderPin}
                     setFocusedMessageId={setFocusedMessageId}
                   />
                 )

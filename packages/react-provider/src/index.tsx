@@ -10,6 +10,7 @@ import createReducer from "react-use/lib/factory/createReducer";
 
 import {
   Brand,
+  PinDetails,
   ICourierContext,
   ICourierProviderProps,
   WSOptions,
@@ -46,6 +47,7 @@ export type {
   IInboxMessagePreview,
   ITextElemental,
   Middleware,
+  PinDetails,
   WSOptions,
 };
 
