@@ -1,5 +1,9 @@
 import { TippyProps } from "@tippyjs/react";
-import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
+import {
+  Brand,
+  PinDetails,
+  IInboxMessagePreview,
+} from "@trycourier/react-provider";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
 import { CSSObject } from "styled-components";
@@ -63,6 +67,7 @@ export interface InboxProps {
   }>;
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
+  renderPin?: React.FunctionComponent<PinDetails>;
   renderIcon?: React.FunctionComponent<{
     isOpen: boolean;
     unreadMessageCount?: number;

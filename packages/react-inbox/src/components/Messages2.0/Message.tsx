@@ -116,10 +116,13 @@ const Message: React.FunctionComponent<{
   isMessageActive?: boolean;
   messageId: string;
   openLinksInNewTab?: boolean;
-  pinnedSlot?: string;
+  pinned?: {
+    slotId?: string;
+  };
   preview?: string;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
+  renderPin?: InboxProps["renderPin"];
   title?: string;
 }> = ({
   actions,
@@ -127,21 +130,22 @@ const Message: React.FunctionComponent<{
   isMessageActive,
   messageId,
   openLinksInNewTab,
-  pinnedSlot,
+  pinned,
   preview,
   read,
   renderedIcon,
+  renderPin,
   title,
 }) => {
   const courier = useCourier();
   const renderActionButtons = (actions?.length ?? 0) > 1;
   const { brand, markMessageRead, trackClick } = useInbox();
 
-  const pinDetails = pinnedSlot
-    ? brand?.inapp?.slots?.find((s) => s.id === pinnedSlot) ??
+  const pinDetails = pinned?.slotId
+    ? brand?.inapp?.slots?.find((s) => s.id === pinned?.slotId) ??
       brand?.inapp?.slots?.find((s) => s.id === "default")
     : undefined;
-  const isPinned = Boolean(pinnedSlot);
+  const isPinned = Boolean(pinned?.slotId);
 
   const handleActionClick = (action) => async (event) => {
     event.preventDefault();
@@ -179,15 +183,21 @@ const Message: React.FunctionComponent<{
       <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
-        {isPinned && (
-          <Pinned color={pinDetails?.label?.color} className={pinnedSlot}>
-            <SlotIcon
-              icon={pinDetails?.icon?.value ?? "default"}
-              color={pinDetails?.icon?.color}
-            />
-            {pinDetails?.label?.value ?? "Pinned"}
-          </Pinned>
-        )}
+        {pinDetails &&
+          (renderPin ? (
+            renderPin(pinDetails)
+          ) : (
+            <Pinned
+              color={pinDetails?.label?.color}
+              className={pinned?.slotId ?? ""}
+            >
+              <SlotIcon
+                icon={pinDetails?.icon?.value ?? "default"}
+                color={pinDetails?.icon?.color}
+              />
+              {pinDetails?.label?.value ?? "Pinned"}
+            </Pinned>
+          ))}
         <Title aria-label={`message title ${title}`} read={read}>
           {title}
         </Title>
@@ -213,12 +223,13 @@ const Message: React.FunctionComponent<{
 
 const MessageWrapper: React.FunctionComponent<
   IInboxMessagePreview & {
-    isMessageFocused: boolean;
-    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
-    labels: InboxProps["labels"];
-    formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
+    formatDate: InboxProps["formatDate"];
+    isMessageFocused: boolean;
+    labels: InboxProps["labels"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
+    renderPin: InboxProps["renderPin"];
+    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
   }
 > = ({
   actions,
@@ -232,9 +243,10 @@ const MessageWrapper: React.FunctionComponent<
   messageId,
   opened,
   openLinksInNewTab,
-  pinnedSlot,
+  pinned,
   preview,
   read,
+  renderPin,
   setFocusedMessageId,
   title,
   trackingIds,
@@ -398,24 +410,26 @@ const MessageWrapper: React.FunctionComponent<
         isMessageActive={isMessageFocused || isMessageHovered}
         messageId={messageId}
         openLinksInNewTab={openLinksInNewTab}
-        pinnedSlot={pinnedSlot}
+        pinned={pinned}
         preview={preview}
         read={read}
         renderedIcon={renderedIcon}
+        renderPin={renderPin}
         title={title}
       />
     );
   }, [
     actions,
-    pinnedSlot,
     areActionsHovered,
     isMessageFocused,
     isMessageHovered,
     messageId,
     openLinksInNewTab,
+    pinned,
     preview,
     read,
     renderedIcon,
+    renderPin,
     title,
   ]);
 
@@ -423,7 +437,7 @@ const MessageWrapper: React.FunctionComponent<
     <PositionRelative
       ref={messageRef}
       data-testid="inbox-message"
-      className={classNames({ pinned: Boolean(pinnedSlot) })}
+      className={classNames({ pinned: Boolean(pinned?.slotId) })}
     >
       {courier.onRouteChange || containerProps.href ? (
         <ClickableContainer {...containerProps}>
