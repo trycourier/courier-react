@@ -3,7 +3,13 @@ import classNames from "classnames";
 import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
-import { TextElement, ActionElement, getIcon, Title } from "./styled";
+import {
+  TextElement,
+  ActionElement,
+  getIcon,
+  Title,
+  PositionRelative,
+} from "./styled";
 import { InboxProps } from "../../types";
 
 import useHover from "~/hooks/use-hover";
@@ -14,6 +20,8 @@ import styled from "styled-components";
 import tinycolor2 from "tinycolor2";
 import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
+
+import { SlotIcon } from "./pins";
 
 const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
   ({ theme, read }) => {
@@ -62,10 +70,8 @@ const MessageContainer = styled.div(({ theme }) => {
       position: "relative",
       padding: "12px",
       minHeight: 60,
-      backgroundColor: "#F9FAFB",
       borderBottom: "1px solid rgb(222, 232, 240)",
       "&.read": {
-        background: "#F2F6F9",
         ".icon": {
           filter: "grayscale(100%)",
           opacity: "0.3",
@@ -83,15 +89,40 @@ const Contents = styled.div<{ hasIcon: boolean }>(({ theme, hasIcon }) => ({
   ...theme.message?.contents,
 }));
 
+const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
+  deepExtend(
+    {
+      fontSize: "12px",
+      fontWeight: 600,
+      display: "flex",
+      alignItems: "center",
+      color: color ?? "rgb(115, 129, 155)",
+      svg: {
+        paddingRight: "3px",
+      },
+
+      img: {
+        width: "18px",
+        paddingRight: "3px",
+      },
+    },
+    theme?.message?.pinned
+  )
+);
+
 const Message: React.FunctionComponent<{
   actions?: IInboxMessagePreview["actions"];
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
   messageId: string;
   openLinksInNewTab?: boolean;
+  pinned?: {
+    slotId?: string;
+  };
   preview?: string;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
+  renderPin?: InboxProps["renderPin"];
   title?: string;
 }> = ({
   actions,
@@ -99,14 +130,22 @@ const Message: React.FunctionComponent<{
   isMessageActive,
   messageId,
   openLinksInNewTab,
+  pinned,
   preview,
   read,
   renderedIcon,
+  renderPin,
   title,
 }) => {
   const courier = useCourier();
   const renderActionButtons = (actions?.length ?? 0) > 1;
-  const { markMessageRead, trackClick } = useInbox();
+  const { brand, markMessageRead, trackClick } = useInbox();
+
+  const pinDetails = pinned?.slotId
+    ? brand?.inapp?.slots?.find((s) => s.id === pinned?.slotId) ??
+      brand?.inapp?.slots?.find((s) => s.id === "default")
+    : undefined;
+  const isPinned = Boolean(pinned?.slotId);
 
   const handleActionClick = (action) => async (event) => {
     event.preventDefault();
@@ -137,12 +176,28 @@ const Message: React.FunctionComponent<{
     <MessageContainer
       className={classNames("message-container", {
         hover: isMessageActive && !areActionsHovered,
+        pinned: isPinned,
         read,
       })}
     >
       <UnreadIndicator read={read} />
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
+        {pinDetails &&
+          (renderPin ? (
+            renderPin(pinDetails)
+          ) : (
+            <Pinned
+              color={pinDetails?.label?.color}
+              className={pinned?.slotId ?? ""}
+            >
+              <SlotIcon
+                icon={pinDetails?.icon?.value ?? "default"}
+                color={pinDetails?.icon?.color}
+              />
+              {pinDetails?.label?.value ?? "Pinned"}
+            </Pinned>
+          ))}
         <Title aria-label={`message title ${title}`} read={read}>
           {title}
         </Title>
@@ -168,12 +223,13 @@ const Message: React.FunctionComponent<{
 
 const MessageWrapper: React.FunctionComponent<
   IInboxMessagePreview & {
-    isMessageFocused: boolean;
-    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
-    labels: InboxProps["labels"];
-    formatDate: InboxProps["formatDate"];
     defaultIcon: InboxProps["defaultIcon"];
+    formatDate: InboxProps["formatDate"];
+    isMessageFocused: boolean;
+    labels: InboxProps["labels"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
+    renderPin: InboxProps["renderPin"];
+    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
   }
 > = ({
   actions,
@@ -187,8 +243,10 @@ const MessageWrapper: React.FunctionComponent<
   messageId,
   opened,
   openLinksInNewTab,
+  pinned,
   preview,
   read,
+  renderPin,
   setFocusedMessageId,
   title,
   trackingIds,
@@ -352,9 +410,11 @@ const MessageWrapper: React.FunctionComponent<
         isMessageActive={isMessageFocused || isMessageHovered}
         messageId={messageId}
         openLinksInNewTab={openLinksInNewTab}
+        pinned={pinned}
         preview={preview}
         read={read}
         renderedIcon={renderedIcon}
+        renderPin={renderPin}
         title={title}
       />
     );
@@ -365,19 +425,19 @@ const MessageWrapper: React.FunctionComponent<
     isMessageHovered,
     messageId,
     openLinksInNewTab,
+    pinned,
     preview,
     read,
     renderedIcon,
+    renderPin,
     title,
   ]);
 
   return (
-    <div
+    <PositionRelative
       ref={messageRef}
       data-testid="inbox-message"
-      style={{
-        position: "relative",
-      }}
+      className={classNames({ pinned: Boolean(pinned?.slotId) })}
     >
       {courier.onRouteChange || containerProps.href ? (
         <ClickableContainer {...containerProps}>
@@ -396,7 +456,7 @@ const MessageWrapper: React.FunctionComponent<
         setAreActionsHovered={setAreActionsHovered}
         trackingIds={trackingIds}
       />
-    </div>
+    </PositionRelative>
   );
 };
 

@@ -1,3 +1,4 @@
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { IInbox } from "./types";
 
 import { InboxInit, INBOX_INIT } from "./actions/init";
@@ -62,6 +63,40 @@ type InboxAction =
   | ResetLastFetched
   | ToggleInbox;
 
+const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
+  const configuredSlots = brand?.inapp?.slots?.map((s) => s.id);
+
+  const pinnedBySlot = pinned?.reduce(
+    (acc, curr) => {
+      if (!curr.pinned || !curr.pinned?.slotId) {
+        return acc;
+      }
+
+      if (configuredSlots?.includes(curr?.pinned?.slotId)) {
+        acc[curr?.pinned?.slotId] = acc[curr?.pinned?.slotId] || [];
+        acc[curr?.pinned?.slotId].push(curr);
+      } else {
+        acc.unconfigured.push(curr);
+      }
+
+      return acc;
+    },
+    {
+      unconfigured: [],
+    } as {
+      unconfigured: IInboxMessagePreview[];
+      [key: string]: IInboxMessagePreview[];
+    }
+  );
+
+  const mappedPinnedMessages = (configuredSlots ?? [])
+    .map((slotId) => pinnedBySlot?.[slotId] ?? [])
+    .filter(Boolean)
+    .flat();
+
+  return [...mappedPinnedMessages, ...(pinnedBySlot?.unconfigured ?? [])];
+};
+
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
   switch (action?.type) {
     case INBOX_INIT: {
@@ -124,6 +159,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
+        pinned: action.payload.appendMessages
+          ? state.pinned
+          : sortPinned(action.payload.pinned, state.brand),
         startCursor: action.payload.startCursor,
       };
     }
@@ -134,8 +172,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         (state.unreadMessageCount ?? 0) - 1
       );
 
-      // not on unread tab
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkRead = (message) => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
@@ -144,10 +181,14 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         }
 
         return message;
-      });
+      };
+
+      const newPinned = state.pinned?.map(handleMarkRead);
+      const newMessages = state.messages?.map(handleMarkRead);
 
       return {
         ...state,
+        pinned: newPinned,
         messages: newMessages,
         unreadMessageCount,
       };
@@ -156,7 +197,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_MARK_MESSAGE_UNREAD: {
       const unreadMessageCount = (state.unreadMessageCount ?? 0) + 1;
 
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkUnread = (message) => {
         if (message.messageId !== action.payload.messageId) {
           return message;
         }
@@ -167,17 +208,21 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         };
 
         return newMessage;
-      });
+      };
+
+      const newPinned = state.pinned?.map(handleMarkUnread);
+      const newMessages = state.messages?.map(handleMarkUnread);
 
       return {
         ...state,
         messages: newMessages,
+        pinned: newPinned,
         unreadMessageCount,
       };
     }
 
     case INBOX_MARK_MESSAGE_OPENED: {
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkOpened = (message) => {
         if (message.messageId === action.payload.messageId) {
           return {
             ...message,
@@ -186,28 +231,36 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         }
 
         return message;
-      });
+      };
+
+      const newPinned = state.pinned?.map(handleMarkOpened);
+      const newMessages = state.messages?.map(handleMarkOpened);
 
       return {
         ...state,
         messages: newMessages,
+        pinned: newPinned,
       };
     }
 
     case INBOX_MARK_MESSAGE_ARCHIVED: {
       let unreadMessageCount = state.unreadMessageCount ?? 0;
 
-      const newMessages = state.messages?.filter((message) => {
+      const handleArchived = (message) => {
         const isMatching = message.messageId === action.payload.messageId;
         if (isMatching && !message.read) {
           unreadMessageCount = Math.max(unreadMessageCount - 1, 0);
         }
 
         return !isMatching;
-      });
+      };
+
+      const newPinned = state.pinned?.filter(handleArchived);
+      const newMessages = state.messages?.filter(handleArchived);
 
       return {
         ...state,
+        pinned: newPinned,
         messages: newMessages,
         unreadMessageCount,
       };
@@ -219,29 +272,44 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         created: new Date().toISOString(),
       };
 
-      const newMessages = [newMessage, ...(state.messages ?? [])];
+      if (newMessage.pinned?.slotId) {
+        const newPinned = sortPinned(
+          [newMessage, ...(state.pinned ?? [])],
+          state.brand
+        );
+
+        return {
+          ...state,
+          unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
+          pinned: newPinned,
+        };
+      }
 
       return {
         ...state,
         unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
-        messages: newMessages,
+        messages: [newMessage, ...(state.messages ?? [])],
       };
     }
 
     case INBOX_MARK_ALL_READ: {
       const unreadMessageCount = 0;
 
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkRead = (message) => {
         return {
           ...message,
           read: new Date().toISOString(),
         };
-      });
+      };
+
+      const newPinned = state.pinned?.map(handleMarkRead);
+      const newMessages = state.messages?.map(handleMarkRead);
 
       return {
         ...state,
         lastMarkedAllRead: new Date().getTime(),
         messages: newMessages,
+        pinned: newPinned,
         unreadMessageCount,
       };
     }

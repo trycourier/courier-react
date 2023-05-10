@@ -25,7 +25,6 @@ import { markMessageOpened } from "./actions/mark-message-opened";
 import { useEffect } from "react";
 import reducer from "./reducer";
 import createMiddleware from "./middleware";
-import { fetchUnreadMessageCount } from "./actions/fetch-unread-message-count";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -35,7 +34,7 @@ export interface IFetchMessagesParams {
 interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
-  init: (inbox: IInbox) => void;
+  init: (inbox?: IInbox) => void;
   markAllAsRead: (fromWS?: boolean) => void;
   markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
@@ -101,12 +100,12 @@ const useInboxActions = (): IInboxActions => {
 
   const handleInit: IInboxActions["init"] = async (payload) => {
     dispatch(initInbox(payload));
-    const dateDiff = getDateDiff(payload.lastMessagesFetched);
+    const dateDiff = getDateDiff(payload?.lastMessagesFetched);
     if (!dateDiff || dateDiff > 3600000) {
       handleGetUnreadMessageCount();
     }
 
-    if (payload.isOpen) {
+    if (payload?.isOpen || inbox?.isOpen) {
       const searchParams: IGetInboxMessagesParams = {
         from: inbox?.from,
       };
@@ -127,7 +126,6 @@ const useInboxActions = (): IInboxActions => {
     init: handleInit,
     resetLastFetched: () => {
       dispatch(resetLastFetched());
-      dispatch(fetchUnreadMessageCount());
     },
     toggleInbox: (isOpen?: boolean) => {
       dispatch(toggleInbox(isOpen));
@@ -156,8 +154,7 @@ const useInboxActions = (): IInboxActions => {
 
       dispatch({
         meta,
-        payload: () =>
-          inboxClient.getMessages(meta.searchParams, payload?.after),
+        payload: () => inboxClient.getMessages(searchParams, payload?.after),
         type: "inbox/FETCH_MESSAGES",
       });
     },

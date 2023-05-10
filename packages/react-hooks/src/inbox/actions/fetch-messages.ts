@@ -28,6 +28,7 @@ export const INBOX_FETCH_MESSAGES_DONE = "inbox/FETCH_MESSAGES/DONE";
 
 interface FetchMessagesDonePayload {
   messages: IInboxMessagePreview[];
+  pinned?: IInboxMessagePreview[];
   appendMessages?: boolean;
   startCursor?: string;
 }

@@ -1,20 +1,21 @@
 import { ToastPosition } from "react-toastify";
 import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
+import { CSSObject } from "styled-components";
 
 export type Theme = {
-  body?: React.CSSProperties;
-  root?: React.CSSProperties;
-  toast?: React.CSSProperties;
-  dismiss?: React.CSSProperties;
+  body?: CSSObject;
+  root?: CSSObject;
+  toast?: CSSObject;
+  dismiss?: CSSObject;
   message?: {
-    clickableContainer?: React.CSSProperties;
-    container?: React.CSSProperties;
-    contents?: React.CSSProperties;
-    icon?: React.CSSProperties;
-    textElement?: React.CSSProperties;
-    title?: React.CSSProperties;
+    clickableContainer?: CSSObject;
+    container?: CSSObject;
+    contents?: CSSObject;
+    icon?: CSSObject;
+    textElement?: CSSObject;
+    title?: CSSObject;
   };
-  progressBar?: React.CSSProperties;
+  progressBar?: CSSObject;
 };
 
 export interface IToastConfig {
