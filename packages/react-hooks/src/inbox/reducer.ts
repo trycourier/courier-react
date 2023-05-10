@@ -183,10 +183,13 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return message;
       };
 
+      const newPinned = state.pinned?.map(handleMarkRead);
+      const newMessages = state.messages?.map(handleMarkRead);
+
       return {
         ...state,
-        pinned: state.pinned?.map(handleMarkRead),
-        messages: state.messages?.map(handleMarkRead),
+        pinned: newPinned,
+        messages: newMessages,
         unreadMessageCount,
       };
     }
@@ -207,10 +210,13 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return newMessage;
       };
 
+      const newPinned = state.pinned?.map(handleMarkUnread);
+      const newMessages = state.messages?.map(handleMarkUnread);
+
       return {
         ...state,
-        messages: state.messages?.map(handleMarkUnread),
-        pinned: state.pinned?.map(handleMarkUnread),
+        messages: newMessages,
+        pinned: newPinned,
         unreadMessageCount,
       };
     }
@@ -227,10 +233,13 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return message;
       };
 
+      const newPinned = state.pinned?.map(handleMarkOpened);
+      const newMessages = state.messages?.map(handleMarkOpened);
+
       return {
         ...state,
-        messages: state.messages?.map(handleMarkOpened),
-        pinned: state.pinned?.map(handleMarkOpened),
+        messages: newMessages,
+        pinned: newPinned,
       };
     }
 
@@ -246,10 +255,13 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         return !isMatching;
       };
 
+      const newPinned = state.pinned?.filter(handleArchived);
+      const newMessages = state.messages?.filter(handleArchived);
+
       return {
         ...state,
-        pinned: state.pinned?.filter(handleArchived),
-        messages: state.messages?.filter(handleArchived),
+        pinned: newPinned,
+        messages: newMessages,
         unreadMessageCount,
       };
     }
@@ -261,13 +273,15 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
 
       if (newMessage.pinned?.slotId) {
+        const newPinned = sortPinned(
+          [newMessage, ...(state.pinned ?? [])],
+          state.brand
+        );
+
         return {
           ...state,
           unreadMessageCount: (state.unreadMessageCount ?? 0) + 1,
-          pinned: sortPinned(
-            [newMessage, ...(state.pinned ?? [])],
-            state.brand
-          ),
+          pinned: newPinned,
         };
       }
 
@@ -281,17 +295,21 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_MARK_ALL_READ: {
       const unreadMessageCount = 0;
 
-      const newMessages = state.messages?.map((message) => {
+      const handleMarkRead = (message) => {
         return {
           ...message,
           read: new Date().toISOString(),
         };
-      });
+      };
+
+      const newPinned = state.pinned?.map(handleMarkRead);
+      const newMessages = state.messages?.map(handleMarkRead);
 
       return {
         ...state,
         lastMarkedAllRead: new Date().getTime(),
         messages: newMessages,
+        pinned: newPinned,
         unreadMessageCount,
       };
     }

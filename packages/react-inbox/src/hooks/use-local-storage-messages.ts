@@ -57,9 +57,11 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
       })
     );
   }, [
-    localStorageKey,
+    lastMessagesFetched,
     localStorage,
+    localStorageKey,
     messages,
+    pinned,
     startCursor,
     unreadMessageCount,
   ]);
