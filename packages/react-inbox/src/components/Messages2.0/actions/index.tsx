@@ -13,8 +13,7 @@ import styled from "styled-components";
 import { InboxProps } from "~/types";
 import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { getTimeAgo, getTimeAgoShort } from "~/lib";
-import StyledTippy from "~/components/StyledTippy";
-import { TippyProps } from "@tippyjs/react";
+import StyledTippy, { NewTippyProps } from "~/components/StyledTippy";
 import { useClickOutside } from "~/hooks";
 import OptionsIcon from "~/assets/options.svg";
 import deepExtend from "deep-extend";
@@ -129,7 +128,7 @@ const MessageActions: React.FunctionComponent<{
 
   const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
 
-  const tippyProps: TippyProps = {
+  const tippyProps: NewTippyProps = {
     visible: visible,
     placement: "left",
     interactive: true,

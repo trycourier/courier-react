@@ -29,7 +29,13 @@ const Styled = styled(Tippy)(({ theme }) =>
   )
 );
 
-const StyledTippy: React.FunctionComponent<TippyProps> = (props) => {
+interface Theme {
+  theme: any;
+}
+
+export interface NewTippyProps extends Omit<TippyProps, "theme">, Theme {}
+
+const StyledTippy: React.FunctionComponent<NewTippyProps> = (props) => {
   return <Styled {...props} offset={[0, 3]} />;
 };
 
