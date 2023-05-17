@@ -30,7 +30,7 @@ const Styled = styled(Tippy)(({ theme }) =>
 );
 
 interface Theme {
-  theme: any;
+  theme?: any;
 }
 
 export interface NewTippyProps extends Omit<TippyProps, "theme">, Theme {}
