@@ -7,10 +7,10 @@ import { useEffect } from "react";
 
 import deepExtend from "deep-extend";
 
-import useInboxActions from "./use-inbox-actions";
+import useInboxActions, { IInboxActions } from "./use-inbox-actions";
 import { IInbox } from "./types";
 
-const useInbox = () => {
+const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
   const { dispatch, inbox, transport, brand } =
     useCourier<{
       inbox: IInbox;
