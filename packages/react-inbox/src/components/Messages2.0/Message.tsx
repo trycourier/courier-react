@@ -230,6 +230,7 @@ const MessageWrapper: React.FunctionComponent<
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
     renderPin: InboxProps["renderPin"];
     setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
+    isMobile: boolean;
   }
 > = ({
   actions,
@@ -250,6 +251,7 @@ const MessageWrapper: React.FunctionComponent<
   setFocusedMessageId,
   title,
   trackingIds,
+  isMobile,
 }) => {
   const courier = useCourier();
   const [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout>();
@@ -455,6 +457,7 @@ const MessageWrapper: React.FunctionComponent<
         read={read}
         setAreActionsHovered={setAreActionsHovered}
         trackingIds={trackingIds}
+        isMobile={isMobile}
       />
     </PositionRelative>
   );

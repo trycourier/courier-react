@@ -332,6 +332,7 @@ const Messages: React.ForwardRefExoticComponent<
                     openLinksInNewTab={openLinksInNewTab}
                     renderPin={renderPin}
                     setFocusedMessageId={setFocusedMessageId}
+                    isMobile={isMobile}
                   />
                 )
               )}
@@ -356,6 +357,7 @@ const Messages: React.ForwardRefExoticComponent<
                     openLinksInNewTab={openLinksInNewTab}
                     renderPin={renderPin}
                     setFocusedMessageId={setFocusedMessageId}
+                    isMobile={isMobile}
                   />
                 )
               )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 
 import { useInbox } from "@trycourier/react-hooks";
@@ -13,6 +13,12 @@ import styled from "styled-components";
 import { InboxProps } from "~/types";
 import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { getTimeAgo, getTimeAgoShort } from "~/lib";
+import StyledTippy from "~/components/StyledTippy";
+import { TippyProps } from "@tippyjs/react";
+import { useClickOutside } from "~/hooks";
+import OptionsIcon from "~/assets/options.svg";
+import deepExtend from "deep-extend";
+import { getStyles } from "./styles";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Styled = styled.div((_props) => {
@@ -68,6 +74,7 @@ const MessageActions: React.FunctionComponent<{
   read?: IInboxMessagePreview["read"];
   setAreActionsHovered: (hovered: boolean) => void;
   trackingIds?: IInboxMessagePreview["trackingIds"];
+  isMobile?: boolean;
 }> = ({
   created,
   formatDate,
@@ -77,9 +84,13 @@ const MessageActions: React.FunctionComponent<{
   messageId,
   read,
   setAreActionsHovered,
+  isMobile = false,
 }) => {
+  const buttonRef = useRef(null);
   const actionsHoverRef = useRef(null);
   const areActionsHovered = useHover(actionsHoverRef);
+
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     setAreActionsHovered(areActionsHovered);
@@ -118,6 +129,46 @@ const MessageActions: React.FunctionComponent<{
 
   const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
 
+  const tippyProps: TippyProps = {
+    visible: visible,
+    placement: "left",
+    interactive: true,
+    theme: {
+      tooltip: {
+        ".tippy-content": {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          backgroundColor: "#F2F6F9",
+          border: "1px solid #E5E5E5",
+          "> div": {
+            width: "100%",
+          },
+        },
+      },
+    },
+  };
+
+  const handleClickOutside = () => {
+    setVisible(false);
+  };
+
+  useClickOutside(buttonRef, handleClickOutside);
+
+  const StyledButton = styled.button(({ theme }) => {
+    return deepExtend(
+      {},
+      getStyles(theme),
+      {
+        width: "100%",
+        fontWeight: "bold",
+        color: theme.brand.colors?.primary ?? "black",
+        margin: "0px",
+      },
+      theme.action
+    );
+  });
+
   return (
     <Styled
       ref={actionsHoverRef}
@@ -139,26 +190,66 @@ const MessageActions: React.FunctionComponent<{
           {formattedTime}
         </TimeAgo>
 
-        <div className="message-actions">
-          {!read && (
-            <MarkRead
-              label={labels?.markAsRead}
-              onClick={handleEvent("read")}
+        {isMobile ? (
+          <div ref={buttonRef}>
+            <StyledTippy
+              {...tippyProps}
+              content={
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyItems: "center",
+                  }}
+                >
+                  <StyledButton
+                    onClick={handleEvent(!read ? "read" : "unread")}
+                  >
+                    {!read ? "Mark Read" : "Unread"}
+                  </StyledButton>
+                  <StyledButton onClick={handleEvent("archive")}>
+                    Archive
+                  </StyledButton>
+                </div>
+              }
+            >
+              <button
+                style={{
+                  width: "5px",
+                  backgroundColor: "transparent",
+                  border: "none",
+                  marginRight: "5px",
+                }}
+                onClick={() => setVisible(!visible)}
+              >
+                <OptionsIcon />
+              </button>
+            </StyledTippy>
+          </div>
+        ) : (
+          <div className="message-actions">
+            {!read && (
+              <MarkRead
+                label={labels?.markAsRead}
+                onClick={handleEvent("read")}
+              />
+            )}
+            {read && (
+              <MarkUnread
+                label={labels?.markAsUnread}
+                onClick={handleEvent("unread")}
+              />
+            )}
+            <CloseAction
+              size="small"
+              title={labels?.archiveMessage ?? "archive message"}
+              onClick={handleEvent("archive")}
+              tooltip={labels?.archiveMessage ?? "Archive Message"}
             />
-          )}
-          {read && (
-            <MarkUnread
-              label={labels?.markAsUnread}
-              onClick={handleEvent("unread")}
-            />
-          )}
-          <CloseAction
-            size="small"
-            title={labels?.archiveMessage ?? "archive message"}
-            onClick={handleEvent("archive")}
-            tooltip={labels?.archiveMessage ?? "Archive Message"}
-          />
-        </div>
+          </div>
+        )}
       </div>
       <div
         className={classNames({

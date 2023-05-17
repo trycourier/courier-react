@@ -20,6 +20,9 @@ const Styled = styled(Tippy)(({ theme }) =>
         color: "white",
         fontWeight: 700,
         borderRadius: "4px !important",
+        "> div": {
+          width: "100%",
+        },
       },
     },
     theme.tooltip
