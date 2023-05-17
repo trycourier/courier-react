@@ -31,7 +31,7 @@ export interface IFetchMessagesParams {
   after?: string;
 }
 
-interface IInboxActions {
+export interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
   init: (inbox?: IInbox) => void;
