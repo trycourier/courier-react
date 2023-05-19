@@ -10,6 +10,7 @@ const RECIPIENT_PREFERENCES = `
         status
         hasCustomRouting
         routingPreferences
+        digestSchedule
       }
     }
   }
@@ -78,6 +79,7 @@ const DRAFT_PREFERENCE_PAGE = `
               defaultStatus
               templateName
               templateId
+              digestSchedules
             }
           }
         }
@@ -132,6 +134,7 @@ type UpdateRecipientPreferences = (payload: {
   status: string;
   hasCustomRouting: boolean;
   routingPreferences: Array<string>;
+  digestSchedule: string;
 }) => Promise<any>;
 export const updateRecipientPreferences =
   (client: Client | undefined): UpdateRecipientPreferences =>
@@ -147,6 +150,7 @@ export const updateRecipientPreferences =
           status: payload.status,
           hasCustomRouting: payload.hasCustomRouting,
           routingPreferences: payload.routingPreferences,
+          digestSchedule: payload.digestSchedule,
         },
       })
       .toPromise();

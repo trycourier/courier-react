@@ -9,7 +9,7 @@ import {
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
 import { PreferenceSection } from "@trycourier/react-hooks";
-import DigestSchedule from "./DigestSchedule";
+import DigestSchedules from "./DigestSchedule";
 
 export const ChannelOption = styled.div`
   display: flex;
@@ -120,7 +120,7 @@ const ChannelPreferenceStyles = styled.div`
     margin: 0;
   }
 
-  .custmoize-delivery {
+  .customize-delivery {
     input {
       display: none;
       opacity: 0;
@@ -294,6 +294,13 @@ export const PreferenceTopic: React.FunctionComponent<{
     setRouting(newRouting);
   };
 
+  const handleScheduleChange = async (scheduleId: string) => {
+    await updateRecipientPreferences({
+      templateId: topicId,
+      digestSchedule: scheduleId,
+    });
+  };
+
   if (!topic) {
     return null;
   }
@@ -328,22 +335,20 @@ export const PreferenceTopic: React.FunctionComponent<{
         />
       </StyledToggle>
       <div className="digest-schedules">
-        {topic.digestSchedules?.map((schedule, index) => (
-          <DigestSchedule
-            period={schedule.period}
-            repetition={schedule.repetition}
-            isActive={!!index}
-            checkedColor={
-              preferencePage?.brand.settings.colors.primary ?? "#9121c2"
-            }
-          />
-        ))}
+        <DigestSchedules
+          schedules={topic.digestSchedules ?? []}
+          checkedColor={
+            preferencePage?.brand.settings.colors.primary ?? "#9121c2"
+          }
+          onScheduleChange={handleScheduleChange}
+          topicId={topicId}
+        />
       </div>
       {statusToggle && defaultHasCustomRouting && defaultStatus !== "REQUIRED" && (
         <ChannelPreferenceStyles
           theme={{ primary: preferencePage?.brand.settings.colors.primary }}
         >
-          <label className="custmoize-delivery">
+          <label className="customize-delivery">
             <Input
               type="checkbox"
               checked={customizeDelivery}
