@@ -68,6 +68,12 @@ const DigestSchedules: React.FunctionComponent<{
     onScheduleChange(value);
   };
 
+  const format = (schedule: string) => {
+    if (!schedule) return "";
+    const formatted = schedule.charAt(0).toUpperCase() + schedule.slice(1);
+    return formatted;
+  };
+
   return (
     <div>
       {schedules.map((schedule) => (
@@ -80,8 +86,10 @@ const DigestSchedules: React.FunctionComponent<{
             onChange={handleChange}
           />
           <div className="digest-details">
-            <div className="digest-period">{schedule.period}</div>
-            <div className="digest-repetition">{schedule.repetition}</div>
+            <div className="digest-period">{format(schedule.period)}</div>
+            <div className="digest-repetition">
+              {format(schedule.repetition)}
+            </div>
           </div>
         </DigestScheduleContainer>
       ))}
