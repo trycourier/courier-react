@@ -5,7 +5,12 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || require("buffer").Buffer;
 }
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  PropsWithChildren,
+} from "react";
 import createReducer from "react-use/lib/factory/createReducer";
 
 import {
@@ -54,160 +59,148 @@ export type {
 export const CourierContext =
   React.createContext<ICourierContext | undefined>(undefined);
 
-export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
-  ({
+export const CourierProvider: React.FunctionComponent<
+  PropsWithChildren<ICourierProviderProps>
+> = ({
+  apiUrl,
+  authorization,
+  brand,
+  brandId,
+  children,
+  clientKey,
+  id,
+  inboxApiUrl,
+  localStorage = typeof window !== "undefined"
+    ? window?.localStorage
+    : undefined,
+  middleware: _middleware = [],
+  onMessage,
+  onRouteChange,
+  transport: _transport,
+  userId,
+  userSignature,
+  wsOptions: _wsOptions = {},
+}) => {
+  const wsOptions = useMemo(
+    () => _wsOptions,
+    [
+      _wsOptions.connectionTimeout,
+      _wsOptions.onClose,
+      _wsOptions.onError,
+      _wsOptions.onReconnect,
+      _wsOptions.url,
+    ]
+  );
+
+  const clientSourceId = useClientSourceId({
+    authorization,
+    clientKey,
+    id,
+    localStorage,
+    userId,
+  });
+
+  const middleware = [..._middleware, ...defaultMiddleware];
+  const useReducer = useCallback(
+    createReducer<any, Partial<ICourierContext>>(...middleware),
+    [_middleware]
+  );
+
+  const transport =
+    typeof window === "undefined"
+      ? undefined
+      : useTransport({
+          authorization,
+          clientSourceId,
+          clientKey,
+          transport: _transport,
+          userSignature,
+          wsOptions,
+        });
+
+  const [state, dispatch] = useReducer(reducer, {
     apiUrl,
     authorization,
     brand,
     brandId,
-    children,
     clientKey,
-    id,
+    clientSourceId,
     inboxApiUrl,
-    localStorage = typeof window !== "undefined"
-      ? window?.localStorage
-      : undefined,
-    middleware: _middleware = [],
-    onMessage,
+    localStorage,
+    middleware,
     onRouteChange,
-    transport: _transport,
+    transport,
     userId,
     userSignature,
-    wsOptions: _wsOptions = {},
-  }) => {
-    const wsOptions = useMemo(
-      () => _wsOptions,
-      [
-        _wsOptions.connectionTimeout,
-        _wsOptions.onClose,
-        _wsOptions.onError,
-        _wsOptions.onReconnect,
-        _wsOptions.url,
-      ]
-    );
+  });
 
-    const clientSourceId = useClientSourceId({
-      authorization,
-      clientKey,
-      id,
-      localStorage,
-      userId,
+  const actions = useCourierActions(state, dispatch);
+
+  usePageVisible((isVisible) => {
+    if (!isVisible) {
+      return;
+    }
+
+    // this means we left the tab and came back so we should refetch
+    actions.pageVisible();
+  });
+
+  useEffect(() => {
+    if (_transport) {
+      // this means the transport was passed in and we shouldn't subscribe
+      return;
+    }
+
+    if (!transport || !userId) {
+      return;
+    }
+
+    const courierTransport = transport as CourierTransport;
+
+    courierTransport.subscribe(userId);
+    courierTransport.onReconnection({
+      id: "handleWSReconnection",
+      callback: () => {
+        actions.wsReconnected();
+      },
     });
 
-    const middleware = [..._middleware, ...defaultMiddleware];
-    const useReducer = useCallback(
-      createReducer<any, Partial<ICourierContext>>(...middleware),
-      [_middleware]
-    );
+    if (onMessage) {
+      courierTransport.intercept(onMessage);
+    }
 
-    const transport =
-      typeof window === "undefined"
-        ? undefined
-        : useTransport({
-            authorization,
-            clientSourceId,
-            clientKey,
-            transport: _transport,
-            userSignature,
-            wsOptions,
-          });
+    const intervalId = setInterval(() => {
+      courierTransport.keepAlive();
+    }, 300000); // 5 minutes
 
-    const [state, dispatch] = useReducer(reducer, {
-      apiUrl,
-      authorization,
-      brand,
-      brandId,
-      clientKey,
-      clientSourceId,
-      inboxApiUrl,
-      localStorage,
-      middleware,
-      onRouteChange,
-      transport,
-      userId,
-      userSignature,
-    });
+    return () => {
+      clearInterval(intervalId);
+      courierTransport.unsubscribe(userId);
+      courierTransport.closeConnection();
+    };
+  }, [actions, transport, userId]);
 
-    const actions = useCourierActions(state, dispatch);
+  useEffect(() => {
+    if (!_transport && (!clientKey || !userId)) {
+      return;
+    }
 
-    usePageVisible((isVisible) => {
-      if (!isVisible) {
-        return;
-      }
+    let parsedLocalStorageState;
+    if (state.localStorage) {
+      const localStorageState = state.localStorage.getItem(
+        `${clientKey}/${userId}/provider`
+      );
 
-      // this means we left the tab and came back so we should refetch
-      actions.pageVisible();
-    });
-
-    useEffect(() => {
-      if (_transport) {
-        // this means the transport was passed in and we shouldn't subscribe
-        return;
-      }
-
-      if (!transport || !userId) {
-        return;
-      }
-
-      const courierTransport = transport as CourierTransport;
-
-      courierTransport.subscribe(userId);
-      courierTransport.onReconnection({
-        id: "handleWSReconnection",
-        callback: () => {
-          actions.wsReconnected();
-        },
-      });
-
-      if (onMessage) {
-        courierTransport.intercept(onMessage);
-      }
-
-      const intervalId = setInterval(() => {
-        courierTransport.keepAlive();
-      }, 300000); // 5 minutes
-
-      return () => {
-        clearInterval(intervalId);
-        courierTransport.unsubscribe(userId);
-        courierTransport.closeConnection();
-      };
-    }, [actions, transport, userId]);
-
-    useEffect(() => {
-      if (!_transport && (!clientKey || !userId)) {
-        return;
-      }
-
-      let parsedLocalStorageState;
-      if (state.localStorage) {
-        const localStorageState = state.localStorage.getItem(
-          `${clientKey}/${userId}/provider`
-        );
-
-        if (localStorageState) {
-          try {
-            parsedLocalStorageState = JSON.parse(localStorageState);
-          } catch (ex) {
-            console.log("error", ex);
-          }
+      if (localStorageState) {
+        try {
+          parsedLocalStorageState = JSON.parse(localStorageState);
+        } catch (ex) {
+          console.log("error", ex);
         }
       }
+    }
 
-      actions.init({
-        apiUrl,
-        authorization,
-        brandId,
-        clientKey,
-        inboxApiUrl,
-        localStorage,
-        transport,
-        userId,
-        userSignature,
-        ...parsedLocalStorageState,
-      });
-    }, [
-      actions,
+    actions.init({
       apiUrl,
       authorization,
       brandId,
@@ -217,31 +210,44 @@ export const CourierProvider: React.FunctionComponent<ICourierProviderProps> =
       transport,
       userId,
       userSignature,
-    ]);
+      ...parsedLocalStorageState,
+    });
+  }, [
+    actions,
+    apiUrl,
+    authorization,
+    brandId,
+    clientKey,
+    inboxApiUrl,
+    localStorage,
+    transport,
+    userId,
+    userSignature,
+  ]);
 
-    useEffect(() => {
-      if (!state.brand || !clientKey || !userId || !state.localStorage) {
-        return;
-      }
+  useEffect(() => {
+    if (!state.brand || !clientKey || !userId || !state.localStorage) {
+      return;
+    }
 
-      state.localStorage.setItem(
-        `${clientKey}/${userId}/provider`,
-        JSON.stringify({
-          brand: state.brand,
-        })
-      );
-    }, [state.brand, clientKey, userId, state.localStorage]);
-
-    return (
-      <CourierContext.Provider
-        value={{
-          ...state,
-          ...actions,
-          clientSourceId,
-          dispatch,
-        }}
-      >
-        {children}
-      </CourierContext.Provider>
+    state.localStorage.setItem(
+      `${clientKey}/${userId}/provider`,
+      JSON.stringify({
+        brand: state.brand,
+      })
     );
-  };
+  }, [state.brand, clientKey, userId, state.localStorage]);
+
+  return (
+    <CourierContext.Provider
+      value={{
+        ...state,
+        ...actions,
+        clientSourceId,
+        dispatch,
+      }}
+    >
+      {children}
+    </CourierContext.Provider>
+  );
+};
