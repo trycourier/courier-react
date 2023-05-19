@@ -80,4 +80,5 @@ export interface IRecipientPreference {
   status: PreferenceStatus;
   hasCustomRouting: boolean;
   routingPreferences: Array<ChannelClassification>;
+  digestSchedule: string;
 }
