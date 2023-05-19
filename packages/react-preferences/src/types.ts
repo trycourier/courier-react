@@ -33,7 +33,8 @@ export interface IPreference {
 export interface DigestSchedule {
   period: string;
   repetition: string;
-  digestId: string;
+  scheduleId: string;
+  default?: boolean;
 }
 
 export interface IPreferenceTemplate {
@@ -48,4 +49,5 @@ export interface IRecipientPreference {
   status: PreferenceStatus | null;
   hasCustomRouting: boolean;
   routingPreferences: Array<ChannelClassification>;
+  digestSchedule: string;
 }
