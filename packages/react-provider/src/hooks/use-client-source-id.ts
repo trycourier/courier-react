@@ -15,15 +15,15 @@ const useClientSourceId = ({
     }
 
     const decoded = jwtDecode(authorization) as {
-      tenantId: string;
+      tenant_id: string;
       scope: string;
     };
     const scopeUserId = decoded?.scope
       ?.split(" ")
       ?.find((s) => s.includes("user_id"))
-      ?.replace("user_id", "");
+      ?.replace("user_id:", "");
 
-    return `${decoded?.tenantId}/${scopeUserId}`;
+    return `${decoded?.tenant_id}/${scopeUserId}`;
   }, [authorization, clientKey, userId]);
 
   return useMemo(() => {
