@@ -50,6 +50,40 @@
         //userId: "smokey12345",
 
         userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+        components: {
+          inbox: {
+            theme: {
+              header: {
+                background: "pink",
+              },
+              messageList: {
+                container: {
+                  background: "pink",
+                },
+              },
+              footer: {
+                background: "pink",
+              },
+              message: {
+                container: {
+                  background: "red",
+                  "&.read": {
+                    background: "green",
+                    "svg path": {
+                      fill: "white",
+                    },
+                    div: {
+                      color: "white",
+                    },
+                  },
+                  "&:not(.read):hover": {
+                    background: "yellow",
+                  },
+                },
+              },
+            },
+          },
+        },
       };
 
       window.addInbox = () => {
