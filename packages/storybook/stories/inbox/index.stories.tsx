@@ -1,9 +1,5 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import propsMd from "@trycourier/react-inbox/docs/3.props.md";
-import themeMd from "@trycourier/react-inbox/docs/4.theme.md";
-import renderPropsMd from "@trycourier/react-inbox/docs/5.render-props.md";
-import hooksMd from "@trycourier/react-inbox/docs/4.hooks.md";
 
 import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
@@ -34,14 +30,6 @@ const USER_ID = process.env.USER_ID || "";
 
 export default {
   title: "Inbox",
-};
-
-export const Props = () => {
-  return <ReactMarkdown>{propsMd}</ReactMarkdown>;
-};
-
-export const Theme = () => {
-  return <ReactMarkdown>{themeMd}</ReactMarkdown>;
 };
 
 export const ThemeExample = () => {
@@ -105,10 +93,6 @@ export const ThemeExample = () => {
       </CourierProvider>
     </div>
   );
-};
-
-export const RenderProps = () => {
-  return <ReactMarkdown>{renderPropsMd}</ReactMarkdown>;
 };
 
 export const RenderPropsExample = () => {
@@ -187,7 +171,6 @@ export const RenderPropsExample2 = () => {
 export const Hooks = () => {
   return (
     <>
-      <ReactMarkdown>{hooksMd}</ReactMarkdown>
       <div
         style={{
           display: "flex",
@@ -218,7 +201,6 @@ export const Hooks = () => {
 export const CustomLabels = () => {
   return (
     <>
-      <ReactMarkdown>{hooksMd}</ReactMarkdown>
       <div
         style={{
           display: "flex",
@@ -263,7 +245,6 @@ export const CustomLabels = () => {
 export const CustomBlocks = () => {
   return (
     <>
-      <ReactMarkdown>{hooksMd}</ReactMarkdown>
       <div
         style={{
           display: "flex",

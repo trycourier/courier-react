@@ -132,7 +132,7 @@ To listen for actions that happen inside Courier's SDK.
 
 You can configure components in 2 different ways. Inline html attributes but also through `window.courierConfig`. These are the same properties passed to the React components
 
-[Inbox Config](https://github.com/trycourier/courier-react/blob/main/packages/react-inbox/docs/3.props.md)
+[Inbox Config](https://github.com/trycourier/courier-react/blob/main/packages/react-inbox/README.md#props)
 
 [Toast Config](https://github.com/trycourier/courier-react/blob/main/packages/react-toast/docs/3.props.md)
 

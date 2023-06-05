@@ -31,7 +31,7 @@ You can still access the 1.X designs by passing theme.name === "classic" to the 
 
 We created a separate breaking change branch to make sure our bundles are small and optimized. We didn't want to bundle any uneccesary code to support the "classic" theme so 3.0 has removed all the deprecated code. There are breaking changes and a
 
-- [Inbox migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox/docs/0.overview.md)
+- [Inbox migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox/README.md)
 - [Toast migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-toast/docs/0.overview.md)
 - [Hooks migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks/0.overview.md)
 

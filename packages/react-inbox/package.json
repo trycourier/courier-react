@@ -10,7 +10,6 @@
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit",
-    "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --build"
   },
   "license": "ISC",
