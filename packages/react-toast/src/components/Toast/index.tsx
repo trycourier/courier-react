@@ -17,6 +17,7 @@ import { useListenForTransportEvent } from "~/hooks";
 import Body from "~/components/Body";
 import deepExtend from "deep-extend";
 import { themeDefaults } from "~/constants";
+import { defaultConfig } from "~/defaults";
 
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
@@ -84,7 +85,7 @@ export const Toast: React.FunctionComponent<
     dispatch({
       type: "toast/INIT",
       payload: {
-        config: props,
+        config: deepExtend({}, defaultConfig, props),
         toast: handleToast,
       },
     });
