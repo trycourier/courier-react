@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
-import { toast, ToastProps } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 import {
   Container,
   Message,
@@ -62,7 +62,7 @@ const NonClickableContainer = styled.div(({ theme }) => {
 
 const Body: React.FunctionComponent<
   Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
-    toastProps?: ToastProps;
+    toastProps?: ToastOptions;
     onClick?: (event: React.MouseEvent) => void;
     title?: IInboxMessagePreview["title"] | ReactElement;
     preview?: IInboxMessagePreview["preview"] | ReactElement;

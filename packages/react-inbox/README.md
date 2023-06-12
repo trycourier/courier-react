@@ -424,6 +424,10 @@ interface ITheme {
   };
   message?: {
     actionElement?: CSSObject;
+    actionMenu?: {
+      button?: CSSObject;
+      dropdown?: CSSObject;
+    };
     clickableContainer?: CSSObject;
     container?: CSSObject;
     content?: CSSObject;

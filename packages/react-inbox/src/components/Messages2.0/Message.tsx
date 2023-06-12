@@ -226,6 +226,7 @@ const MessageWrapper: React.FunctionComponent<
     defaultIcon: InboxProps["defaultIcon"];
     formatDate: InboxProps["formatDate"];
     isMessageFocused: boolean;
+    isMobile?: boolean;
     labels: InboxProps["labels"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
     renderPin: InboxProps["renderPin"];
@@ -239,6 +240,7 @@ const MessageWrapper: React.FunctionComponent<
   formatDate,
   icon,
   isMessageFocused,
+  isMobile,
   labels,
   messageId,
   opened,
@@ -450,6 +452,7 @@ const MessageWrapper: React.FunctionComponent<
         created={created}
         formatDate={formatDate}
         isMessageActive={isMessageFocused || isMessageHovered}
+        isMobile={isMobile}
         labels={labels}
         messageId={messageId}
         read={read}

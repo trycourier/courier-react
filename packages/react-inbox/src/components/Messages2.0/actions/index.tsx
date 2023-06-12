@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
+import { useClickOutside } from "~/hooks";
 
 import { useInbox } from "@trycourier/react-hooks";
 
 import { TimeAgo } from "~/components/Messages2.0/styled";
 import useHover from "~/hooks/use-hover";
+import OptionsSvg from "~/assets/options.svg";
 
 import CloseAction from "./Close";
 import MarkRead, { Checkmark } from "./MarkRead";
@@ -13,6 +15,50 @@ import styled from "styled-components";
 import { InboxProps } from "~/types";
 import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { getTimeAgo, getTimeAgoShort } from "~/lib";
+import deepExtend from "deep-extend";
+
+const MobileActionsMenuButton = styled.button(({ theme }) =>
+  deepExtend(
+    {
+      marginTop: "50px",
+      padding: "0 12px",
+      border: "none",
+      background: "transparent",
+      cursor: "pointer",
+      svg: {
+        transform: "rotate(90deg)",
+      },
+    },
+    theme?.message?.actionMenu?.button
+  )
+);
+
+const MobileActions = styled.div(({ theme }) =>
+  deepExtend(
+    {
+      marginTop: "42px",
+      width: "150px",
+      display: "flex",
+      background: "white",
+      flexDirection: "column",
+      borderRadius: "6px",
+      zIndex: 1,
+      border: "1px solid #d5d1d1",
+      boxShadow: "0px 8px 24px rgba(28,39,58,0.3)",
+      button: {
+        cursor: "pointer",
+        "&:first-child": {
+          borderBottom: "1px solid #d5d1d1",
+        },
+        border: "none",
+        width: "100%",
+        padding: "10px 0",
+        background: "transparent",
+      },
+    },
+    theme?.message?.actionMenu?.dropdown
+  )
+);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Styled = styled.div((_props) => {
@@ -63,6 +109,7 @@ const MessageActions: React.FunctionComponent<{
   formatDate?: InboxProps["formatDate"];
   hasBody?: boolean;
   isMessageActive?: boolean;
+  isMobile?: boolean;
   labels: InboxProps["labels"];
   messageId?: IInboxMessagePreview["messageId"];
   read?: IInboxMessagePreview["read"];
@@ -73,13 +120,16 @@ const MessageActions: React.FunctionComponent<{
   formatDate,
   hasBody,
   isMessageActive,
+  isMobile,
   labels,
   messageId,
   read,
   setAreActionsHovered,
 }) => {
   const actionsHoverRef = useRef(null);
+  const mobileActionsRef = useRef(null);
   const areActionsHovered = useHover(actionsHoverRef);
+  const [showMobileActions, setShowMobileActions] = useState(false);
 
   useEffect(() => {
     setAreActionsHovered(areActionsHovered);
@@ -110,6 +160,8 @@ const MessageActions: React.FunctionComponent<{
         break;
       }
     }
+
+    setShowMobileActions(false);
   };
 
   const formattedTime = formatDate
@@ -117,6 +169,13 @@ const MessageActions: React.FunctionComponent<{
     : getTimeAgoShort(created);
 
   const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
+  const markAsReadLabel = labels?.markAsRead ?? "Mark as Read";
+  const markUnreadLabel = labels?.markAsRead ?? "Mark Unread";
+  const archiveLabel = labels?.archiveMessage ?? "Archive Message";
+
+  useClickOutside(mobileActionsRef, () => {
+    setShowMobileActions(false);
+  });
 
   return (
     <Styled
@@ -125,9 +184,26 @@ const MessageActions: React.FunctionComponent<{
         hasBody,
       })}
     >
+      {isMobile && (
+        <MobileActionsMenuButton
+          onClick={() => setShowMobileActions(!showMobileActions)}
+        >
+          <OptionsSvg />
+        </MobileActionsMenuButton>
+      )}
+      {showMobileActions && (
+        <MobileActions ref={mobileActionsRef}>
+          {read ? (
+            <button onClick={handleEvent("unread")}>{markUnreadLabel}</button>
+          ) : (
+            <button onClick={handleEvent("read")}>{markAsReadLabel}</button>
+          )}
+          <button onClick={handleEvent("archive")}>{archiveLabel}</button>
+        </MobileActions>
+      )}
       <div
         className={classNames({
-          hidden: !isMessageActive,
+          hidden: !isMobile && !isMessageActive,
         })}
       >
         <TimeAgo
@@ -138,31 +214,29 @@ const MessageActions: React.FunctionComponent<{
         >
           {formattedTime}
         </TimeAgo>
-
-        <div className="message-actions">
-          {!read && (
-            <MarkRead
-              label={labels?.markAsRead}
-              onClick={handleEvent("read")}
+        {!isMobile && (
+          <div className="message-actions">
+            {!read && (
+              <MarkRead label={markAsReadLabel} onClick={handleEvent("read")} />
+            )}
+            {read && (
+              <MarkUnread
+                label={markUnreadLabel}
+                onClick={handleEvent("unread")}
+              />
+            )}
+            <CloseAction
+              size="small"
+              title={archiveLabel}
+              onClick={handleEvent("archive")}
+              tooltip={archiveLabel}
             />
-          )}
-          {read && (
-            <MarkUnread
-              label={labels?.markAsUnread}
-              onClick={handleEvent("unread")}
-            />
-          )}
-          <CloseAction
-            size="small"
-            title={labels?.archiveMessage ?? "archive message"}
-            onClick={handleEvent("archive")}
-            tooltip={labels?.archiveMessage ?? "Archive Message"}
-          />
-        </div>
+          </div>
+        )}
       </div>
       <div
         className={classNames({
-          hidden: isMessageActive,
+          hidden: isMobile || isMessageActive,
         })}
       >
         <TimeAgo>{formattedTime}</TimeAgo>
