@@ -19,10 +19,9 @@ const MarkUnread: React.FunctionComponent<{
   label?: string;
   onClick: React.MouseEventHandler;
 }> = ({ onClick, label }) => {
-  const title = label ?? "Mark Unread";
   return (
-    <StyledTippy content={title}>
-      <StyledButton title={title} onClick={onClick}>
+    <StyledTippy content={label}>
+      <StyledButton title={label} onClick={onClick}>
         <svg
           width="24"
           height="24"
