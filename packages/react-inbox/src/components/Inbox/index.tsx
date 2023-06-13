@@ -1,5 +1,5 @@
 import { TippyProps } from "@tippyjs/react";
-import { useCourier, getDateDiff } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
 import React, {
   useEffect,
@@ -100,6 +100,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       {
         openLinksInNewTab: true,
         title: "Notifications",
+        views: [
+          {
+            id: "messages",
+            label: "Notifications",
+          },
+        ],
         theme: {
           brand: props.brand ?? {
             colors: {
@@ -115,10 +121,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const windowSize = useWindowSize();
   const {
     brand,
-    fetchMessages,
     init,
     isOpen: isOpenState,
-    lastMessagesFetched,
     setView,
     toggleInbox,
     unreadMessageCount = 0,
@@ -150,17 +154,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   }, [localStorageState, props.brand, props.isOpen]);
 
   const handleIconEvent = useCallback(() => {
-    if (!isOpen) {
-      setView("messages");
-
-      const dateDiff = getDateDiff(lastMessagesFetched);
-      if (!dateDiff || dateDiff > 3600000) {
-        fetchMessages();
-      }
+    const viewId = props?.views?.[0]?.id;
+    if (!isOpen && viewId) {
+      setView(viewId);
     }
 
     toggleInbox();
-  }, [lastMessagesFetched, isOpen, setView]);
+  }, [isOpen, setView]);
 
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {

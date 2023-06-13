@@ -77,6 +77,9 @@ const MessageContainer = styled.div(({ theme }) => {
           opacity: "0.3",
         },
       },
+      "&.archived": {
+        filter: "grayscale(100%)",
+      },
     },
     theme?.message?.container
   );
@@ -112,6 +115,7 @@ const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
 
 const Message: React.FunctionComponent<{
   actions?: IInboxMessagePreview["actions"];
+  archived?: IInboxMessagePreview["archived"];
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
   messageId: string;
@@ -126,6 +130,7 @@ const Message: React.FunctionComponent<{
   title?: string;
 }> = ({
   actions,
+  archived,
   areActionsHovered,
   isMessageActive,
   messageId,
@@ -178,6 +183,7 @@ const Message: React.FunctionComponent<{
         hover: isMessageActive && !areActionsHovered,
         pinned: isPinned,
         read,
+        archived,
       })}
     >
       <UnreadIndicator read={read} />
@@ -234,6 +240,7 @@ const MessageWrapper: React.FunctionComponent<
   }
 > = ({
   actions,
+  archived,
   created,
   data,
   defaultIcon,
@@ -408,6 +415,7 @@ const MessageWrapper: React.FunctionComponent<
     return (
       <Message
         actions={actions}
+        archived={archived}
         areActionsHovered={areActionsHovered}
         isMessageActive={isMessageFocused || isMessageHovered}
         messageId={messageId}
@@ -422,6 +430,7 @@ const MessageWrapper: React.FunctionComponent<
     );
   }, [
     actions,
+    archived,
     areActionsHovered,
     isMessageFocused,
     isMessageHovered,
@@ -449,6 +458,7 @@ const MessageWrapper: React.FunctionComponent<
         <div tabIndex={0}>{renderedMessage}</div>
       )}
       <MessageActions
+        archived={archived}
         created={created}
         formatDate={formatDate}
         isMessageActive={isMessageFocused || isMessageHovered}

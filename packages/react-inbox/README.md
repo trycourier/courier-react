@@ -390,6 +390,18 @@ interface InboxProps {
   renderMessage?: React.FunctionComponent<IMessage>;
   renderNoMessages?: React.FunctionComponent;
 
+  views?: Array<{
+    id: string;
+    label: string;
+    params: {
+      archived?: boolean;
+      status?: "unread" | "read";
+      from?: string | number;
+      limit?: number;
+      tags?: string[];
+    }
+  }>;
+
   theme?: ThemeObject;
   title?: string;
 
@@ -397,6 +409,19 @@ interface InboxProps {
   trigger?: "click" | "hover";
 }
 ```
+
+### [Views](#views)
+
+You can add more views beyound the default "all messages" view. You can provide a few different filter params like `archived`, `status`, `limit`, `tags`, ect... to create the experience you are looking for. If you customize the views, you will overwrite the default view of:
+
+```json
+{
+  "id": "messages",
+  "label": "Notifications"
+}
+```
+
+> so make sure to include this view if you want to include an all messages view.
 
 ### [Hooks](#hooks)
 

@@ -2,10 +2,11 @@ import { Client } from "urql";
 import { IActionElemental } from "./message";
 
 export interface IGetInboxMessagesParams {
-  status?: "read" | "unread";
-  limit?: number;
-  tags?: string[];
+  archived?: boolean;
   from?: string | number;
+  limit?: number;
+  status?: "read" | "unread";
+  tags?: string[];
 }
 
 export const messagesProps = `
@@ -22,6 +23,7 @@ export const messagesProps = `
       href
       style
     }
+    archived
     created
     data
     icon
@@ -67,6 +69,7 @@ export const createGetInboxMessagesQuery = (includePinned?: boolean) => `
 
 export interface IInboxMessagePreview {
   actions?: IActionElemental[];
+  archived?: string;
   created: string;
   data?: Record<string, any>;
   messageId: string;

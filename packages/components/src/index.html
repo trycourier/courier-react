@@ -50,6 +50,26 @@
         //userId: "smokey12345",
 
         userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+        components: {
+          inbox: {
+            views: [
+              {
+                id: "messages",
+                label: "Messages!",
+                params: {
+                  archived: false,
+                },
+              },
+              {
+                id: "archived",
+                label: "Archived",
+                params: {
+                  archived: true,
+                },
+              },
+            ],
+          },
+        },
       };
 
       window.addInbox = () => {

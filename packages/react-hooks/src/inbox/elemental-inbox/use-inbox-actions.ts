@@ -44,7 +44,7 @@ interface IInboxActions {
   ) => Promise<void>;
   newMessage: (transportMessage: IInboxMessagePreview) => void;
   resetLastFetched: () => void;
-  setView: (view: "messages" | "preferences") => void;
+  setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
   /**
    * Allows for renewal of sessions authorized with short lived tokens.
@@ -108,7 +108,7 @@ const useElementalInboxActions = (): IInboxActions => {
     toggleInbox: (isOpen) => {
       dispatch(toggleInbox(isOpen));
     },
-    setView: (view: "messages" | "preferences") => {
+    setView: (view: string | "preferences") => {
       dispatch(setView(view));
     },
     fetchMessages: (payload) => {

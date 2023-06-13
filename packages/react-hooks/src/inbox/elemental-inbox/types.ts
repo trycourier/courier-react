@@ -13,7 +13,7 @@ export interface IElementalInbox {
   messages?: Array<IInboxMessagePreview>;
   startCursor?: string;
   unreadMessageCount?: number;
-  view?: "messages" | "preferences";
+  view?: string | "preferences";
 }
 
 export type IElementalInboxMessage = IInboxMessage;
