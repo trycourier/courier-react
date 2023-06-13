@@ -20,6 +20,7 @@ export interface IActionElemental {
 
 export interface IInboxMessagePreview {
   type: "message";
+  archived?: string;
   created: string;
   messageId: string;
   pinned?: {

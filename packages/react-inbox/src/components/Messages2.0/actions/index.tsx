@@ -113,6 +113,7 @@ const MessageActions: React.FunctionComponent<{
   labels: InboxProps["labels"];
   messageId?: IInboxMessagePreview["messageId"];
   read?: IInboxMessagePreview["read"];
+  archived?: IInboxMessagePreview["archived"];
   setAreActionsHovered: (hovered: boolean) => void;
   trackingIds?: IInboxMessagePreview["trackingIds"];
 }> = ({
@@ -124,6 +125,7 @@ const MessageActions: React.FunctionComponent<{
   labels,
   messageId,
   read,
+  archived,
   setAreActionsHovered,
 }) => {
   const actionsHoverRef = useRef(null);
@@ -165,15 +167,23 @@ const MessageActions: React.FunctionComponent<{
   };
 
   const formattedTime = formatDate
-    ? formatDate(created)
-    : getTimeAgoShort(created);
+    ? formatDate(archived ? archived : created)
+    : getTimeAgoShort(archived ? archived : created);
 
-  const readableTimeAgo = formatDate ? formattedTime : getTimeAgo(created);
+  const readableTimeAgo = formatDate
+    ? formattedTime
+    : getTimeAgo(archived ? archived : created);
+
   const markAsReadLabel = labels?.markAsRead ?? "Mark as Read";
   const markUnreadLabel = labels?.markAsRead ?? "Mark Unread";
   const archiveLabel = labels?.archiveMessage ?? "Archive Message";
 
-  useClickOutside(mobileActionsRef, () => {
+  useClickOutside(mobileActionsRef, (event) => {
+    const target = event.target as HTMLElement;
+    if (target?.closest(`.action-menu[data-message-id="${messageId}"]`)) {
+      return;
+    }
+
     setShowMobileActions(false);
   });
 
@@ -184,9 +194,13 @@ const MessageActions: React.FunctionComponent<{
         hasBody,
       })}
     >
-      {isMobile && (
+      {!archived && isMobile && (
         <MobileActionsMenuButton
-          onClick={() => setShowMobileActions(!showMobileActions)}
+          className="action-menu"
+          data-message-id={messageId}
+          onClick={() => {
+            setShowMobileActions(!showMobileActions);
+          }}
         >
           <OptionsSvg />
         </MobileActionsMenuButton>
@@ -212,9 +226,9 @@ const MessageActions: React.FunctionComponent<{
           aria-label={`created ${readableTimeAgo}`}
           style={{ textAlign: "right" }}
         >
-          {formattedTime}
+          {archived ? `Archived: ${formattedTime}` : formattedTime}
         </TimeAgo>
-        {!isMobile && (
+        {!archived && !isMobile && (
           <div className="message-actions">
             {!read && (
               <MarkRead label={markAsReadLabel} onClick={handleEvent("read")} />

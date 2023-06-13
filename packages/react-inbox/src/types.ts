@@ -4,6 +4,7 @@ import {
   PinDetails,
   IInboxMessagePreview,
 } from "@trycourier/react-provider";
+import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
 import { CSSObject } from "styled-components";
@@ -43,6 +44,11 @@ export interface InboxProps {
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
+  views?: Array<{
+    id: string;
+    label: string;
+    params?: IGetInboxMessagesParams;
+  }>;
   formatDate?: (isoDate: string) => string;
   labels?: {
     archiveMessage?: string;

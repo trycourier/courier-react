@@ -101,6 +101,7 @@ interface ActionElement {
 
 interface IInboxMessagePreview {
   actions?: IActionElemental[];
+  archived?: string;
   created: string;
   data?: Record<string, any>;
   messageId: string;
@@ -122,7 +123,7 @@ interface IInboxActions {
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
   newMessage: (transportMessage: IInboxMessagePreview) => void;
   resetLastFetched: () => void;
-  setView: (view: "messages" | "preferences") => void;
+  setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
 }
 
@@ -132,7 +133,7 @@ interface IInbox {
   messages?: Array<IInboxMessagePreview>;
   startCursor?: string;
   unreadMessageCount?: number;
-  view?: "messages" | "preferences";
+  view?: string | "preferences";
 }
 ```
 

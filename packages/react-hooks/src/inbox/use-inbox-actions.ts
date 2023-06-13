@@ -4,7 +4,6 @@ import {
   registerReducer,
   registerMiddleware,
   Middleware,
-  getDateDiff,
 } from "@trycourier/react-provider";
 import { IInbox } from "./types";
 
@@ -30,7 +29,6 @@ export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
   after?: string;
 }
-
 export interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetMessagesParams) => void;
@@ -42,7 +40,7 @@ export interface IInboxActions {
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
   newMessage: (transportMessage: IInboxMessagePreview) => void;
   resetLastFetched: () => void;
-  setView: (view: "messages" | "preferences") => void;
+  setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
   trackClick: (messageId: string, trackingId: string) => Promise<void>;
 }
@@ -100,10 +98,7 @@ const useInboxActions = (): IInboxActions => {
 
   const handleInit: IInboxActions["init"] = async (payload) => {
     dispatch(initInbox(payload));
-    const dateDiff = getDateDiff(payload?.lastMessagesFetched);
-    if (!dateDiff || dateDiff > 3600000) {
-      handleGetUnreadMessageCount();
-    }
+    handleGetUnreadMessageCount();
 
     if (payload?.isOpen || inbox?.isOpen) {
       const searchParams: IGetInboxMessagesParams = {
@@ -130,7 +125,7 @@ const useInboxActions = (): IInboxActions => {
     toggleInbox: (isOpen?: boolean) => {
       dispatch(toggleInbox(isOpen));
     },
-    setView: (view: "messages" | "preferences") => {
+    setView: (view: string | "preferences") => {
       dispatch(setView(view));
     },
     fetchMessages: (payload?: IFetchMessagesParams) => {

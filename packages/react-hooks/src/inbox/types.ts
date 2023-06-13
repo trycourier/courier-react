@@ -1,5 +1,4 @@
 import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
-
 export interface IInbox<T = IInboxMessagePreview> {
   brand?: Brand;
   from?: number;
@@ -11,5 +10,5 @@ export interface IInbox<T = IInboxMessagePreview> {
   pinned?: Array<T>;
   startCursor?: string;
   unreadMessageCount?: number;
-  view?: "messages" | "preferences";
+  view?: string | "preferences";
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 
 import { PreferenceList } from "@trycourier/react-preferences";
+
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
 import tinycolor2 from "tinycolor2";
 
@@ -192,6 +193,7 @@ const Messages: React.ForwardRefExoticComponent<
       renderMessage,
       renderNoMessages,
       renderPin,
+      views,
       title,
     },
     ref
@@ -202,6 +204,7 @@ const Messages: React.ForwardRefExoticComponent<
     const {
       brand,
       fetchMessages,
+      getUnreadMessageCount,
       isLoading,
       markAllAsRead,
       messages = [],
@@ -210,12 +213,21 @@ const Messages: React.ForwardRefExoticComponent<
       toggleInbox,
       unreadMessageCount,
       view,
-      resetLastFetched,
-      init,
     } = useInbox();
 
     const scrollTopRef = useRef<HTMLButtonElement>(null);
     const messageListRef = useRef<HTMLDivElement>(null);
+    const currentView = views?.find((v) => v.id === view);
+
+    useEffect(() => {
+      if (view === "preferences") {
+        return;
+      }
+
+      fetchMessages({
+        params: currentView?.params,
+      });
+    }, [view, currentView]);
 
     useOnScroll(
       messageListRef,
@@ -254,10 +266,11 @@ const Messages: React.ForwardRefExoticComponent<
 
           fetchMessages({
             after: startCursor,
+            params: currentView?.params,
           });
         },
       },
-      [scrollTopRef.current, isLoading, startCursor]
+      [scrollTopRef.current, isLoading, startCursor, currentView]
     );
 
     useEffect(() => {
@@ -270,8 +283,10 @@ const Messages: React.ForwardRefExoticComponent<
     };
 
     const handleClickScrollTop = () => {
-      resetLastFetched();
-      init();
+      getUnreadMessageCount();
+      fetchMessages({
+        params: currentView?.params,
+      });
 
       if (messageListRef.current) {
         messageListRef.current.scrollTop = 0;
@@ -307,12 +322,13 @@ const Messages: React.ForwardRefExoticComponent<
             labels={labels}
             markAllAsRead={markAllAsRead}
             messages={messages}
+            views={views}
             title={title}
             unreadMessageCount={unreadMessageCount}
           />
         )}
         <PositionRelative>
-          {view === "messages" ? (
+          {view !== "preferences" ? (
             <MessageList
               ref={messageListRef}
               isMobile={isMobile}

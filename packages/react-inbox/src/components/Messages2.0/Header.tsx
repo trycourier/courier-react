@@ -15,6 +15,7 @@ export interface IHeaderProps {
   labels: InboxProps["labels"];
   markAllAsRead: () => void;
   messages: IInboxMessagePreview[];
+  views: InboxProps["views"];
   title?: string;
   unreadMessageCount?: number;
 }
@@ -205,13 +206,14 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   messages = [],
   title,
   unreadMessageCount,
+  views,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
   const { view, setView, toggleInbox } = useInbox();
   const handleSetView =
-    (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
+    (newView: string | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
       setView(newView);
       setShowDropdown(false);
@@ -228,36 +230,38 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   };
 
   const options = useMemo(() => {
+    const viewOptions = views?.map((v, index) => ({
+      id: v.id,
+      Component: ({
+        active,
+        disabled,
+        onClick,
+        selected,
+        showDropdown,
+      }: {
+        active?: boolean;
+        disabled?: boolean;
+        onClick?: React.MouseEventHandler;
+        selected?: boolean;
+        showDropdown?: boolean;
+      }) => (
+        <DropdownOptionButton
+          active={active}
+          onClick={onClick ?? handleSetView(v.id)}
+          selected={selected}
+          showDropdown={showDropdown}
+        >
+          <TitleWrapper
+            title={v.label}
+            unreadMessageCount={index === 0 ? unreadMessageCount : undefined}
+          />
+          {onClick && !disabled && <DownCarrot />}
+        </DropdownOptionButton>
+      ),
+    }));
+
     return [
-      {
-        id: "messages",
-        Component: ({
-          active,
-          disabled,
-          onClick,
-          selected,
-          showDropdown,
-        }: {
-          active?: boolean;
-          disabled?: boolean;
-          onClick?: React.MouseEventHandler;
-          selected?: boolean;
-          showDropdown?: boolean;
-        }) => (
-          <DropdownOptionButton
-            active={active}
-            onClick={onClick ?? handleSetView("messages")}
-            selected={selected}
-            showDropdown={showDropdown}
-          >
-            <TitleWrapper
-              title={title}
-              unreadMessageCount={unreadMessageCount}
-            />
-            {onClick && !disabled && <DownCarrot />}
-          </DropdownOptionButton>
-        ),
-      },
+      ...(viewOptions ?? []),
       brand?.preferenceTemplates?.length && {
         id: "preferences",
         Component: ({
@@ -318,7 +322,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         </HeadingContainer>
       )}
       <div className="actions">
-        {messages.length > 0 && (
+        {messages.length > 0 && unreadMessageCount && (
           <MarkAllRead
             label={labels?.markAllAsRead}
             onClick={() => markAllAsRead()}
