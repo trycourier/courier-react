@@ -131,6 +131,11 @@ test("will render an inbox and can change labels", async () => {
 
 test("will render nothing and then render an inbox when the element is inserted", async () => {
   document.body.innerHTML = "";
+  act(() => {
+    (window as any).courierConfig = {
+      enableMutationObserver: true,
+    };
+  });
   render(
     <CourierProvider
       clientKey="MOCK_CLIENT_KEY"

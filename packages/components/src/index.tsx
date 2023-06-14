@@ -32,10 +32,11 @@ declare global {
 }
 interface ICourierConfig {
   apiUrl?: string;
-  inboxApiUrl?: string;
   authorization?: string;
   brandId?: string;
   clientKey: string;
+  enableMutationObserver?: boolean;
+  inboxApiUrl?: string;
   onRouteChange?: (route: string) => void;
   components?: {
     inbox?: any;
