@@ -86,6 +86,10 @@ export const CourierComponents: React.FunctionComponent = () => {
   }, [toastConfig, inboxConfig, inboxElement, toastElement]);
 
   useEffect(() => {
+    if (!window?.courierConfig?.enableMutationObserver) {
+      return;
+    }
+
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         switch (mutation.type) {
