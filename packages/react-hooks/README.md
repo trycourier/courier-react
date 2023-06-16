@@ -150,6 +150,7 @@ These events are:
 - Unread
 - Click
 - Archive
+- Unpin
 
 Some of these events are called automatically.
 
@@ -176,6 +177,10 @@ const MyInbox = () => {
   const handleReadMessage = (message) => (event) => {
     event.preventDefault();
     inbox.markMessageRead(message.messageId);
+
+    if (message.pinned) {
+      inbox.unpinMessage(message.messageId);
+    }
   };
 
   const handleUnreadMessage = (message) => (event) => {
@@ -186,6 +191,10 @@ const MyInbox = () => {
   const handleArchiveMessage = (message) => (event) => {
     event.preventDefault();
     inbox.markMessageArchived(message.messageId);
+  };
+
+  const handleArchiveMessage = (message) => (event) => {
+    event.preventDefault();
   };
 
   return (

@@ -1,7 +1,12 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { CourierProvider, WSOptions } from "@trycourier/react-provider";
+import {
+  CourierProvider,
+  WSOptions,
+  OnEvent,
+  IBrand,
+} from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
@@ -23,6 +28,8 @@ declare global {
         config?: any;
       };
       transport?: any;
+      brand?: IBrand;
+      renewSession?: (token: string) => void;
       init: (config: ICourierConfig) => void;
       on: (action: string, cb: () => void) => void;
     };
@@ -38,6 +45,7 @@ interface ICourierConfig {
   enableMutationObserver?: boolean;
   inboxApiUrl?: string;
   onRouteChange?: (route: string) => void;
+  onEvent?: OnEvent;
   components?: {
     inbox?: any;
     toast?: any;
@@ -64,6 +72,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
     brandId,
     clientKey,
     inboxApiUrl,
+    onEvent,
     onRouteChange,
     userId,
     userSignature,
@@ -88,6 +97,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       brandId={brandId}
       clientKey={clientKey}
       inboxApiUrl={inboxApiUrl}
+      onEvent={onEvent}
       onRouteChange={onRouteChange}
       userId={userId}
       userSignature={userSignature}

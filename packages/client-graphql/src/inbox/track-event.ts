@@ -1,6 +1,6 @@
 import { Client } from "urql";
 
-type EventType = "read" | "unread" | "archive" | "opened" | "clicked";
+type EventType = "read" | "unread" | "archive" | "opened" | "clicked" | "unpin";
 export const getTrackEventQuery = (eventType: EventType) => `
   mutation TrackEvent(
     $messageId: String!

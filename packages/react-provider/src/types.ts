@@ -55,6 +55,19 @@ export interface Brand {
   };
 }
 
+export type EventType =
+  | "mark-all-read"
+  | "read"
+  | "unread"
+  | "archive"
+  | "opened"
+  | "clicked";
+
+export type OnEvent = (eventParams: {
+  messageId?: string;
+  event: EventType;
+}) => void;
+
 export interface ICourierProviderProps {
   apiUrl?: string;
   authorization?: string;
@@ -65,6 +78,7 @@ export interface ICourierProviderProps {
   inboxApiUrl?: string;
   localStorage?: Storage;
   middleware?: any;
+  onEvent?: OnEvent;
   onMessage?: Interceptor;
   onRouteChange?: (route: string) => void;
   transport?: CourierTransport | Transport;

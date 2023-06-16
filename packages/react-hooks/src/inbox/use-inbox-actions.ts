@@ -18,6 +18,7 @@ import { markMessageRead } from "./actions/mark-message-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
 import { markMessageArchived } from "./actions/mark-message-archived";
 import { resetLastFetched } from "./actions/reset-last-fetched";
+import { unpinMessage } from "./actions/unpin-message";
 
 import { newMessage } from "./actions/new-message";
 import { markMessageOpened } from "./actions/mark-message-opened";
@@ -42,6 +43,7 @@ export interface IInboxActions {
   resetLastFetched: () => void;
   setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
+  unpinMessage: (messageId: string, fromWS?: boolean) => Promise<void>;
   trackClick: (messageId: string, trackingId: string) => Promise<void>;
 }
 
@@ -54,6 +56,7 @@ const useInboxActions = (): IInboxActions => {
     dispatch,
     inbox,
     inboxApiUrl,
+    onEvent,
     userId,
     userSignature,
   } =
@@ -159,14 +162,34 @@ const useInboxActions = (): IInboxActions => {
       if (!fromWS) {
         await inboxClient.markAllRead();
       }
+
+      if (onEvent) {
+        onEvent({
+          event: "mark-all-read",
+        });
+      }
     },
     trackClick: async (messageId, trackingId) => {
       await inboxClient.trackClick(messageId, trackingId);
+
+      if (onEvent) {
+        onEvent({
+          messageId,
+          event: "click",
+        });
+      }
     },
     markMessageRead: async (messageId: string, fromWS?: boolean) => {
       dispatch(markMessageRead(messageId));
       if (!fromWS) {
         await inboxClient.markRead(messageId);
+      }
+
+      if (onEvent) {
+        onEvent({
+          messageId,
+          event: "read",
+        });
       }
     },
     markMessageUnread: async (messageId, fromWS) => {
@@ -174,17 +197,51 @@ const useInboxActions = (): IInboxActions => {
       if (!fromWS) {
         await inboxClient.markUnread(messageId);
       }
+
+      if (onEvent) {
+        onEvent({
+          messageId,
+          event: "unread",
+        });
+      }
     },
     markMessageOpened: async (messageId, fromWS) => {
       dispatch(markMessageOpened(messageId));
       if (!fromWS) {
         await inboxClient.markOpened(messageId);
       }
+
+      if (onEvent) {
+        onEvent({
+          messageId,
+          event: "opened",
+        });
+      }
     },
     markMessageArchived: async (messageId, fromWS) => {
       dispatch(markMessageArchived(messageId));
       if (!fromWS) {
         await inboxClient.markArchive(messageId);
+      }
+
+      if (onEvent) {
+        onEvent({
+          messageId,
+          event: "archive",
+        });
+      }
+    },
+    unpinMessage: async (messageId, fromWS) => {
+      dispatch(unpinMessage(messageId));
+      if (!fromWS) {
+        await inboxClient.unpinMessage(messageId);
+      }
+
+      if (onEvent) {
+        onEvent({
+          messageId,
+          event: "unpin",
+        });
       }
     },
     newMessage: (message: IInboxMessagePreview) => {

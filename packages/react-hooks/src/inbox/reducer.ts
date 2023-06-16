@@ -6,6 +6,7 @@ import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
 import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
 import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
+import { UnpinMessage, INBOX_UNPIN_MESSAGE } from "./actions/unpin-message";
 
 import {
   ResetLastFetched,
@@ -61,7 +62,8 @@ type InboxAction =
   | MarkMessageUnread
   | NewMessage
   | ResetLastFetched
-  | ToggleInbox;
+  | ToggleInbox
+  | UnpinMessage;
 
 const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
   const configuredSlots = brand?.inapp?.slots?.map((s) => s.id);
@@ -95,6 +97,10 @@ const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
     .flat();
 
   return [...mappedPinnedMessages, ...(pinnedBySlot?.unconfigured ?? [])];
+};
+
+const sortMessages = (a, b) => {
+  return new Date(b.created).getTime() - new Date(a.created).getTime();
 };
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
@@ -240,6 +246,31 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         messages: newMessages,
         pinned: newPinned,
+      };
+    }
+
+    case INBOX_UNPIN_MESSAGE: {
+      const pinned = state.pinned ?? [];
+      const messageToUnpin = pinned?.find((p) => {
+        return p.messageId === action.payload.messageId;
+      });
+
+      if (!messageToUnpin) {
+        return state;
+      }
+
+      return {
+        ...state,
+        pinned: pinned.filter((p) => {
+          return p.messageId !== action.payload.messageId;
+        }),
+        messages: [
+          ...(state.messages ?? []),
+          {
+            ...messageToUnpin,
+            pinned: undefined,
+          },
+        ].sort(sortMessages),
       };
     }
 

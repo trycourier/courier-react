@@ -5,7 +5,7 @@ import {
   Brands,
   Events,
 } from "@trycourier/client-graphql";
-import { Brand } from "..";
+import { Brand, CourierTransport } from "..";
 import { ICourierContext } from "~/types";
 
 const useCourierActions = (state, dispatch) => {
@@ -73,6 +73,15 @@ const useCourierActions = (state, dispatch) => {
         dispatch({
           type: "CREATE_TRACKING_EVENT_BATCH",
           payload: () => events.trackEventBatch(eventType),
+        });
+      },
+      renewSession: async (token) => {
+        if (state.transport instanceof CourierTransport) {
+          state.transport.renewSession(token);
+        }
+        dispatch({
+          type: "root/UPDATE_AUTH_TOKEN",
+          payload: token,
         });
       },
     };
