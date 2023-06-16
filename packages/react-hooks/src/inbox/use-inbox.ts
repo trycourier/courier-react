@@ -68,6 +68,11 @@ const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
             return;
           }
 
+          case "unpin": {
+            actions.unpinMessage(data.messageId, true);
+            return;
+          }
+
           case "archive": {
             actions.markMessageArchived(data.messageId, true);
             return;

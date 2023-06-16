@@ -28,6 +28,7 @@ export default (
   markRead: TrackEvent;
   markUnread: TrackEvent;
   trackClick: TrackEvent;
+  unpinMessage: TrackEvent;
 } => {
   const client = createCourierClient(params, {
     apiUrl:
@@ -45,5 +46,6 @@ export default (
     markRead: trackEvent(client)("read"),
     markUnread: trackEvent(client)("unread"),
     trackClick: trackEvent(client)("clicked"),
+    unpinMessage: trackEvent(client)("unpin"),
   };
 };

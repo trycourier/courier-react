@@ -51,12 +51,13 @@ Installation is simple. All you need to do is add `<courier>` components to your
 
 The supported configuration of `window.courierConfig` are:
 
-| Key        | Type              | Description                                                                                                           |
-| ---------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
-| clientKey  | `string`          | Key associated with your account. Found on https://app.courier.com/integrations/courier                               |
-| userId     | `string`          | The current user logged into your app. Associated with Courier's `recipientId`                                        |
-| initOnLoad | `boolean`         | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization |
-| components | `ComponentConfig` | Map of configuration for each component (`toast` and `inbox`) on the page                                             |
+| Key        | Type                                                 | Description                                                                                                                    |
+| ---------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| clientKey  | `string`                                             | Key associated with your account. Found on https://app.courier.com/integrations/courier                                        |
+| userId     | `string`                                             | The current user logged into your app. Associated with Courier's `recipientId`                                                 |
+| initOnLoad | `boolean`                                            | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization          |
+| components | `ComponentConfig`                                    | Map of configuration for each component (`toast` and `inbox`) on the page                                                      |
+| onEvent    | `(params: { messageId?: string, event: EventType })` | Function taht will be called when any event happens. EventsType includes "read", "unread", "archive", "unpin", "mark-all-read" |
 
 > The components will not render unless we have both the `userId` and `clientKey`
 
@@ -126,6 +127,55 @@ To listen for actions that happen inside Courier's SDK.
     };
   };
 </script>
+```
+
+## [Renew Session](#renew-session)
+
+If you are utilizing the TTL for a JWT auth token, you can reset the authtoken by calling `window.courier.renewSession(token: string);`
+
+## [Inbox](#inbox)
+
+You can access all of the inbox state and actions on window.courier.inbox.
+
+State Properties:
+
+```typescript
+interface IInboxState = {
+  brand?: Brand;
+  from?: number;
+  isLoading?: boolean;
+  isOpen?: boolean;
+  lastMarkedAllRead?: number;
+  lastMessagesFetched?: number;
+  messages?: Array<T>;
+  pinned?: Array<T>;
+  startCursor?: string;
+  unreadMessageCount?: number;
+  view?: string | "preferences";
+}
+```
+
+Action Properties:
+
+Many of these actions will fire and the state will update from them, they won't return anything but the state will be updated.
+
+```typescript
+interface IInboxActions = {
+  fetchMessages: (params?: IFetchMessagesParams) => void;
+  getUnreadMessageCount: (params?: IGetMessagesParams) => void;
+  init: (inbox?: IInbox) => void;
+  markAllAsRead: (fromWS?: boolean) => void;
+  markMessageArchived: (messageId: string) => Promise<void>;
+  markMessageOpened: (messageId: string) => Promise<void>;
+  markMessageRead: (messageId: string) => Promise<void>;
+  markMessageUnread: (messageId: string) => Promise<void>;
+  setView: (view: string | "preferences") => void;
+  toggleInbox: (isOpen?: boolean) => void;
+
+  // tracking a click requires the message.trackingIds.clickTrackingId to work
+  trackClick: (messageId: string, trackingId: string) => Promise<void>;
+  unpinMessage: (messageId: string) => Promise<void>;
+}
 ```
 
 ## [Configuring Components](#config)
