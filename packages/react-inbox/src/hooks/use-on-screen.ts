@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 export const useOnScreen = (ref, options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") {
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);

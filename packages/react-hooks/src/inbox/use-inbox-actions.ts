@@ -87,6 +87,8 @@ const useInboxActions = (): IInboxActions => {
     registerMiddleware("inbox", inboxMiddleware as Middleware);
   }, []);
 
+  const allMessages = [...(inbox?.messages ?? []), ...(inbox?.pinned ?? [])];
+
   const handleGetUnreadMessageCount: IInboxActions["getUnreadMessageCount"] =
     () => {
       dispatch({
@@ -187,8 +189,9 @@ const useInboxActions = (): IInboxActions => {
 
       if (onEvent) {
         onEvent({
-          messageId,
           event: "read",
+          message: allMessages.find((m) => m.messageId === messageId),
+          messageId,
         });
       }
     },

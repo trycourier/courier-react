@@ -1,6 +1,7 @@
 import { CourierTransport, Transport } from "./transports";
 import { Interceptor } from "./transports/types";
 import { ErrorEvent } from "reconnecting-websocket";
+import { IInboxMessagePreview } from "@trycourier/client-graphql";
 export { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export type ErrorEventHandler = (event: ErrorEvent) => void;
@@ -61,10 +62,12 @@ export type EventType =
   | "unread"
   | "archive"
   | "opened"
-  | "clicked";
+  | "click"
+  | "unpin";
 
 export type OnEvent = (eventParams: {
   messageId?: string;
+  message?: IInboxMessagePreview;
   event: EventType;
 }) => void;
 

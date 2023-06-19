@@ -34,6 +34,26 @@ import {
   INBOX_MARK_MESSAGE_OPENED,
   markMessageOpened,
 } from "../actions/mark-message-opened";
+import { INBOX_UNPIN_MESSAGE, unpinMessage } from "../actions/unpin-message";
+
+// Mock IntersectionObserver
+class IntersectionObserver {
+  observe = jest.fn();
+  disconnect = jest.fn();
+  unobserve = jest.fn();
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserver,
+});
+
+Object.defineProperty(global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserver,
+});
 
 const mockGraphMessage: IInboxMessagePreview = {
   messageId: "mockMessageId",
@@ -244,6 +264,37 @@ describe("inbox reducer", () => {
         ...initialState,
         unreadMessageCount: 1,
         messages: [unreadMessage],
+      });
+    });
+  });
+
+  describe(`action ${INBOX_UNPIN_MESSAGE}`, () => {
+    it("will message, remove pinned property and put message into main message array", () => {
+      const state = reducer(
+        {
+          ...initialState,
+          unreadMessageCount: 0,
+          messages: [mockGraphMessage],
+          pinned: [
+            {
+              ...mockGraphMessage2,
+              pinned: "pinned",
+            },
+          ],
+        },
+        unpinMessage(mockGraphMessage2.messageId)
+      );
+
+      const mockUnpinnedGraphMessage2 = {
+        ...mockGraphMessage2,
+        pinned: undefined,
+      };
+
+      expect(state).toEqual({
+        ...initialState,
+        unreadMessageCount: 0,
+        messages: [mockGraphMessage, mockUnpinnedGraphMessage2],
+        pinned: [],
       });
     });
   });
