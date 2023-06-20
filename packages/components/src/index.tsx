@@ -1,12 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import {
-  CourierProvider,
-  WSOptions,
-  OnEvent,
-  IBrand,
-} from "@trycourier/react-provider";
+import { CourierProvider, WSOptions, IBrand } from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
@@ -45,7 +40,6 @@ interface ICourierConfig {
   enableMutationObserver?: boolean;
   inboxApiUrl?: string;
   onRouteChange?: (route: string) => void;
-  onEvent?: OnEvent;
   components?: {
     inbox?: any;
     toast?: any;
@@ -72,7 +66,6 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
     brandId,
     clientKey,
     inboxApiUrl,
-    onEvent,
     onRouteChange,
     userId,
     userSignature,
@@ -97,7 +90,6 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       brandId={brandId}
       clientKey={clientKey}
       inboxApiUrl={inboxApiUrl}
-      onEvent={onEvent}
       onRouteChange={onRouteChange}
       userId={userId}
       userSignature={userSignature}

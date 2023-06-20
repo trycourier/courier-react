@@ -3,6 +3,7 @@ import {
   Brand,
   PinDetails,
   IInboxMessagePreview,
+  EventType,
 } from "@trycourier/react-provider";
 import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
 
@@ -38,6 +39,11 @@ export interface InboxTheme {
   root?: CSSObject;
   unreadIndicator?: CSSObject;
 }
+export type OnEvent = (eventParams: {
+  messageId?: string;
+  message?: IInboxMessagePreview;
+  event: EventType;
+}) => void;
 export interface InboxProps {
   brand?: Brand;
   className?: string;
@@ -59,6 +65,7 @@ export interface InboxProps {
     markAsRead?: string;
     markAsUnread?: string;
   };
+  onEvent?: OnEvent;
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;

@@ -51,13 +51,12 @@ Installation is simple. All you need to do is add `<courier>` components to your
 
 The supported configuration of `window.courierConfig` are:
 
-| Key        | Type                                                                                 | Description                                                                                                                    |
-| ---------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| clientKey  | `string`                                                                             | Key associated with your account. Found on https://app.courier.com/integrations/courier                                        |
-| userId     | `string`                                                                             | The current user logged into your app. Associated with Courier's `recipientId`                                                 |
-| initOnLoad | `boolean`                                                                            | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization          |
-| components | `ComponentConfig`                                                                    | Map of configuration for each component (`toast` and `inbox`) on the page                                                      |
-| onEvent    | `(params: { messageId?: string, message?: IInboxMessagePreview, event: EventType })` | Function taht will be called when any event happens. EventsType includes "read", "unread", "archive", "unpin", "mark-all-read" |
+| Key        | Type              | Description                                                                                                           |
+| ---------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| clientKey  | `string`          | Key associated with your account. Found on https://app.courier.com/integrations/courier                               |
+| userId     | `string`          | The current user logged into your app. Associated with Courier's `recipientId`                                        |
+| initOnLoad | `boolean`         | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization |
+| components | `ComponentConfig` | Map of configuration for each component (`toast` and `inbox`) on the page                                             |
 
 > The components will not render unless we have both the `userId` and `clientKey`
 
@@ -221,3 +220,18 @@ You update configuration of components by using:
 `window.courier.inbox.setConfig(config: InboxConfig);`
 
 `window.courier.toast.setConfig(config: ToastConfig);`
+
+## [Listening to Events](#events)
+
+You can listen to inbox events by adding a function to window.courierConfig.components.inbox.onEvent.
+
+```typescript
+type EventType = "read" | "unread" | "archive" | "click" | "mark-all-read" | "unpin";
+interface IEventParams = {
+  message?: IInboxMessagePreview;
+  messageId?: string;
+  event: EventType;
+}
+type OnEvent = (params: IEventParams) => void;
+
+```

@@ -48,20 +48,31 @@
         // JWT SMOKEY
         //clientKey: "YzQzMGM3OGYtYzQ2NC00NTdjLThkM2QtNWIwYzI4OTdmYmE5",
         //userId: "smokey12345",
-        onEvent: (params) => {
-          if (
-            params.event === "read" &&
-            window.courier.inbox.pinned.find(
-              (p) => p.messageId === params.messageId
-            )
-          ) {
-            window.courier.inbox.unpinMessage(params.messageId);
-          }
-        },
 
         userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
         components: {
           inbox: {
+            theme: {
+              message: {
+                actionElement: {
+                  "&:last-child": {
+                    backgroundColor: "purple",
+                    color: "white",
+                  },
+                },
+              },
+            },
+            onEvent: (params) => {
+              console.log("params", params);
+              if (
+                params.event === "read" &&
+                window.courier.inbox.pinned.find(
+                  (p) => p.messageId === params.messageId
+                )
+              ) {
+                window.courier.inbox.unpinMessage(params.messageId);
+              }
+            },
             views: [
               {
                 id: "messages",

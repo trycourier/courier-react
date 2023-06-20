@@ -1,7 +1,6 @@
 import { CourierTransport, Transport } from "./transports";
 import { Interceptor } from "./transports/types";
 import { ErrorEvent } from "reconnecting-websocket";
-import { IInboxMessagePreview } from "@trycourier/client-graphql";
 export { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export type ErrorEventHandler = (event: ErrorEvent) => void;
@@ -65,12 +64,6 @@ export type EventType =
   | "click"
   | "unpin";
 
-export type OnEvent = (eventParams: {
-  messageId?: string;
-  message?: IInboxMessagePreview;
-  event: EventType;
-}) => void;
-
 export interface ICourierProviderProps {
   apiUrl?: string;
   authorization?: string;
@@ -81,7 +74,6 @@ export interface ICourierProviderProps {
   inboxApiUrl?: string;
   localStorage?: Storage;
   middleware?: any;
-  onEvent?: OnEvent;
   onMessage?: Interceptor;
   onRouteChange?: (route: string) => void;
   transport?: CourierTransport | Transport;
