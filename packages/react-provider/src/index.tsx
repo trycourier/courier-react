@@ -17,7 +17,6 @@ import {
   Brand,
   ICourierContext,
   ICourierProviderProps,
-  OnEvent,
   PinDetails,
   WSOptions,
 } from "./types";
@@ -53,7 +52,6 @@ export type {
   IInboxMessagePreview,
   ITextElemental,
   Middleware,
-  OnEvent,
   PinDetails,
   WSOptions,
 };
@@ -76,7 +74,6 @@ export const CourierProvider: React.FunctionComponent<
     ? window?.localStorage
     : undefined,
   middleware: _middleware = [],
-  onEvent,
   onMessage,
   onRouteChange,
   transport: _transport,
@@ -131,7 +128,6 @@ export const CourierProvider: React.FunctionComponent<
     inboxApiUrl,
     localStorage,
     middleware,
-    onEvent,
     onRouteChange,
     transport,
     userId,

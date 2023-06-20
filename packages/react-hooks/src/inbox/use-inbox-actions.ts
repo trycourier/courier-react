@@ -56,7 +56,6 @@ const useInboxActions = (): IInboxActions => {
     dispatch,
     inbox,
     inboxApiUrl,
-    onEvent,
     userId,
     userSignature,
   } =
@@ -87,6 +86,7 @@ const useInboxActions = (): IInboxActions => {
     registerMiddleware("inbox", inboxMiddleware as Middleware);
   }, []);
 
+  const onEvent = inbox?.onEvent;
   const allMessages = [...(inbox?.messages ?? []), ...(inbox?.pinned ?? [])];
 
   const handleGetUnreadMessageCount: IInboxActions["getUnreadMessageCount"] =
@@ -177,6 +177,7 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
+          message: allMessages.find((m) => m.messageId === messageId),
           event: "click",
         });
       }
@@ -204,6 +205,7 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
+          message: allMessages.find((m) => m.messageId === messageId),
           event: "unread",
         });
       }
@@ -217,6 +219,7 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
+          message: allMessages.find((m) => m.messageId === messageId),
           event: "opened",
         });
       }
@@ -230,6 +233,7 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
+          message: allMessages.find((m) => m.messageId === messageId),
           event: "archive",
         });
       }
@@ -243,6 +247,7 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
+          message: allMessages.find((m) => m.messageId === messageId),
           event: "unpin",
         });
       }

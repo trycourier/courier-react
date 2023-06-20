@@ -146,12 +146,13 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       ...localStorageState,
       brand: props.brand,
       isOpen: props.isOpen,
+      onEvent: props.onEvent,
     });
 
     if (!props.brand || Object.entries(props.brand).length === 0) {
       courierContext.getBrand(courierContext.brandId);
     }
-  }, [localStorageState, props.brand, props.isOpen]);
+  }, [localStorageState, props.brand, props.isOpen, props.onEvent]);
 
   const handleIconEvent = useCallback(() => {
     const viewId = props?.views?.[0]?.id;

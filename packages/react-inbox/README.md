@@ -610,3 +610,18 @@ New Theme Properties:
 - `theme.tooltip`: accesses background and colors of tooltips
 - `theme.menu`: clicking on the inbox title opens a dropdown menu with options to edit `preferences`
 - `theme.message.clickableContainer`: when a message has an action href, we now make the entire message clickable instead of rendering an explicit button. this theme property allows access to this component. `theme.message.container` will still apply to this component but if you want to target the clickableContainer separatly you can target `theme.message.clickableContainer` which will be an `anchor` element instead of a `div`;
+
+## [Listening to Events](#events)
+
+You can listen to inbox events by passing onEvent prop to <Inbox/>
+
+```typescript
+type EventType = "read" | "unread" | "archive" | "click" | "mark-all-read" | "unpin";
+interface IEventParams = {
+  message?: IInboxMessagePreview;
+  messageId?: string;
+  event: EventType;
+}
+type OnEvent = (params: IEventParams) => void;
+
+```

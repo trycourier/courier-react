@@ -194,6 +194,24 @@ test("will support onEvent to listen for events on the window", async (done) => 
     })
   );
 
+  act(() => {
+    (window as any).courierConfig = {
+      components: {
+        inbox: {
+          onEvent: (params) => {
+            console.log("params", params);
+            expect(params).toEqual({
+              messageId: mockGraphMessage.messageId,
+              message: mockGraphMessage,
+              event: "read",
+            });
+            done();
+          },
+        },
+      },
+    };
+  });
+
   const inbox = document.createElement("courier-inbox");
   document.body.appendChild(inbox);
 
@@ -201,14 +219,6 @@ test("will support onEvent to listen for events on the window", async (done) => 
     <CourierProvider
       clientKey="MOCK_CLIENT_KEY"
       userId="MOCK_USER_ID"
-      onEvent={(params) => {
-        expect(params).toEqual({
-          messageId: mockGraphMessage.messageId,
-          message: mockGraphMessage,
-          event: "read",
-        });
-        done();
-      }}
       wsOptions={{
         url: "ws://localhost:1234",
       }}
