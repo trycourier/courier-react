@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-elements",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "description": "Shareable components for each Courier package",
   "author": "Drew Youngwerth <drew@youngwerth.com>",
   "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-elements#readme",
