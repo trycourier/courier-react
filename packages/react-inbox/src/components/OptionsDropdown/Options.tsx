@@ -33,7 +33,7 @@ const Option = styled.button`
 function Options({ options, onClose }) {
   return (
     <Container>
-      {options.map(({ label, onClick }) => {
+      {options.map(({ label, onClick }, index: number) => {
         const handleOnClick = (event: React.MouseEvent) => {
           event.preventDefault();
           onClose();
@@ -41,7 +41,7 @@ function Options({ options, onClose }) {
         };
 
         return (
-          <Option key={label} onClick={handleOnClick}>
+          <Option key={`${label}-${index}`} onClick={handleOnClick}>
             {label}
           </Option>
         );
