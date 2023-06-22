@@ -217,7 +217,9 @@ const Messages: React.ForwardRefExoticComponent<
 
     const scrollTopRef = useRef<HTMLButtonElement>(null);
     const messageListRef = useRef<HTMLDivElement>(null);
-    const currentView = views?.find((v) => v.id === view);
+    const currentView = useMemo(() => {
+      return views?.find((v) => v.id === view);
+    }, [views, view]);
 
     useEffect(() => {
       if (view === "preferences") {
