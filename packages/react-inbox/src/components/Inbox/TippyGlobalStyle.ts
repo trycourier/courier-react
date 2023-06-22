@@ -25,7 +25,7 @@ const TippyStyle = createGlobalStyle`
   .tippy-box{
       background:transparent;
       position:relative;
-      color:#fff;
+      color: #1c273a;
       font-size:14px;
       line-height:1.4;
       outline:0;

@@ -14,8 +14,7 @@ export const StyledList = styled.div`
 `;
 
 const PreferenceV4Wrapper = styled.div`
-  padding: ${(props) => (props.theme.name === "2.0" ? "10px" : "0 38px")};
-  background: white;
+  padding: 0 10px;
 `;
 
 export const PreferenceList: React.FunctionComponent<{
