@@ -36,23 +36,18 @@ export const ChannelOption = styled.div`
 `;
 
 const PreferenceSectionWrapper = styled.div`
-  background: white;
-  text: black;
   width: 100%;
 `;
 
 const SectionHeader = styled.h1`
   margin: 0;
   font-size: 24px;
-  color: black;
 `;
 
 const StyledItem = styled.div`
   padding: 16px 0;
   margin-top: 6px;
-  background: white;
   border-radius: 4px;
-  color: #333;
 
   .template-name {
     font-size: 14px;
@@ -85,7 +80,6 @@ export const Channel = styled.div`
   align-items: center;
   justify-content: center;
   label {
-    display: block;
     position: relative;
     cursor: pointer;
     -webkit-user-select: none;
@@ -96,7 +90,6 @@ export const Channel = styled.div`
 
   ${Input}:checked ~ ${ChannelOption} {
     background: ${({ theme }) => theme?.primary ?? "#9121c2"};
-    color: white;
     border: 0;
   }
 
@@ -143,7 +136,6 @@ const ChannelPreferenceStyles = styled.div`
       border-radius: 100%;
       margin: 0 2.5px;
       position: static;
-      background-color: !white;
 
       display: flex;
       align-items: center;
@@ -393,6 +385,7 @@ export const PreferenceSections: React.FunctionComponent<{
   if (!recipientPreferences) {
     return null;
   }
+
   return (
     <>
       <SectionHeader>{section.name}</SectionHeader>

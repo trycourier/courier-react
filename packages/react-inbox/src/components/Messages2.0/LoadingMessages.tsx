@@ -15,7 +15,7 @@ const Styled = styled.div(({ theme }) =>
       background: "white",
       fontSize: 14,
       fontWeight: 600,
-      color: theme?.brand?.inapp?.emptyState?.textColor ?? "#1C273A",
+      color: theme?.brand?.inapp?.emptyState?.textColor ?? "inherit",
     },
     theme?.emptyState
   )

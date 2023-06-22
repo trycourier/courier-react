@@ -112,6 +112,9 @@
       const ZedCourierInboxTheme = {
         brand: courierBrand,
         container: {
+          label: {
+            color: "red !important",
+          },
           backgroundColor: mainBackGroundColor,
           color: textWhite,
           zIndex: 1600,
@@ -277,7 +280,6 @@
         userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
         components: {
           inbox: {
-            theme: ZedCourierInboxTheme,
             onEvent: (params) => {
               console.log("params", params);
               if (
