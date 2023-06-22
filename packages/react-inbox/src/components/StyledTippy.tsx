@@ -27,7 +27,7 @@ const Styled = styled(Tippy)(({ theme }) =>
 );
 
 const StyledTippy: React.FunctionComponent<TippyProps> = (props) => {
-  return <Styled {...props} offset={[0, 3]} />;
+  return <Styled {...props} className="inbox--tooltip" offset={[0, 3]} />;
 };
 
 export default StyledTippy;
