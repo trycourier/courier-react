@@ -33,7 +33,7 @@ const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
         fontSize: 11,
         position: "absolute",
         background: theme?.brand?.colors?.primary ?? "#de5063",
-        animation: "badge-pulse 10s infinite",
+        animation: "inbox--badge-pulse 10s infinite",
       },
       showUnreadMessageCount
         ? {
@@ -278,6 +278,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             ) : (
               <StyledTippy
                 {...tippyProps}
+                className="inbox--tippy-main"
                 content={<Messages2 ref={ref} {...props} />}
               >
                 {BellWrapper()}
