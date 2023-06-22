@@ -163,7 +163,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
-        lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
         pinned: action.payload.appendMessages
           ? state.pinned
