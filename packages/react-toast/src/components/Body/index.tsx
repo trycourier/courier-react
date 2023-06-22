@@ -208,7 +208,7 @@ const Body: React.FunctionComponent<
                 <ActionElement
                   primary={index === 0}
                   backgroundColor={action.background_color}
-                  key={action.href}
+                  key={`${action.href}-${index}`}
                   onClick={handleActionClick(action)}
                 >
                   {action.content}
