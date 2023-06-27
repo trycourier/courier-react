@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { CourierProvider, WSOptions, IBrand } from "@trycourier/react-provider";
+import { CourierProvider, WSOptions, Brand } from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
@@ -23,7 +23,7 @@ declare global {
         config?: any;
       };
       transport?: any;
-      brand?: IBrand;
+      brand?: Brand;
       renewSession?: (token: string) => void;
       init: (config: ICourierConfig) => void;
       on: (action: string, cb: () => void) => void;
@@ -33,6 +33,7 @@ declare global {
   }
 }
 interface ICourierConfig {
+  accountId?: string;
   apiUrl?: string;
   authorization?: string;
   brandId?: string;
@@ -61,6 +62,7 @@ let hasInit = false;
 
 const initCourier = async (courierConfig?: ICourierConfig) => {
   const {
+    accountId,
     apiUrl,
     authorization,
     brandId,
@@ -85,6 +87,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
 
   render(
     <CourierProvider
+      accountId={accountId}
       apiUrl={apiUrl}
       authorization={authorization}
       brandId={brandId}

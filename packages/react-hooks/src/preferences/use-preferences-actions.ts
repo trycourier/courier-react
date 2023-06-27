@@ -2,8 +2,15 @@ import { useCourier } from "@trycourier/react-provider";
 import { createCourierClient, Preferences } from "@trycourier/client-graphql";
 
 const usePreferencesActions = () => {
-  const { apiUrl, clientKey, userId, userSignature, dispatch, authorization } =
-    useCourier();
+  const {
+    accountId,
+    apiUrl,
+    clientKey,
+    userId,
+    userSignature,
+    dispatch,
+    authorization,
+  } = useCourier();
 
   const courierClient = createCourierClient({
     apiUrl,
@@ -26,12 +33,12 @@ const usePreferencesActions = () => {
       if (draft) {
         dispatch({
           type: "preferences/FETCH_DRAFT_PREFERENCE_PAGE",
-          payload: () => preferences.getDraftPreferencePage(),
+          payload: () => preferences.getDraftPreferencePage(accountId),
         });
       } else {
         dispatch({
           type: "preferences/FETCH_PREFERENCE_PAGE",
-          payload: () => preferences.getPreferencePage(),
+          payload: () => preferences.getPreferencePage(accountId),
         });
       }
     },
