@@ -31,16 +31,17 @@ const FooterContainer = styled.div`
   left: 0;
 `;
 
-const PreferencePage: React.FunctionComponent<{ draft?: boolean }> = ({
-  draft = false,
-}) => {
+const PreferencePage: React.FunctionComponent<{
+  accountId?: string;
+  draft?: boolean;
+}> = ({ accountId, draft = false }) => {
   return (
     <PreferencePageContainer>
       <HeaderContainer>
         <Header />
       </HeaderContainer>
       <PreferencesV4Container>
-        <PreferencesV4 draft={draft} />
+        <PreferencesV4 accountId={accountId} draft={draft} />
       </PreferencesV4Container>
       <FooterContainer>
         <Footer />

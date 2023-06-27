@@ -422,35 +422,38 @@ const PreferenceListItem = styled.li`
 `;
 
 // Doesn't include header or footer
-export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
-  const preferences = usePreferences();
+export const PreferencesV4: React.FC<{ accountId?: string; draft?: boolean }> =
+  ({ accountId, draft }) => {
+    const preferences = usePreferences();
 
-  useEffect(() => {
-    if (!preferences.preferencePage && !preferences.recipientPreferences) {
-      preferences.fetchPreferencePage(draft);
-      preferences.fetchRecipientPreferences();
+    useEffect(() => {
+      if (!preferences.preferencePage && !preferences.recipientPreferences) {
+        preferences.fetchPreferencePage(accountId, draft);
+        preferences.fetchRecipientPreferences();
+      }
+    }, []);
+
+    if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
+      return null;
     }
-  }, []);
 
-  if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
-    return null;
-  }
+    if (!preferences.preferencePage && !preferences.isLoading) {
+      return (
+        <div>
+          This page is not avaliable. Please contact your administrator.
+        </div>
+      );
+    }
 
-  if (!preferences.preferencePage && !preferences.isLoading) {
     return (
-      <div>This page is not avaliable. Please contact your administrator.</div>
+      <PreferenceSectionWrapper>
+        <PreferenceList>
+          {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
+            <PreferenceListItem key={i}>
+              <PreferenceSections section={section} />
+            </PreferenceListItem>
+          ))}
+        </PreferenceList>
+      </PreferenceSectionWrapper>
     );
-  }
-
-  return (
-    <PreferenceSectionWrapper>
-      <PreferenceList>
-        {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
-          <PreferenceListItem key={i}>
-            <PreferenceSections section={section} />
-          </PreferenceListItem>
-        ))}
-      </PreferenceList>
-    </PreferenceSectionWrapper>
-  );
-};
+  };
