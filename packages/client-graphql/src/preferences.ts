@@ -103,23 +103,29 @@ export const getRecipientPreferences =
 type GetPreferencePage = () => Promise<any>;
 export const getPreferencePage =
   (client: Client | undefined): GetPreferencePage =>
-  async () => {
+  async (accountId?: string) => {
     if (!client) {
       return;
     }
 
-    const results = await client.query(PREFERENCE_PAGE).toPromise();
+    const results = await client
+      .query(PREFERENCE_PAGE, {
+        accountId,
+      })
+      .toPromise();
     return results.data?.preferencePage;
   };
 
 export const getDraftPreferencePage =
   (client: Client | undefined): GetPreferencePage =>
-  async () => {
+  async (accountId?: string) => {
     if (!client) {
       return;
     }
 
-    const results = await client.query(DRAFT_PREFERENCE_PAGE).toPromise();
+    const results = await client.query(DRAFT_PREFERENCE_PAGE, {
+      accountId,
+    }).toPromise();
     return results.data?.draftPreferencePage;
   };
 
