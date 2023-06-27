@@ -17,8 +17,8 @@ const RECIPIENT_PREFERENCES = `
 `;
 
 const PREFERENCE_PAGE = `
-  query {
-    preferencePage {
+  query($accountId: String) {
+    preferencePage(accountId: $accountId) {
       showCourierFooter
       brand {
         settings {
@@ -107,10 +107,9 @@ export const getPreferencePage =
     if (!client) {
       return;
     }
-
     const results = await client
       .query(PREFERENCE_PAGE, {
-        accountId,
+        accountId: accountId,
       })
       .toPromise();
     return results.data?.preferencePage;
@@ -118,14 +117,12 @@ export const getPreferencePage =
 
 export const getDraftPreferencePage =
   (client: Client | undefined): GetPreferencePage =>
-  async (accountId?: string) => {
+  async () => {
     if (!client) {
       return;
     }
 
-    const results = await client.query(DRAFT_PREFERENCE_PAGE, {
-      accountId,
-    }).toPromise();
+    const results = await client.query(DRAFT_PREFERENCE_PAGE).toPromise();
     return results.data?.draftPreferencePage;
   };
 
