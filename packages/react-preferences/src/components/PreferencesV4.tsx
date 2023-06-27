@@ -427,10 +427,13 @@ export const PreferencesV4: React.FC<{ accountId?: string; draft?: boolean }> =
     const preferences = usePreferences();
 
     useEffect(() => {
-      if (!preferences.preferencePage && !preferences.recipientPreferences) {
-        preferences.fetchPreferencePage(accountId, draft);
-        preferences.fetchRecipientPreferences();
-      }
+      const pullPreferences = async () => {
+        if (!preferences.preferencePage && !preferences.recipientPreferences) {
+          await preferences.fetchPreferencePage(accountId, draft);
+          await preferences.fetchRecipientPreferences();
+        }
+      };
+      pullPreferences();
     }, []);
 
     if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
