@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
 import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { PreferenceTemplate } from "./PreferenceTemplate";
 import { PreferencesV4 } from "./PreferencesV4";
@@ -22,12 +22,12 @@ export const PreferenceList: React.FunctionComponent<{
   theme?: any;
   draft?: boolean;
 }> = ({ theme, draft }) => {
-  const { brand } = useCourier();
+  const { brand, accountId } = useCourier();
   const preferences = usePreferences();
 
   useEffect(() => {
     preferences.fetchRecipientPreferences();
-    preferences.fetchPreferencePage(draft);
+    preferences.fetchPreferencePage(accountId, draft);
   }, []);
 
   const renderPreferences = () => {

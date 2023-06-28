@@ -1,16 +1,11 @@
 import { usePreferences } from "@trycourier/react-hooks";
-import React, { useEffect } from "react";
+import React from "react";
+import styled from "styled-components";
 import { BusinessFooter } from "./BusinessFooter";
 import { FreeFooter } from "./FreeFooter";
-import styled from "styled-components";
 
-export const Footer: React.FunctionComponent<{ draft?: boolean }> = ({
-  draft,
-}) => {
+export const Footer: React.FunctionComponent = () => {
   const preferences = usePreferences();
-  useEffect(() => {
-    preferences.fetchPreferencePage(draft);
-  }, []);
 
   if (preferences.isLoading || !preferences.preferencePage) {
     return null;
