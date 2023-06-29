@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox",
-  "version": "3.9.1",
+  "version": "3.10.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -20,10 +20,10 @@
   "dependencies": {
     "@fontsource/poppins": "^4.5.9",
     "@tippyjs/react": "^4.2.3",
-    "@trycourier/client-graphql": "^3.9.1",
-    "@trycourier/react-elements": "^3.9.1",
-    "@trycourier/react-hooks": "^3.9.1",
-    "@trycourier/react-preferences": "^3.9.1",
+    "@trycourier/client-graphql": "^3.10.0",
+    "@trycourier/react-elements": "^3.10.0",
+    "@trycourier/react-hooks": "^3.10.0",
+    "@trycourier/react-preferences": "^3.10.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
