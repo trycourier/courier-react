@@ -3,6 +3,7 @@ import { Interceptor } from "./transports/types";
 import { ErrorEvent } from "reconnecting-websocket";
 export { IInboxMessagePreview } from "@trycourier/client-graphql";
 
+export { Interceptor } from "./transports/types";
 export type ErrorEventHandler = (event: ErrorEvent) => void;
 
 export type WSOptions = {
