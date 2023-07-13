@@ -436,10 +436,6 @@ export const PreferencesV4: React.FC<{ accountId?: string; draft?: boolean }> =
       pullPreferences();
     }, []);
 
-    if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
-      return null;
-    }
-
     if (!preferences.preferencePage && !preferences.isLoading) {
       return (
         <div>

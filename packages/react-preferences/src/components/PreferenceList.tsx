@@ -31,7 +31,7 @@ export const PreferenceList: React.FunctionComponent<{
   }, []);
 
   const renderPreferences = () => {
-    if (preferences?.isLoading) {
+    if (!preferences.preferencePage?.sections?.nodes.length) {
       return <></>;
     }
 
