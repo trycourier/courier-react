@@ -254,10 +254,11 @@ export const PreferenceTopic: React.FunctionComponent<{
       hasCustomRouting: !customizeDelivery,
       ...(!customizeDelivery && {
         routingPreferences: [
-          "sms",
-          "email",
           "direct_message",
+          "email",
+          "inbox",
           "push",
+          "sms",
           "webhook",
         ],
       }),
