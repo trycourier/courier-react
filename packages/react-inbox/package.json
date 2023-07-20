@@ -8,7 +8,7 @@
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf typings",
     "type-check": "tsc --noEmit",
     "types": "tsc --build"
   },

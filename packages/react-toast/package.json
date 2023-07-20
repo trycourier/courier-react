@@ -14,7 +14,7 @@
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf typings",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --build"
