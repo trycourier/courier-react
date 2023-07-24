@@ -202,6 +202,7 @@ const Messages: React.ForwardRefExoticComponent<
     const { fetchRecipientPreferences } = usePreferences();
 
     const {
+      accountId,
       brand,
       fetchMessages,
       getUnreadMessageCount,
@@ -227,9 +228,12 @@ const Messages: React.ForwardRefExoticComponent<
       }
 
       fetchMessages({
-        params: currentView?.params,
+        params: {
+          ...currentView?.params,
+          accountId,
+        },
       });
-    }, [view, currentView]);
+    }, [accountId, view, currentView]);
 
     useOnScroll(
       messageListRef,

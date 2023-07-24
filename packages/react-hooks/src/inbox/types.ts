@@ -1,5 +1,10 @@
-import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
+import {
+  Brand,
+  IInboxMessagePreview,
+  OnEvent,
+} from "@trycourier/react-provider";
 export interface IInbox<T = IInboxMessagePreview> {
+  accountId?: string;
   brand?: Brand;
   from?: number;
   isLoading?: boolean;
@@ -7,6 +12,7 @@ export interface IInbox<T = IInboxMessagePreview> {
   lastMarkedAllRead?: number;
   lastMessagesFetched?: number;
   messages?: Array<T>;
+  onEvent: OnEvent;
   pinned?: Array<T>;
   startCursor?: string;
   unreadMessageCount?: number;

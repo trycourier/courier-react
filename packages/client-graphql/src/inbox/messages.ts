@@ -2,6 +2,7 @@ import { Client } from "urql";
 import { IActionElemental } from "./message";
 
 export interface IGetInboxMessagesParams {
+  accountId?: string;
   archived?: boolean;
   from?: string | number;
   limit?: number;

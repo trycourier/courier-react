@@ -3,7 +3,7 @@ import {
   Brand,
   PinDetails,
   IInboxMessagePreview,
-  EventType,
+  OnEvent,
 } from "@trycourier/react-provider";
 import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
 
@@ -39,11 +39,7 @@ export interface InboxTheme {
   root?: CSSObject;
   unreadIndicator?: CSSObject;
 }
-export type OnEvent = (eventParams: {
-  messageId?: string;
-  message?: IInboxMessagePreview;
-  event: EventType;
-}) => void;
+
 export interface InboxProps {
   brand?: Brand;
   className?: string;

@@ -15,10 +15,12 @@ import createReducer from "react-use/lib/factory/createReducer";
 
 import {
   Brand,
+  EventType,
   ICourierContext,
   ICourierProviderProps,
   PinDetails,
   WSOptions,
+  OnEvent,
 } from "./types";
 import { CourierTransport } from "./transports/courier";
 import {
@@ -54,6 +56,8 @@ export type {
   Middleware,
   PinDetails,
   WSOptions,
+  EventType,
+  OnEvent,
 };
 
 export const CourierContext =
