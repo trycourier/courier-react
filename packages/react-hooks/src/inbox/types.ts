@@ -12,7 +12,7 @@ export interface IInbox<T = IInboxMessagePreview> {
   lastMarkedAllRead?: number;
   lastMessagesFetched?: number;
   messages?: Array<T>;
-  onEvent: OnEvent;
+  onEvent?: OnEvent;
   pinned?: Array<T>;
   startCursor?: string;
   unreadMessageCount?: number;
