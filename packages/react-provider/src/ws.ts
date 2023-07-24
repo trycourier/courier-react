@@ -14,6 +14,7 @@ export class WS {
     event?: string;
     callback: ICourierEventCallback;
   }>;
+  private accountId?: string;
   private clientSourceId?: string;
   private authorization?: string;
   private clientKey?: string;
@@ -31,18 +32,21 @@ export class WS {
   protected messageCallback;
 
   constructor({
+    accountId,
     authorization,
     clientKey,
     options,
     clientSourceId,
     userSignature,
   }: {
+    accountId?: string;
     authorization?: string;
     clientSourceId?: string;
     clientKey?: string;
     options?: WSOptions;
     userSignature?: string;
   }) {
+    this.accountId = accountId;
     this.connectionCount = 0;
     this.authorization = authorization;
     this.messageCallback = null;
@@ -173,6 +177,7 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
+          accountId: this.accountId,
           channel,
           clientKey: this.clientKey,
           clientSourceId: this.clientSourceId,

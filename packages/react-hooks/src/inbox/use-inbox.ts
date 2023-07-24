@@ -11,7 +11,7 @@ import useInboxActions, { IInboxActions } from "./use-inbox-actions";
 import { IInbox } from "./types";
 
 const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
-  const { dispatch, inbox, transport, brand } =
+  const { dispatch, inbox, transport, brand, accountId } =
     useCourier<{
       inbox: IInbox;
     }>();
@@ -20,6 +20,10 @@ const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
 
   if (inbox && (brand || inbox.brand)) {
     inbox.brand = deepExtend({}, brand ?? {}, inbox.brand ?? {});
+  }
+
+  if (accountId) {
+    inbox.accountId = accountId ?? inbox.accountId;
   }
 
   useEffect(() => {

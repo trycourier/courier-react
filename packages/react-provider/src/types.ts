@@ -1,5 +1,5 @@
 import { CourierTransport, Transport } from "./transports";
-import { Interceptor } from "./transports/types";
+import { IInboxMessagePreview, Interceptor } from "./transports/types";
 import { ErrorEvent } from "reconnecting-websocket";
 export { IInboxMessagePreview } from "@trycourier/client-graphql";
 
@@ -13,6 +13,12 @@ export type WSOptions = {
   onReconnect?: () => void;
   connectionTimeout?: number;
 };
+
+export type OnEvent = (eventParams: {
+  messageId?: string;
+  message?: IInboxMessagePreview;
+  event: EventType;
+}) => void;
 
 export interface PinDetails {
   id: string;

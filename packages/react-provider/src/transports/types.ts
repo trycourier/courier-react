@@ -1,5 +1,5 @@
 export interface ICourierEventMessage {
-  event: "read" | "unread" | "archive" | "mark-all-read" | "opened";
+  event: "read" | "unread" | "archive" | "mark-all-read" | "opened" | "unpin";
   type: "event";
   messageId?: string;
   error?: string;
