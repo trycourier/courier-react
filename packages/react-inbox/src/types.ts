@@ -41,6 +41,7 @@ export interface InboxTheme {
 }
 
 export interface InboxProps {
+  accountId?: string;
   brand?: Brand;
   className?: string;
   defaultIcon?: false | string;
