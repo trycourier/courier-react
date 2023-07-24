@@ -23,7 +23,7 @@ const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
   }
 
   if (accountId) {
-    inbox.accountId = accountId ?? inbox.accountId;
+    inbox.accountId = accountId;
   }
 
   useEffect(() => {
