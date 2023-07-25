@@ -230,15 +230,15 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 function App() {
-  const [authentication, setAuthentication] = useState();
+  const [authorization, setAuthorization] = useState();
 
   useEffect(() => {
     const response = await fetchAuthToken();
-    setAuthentication(response);
+    setAuthorization(response);
   }, []);
 
   return (
-    <CourierProvider userId={yourUserId} authentication={authentication}>
+    <CourierProvider userId={yourUserId} authorization={authorization}>
       <Inbox />
     </CourierProvider>
   );
