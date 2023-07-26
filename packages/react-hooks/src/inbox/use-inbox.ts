@@ -22,7 +22,7 @@ const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
     inbox.brand = deepExtend({}, brand ?? {}, inbox.brand ?? {});
   }
 
-  if (accountId) {
+  if (inbox && accountId) {
     inbox.accountId = accountId;
   }
 
