@@ -124,6 +124,7 @@ export class WS {
       this.send({
         action: "subscribe",
         data: {
+          accountId: this.accountId,
           channel: sub.channel,
           clientSourceId: this.clientSourceId,
           clientKey: this.clientKey,

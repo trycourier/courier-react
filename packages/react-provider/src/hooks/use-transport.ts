@@ -8,6 +8,7 @@ interface DecodedAuth {
 }
 
 const useTransport = ({
+  accountId,
   authorization,
   clientSourceId,
   clientKey,
@@ -15,6 +16,7 @@ const useTransport = ({
   userSignature,
   wsOptions,
 }: {
+  accountId?: string;
   authorization?: string;
   clientSourceId?: string;
   clientKey?: string;
@@ -61,6 +63,7 @@ const useTransport = ({
     }
 
     const newTransport = new CourierTransport({
+      accountId,
       authorization,
       clientSourceId,
       clientKey,
