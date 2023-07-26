@@ -1,8 +1,9 @@
 import { WSOptions } from "~/types";
 export interface ITransportOptions {
+  accountId?: string;
+  authorization?: string;
   clientKey?: string;
   clientSourceId: string;
-  authorization?: string;
   userSignature?: string;
   wsOptions?: WSOptions;
 }

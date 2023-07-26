@@ -66,6 +66,7 @@ export const CourierContext =
 export const CourierProvider: React.FunctionComponent<
   PropsWithChildren<ICourierProviderProps>
 > = ({
+  accountId,
   apiUrl,
   authorization,
   brand,
@@ -114,6 +115,7 @@ export const CourierProvider: React.FunctionComponent<
     typeof window === "undefined"
       ? undefined
       : useTransport({
+          accountId,
           authorization,
           clientSourceId,
           clientKey,
@@ -123,6 +125,7 @@ export const CourierProvider: React.FunctionComponent<
         });
 
   const [state, dispatch] = useReducer(reducer, {
+    accountId,
     apiUrl,
     authorization,
     brand,
@@ -182,7 +185,7 @@ export const CourierProvider: React.FunctionComponent<
       courierTransport.unsubscribe(userId);
       courierTransport.closeConnection();
     };
-  }, [actions, transport, userId]);
+  }, [accountId, actions, transport, userId]);
 
   useEffect(() => {
     if (!_transport && (!clientKey || !userId)) {
@@ -205,6 +208,7 @@ export const CourierProvider: React.FunctionComponent<
     }
 
     actions.init({
+      accountId,
       apiUrl,
       authorization,
       brandId,
@@ -217,6 +221,7 @@ export const CourierProvider: React.FunctionComponent<
       ...parsedLocalStorageState,
     });
   }, [
+    accountId,
     actions,
     apiUrl,
     authorization,
