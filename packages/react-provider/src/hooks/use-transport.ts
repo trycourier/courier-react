@@ -79,7 +79,7 @@ const useTransport = ({
       };
     }
     return newTransport;
-  }, [authorization, clientKey, transport, userSignature, wsOptions]);
+  }, [accountId, authorization, clientKey, transport, userSignature, wsOptions]);
 };
 
 export default useTransport;
