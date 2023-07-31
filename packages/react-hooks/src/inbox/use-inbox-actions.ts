@@ -89,17 +89,19 @@ const useInboxActions = (): IInboxActions => {
   const onEvent = inbox?.onEvent;
   const allMessages = [...(inbox?.messages ?? []), ...(inbox?.pinned ?? [])];
 
-  const handleGetUnreadMessageCount: IInboxActions["getUnreadMessageCount"] =
-    () => {
-      dispatch({
-        type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
-        payload: () =>
-          inboxClient.getInboxCount({
-            from: inbox?.from,
-            status: "unread",
-          }),
-      });
-    };
+  const handleGetUnreadMessageCount: IInboxActions["getUnreadMessageCount"] = (
+    params
+  ) => {
+    dispatch({
+      type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
+      payload: () =>
+        inboxClient.getInboxCount({
+          accountId: params?.accountId || inbox?.accountId,
+          from: params?.from || inbox?.from,
+          status: "unread",
+        }),
+    });
+  };
 
   const handleInit: IInboxActions["init"] = async (payload) => {
     dispatch(initInbox(payload));

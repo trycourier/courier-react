@@ -9,6 +9,7 @@ export const GET_MESSAGE_COUNT = `
 `;
 
 export interface IMessageCountParams {
+  accountId?: string;
   tags?: string[];
   from?: number;
   isRead?: boolean;
@@ -30,6 +31,7 @@ export const getMessageCount =
   };
 
 export interface IGetMessagesParams {
+  accountId?: string;
   from?: number;
   isRead?: boolean;
   limit?: number;

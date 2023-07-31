@@ -127,6 +127,7 @@ const useElementalInboxActions = (): IInboxActions => {
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
           inboxClient.getInboxCount({
+            accountId: inbox?.accountId,
             status: "unread",
           }),
       });
