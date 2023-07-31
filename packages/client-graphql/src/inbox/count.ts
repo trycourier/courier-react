@@ -7,6 +7,7 @@ export const GET_INBOX_COUNT = `
 `;
 
 export interface IInboxCountParams {
+  accountId?: string;
   status: "read" | "unread";
   tags?: string[];
   from?: string | number;
