@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-preferences",
-  "version": "3.14.1",
+  "version": "3.15.0",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {
@@ -23,7 +23,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@trycourier/react-hooks": "^3.14.1",
+    "@trycourier/react-hooks": "^3.15.0",
     "react-toggle": "^4.1.2",
     "styled-components": "^5.3.6"
   }
