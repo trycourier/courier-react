@@ -12,7 +12,7 @@ const CLIENT_KEY = process.env.CLIENT_KEY || "";
 const USER_ID = process.env.USER_ID || "";
 
 export default {
-  title: "Inbox Redesign",
+  title: "Inbox/Redesign",
 };
 
 const mockMessages = [

@@ -3,9 +3,11 @@ import ReactMarkdown from "react-markdown";
 
 import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
+import rehypeRaw from "rehype-raw";
 
 import customComponentsString from "!raw-loader!./custom-components.tsx";
 import customHeaderString from "!raw-loader!./custom-header.tsx";
+import readmeMd from "@trycourier/react-inbox/README.md";
 
 import {
   CustomBell,
@@ -30,6 +32,10 @@ const USER_ID = process.env.USER_ID || "";
 
 export default {
   title: "Inbox",
+};
+
+export const ReadMe = () => {
+  return <ReactMarkdown rehypePlugins={[rehypeRaw]}>{readmeMd}</ReactMarkdown>;
 };
 
 export const ThemeExample = () => {

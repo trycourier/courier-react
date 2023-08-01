@@ -4,7 +4,7 @@ import propsMd from "@trycourier/react-toast/docs/3.props.md";
 import themeMd from "@trycourier/react-toast/docs/4.theme.md";
 import hooksMd from "@trycourier/react-toast/docs/5.hooks.md";
 
-import { CourierProvider, IBlocks } from "@trycourier/react-provider";
+import { CourierProvider } from "@trycourier/react-provider";
 
 import { Toast, useToast, ToastBody } from "@trycourier/react-toast";
 
@@ -21,18 +21,6 @@ export default {
   decorators: [withKnobs],
 };
 
-const mockBlocks: IBlocks = [
-  {
-    type: "text",
-    text: "Text Block",
-  },
-  {
-    type: "action",
-    text: "Action Block",
-    url: "My Url",
-  },
-];
-
 const ExampleButton: React.FunctionComponent<{ text?: string }> = ({
   text,
 }) => {
@@ -41,7 +29,6 @@ const ExampleButton: React.FunctionComponent<{ text?: string }> = ({
   const handleOnClick = () => {
     toast({
       title: "Hello World",
-      blocks: mockBlocks,
     });
   };
 
@@ -117,7 +104,7 @@ export const Theme = () => {
         2
       )}\n\`\`\``}</ReactMarkdown>
       <CourierProvider>
-        <ToastBody blocks={mockBlocks} title="Title" theme={theme} />
+        <ToastBody title="Title" theme={theme} />
       </CourierProvider>
     </>
   );

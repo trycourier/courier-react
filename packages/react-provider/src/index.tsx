@@ -28,6 +28,7 @@ import {
   ICourierEventMessage,
   IInboxMessagePreview,
   ITextElemental,
+  Interceptor,
 } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
@@ -58,6 +59,7 @@ export type {
   WSOptions,
   EventType,
   OnEvent,
+  Interceptor,
 };
 
 export const CourierContext =
