@@ -23,7 +23,7 @@ const useTransport = ({
   transport?: CourierTransport | Transport;
   userSignature?: string;
   wsOptions?: ITransportOptions["wsOptions"];
-}): CourierTransport | Transport => {
+}): CourierTransport | Transport | undefined => {
   const transportRef =
     useRef<{
       authorization: string;
@@ -55,11 +55,17 @@ const useTransport = ({
     }
 
     if (!clientKey && !authorization) {
-      throw new Error("Missing ClientKey or Authorization");
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("Courier: Missing ClientKey or Authorization");
+      }
+      return;
     }
 
     if (!clientSourceId) {
-      throw new Error("Missing ClientSourceId");
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("Courier: Missing ClientSourceId");
+      }
+      return;
     }
 
     const newTransport = new CourierTransport({
@@ -79,7 +85,14 @@ const useTransport = ({
       };
     }
     return newTransport;
-  }, [accountId, authorization, clientKey, transport, userSignature, wsOptions]);
+  }, [
+    accountId,
+    authorization,
+    clientKey,
+    transport,
+    userSignature,
+    wsOptions,
+  ]);
 };
 
 export default useTransport;

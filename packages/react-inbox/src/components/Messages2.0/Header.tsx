@@ -322,12 +322,12 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         </HeadingContainer>
       )}
       <div className="actions">
-        {messages.length > 0 && unreadMessageCount && (
+        {messages.length > 0 && unreadMessageCount ? (
           <MarkAllRead
             label={labels?.markAllAsRead}
             onClick={() => markAllAsRead()}
           />
-        )}
+        ) : null}
         <CloseInbox onClick={handleCloseInbox} tooltip="Close Inbox" />
       </div>
     </Container>

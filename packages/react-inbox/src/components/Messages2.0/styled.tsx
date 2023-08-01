@@ -83,7 +83,8 @@ export const ActionElement = styled.button<{
   primary?: boolean;
   backgroundColor: IActionElemental["background_color"];
 }>(({ theme, primary, backgroundColor }) => {
-  const primaryColor = backgroundColor ?? theme?.brand?.colors?.primary;
+  const primaryColor =
+    backgroundColor ?? theme?.brand?.colors?.primary ?? "#9121c2";
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   return deepExtend(
