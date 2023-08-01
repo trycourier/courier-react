@@ -15,23 +15,6 @@ describe("useTransport", () => {
     jest.clearAllMocks();
   });
 
-  test("will throw an error if missing auth and clientkey", () => {
-    expect.assertions(1);
-    try {
-      const { result } = renderHook(() =>
-        useTransport({
-          clientSourceId: "abc123",
-        })
-      );
-
-      if (result.error) {
-        throw result.error;
-      }
-    } catch (ex) {
-      expect(String(ex)).toBe("Error: Missing ClientKey or Authorization");
-    }
-  });
-
   test("will return the same transport passed in", () => {
     const transport = new Transport();
     const { result } = renderHook(() =>

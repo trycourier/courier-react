@@ -156,19 +156,19 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_FETCH_MESSAGES_DONE: {
-      const newMessages = action.payload.appendMessages
-        ? [...(state?.messages ?? []), ...action.payload.messages]
-        : action.payload.messages;
+      const newMessages = action.payload?.appendMessages
+        ? [...(state?.messages ?? []), ...(action.payload?.messages ?? [])]
+        : action.payload?.messages;
 
       return {
         ...state,
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
-        pinned: action.payload.appendMessages
+        pinned: action.payload?.appendMessages
           ? state.pinned
-          : sortPinned(action.payload.pinned, state.brand),
-        startCursor: action.payload.startCursor,
+          : sortPinned(action.payload?.pinned, state.brand),
+        startCursor: action.payload?.startCursor,
       };
     }
 
@@ -303,7 +303,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         created: new Date().toISOString(),
       };
 
-      if (newMessage.pinned?.slotId) {
+      if (newMessage?.pinned?.slotId) {
         const newPinned = sortPinned(
           [newMessage, ...(state.pinned ?? [])],
           state.brand

@@ -44,7 +44,7 @@ const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
 );
 
 const ClickableContainer = styled.a(({ theme }) => {
-  const primaryColor = theme.brand?.colors?.primary;
+  const primaryColor = theme.brand?.colors?.primary ?? "#9121c2";
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   return deepExtend(

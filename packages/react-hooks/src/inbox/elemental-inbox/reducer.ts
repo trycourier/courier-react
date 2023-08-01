@@ -99,9 +99,9 @@ export default (
     }
 
     case INBOX_FETCH_MESSAGES_DONE: {
-      const messages = action.payload.messages ?? [];
+      const messages = action.payload?.messages ?? [];
 
-      const newMessages = action.payload.appendMessages
+      const newMessages = action.payload?.appendMessages
         ? [...(state.messages ?? []), ...messages]
         : messages;
 
@@ -110,7 +110,7 @@ export default (
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages,
-        startCursor: action.payload.startCursor,
+        startCursor: action.payload?.startCursor,
       };
     }
 

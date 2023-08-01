@@ -16,4 +16,12 @@ module.exports = {
     });
     return config;
   },
+  env: (config) => ({
+    ...config,
+    CLIENT_KEY: process.env.CLIENT_KEY,
+    USER_ID: process.env.USER_ID,
+    API_URL: process.env.API_URL,
+    WS_URL: process.env.WS_URL,
+    INBOX_API_URL: process.env.INBOX_API_URL,
+  }),
 };

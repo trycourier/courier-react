@@ -2,7 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 
 import { CourierProvider } from "@trycourier/react-provider";
-import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
+import { Inbox } from "@trycourier/react-inbox";
 
 import customComponentsString from "!raw-loader!./custom-components.tsx";
 import customHeaderString from "!raw-loader!./custom-header.tsx";
@@ -36,8 +36,12 @@ export const ThemeExample = () => {
   const theme = {
     container: {
       background: "green",
+      padding: "10px",
     },
     header: {
+      background: "pink",
+    },
+    footer: {
       background: "pink",
     },
     messageList: {
@@ -234,49 +238,6 @@ export const CustomLabels = () => {
               markAsUnread: "jk, unread me",
               backToInbox: "back it up!",
               markAllAsRead: "mark em all captn",
-            }}
-          />
-        </CourierProvider>
-      </div>
-    </>
-  );
-};
-
-export const CustomBlocks = () => {
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "top",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <ReactMarkdown>{`## Example`}</ReactMarkdown>
-          <ReactMarkdown>{`\`\`\`javascript\n<Inbox labels={{
-            markAsRead: "markey read pwease",
-            markAsUnread: "jk, unread me",
-          }} />\n\`\`\``}</ReactMarkdown>
-        </div>
-        <CourierProvider
-          middleware={[mockMiddleware]}
-          wsOptions={{
-            url: process.env.WS_URL,
-          }}
-          apiUrl={API_URL}
-          clientKey={CLIENT_KEY}
-          userId={USER_ID}
-        >
-          <Inbox
-            isOpen={true}
-            renderBlocks={{
-              action: (props) => (
-                <ActionBlock>
-                  <a href={props.url}>{props.text}</a>
-                </ActionBlock>
-              ),
-              text: (props) => <TextBlock>{props.text}</TextBlock>,
             }}
           />
         </CourierProvider>
