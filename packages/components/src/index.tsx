@@ -64,8 +64,6 @@ interface ICourierConfig {
   preferencePageDraftMode?: boolean;
 }
 
-let hasInit = false;
-
 const initCourier = async (courierConfig?: ICourierConfig) => {
   const {
     tenantId,
@@ -81,7 +79,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
     wsOptions,
   } = courierConfig ?? window.courierConfig ?? {};
 
-  if (hasInit || typeof document === "undefined") {
+  if (typeof document === "undefined") {
     return;
   }
 
@@ -110,8 +108,6 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
     </CourierProvider>,
     courierRoot
   );
-
-  hasInit = true;
 };
 
 window.courier = {
