@@ -16,10 +16,10 @@ const usePreferencesActions = () => {
   const preferences = Preferences({ client: courierClient });
 
   return {
-    fetchRecipientPreferences: () => {
+    fetchRecipientPreferences: (accountId?: string) => {
       dispatch({
         type: "preferences/FETCH_RECIPIENT_PREFERENCES",
-        payload: () => preferences.getRecipientPreferences(),
+        payload: () => preferences.getRecipientPreferences(accountId),
       });
     },
     fetchPreferencePage: (accountId?: string, draft = false) => {
