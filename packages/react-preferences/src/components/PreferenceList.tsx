@@ -26,7 +26,7 @@ export const PreferenceList: React.FunctionComponent<{
   const preferences = usePreferences();
 
   useEffect(() => {
-    preferences.fetchRecipientPreferences();
+    preferences.fetchRecipientPreferences(accountId);
     preferences.fetchPreferencePage(accountId, draft);
   }, []);
 

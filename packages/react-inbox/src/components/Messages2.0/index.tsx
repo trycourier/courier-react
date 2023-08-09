@@ -280,7 +280,7 @@ const Messages: React.ForwardRefExoticComponent<
     );
 
     useEffect(() => {
-      fetchRecipientPreferences();
+      fetchRecipientPreferences(accountId);
     }, []);
 
     const handleCloseInbox = (event: React.MouseEvent) => {

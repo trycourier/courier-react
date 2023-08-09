@@ -10,6 +10,7 @@ import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
 import { PreferenceSection } from "@trycourier/react-hooks";
 import DigestSchedules from "./DigestSchedule";
+import { useCourier } from "@trycourier/react-provider";
 
 export const ChannelOption = styled.div`
   display: flex;
@@ -220,6 +221,7 @@ export const PreferenceTopic: React.FunctionComponent<{
   hasCustomRouting,
   defaultHasCustomRouting,
 }) => {
+  const { accountId } = useCourier();
   const { preferencePage, updateRecipientPreferences } = usePreferences();
 
   //Temporary mapping until I update this in the backend
@@ -243,6 +245,7 @@ export const PreferenceTopic: React.FunctionComponent<{
     updateRecipientPreferences({
       templateId: topicId,
       status: newStatus,
+      accountId,
     });
 
     setStatusToggle(!statusToggle);
@@ -263,6 +266,7 @@ export const PreferenceTopic: React.FunctionComponent<{
         ],
       }),
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
+      accountId,
     });
 
     // If Customize Delivery is turned on, set the routing preferences to the default
@@ -282,6 +286,7 @@ export const PreferenceTopic: React.FunctionComponent<{
       routingPreferences: newRouting,
       hasCustomRouting: true,
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
+      accountId,
     });
 
     setRouting(newRouting);
@@ -431,7 +436,7 @@ export const PreferencesV4: React.FC<{ accountId?: string; draft?: boolean }> =
       const pullPreferences = async () => {
         if (!preferences.preferencePage && !preferences.recipientPreferences) {
           await preferences.fetchPreferencePage(accountId, draft);
-          await preferences.fetchRecipientPreferences();
+          await preferences.fetchRecipientPreferences(accountId);
         }
       };
       pullPreferences();

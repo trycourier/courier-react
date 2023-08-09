@@ -3,8 +3,8 @@ import { ICourierClientBasicParams, ICourierClientJWTParams } from "./types";
 import { createCourierClient } from "./client";
 
 const RECIPIENT_PREFERENCES = `
-  query GetRecipientPreferences {
-    recipientPreferences {
+  query GetRecipientPreferences($accountId: String) {
+    recipientPreferences(accountId: $accountId) {
       nodes {
         templateId
         status
@@ -88,19 +88,21 @@ const DRAFT_PREFERENCE_PAGE = `
   }
 `;
 
-type GetRecipientPreferences = () => Promise<any>;
+type GetRecipientPreferences = (accountId?: string) => Promise<any>;
 export const getRecipientPreferences =
   (client: Client | undefined): GetRecipientPreferences =>
-  async () => {
+  async (accountId?: string) => {
     if (!client) {
       return;
     }
 
-    const results = await client.query(RECIPIENT_PREFERENCES).toPromise();
+    const results = await client
+      .query(RECIPIENT_PREFERENCES, { accountId })
+      .toPromise();
     return results.data?.recipientPreferences.nodes;
   };
 
-type GetPreferencePage = () => Promise<any>;
+type GetPreferencePage = (accountId?: string) => Promise<any>;
 export const getPreferencePage =
   (client: Client | undefined): GetPreferencePage =>
   async (accountId?: string) => {
@@ -127,8 +129,8 @@ export const getDraftPreferencePage =
   };
 
 const UPDATE_RECIPIENT_PREFERENCES = `
-  mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!) {
-    updatePreferences(templateId: $id preferences: $preferences)
+  mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!, $accountId: String) {
+    updatePreferences(templateId: $id preferences: $preferences accountId: $accountId)
   }
 `;
 
@@ -138,6 +140,7 @@ type UpdateRecipientPreferences = (payload: {
   hasCustomRouting: boolean;
   routingPreferences: Array<string>;
   digestSchedule: string;
+  accountId?: string;
 }) => Promise<any>;
 export const updateRecipientPreferences =
   (client: Client | undefined): UpdateRecipientPreferences =>
@@ -155,6 +158,7 @@ export const updateRecipientPreferences =
           routingPreferences: payload.routingPreferences,
           digestSchedule: payload.digestSchedule,
         },
+        accountId: payload.accountId,
       })
       .toPromise();
 
