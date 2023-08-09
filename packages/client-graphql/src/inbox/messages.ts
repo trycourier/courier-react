@@ -2,7 +2,7 @@ import { Client } from "urql";
 import { IActionElemental } from "./message";
 
 export interface IGetInboxMessagesParams {
-  accountId?: string;
+  tenantId?: string;
   archived?: boolean;
   from?: string | number;
   limit?: number;
@@ -100,13 +100,15 @@ export const getInboxMessages =
       return Promise.resolve(undefined);
     }
 
-    const { limit, ...restParams } = params ?? {};
+    const { limit, tenantId, ...restParams } = params ?? {};
     const results = await client
       .query(createGetInboxMessagesQuery(!after), {
         after,
         limit,
         params: {
           ...restParams,
+          // [HACK] map tenantId to accountId in order to keep this backwards compatible
+          accountId: tenantId,
           pinned: false,
         },
         pinnedParams: {

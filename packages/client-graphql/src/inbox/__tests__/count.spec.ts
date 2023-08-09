@@ -21,7 +21,7 @@ describe("getInboxCount", () => {
       Array [
         "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
         Object {
-          "body": "{\\"query\\":\\"query GetInboxCount($params: FilterParamsInput) {\\\\n  count(params: $params)\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxCount\\",\\"variables\\":{}}",
+          "body": "{\\"query\\":\\"query GetInboxCount($params: FilterParamsInput) {\\\\n  count(params: $params)\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxCount\\",\\"variables\\":{\\"params\\":{}}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",

@@ -4,7 +4,7 @@ import { Interceptor } from "../types";
 import { ITransportOptions } from "./types";
 
 export class CourierTransport extends Transport {
-  protected accountId?: string;
+  protected tenantId?: string;
   protected authorization?: string;
   protected clientSourceId: string;
   protected clientKey?: string;
@@ -25,7 +25,7 @@ export class CourierTransport extends Transport {
     this.userSignature = options.userSignature;
 
     this.ws = new WS({
-      accountId: options.accountId,
+      tenantId: options.tenantId,
       authorization: options.authorization,
       clientSourceId: options.clientSourceId,
       clientKey: options.clientKey,

@@ -5,7 +5,7 @@ import {
 import { Brand } from "@trycourier/react-provider";
 
 export interface IElementalInbox {
-  accountId?: string;
+  tenantId?: string;
   brand?: Brand;
   from?: number;
   isLoading?: boolean;

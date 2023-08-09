@@ -57,6 +57,7 @@ interface IInboxActions {
 
 const useElementalInboxActions = (): IInboxActions => {
   const {
+    tenantId,
     apiUrl,
     authorization,
     clientSourceId,
@@ -80,6 +81,7 @@ const useElementalInboxActions = (): IInboxActions => {
     clientSourceId,
     userId,
     userSignature,
+    tenantId,
   });
 
   const inboxClient = Inbox({ client: courierClient });
@@ -101,6 +103,7 @@ const useElementalInboxActions = (): IInboxActions => {
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
           inboxClient.getInboxCount({
+            tenantId: inbox?.tenantId,
             status: "unread",
           }),
       });
@@ -127,7 +130,7 @@ const useElementalInboxActions = (): IInboxActions => {
         type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
         payload: () =>
           inboxClient.getInboxCount({
-            accountId: inbox?.accountId,
+            tenantId: inbox?.tenantId,
             status: "unread",
           }),
       });

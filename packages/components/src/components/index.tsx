@@ -21,7 +21,7 @@ const querySelector = (element: HTMLElement, selector: string) => {
 export const CourierComponents: React.FunctionComponent = () => {
   const preferencePageDraftMode =
     window.courierConfig?.preferencePageDraftMode ?? false;
-  const accountId = window.courierConfig?.accountId;
+  const tenantId = window.courierConfig?.tenantId;
   const unsubscribePageConfig = window.courierConfig?.unsubscribePage;
 
   const componentConfigs = window.courierConfig?.components;
@@ -205,7 +205,7 @@ export const CourierComponents: React.FunctionComponent = () => {
         createPortal(
           <Suspense fallback={<div />}>
             <PreferencePage
-              accountId={accountId}
+              tenantId={tenantId}
               draft={preferencePageDraftMode}
             />
           </Suspense>,

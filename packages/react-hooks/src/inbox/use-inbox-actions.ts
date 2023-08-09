@@ -49,6 +49,7 @@ export interface IInboxActions {
 
 const useInboxActions = (): IInboxActions => {
   const {
+    tenantId,
     apiUrl,
     authorization,
     clientKey,
@@ -66,8 +67,9 @@ const useInboxActions = (): IInboxActions => {
   const clientParams = {
     apiUrl,
     authorization,
-    clientSourceId,
     clientKey,
+    clientSourceId,
+    tenantId,
     userId,
     userSignature,
   };
@@ -96,9 +98,9 @@ const useInboxActions = (): IInboxActions => {
       type: "inbox/FETCH_UNREAD_MESSAGE_COUNT",
       payload: () =>
         inboxClient.getInboxCount({
-          accountId: params?.accountId || inbox?.accountId,
           from: params?.from || inbox?.from,
           status: "unread",
+          tenantId: tenantId || params?.tenantId || inbox?.tenantId,
         }),
     });
   };

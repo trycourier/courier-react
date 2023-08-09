@@ -202,7 +202,7 @@ const Messages: React.ForwardRefExoticComponent<
     const { fetchRecipientPreferences } = usePreferences();
 
     const {
-      accountId,
+      tenantId,
       brand,
       fetchMessages,
       getUnreadMessageCount,
@@ -230,10 +230,10 @@ const Messages: React.ForwardRefExoticComponent<
       fetchMessages({
         params: {
           ...currentView?.params,
-          accountId,
+          tenantId,
         },
       });
-    }, [accountId, view, currentView]);
+    }, [tenantId, view, currentView]);
 
     useOnScroll(
       messageListRef,
@@ -280,7 +280,7 @@ const Messages: React.ForwardRefExoticComponent<
     );
 
     useEffect(() => {
-      fetchRecipientPreferences(accountId);
+      fetchRecipientPreferences(tenantId);
     }, []);
 
     const handleCloseInbox = (event: React.MouseEvent) => {

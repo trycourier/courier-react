@@ -22,12 +22,12 @@ export const PreferenceList: React.FunctionComponent<{
   theme?: any;
   draft?: boolean;
 }> = ({ theme, draft }) => {
-  const { brand, accountId } = useCourier();
+  const { brand, tenantId } = useCourier();
   const preferences = usePreferences();
 
   useEffect(() => {
-    preferences.fetchRecipientPreferences(accountId);
-    preferences.fetchPreferencePage(accountId, draft);
+    preferences.fetchRecipientPreferences(tenantId);
+    preferences.fetchPreferencePage(tenantId, draft);
   }, []);
 
   const renderPreferences = () => {

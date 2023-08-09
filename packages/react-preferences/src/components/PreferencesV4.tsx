@@ -221,7 +221,7 @@ export const PreferenceTopic: React.FunctionComponent<{
   hasCustomRouting,
   defaultHasCustomRouting,
 }) => {
-  const { accountId } = useCourier();
+  const { tenantId } = useCourier();
   const { preferencePage, updateRecipientPreferences } = usePreferences();
 
   //Temporary mapping until I update this in the backend
@@ -245,7 +245,7 @@ export const PreferenceTopic: React.FunctionComponent<{
     updateRecipientPreferences({
       templateId: topicId,
       status: newStatus,
-      accountId,
+      tenantId,
     });
 
     setStatusToggle(!statusToggle);
@@ -266,7 +266,7 @@ export const PreferenceTopic: React.FunctionComponent<{
         ],
       }),
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
-      accountId,
+      tenantId,
     });
 
     // If Customize Delivery is turned on, set the routing preferences to the default
@@ -286,7 +286,7 @@ export const PreferenceTopic: React.FunctionComponent<{
       routingPreferences: newRouting,
       hasCustomRouting: true,
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
-      accountId,
+      tenantId,
     });
 
     setRouting(newRouting);
@@ -428,15 +428,15 @@ const PreferenceListItem = styled.li`
 `;
 
 // Doesn't include header or footer
-export const PreferencesV4: React.FC<{ accountId?: string; draft?: boolean }> =
-  ({ accountId, draft }) => {
+export const PreferencesV4: React.FC<{ tenantId?: string; draft?: boolean }> =
+  ({ tenantId, draft }) => {
     const preferences = usePreferences();
 
     useEffect(() => {
       const pullPreferences = async () => {
         if (!preferences.preferencePage && !preferences.recipientPreferences) {
-          await preferences.fetchPreferencePage(accountId, draft);
-          await preferences.fetchRecipientPreferences(accountId);
+          await preferences.fetchPreferencePage(tenantId, draft);
+          await preferences.fetchRecipientPreferences(tenantId);
         }
       };
       pullPreferences();
