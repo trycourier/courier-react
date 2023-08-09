@@ -16,13 +16,13 @@ const usePreferencesActions = () => {
   const preferences = Preferences({ client: courierClient });
 
   return {
-    fetchRecipientPreferences: (accountId?: string) => {
+    fetchRecipientPreferences: (tenantId?: string) => {
       dispatch({
         type: "preferences/FETCH_RECIPIENT_PREFERENCES",
-        payload: () => preferences.getRecipientPreferences(accountId),
+        payload: () => preferences.getRecipientPreferences(tenantId),
       });
     },
-    fetchPreferencePage: (accountId?: string, draft = false) => {
+    fetchPreferencePage: (tenantId?: string, draft = false) => {
       if (draft) {
         dispatch({
           type: "preferences/FETCH_DRAFT_PREFERENCE_PAGE",
@@ -31,7 +31,7 @@ const usePreferencesActions = () => {
       } else {
         dispatch({
           type: "preferences/FETCH_PREFERENCE_PAGE",
-          payload: () => preferences.getPreferencePage(accountId),
+          payload: () => preferences.getPreferencePage(tenantId),
         });
       }
     },

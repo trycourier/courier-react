@@ -7,7 +7,7 @@ export const GET_INBOX_COUNT = `
 `;
 
 export interface IInboxCountParams {
-  accountId?: string;
+  tenantId?: string;
   status: "read" | "unread";
   tags?: string[];
   from?: string | number;
@@ -23,9 +23,15 @@ export const getInboxCount =
       return Promise.resolve();
     }
 
+    const { tenantId, ...rest } = params || {};
+
     const results = await client
       .query(GET_INBOX_COUNT, {
-        params,
+        params: {
+          ...rest,
+          // [HACK] map tenantId to accountId in order to keep this backwards compatible
+          accountId: tenantId,
+        },
       })
       .toPromise();
     return results?.data;

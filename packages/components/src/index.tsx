@@ -38,7 +38,7 @@ declare global {
   }
 }
 interface ICourierConfig {
-  accountId?: string;
+  tenantId?: string;
   apiUrl?: string;
   authorization?: string;
   brandId?: string;
@@ -68,7 +68,7 @@ let hasInit = false;
 
 const initCourier = async (courierConfig?: ICourierConfig) => {
   const {
-    accountId,
+    tenantId,
     apiUrl,
     authorization,
     brandId,
@@ -94,7 +94,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
 
   render(
     <CourierProvider
-      accountId={accountId}
+      tenantId={tenantId}
       apiUrl={apiUrl}
       authorization={authorization}
       brandId={brandId}

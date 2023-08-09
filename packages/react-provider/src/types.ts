@@ -72,7 +72,7 @@ export type EventType =
   | "unpin";
 
 export interface ICourierProviderProps {
-  accountId?: string;
+  tenantId?: string;
   apiUrl?: string;
   authorization?: string;
   brand?: Brand;

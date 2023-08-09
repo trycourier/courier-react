@@ -9,7 +9,7 @@ export const GET_MESSAGE_COUNT = `
 `;
 
 export interface IMessageCountParams {
-  accountId?: string;
+  tenantId?: string;
   tags?: string[];
   from?: number;
   isRead?: boolean;
@@ -31,7 +31,7 @@ export const getMessageCount =
   };
 
 export interface IGetMessagesParams {
-  accountId?: string;
+  tenantId?: string;
   from?: number;
   isRead?: boolean;
   limit?: number;
@@ -136,9 +136,17 @@ export const getMessages =
       return Promise.resolve(undefined);
     }
 
-    const { limit, ...restParams } = params ?? {};
+    const { limit, tenantId, ...restParams } = params ?? {};
     const results = await client
-      .query(QUERY_MESSAGES, { after, limit, params: restParams })
+      .query(QUERY_MESSAGES, {
+        after,
+        limit,
+        params: {
+          ...restParams,
+          // [HACK] map tenantId to accountId in order to keep this backwards compatible
+          accountId: tenantId,
+        },
+      })
       .toPromise();
 
     const messages = results?.data?.messages?.nodes;

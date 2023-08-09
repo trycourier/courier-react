@@ -4,7 +4,7 @@ import {
   OnEvent,
 } from "@trycourier/react-provider";
 export interface IInbox<T = IInboxMessagePreview> {
-  accountId?: string;
+  tenantId?: string;
   brand?: Brand;
   from?: number;
   isLoading?: boolean;

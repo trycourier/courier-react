@@ -88,30 +88,31 @@ const DRAFT_PREFERENCE_PAGE = `
   }
 `;
 
-type GetRecipientPreferences = (accountId?: string) => Promise<any>;
+type GetRecipientPreferences = (tenantId?: string) => Promise<any>;
 export const getRecipientPreferences =
   (client: Client | undefined): GetRecipientPreferences =>
-  async (accountId?: string) => {
+  async (tenantId?: string) => {
     if (!client) {
       return;
     }
 
     const results = await client
-      .query(RECIPIENT_PREFERENCES, { accountId })
+      .query(RECIPIENT_PREFERENCES, { accountId: tenantId })
       .toPromise();
     return results.data?.recipientPreferences.nodes;
   };
 
-type GetPreferencePage = (accountId?: string) => Promise<any>;
+type GetPreferencePage = (tenantId?: string) => Promise<any>;
 export const getPreferencePage =
   (client: Client | undefined): GetPreferencePage =>
-  async (accountId?: string) => {
+  async (tenantId?: string) => {
     if (!client) {
       return;
     }
     const results = await client
       .query(PREFERENCE_PAGE, {
-        accountId: accountId,
+        // [HACK] map tenantId to accountId in order to keep this backwards compatible
+        accountId: tenantId,
       })
       .toPromise();
     return results.data?.preferencePage;
@@ -140,7 +141,7 @@ type UpdateRecipientPreferences = (payload: {
   hasCustomRouting: boolean;
   routingPreferences: Array<string>;
   digestSchedule: string;
-  accountId?: string;
+  tenantId?: string;
 }) => Promise<any>;
 export const updateRecipientPreferences =
   (client: Client | undefined): UpdateRecipientPreferences =>
@@ -158,7 +159,7 @@ export const updateRecipientPreferences =
           routingPreferences: payload.routingPreferences,
           digestSchedule: payload.digestSchedule,
         },
-        accountId: payload.accountId,
+        accountId: payload.tenantId,
       })
       .toPromise();
 
