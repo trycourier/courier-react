@@ -35,6 +35,55 @@ We created a separate breaking change branch to make sure our bundles are small 
 - [Toast migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-toast/docs/0.overview.md)
 - [Hooks migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks/0.overview.md)
 
+### 4.x
+
+We made a v4.x version to handle a significant change related to the Account feature. We opted to rename it to Tenant. If you're not using the Account, upgrading from 3.x to 4.x won't cause any issues.
+
+### Before
+
+```tsx
+<CourierProvider
+  accountId={"YOUR_ACCOUNT_ID"}
+  clientKey={props.clientKey}
+  userId={props.userId}
+  apiUrl={props.apiURL}
+  wsOptions={{
+    url: props.wsURL,
+  }}
+  authorization={props.authorizationToken}
+>
+  {props.children}
+</CourierProvider>
+```
+
+### After
+
+```tsx
+<CourierProvider
+  tenantId={"YOUR_TENANT_ID"}
+  clientKey={props.clientKey}
+  userId={props.userId}
+  apiUrl={props.apiURL}
+  wsOptions={{
+    url: props.wsURL,
+  }}
+  authorization={props.authorizationToken}
+>
+  {props.children}
+</CourierProvider>
+```
+
+## Type of change
+
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [x] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+
+
+
+
+**Full Changelog**: https://github.com/trycourier/courier-react/compare/v3.16.0...v4.0.0
+
 ## Table of Contents
 
 1. [Contributing](https://github.com/trycourier/courier-react/tree/main/CONTRIBUTING.md)
