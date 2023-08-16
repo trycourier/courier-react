@@ -446,6 +446,7 @@ interface ITheme {
   };
   messageList?: {
     container?: CSSObject;
+    scrollTop?: CSSObject;
   };
   message?: {
     actionElement?: CSSObject;

@@ -132,47 +132,51 @@ const ScrollTop = styled.button<{ text: string }>(({ theme, text }) => {
   const tcPrimaryColor = tinycolor2(primaryColor);
   const lighten30 = tcPrimaryColor.lighten(30);
 
-  return {
-    position: "sticky",
-    top: "-1px",
-    width: "100%",
-    height: "3px",
-    zIndex: 1,
-    fontSize: "12px",
-    cursor: "pointer",
-    background: lighten30.toString(),
-    transition: "all 150ms ease-in",
-
-    "&.hidden": {
-      opacity: 0,
-      visibility: "hidden",
-    },
-
-    "&::before": {
-      transition: "all 150ms ease-in",
-      boxSizing: "border-box",
-      marginTop: "-10px",
-      content: `'${text}'`,
-      position: "absolute",
-      left: "50%",
-      transform: "translateX(-50%)",
-      padding: "2px 8px",
-      display: "inline-block",
-      borderRadius: "10px",
+  return deepExtend(
+    {},
+    {
+      position: "sticky",
+      top: "-1px",
+      width: "100%",
+      height: "3px",
+      zIndex: 1,
+      fontSize: "12px",
+      cursor: "pointer",
       background: lighten30.toString(),
-      height: "18px",
-      "&:hover": {
-        background: lighten30.darken(10).toString(),
+      transition: "all 150ms ease-in",
+
+      "&.hidden": {
+        opacity: 0,
+        visibility: "hidden",
       },
-    },
-    "&.stickied": {
+
       "&::before": {
-        marginTop: "6px",
+        transition: "all 150ms ease-in",
+        boxSizing: "border-box",
+        marginTop: "-10px",
+        content: `'${text}'`,
+        position: "absolute",
+        left: "50%",
+        transform: "translateX(-50%)",
+        padding: "2px 8px",
+        display: "inline-block",
+        borderRadius: "10px",
+        background: lighten30.toString(),
+        height: "18px",
+        "&:hover": {
+          background: lighten30.darken(10).toString(),
+        },
       },
-      boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
+      "&.stickied": {
+        "&::before": {
+          marginTop: "6px",
+        },
+        boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
+      },
+      border: "none",
     },
-    border: "none",
-  };
+    theme?.messageList?.scrollTop
+  );
 });
 
 const Messages: React.ForwardRefExoticComponent<

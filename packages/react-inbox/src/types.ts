@@ -24,6 +24,7 @@ export interface InboxTheme {
   };
   messageList?: {
     container?: CSSObject;
+    scrollTop?: CSSObject;
   };
   message?: {
     actionElement?: CSSObject;
