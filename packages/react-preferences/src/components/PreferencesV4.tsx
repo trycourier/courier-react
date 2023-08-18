@@ -433,19 +433,14 @@ export const PreferencesV4: React.FC<{ tenantId?: string; draft?: boolean }> =
     const preferences = usePreferences();
 
     useEffect(() => {
-      const pullPreferences = async () => {
-        if (!preferences.preferencePage && !preferences.recipientPreferences) {
-          await preferences.fetchPreferencePage(tenantId, draft);
-          await preferences.fetchRecipientPreferences(tenantId);
-        }
-      };
-      pullPreferences();
+      preferences.fetchPreferencePage(tenantId, draft);
+      preferences.fetchRecipientPreferences(tenantId);
     }, []);
 
     if (!preferences.preferencePage && !preferences.isLoading) {
       return (
         <div>
-          This page is not avaliable. Please contact your administrator.
+          This page is not available. Please contact your administrator.
         </div>
       );
     }
