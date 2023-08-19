@@ -359,11 +359,13 @@ interface InboxProps {
   formatDate?: (date: string) => string;
   labels?: {
     archiveMessage?: string;
+    backToInbox?: string;
     closeInbox?: string;
     emptyState?: string;
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
+    scrollTop?: string;
   }
 
   // Placement of the Bell relative to the Inbox

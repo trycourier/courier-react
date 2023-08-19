@@ -313,8 +313,8 @@ const Messages: React.ForwardRefExoticComponent<
         return `${pinned.length} ${label ?? "Important"}`;
       }
 
-      return "Scroll Top";
-    }, [pinned.length, brand]);
+      return labels?.scrollTop ?? "Scroll Top";
+    }, [labels?.scrollTop, pinned.length, brand]);
 
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>
