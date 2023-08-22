@@ -26,6 +26,7 @@ export const CourierComponents: React.FunctionComponent = () => {
 
   const componentConfigs = window.courierConfig?.components;
   const initialInbox = querySelector(window?.document?.body, "courier-inbox");
+
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
 
   const [inboxConfig, setInboxConfig] = useState({
@@ -34,6 +35,7 @@ export const CourierComponents: React.FunctionComponent = () => {
   });
 
   const initialToast = querySelector(window?.document?.body, "courier-toast");
+
   const [toastElement, setToastElement] = useState(initialToast ?? undefined);
 
   const [toastConfig, setToastConfig] = useState({
@@ -45,6 +47,7 @@ export const CourierComponents: React.FunctionComponent = () => {
     window?.document?.body,
     "courier-preferences"
   );
+
   const [preferencesElement, setPreferencesElement] = useState(
     initialPreferences ?? undefined
   );

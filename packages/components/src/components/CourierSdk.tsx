@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useCourier } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
-
-const didActionsInit = {
-  inbox: false,
-  toast: false,
-  preferences: false,
-};
 
 export const CourierSdk: React.FunctionComponent<{
   activeComponents: {
@@ -15,6 +9,12 @@ export const CourierSdk: React.FunctionComponent<{
     preferences: boolean;
   };
 }> = ({ activeComponents, children }) => {
+  const ref = useRef({
+    inbox: false,
+    toast: false,
+    preferences: false,
+  });
+
   const courier = useCourier();
   const inbox = useInbox();
 
@@ -45,7 +45,7 @@ export const CourierSdk: React.FunctionComponent<{
     for (const component of Object.keys(activeComponents)) {
       const typedComponent = component as "inbox" | "toast";
 
-      if (!courier[typedComponent] || didActionsInit[typedComponent]) {
+      if (!courier[typedComponent] || ref.current[typedComponent]) {
         continue;
       }
 
@@ -55,7 +55,7 @@ export const CourierSdk: React.FunctionComponent<{
         initAction();
       }
 
-      didActionsInit[typedComponent] = true;
+      ref.current[typedComponent] = true;
     }
   }, [courier?.inbox, courier?.toast, activeComponents]);
 

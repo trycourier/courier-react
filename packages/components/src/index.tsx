@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 
 import {
   CourierProvider,
@@ -64,7 +64,7 @@ interface ICourierConfig {
   preferencePageDraftMode?: boolean;
 }
 
-const initCourier = async (courierConfig?: ICourierConfig) => {
+const initCourier = (courierConfig?: ICourierConfig) => {
   const {
     tenantId,
     apiUrl,
@@ -86,9 +86,15 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
   if (!userId || !clientKey) {
     return;
   }
+  const existingCourierRoot =
+    document.getElementsByTagName("courier-root")?.[0];
 
-  const courierRoot = document.createElement("courier-root");
-  document.body.appendChild(courierRoot);
+  if (existingCourierRoot) {
+    unmountComponentAtNode(existingCourierRoot);
+  } else {
+    const courierRoot = document.createElement("courier-root");
+    document.body.appendChild(courierRoot);
+  }
 
   render(
     <CourierProvider
@@ -106,7 +112,7 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
     >
       <CourierComponents />
     </CourierProvider>,
-    courierRoot
+    document.getElementsByTagName("courier-root")?.[0]
   );
 };
 

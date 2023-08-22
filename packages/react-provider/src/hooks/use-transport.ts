@@ -30,7 +30,7 @@ const useTransport = ({
       transport: CourierTransport;
     }>();
 
-  return useMemo(() => {
+  const newTransport = useMemo(() => {
     if (transport) {
       return transport;
     }
@@ -86,6 +86,8 @@ const useTransport = ({
     }
     return newTransport;
   }, [tenantId, authorization, clientKey, transport, userSignature, wsOptions]);
+
+  return newTransport;
 };
 
 export default useTransport;

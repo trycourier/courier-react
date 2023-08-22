@@ -111,7 +111,7 @@ To listen for actions that happen inside Courier's SDK.
         title: "Hello",
         body: "World",
       });
-    };
+    });
   };
 </script>
 ```
@@ -123,7 +123,7 @@ To listen for actions that happen inside Courier's SDK.
   window.courierAsyncInit = () => {
     window.courier.on("inbox/init", () => {
       console.log(window.courier.inbox.config);
-    };
+    });
   };
 </script>
 ```
