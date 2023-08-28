@@ -271,7 +271,14 @@ export const PreferenceTopic: React.FunctionComponent<{
 
     // If Customize Delivery is turned on, set the routing preferences to the default
     !customizeDelivery &&
-      setRouting(["sms", "email", "direct_message", "push", "webhook"]);
+      setRouting([
+        "direct_message",
+        "email",
+        "inbox",
+        "push",
+        "sms",
+        "webhook",
+      ]);
 
     setCustomizeDelivery(!customizeDelivery);
   };

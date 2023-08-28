@@ -1,9 +1,10 @@
 export type Preference = "channel_preferences" | "status" | "snooze";
 
 export type ChannelClassification =
-  | "email"
-  | "push"
   | "direct_message"
+  | "email"
+  | "inbox"
+  | "push"
   | "sms"
   | "webhook";
 
