@@ -37,9 +37,14 @@ We created a separate breaking change branch to make sure our bundles are small 
 
 ### 4.x
 
-We made a v4.x version to handle a significant change related to the Account feature. We opted to rename it to Tenant. If you're not using the Account, upgrading from 3.x to 4.x won't cause any issues.
+Version 4 adds support for [Tenants](https://www.courier.com/docs/reference/tenants/), which is useful for modeling multi-tenant notification environments. Version 4 makes a single breaking change from Version 3, Accounts (Beta) was renamed to Tenants. If you were not using Accounts (Beta), you can safely upgrade from v3 to v4 without making code changes. Otherwise, see migration guide below.
 
-### Before
+#### Migration Guide
+
+1. In CourierProvider, change `accountId` to `tenantId`.
+2. Thats all.
+
+**Before:**
 
 ```tsx
 <CourierProvider
@@ -56,7 +61,7 @@ We made a v4.x version to handle a significant change related to the Account fea
 </CourierProvider>
 ```
 
-### After
+**After:**
 
 ```tsx
 <CourierProvider
@@ -72,15 +77,6 @@ We made a v4.x version to handle a significant change related to the Account fea
   {props.children}
 </CourierProvider>
 ```
-
-## Type of change
-
-- [ ] Bug fix (non-breaking change that fixes an issue)
-- [ ] New feature (non-breaking change that adds functionality)
-- [x] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-
-
-
 
 **Full Changelog**: https://github.com/trycourier/courier-react/compare/v3.16.0...v4.0.0
 
