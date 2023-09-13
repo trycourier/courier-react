@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export function getIsDocumentHidden() {
-  return !document.hidden;
+  return typeof document !== "undefined" && !document.hidden;
 }
 
 export function usePageVisible(callback: (isVisible: boolean) => void) {
@@ -10,6 +10,9 @@ export function usePageVisible(callback: (isVisible: boolean) => void) {
   };
 
   useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
     document.addEventListener("visibilitychange", onVisibilityChange, false);
 
     return () => {
