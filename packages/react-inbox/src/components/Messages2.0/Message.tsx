@@ -126,6 +126,7 @@ const Message: React.FunctionComponent<{
   preview?: string;
   read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
+  renderActionsAsButtons?: boolean;
   renderPin?: InboxProps["renderPin"];
   title?: string;
 }> = ({
@@ -139,11 +140,13 @@ const Message: React.FunctionComponent<{
   preview,
   read,
   renderedIcon,
+  renderActionsAsButtons,
   renderPin,
   title,
 }) => {
   const courier = useCourier();
-  const renderActionButtons = (actions?.length ?? 0) > 1;
+  const renderActionButtons =
+    renderActionsAsButtons || (actions?.length ?? 0) > 1;
   const { brand, markMessageRead, trackClick } = useInbox();
 
   const pinDetails = pinned?.slotId
@@ -235,6 +238,7 @@ const MessageWrapper: React.FunctionComponent<
     isMobile?: boolean;
     labels: InboxProps["labels"];
     openLinksInNewTab: InboxProps["openLinksInNewTab"];
+    renderActionsAsButtons?: boolean;
     renderPin: InboxProps["renderPin"];
     setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
   }
@@ -255,6 +259,7 @@ const MessageWrapper: React.FunctionComponent<
   pinned,
   preview,
   read,
+  renderActionsAsButtons,
   renderPin,
   setFocusedMessageId,
   title,
@@ -353,7 +358,7 @@ const MessageWrapper: React.FunctionComponent<
       };
     }
 
-    if (!actions?.length || actions.length > 1) {
+    if (renderActionsAsButtons || !actions?.length || actions.length > 1) {
       return;
     }
 
@@ -423,6 +428,7 @@ const MessageWrapper: React.FunctionComponent<
         pinned={pinned}
         preview={preview}
         read={read}
+        renderActionsAsButtons={renderActionsAsButtons}
         renderedIcon={renderedIcon}
         renderPin={renderPin}
         title={title}
@@ -439,6 +445,7 @@ const MessageWrapper: React.FunctionComponent<
     pinned,
     preview,
     read,
+    renderActionsAsButtons,
     renderedIcon,
     renderPin,
     title,
