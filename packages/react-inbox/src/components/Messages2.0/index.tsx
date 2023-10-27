@@ -304,6 +304,14 @@ const Messages: React.ForwardRefExoticComponent<
     };
 
     const scrollTopMessage = useMemo(() => {
+      if (typeof labels?.scrollTop === "string") {
+        return labels?.scrollTop;
+      }
+
+      if (typeof labels?.scrollTop === "function") {
+        return labels?.scrollTop(pinned.length);
+      }
+
       if (pinned.length) {
         const label =
           brand?.inapp?.slots?.length === 1
@@ -314,7 +322,7 @@ const Messages: React.ForwardRefExoticComponent<
       }
 
       return "Scroll Top";
-    }, [pinned.length, brand]);
+    }, [pinned.length, brand, labels?.scrollTop]);
 
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>

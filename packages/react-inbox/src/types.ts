@@ -62,6 +62,7 @@ export interface InboxProps {
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
+    scrollTop?: string | ((count: string) => string);
   };
   onEvent?: OnEvent;
   openLinksInNewTab?: boolean;

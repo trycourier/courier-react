@@ -364,6 +364,7 @@ interface InboxProps {
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
+    scrollTop?: string | (count: string) => string;
   }
 
   // Placement of the Bell relative to the Inbox
