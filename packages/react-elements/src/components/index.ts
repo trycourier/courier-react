@@ -6,3 +6,4 @@ export * from "./color-pickers";
 export * from "./description";
 export * from "./modal";
 export * from "./input";
+export * from "./message";

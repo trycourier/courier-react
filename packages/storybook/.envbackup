@@ -1,0 +1,5 @@
+CLIENT_KEY=NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4
+USER_ID=70f6a4f4-2907-4518-b8f3-b9cfab224764
+INBOX_API_URL=https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q
+API_URL=https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q
+WS_URL=wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev

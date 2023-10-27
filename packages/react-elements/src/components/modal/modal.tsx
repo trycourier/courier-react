@@ -37,15 +37,29 @@ export const Modal: CourierElement<ModalProps> = ({
 
 const Dialog = styled.dialog(
   (): CSSObject => ({
-    background: "#24324B",
+    background: "white",
     border: "none",
-    borderRadius: "0.25rem",
+    borderRadius: "10px",
     overflow: "hidden",
     color: "white",
     padding: 0,
     width: 400,
+    zIndex: 51,
     top: "50%",
+    animationDuration: "500ms",
+    animationName: "fadeInUpModal",
     transform: "translateY(-50%)",
+    "@keyframes fadeInUpModal": {
+      from: {
+        opacity: 0.75,
+        marginTop: "7px",
+      },
+
+      to: {
+        opacity: 1,
+        marginTop: "-7px",
+      },
+    },
   })
 );
 
@@ -55,10 +69,10 @@ const Backdrop = styled.div(
     content: "",
     top: 0,
     left: 0,
+    zIndex: 50,
     right: 0,
     bottom: 0,
-    zIndex: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.2)",
   })
 );
 
@@ -68,7 +82,7 @@ const Header = styled.div(
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    background: "rgb(88, 114, 162)",
+    background: "#9e9e9e",
     padding: "0.5rem",
     boxSizing: "border-box",
   })

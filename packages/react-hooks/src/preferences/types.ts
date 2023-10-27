@@ -54,6 +54,7 @@ export type ChannelClassification =
   | "push"
   | "direct_message"
   | "sms"
+  | "inbox"
   | "webhook";
 
 export type SnoozePreference = {

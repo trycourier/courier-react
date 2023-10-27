@@ -21,15 +21,13 @@
   },
   "dependencies": {
     "@tippyjs/react": "^4.2.3",
-    "@trycourier/react-elements": "^1.61.0",
-    "@trycourier/react-hooks": "^1.61.0",
-    "@trycourier/react-provider": "^1.61.0",
+    "@trycourier/react-elements": "^4.3.2",
+    "@trycourier/react-hooks": "^4.3.2",
+    "@trycourier/react-provider": "^4.3.2",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
-    "markdown-to-jsx": "7.1.7",
     "react-idle-timer": "^5.7.2",
-    "react-loading-skeleton": "^2.2.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.2.1"
   },
