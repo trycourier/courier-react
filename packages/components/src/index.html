@@ -281,6 +281,7 @@
         userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
         components: {
           inbox: {
+            appendTo: "#test",
             onEvent: (params) => {
               console.log("params", params);
               if (
@@ -331,8 +332,10 @@
   </head>
   <body>
     <courier-inbox></courier-inbox>
-    <courier-preferences></courier-preferences>
     <courier-toast></courier-toast>
-    <div id="root" />
+    <courier-preferences></courier-preferences>
+    <div id="root">
+      <div id="test">hello world</div>
+    </div>
   </body>
 </html>

@@ -343,44 +343,55 @@ interface IActionBlock {
   url: string;
 }
 
+
 interface InboxProps {
-  //Brand Override
+  tenantId?: string;
   brand?: Brand;
-
-  //Icon Class Name
   className?: string;
-
-  // defaults to true
-  openLinksInNewTab?: boolean;
-
-  // Default Icon to use if no Icon is present in Message
   defaultIcon?: false | string;
 
-  formatDate?: (date: string) => string;
+  // start date of the inbox to fetch messages
+  from?: number;
+
+  isOpen?: boolean;
+
+  // allows different views with different filter params
+  views?: Array<{
+    id: string;
+    label: string;
+    params?: IGetInboxMessagesParams;
+  }>;
+  formatDate?: (isoDate: string) => string;
+
+  // html query selector to render the inbox into
+  appendTo?: string;
   labels?: {
     archiveMessage?: string;
+    backToInbox?: string;
     closeInbox?: string;
     emptyState?: string;
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
-    scrollTop?: string | (count: string) => string;
-  }
+    scrollTop?: string | ((count: string) => string);
+  };
 
-  // Placement of the Bell relative to the Inbox
-  placement?: "top" | "left" | "right" | "bottom";
+  // event listener for events such as "read", "unread", "archive"
+  onEvent?: OnEvent;
+  openLinksInNewTab?: boolean;
 
-  // render props to override rendering
+  // relative to the inbox beel
+  placement?: TippyProps["placement"];
+  showUnreadMessageCount?: boolean;
+  theme?: InboxTheme;
+  title?: string;
+  trigger?: TippyProps["trigger"];
+  renderContainer?: React.FunctionComponent;
   renderBell?: React.FunctionComponent<{
     className?: string;
-    isOpen?: boolean;
+    isOpen: boolean;
     onClick?: (event: React.MouseEvent) => void;
-    onMouseEnter?: (event: React.MouseEvent) => void;
   }>;
-  renderBlocks?: {
-    action?: React.FunctionComponent<IActionBlock>;
-    text?: React.FunctionComponent<ITextBlock>;
-  }
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderPin?: React.FunctionComponent<PinDetails>;
@@ -388,26 +399,8 @@ interface InboxProps {
     isOpen: boolean;
     unreadMessageCount?: number;
   }>;
-  renderMessage?: React.FunctionComponent<IMessage>;
+  renderMessage?: React.FunctionComponent<IInboxMessagePreview>;
   renderNoMessages?: React.FunctionComponent;
-
-  views?: Array<{
-    id: string;
-    label: string;
-    params: {
-      archived?: boolean;
-      status?: "unread" | "read";
-      from?: string | number;
-      limit?: number;
-      tags?: string[];
-    }
-  }>;
-
-  theme?: ThemeObject;
-  title?: string;
-
-  // should the inbox open on hover or on click?
-  trigger?: "click" | "hover";
 }
 ```
 
