@@ -54,6 +54,7 @@ export interface InboxProps {
     params?: IGetInboxMessagesParams;
   }>;
   formatDate?: (isoDate: string) => string;
+  appendTo?: string;
   labels?: {
     archiveMessage?: string;
     backToInbox?: string;

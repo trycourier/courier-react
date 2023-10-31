@@ -131,10 +131,17 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const isOpen = props.isOpen ?? isOpenState;
 
   const tippyProps: TippyProps = {
-    visible: isOpen,
-    placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
+    placement: props.placement ?? brand?.inapp?.placement ?? "right",
+    visible: isOpen,
   };
+
+  if (props.appendTo) {
+    const appendToElem = document.querySelector(props.appendTo);
+    if (appendToElem) {
+      tippyProps.appendTo = appendToElem;
+    }
+  }
 
   const localStorageState = useLocalStorageMessages(
     courierContext.clientKey,
