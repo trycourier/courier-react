@@ -10,6 +10,7 @@ import {
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
+import { UsePreferences } from "@trycourier/react-hooks";
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ declare global {
         setConfig?: (config: InboxProps) => void;
         config?: any;
       };
+      preferences?: UsePreferences | {};
       transport?: any;
       brand?: Brand;
       renewSession?: (token: string) => void;

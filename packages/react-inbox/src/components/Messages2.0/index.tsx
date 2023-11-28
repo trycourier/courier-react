@@ -309,7 +309,7 @@ const Messages: React.ForwardRefExoticComponent<
       }
 
       if (typeof labels?.scrollTop === "function") {
-        return labels?.scrollTop(pinned.length);
+        return labels?.scrollTop(String(pinned.length));
       }
 
       if (pinned.length) {
