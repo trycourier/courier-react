@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useCourier } from "@trycourier/react-provider";
-import { useInbox } from "@trycourier/react-hooks";
+import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
 export const CourierSdk: React.FunctionComponent<{
   activeComponents: {
@@ -17,6 +17,7 @@ export const CourierSdk: React.FunctionComponent<{
 
   const courier = useCourier();
   const inbox = useInbox();
+  const preferences = usePreferences();
 
   useEffect(() => {
     window.courier = window.courier ?? {};
@@ -26,6 +27,15 @@ export const CourierSdk: React.FunctionComponent<{
       ...inbox,
     };
   }, [inbox]);
+
+  useEffect(() => {
+    window.courier = window.courier ?? {};
+    window.courier.preferences = window?.courier?.preferences ?? {};
+    window.courier.preferences = {
+      ...window.courier.preferences,
+      ...preferences,
+    };
+  }, [preferences]);
 
   useEffect(() => {
     window.courier = window.courier ?? {};

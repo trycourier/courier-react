@@ -135,14 +135,18 @@ const UPDATE_RECIPIENT_PREFERENCES = `
   }
 `;
 
-type UpdateRecipientPreferences = (payload: {
+export interface UpdateRecipientPreferencesPayload {
   templateId: string;
   status: string;
   hasCustomRouting: boolean;
   routingPreferences: Array<string>;
   digestSchedule: string;
   tenantId?: string;
-}) => Promise<any>;
+}
+
+type UpdateRecipientPreferences = (
+  payload: UpdateRecipientPreferencesPayload
+) => Promise<any>;
 export const updateRecipientPreferences =
   (client: Client | undefined): UpdateRecipientPreferences =>
   async (payload) => {

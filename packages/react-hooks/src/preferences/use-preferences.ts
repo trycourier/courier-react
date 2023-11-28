@@ -2,10 +2,14 @@ import { useCourier, registerReducer } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import reducer from "./reducer";
 
-import usePreferencesActions from "./use-preferences-actions";
+import usePreferencesActions, {
+  UsePreferenceActions,
+} from "./use-preferences-actions";
 import { PreferenceState } from "./types";
 
-const usePreferences = () => {
+export type UsePreferences = PreferenceState & UsePreferenceActions;
+
+const usePreferences = (): UsePreferences => {
   const { preferences } =
     useCourier<{
       preferences: PreferenceState;

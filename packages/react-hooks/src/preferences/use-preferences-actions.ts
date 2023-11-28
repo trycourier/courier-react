@@ -1,7 +1,19 @@
 import { useCourier } from "@trycourier/react-provider";
-import { createCourierClient, Preferences } from "@trycourier/client-graphql";
+import {
+  createCourierClient,
+  Preferences,
+  UpdateRecipientPreferencesPayload,
+} from "@trycourier/client-graphql";
 
-const usePreferencesActions = () => {
+export interface UsePreferenceActions {
+  fetchRecipientPreferences: (tenantId?: string) => void;
+  fetchPreferencePage: (tenantId?: string, draft?: boolean) => void;
+  updateRecipientPreferences: (
+    payload: UpdateRecipientPreferencesPayload
+  ) => void;
+}
+
+const usePreferencesActions = (): UsePreferenceActions => {
   const { apiUrl, clientKey, userId, userSignature, dispatch, authorization } =
     useCourier();
 

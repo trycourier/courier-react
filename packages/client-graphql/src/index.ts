@@ -13,4 +13,7 @@ export {
   IGetMessagesParams,
   IGraphMessageResponse,
 } from "./messages";
-export { default as Preferences } from "./preferences";
+export {
+  default as Preferences,
+  UpdateRecipientPreferencesPayload,
+} from "./preferences";
