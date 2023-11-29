@@ -221,6 +221,58 @@ You update configuration of components by using:
 
 `window.courier.toast.setConfig(config: ToastConfig);`
 
+## [Using Preferences](#using-preferences)
+
+This library provides access to advanced user preferences through `window.courier.preferences`. The available APIs can be found [in Courier's graphql-client](../client-graphql/src/preferences.ts) and have built-in tenant support. After initializing the client. The following methods are available for you to use.
+
+**\*getRecipientPreferences**: (tenantId?: string) => Promise\<any>\*
+Retrieves the recipient preferences for the given user. Will display the preferences for the user's tenant if provided.
+
+```
+let recipient_preferences = window.courier.preferences.getRecipientPreferences();
+let recipient_tenant_preferences = window.courier.preferences.getRecipientPreferences("tenant_a");
+```
+
+**\*getPreferencePage**: (tenantId?: string) => Promise\<any>\*
+Retrieves the preference pages for subscription topics with their respective defaults defaults. The default preferences for the tenant will be displayed if provided. You will use this in combination with getRecepientPreferences to build a customer user interface that displays the user's preferences.
+
+```
+let recipient_preferences = window.courier.preferences.getPreferencePage();
+let recipient_tenant_preferences = window.courier.preferences.getPreferencePage("tenant_a");
+```
+
+**\*updateRecipientPreferences**: ( payload: [UpdateRecipientPreferencesPayload]() ) => Promise\<any>\*
+Update the user's preference for a specific Subscription Topic (templateId) and an optional tenant (tenantId).
+
+```
+interface UpdateRecipientPreferencesPayload {
+  templateId: string;
+  status: string;
+  hasCustomRouting: boolean;
+  routingPreferences: Array<string>;
+  digestSchedule: string;
+  tenantId?: string;
+}
+
+window.courier.preferences.updateRecipientPreferences({
+  templateId: "ABC",
+  status: "OPT_IN",
+  hasCustomRouting: false,
+  routingPreferences: [],
+  digestSchedule: null
+});
+
+window.courier.preferences.updateRecipientPreferences({
+  templateId: "ABC",
+  status: "OPT_OUT",
+  hasCustomRouting: false,
+  routingPreferences: [],
+  digestSchedule: null,
+  tenantId: "tenant_a"
+});
+
+```
+
 ## [Listening to Events](#events)
 
 You can listen to inbox events by adding a function to window.courierConfig.components.inbox.onEvent.
