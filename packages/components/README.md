@@ -225,20 +225,20 @@ You update configuration of components by using:
 
 This library provides access to advanced user preferences through `window.courier.preferences`. The available APIs can be found [in Courier's graphql-client](../client-graphql/src/preferences.ts) and have built-in tenant support. After initializing the client. The following methods are available for you to use.
 
-**\*getRecipientPreferences**: (tenantId?: string) => Promise\<any>\*
+**\*fetchRecipientPreferences**: (tenantId?: string) => Promise\<any>\*
 Retrieves the recipient preferences for the given user. Will display the preferences for the user's tenant if provided.
 
 ```
-let recipient_preferences = window.courier.preferences.getRecipientPreferences();
-let recipient_tenant_preferences = window.courier.preferences.getRecipientPreferences("tenant_a");
+let recipient_preferences = window.courier.preferences.fetchRecipientPreferences();
+let recipient_tenant_preferences = window.courier.preferences.fetchRecipientPreferences("tenant_a");
 ```
 
-**\*getPreferencePage**: (tenantId?: string) => Promise\<any>\*
+**\*fetchPreferencePage**: (tenantId?: string, draft: boolean = false) => Promise\<any>\*
 Retrieves the preference pages for subscription topics with their respective defaults defaults. The default preferences for the tenant will be displayed if provided. You will use this in combination with getRecepientPreferences to build a customer user interface that displays the user's preferences.
 
 ```
-let recipient_preferences = window.courier.preferences.getPreferencePage();
-let recipient_tenant_preferences = window.courier.preferences.getPreferencePage("tenant_a");
+let recipient_preferences = window.courier.preferences.fetchPreferencePage();
+let recipient_tenant_preferences = window.courier.preferences.fetchPreferencePage("tenant_a");
 ```
 
 **\*updateRecipientPreferences**: ( payload: [UpdateRecipientPreferencesPayload]() ) => Promise\<any>\*
