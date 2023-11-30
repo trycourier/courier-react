@@ -12,11 +12,24 @@ import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
 import { UsePreferences } from "@trycourier/react-hooks";
 
+const middleware = () => (next) => (action) => {
+  const _action =
+    window?.courier?.__actions?.[action.type.toLowerCase()] ??
+    window?.courier?.__actions?.[action.type] ??
+    [];
+
+  for (const __a of _action) {
+    __a(action.payload);
+  }
+
+  next(action);
+};
+
 declare global {
   interface Window {
     courier: {
       __actions: {
-        [action: string]: Array<() => void>;
+        [action: string]: Array<(payload: any) => void>;
       };
       toast?: {
         mergeConfig?: (config: ToastProps) => void;
@@ -111,6 +124,7 @@ const initCourier = (courierConfig?: ICourierConfig) => {
       userId={userId}
       userSignature={userSignature}
       wsOptions={wsOptions}
+      middleware={[middleware]}
     >
       <CourierComponents />
     </CourierProvider>,
