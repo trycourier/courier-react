@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useCourier } from "@trycourier/react-provider";
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
 
@@ -8,13 +8,7 @@ export const CourierSdk: React.FunctionComponent<{
     toast: boolean;
     preferences: boolean;
   };
-}> = ({ activeComponents, children }) => {
-  const ref = useRef({
-    inbox: false,
-    toast: false,
-    preferences: false,
-  });
-
+}> = ({ children }) => {
   const courier = useCourier();
   const inbox = useInbox();
   const preferences = usePreferences();
@@ -50,24 +44,6 @@ export const CourierSdk: React.FunctionComponent<{
       renewSession: courier.renewSession,
     };
   }, [courier]);
-
-  useEffect(() => {
-    for (const component of Object.keys(activeComponents)) {
-      const typedComponent = component as "inbox" | "toast";
-
-      if (!courier[typedComponent] || ref.current[typedComponent]) {
-        continue;
-      }
-
-      const initActions =
-        window?.courier?.__actions?.[`${typedComponent}/init`] ?? [];
-      for (const initAction of initActions) {
-        initAction();
-      }
-
-      ref.current[typedComponent] = true;
-    }
-  }, [courier?.inbox, courier?.toast, activeComponents]);
 
   return <>{children}</>;
 };
