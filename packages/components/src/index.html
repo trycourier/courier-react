@@ -14,12 +14,9 @@
     </style>
     <script type="text/javascript">
       window.courierAsyncInit = () => {
-        window.courier.on(
-          "preferences/FETCH_PREFERENCE_PAGE/DONE",
-          (payload) => {
-            console.log("FETCH_PREFERENCE_PAGE", payload);
-          }
-        );
+        window.courier.on("*", (payload) => {
+          console.log(payload);
+        });
       };
 
       const fontWeights = {

@@ -41,7 +41,7 @@ export const PreferenceList: React.FunctionComponent<{
     ) {
       return (
         <PreferenceV4Wrapper theme={theme}>
-          <PreferencesV4 />
+          <PreferencesV4 tenantId={tenantId} draft={draft} />
         </PreferenceV4Wrapper>
       );
     }

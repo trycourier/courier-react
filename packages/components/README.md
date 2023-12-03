@@ -95,9 +95,22 @@ After Courier has initialized, the object `window.courier` is ready.
 
 Use this function to initialize the rendering of the Courier components if you were not able to initialize synchronously.
 
-- window.courier.on((action, cb));
+- window.courier.on(action, callback);
 
-To listen for actions that happen inside Courier's SDK.
+To listen for actions inside Courier's SDK like `root/init`, `inbox/init`, or `toast/init`. Specifying `*` as your action will invoke for every event, which is helpful for debugging.
+
+```javascript
+window.courier.on("*", (payload) => {
+  console.log(payload);
+});
+```
+
+NOTE: The following are equivalent, we check the lowercase of the action.
+
+```javascript
+window.courier.on("root/init", () => {});
+window.courier.on("root/INIT", () => {});
+```
 
 ## [SDK Actions](#sdk-actions)
 
@@ -215,36 +228,36 @@ window.courierConfig = {
 
 ## [Updating Component Configs](#updating-config)
 
-You update configuration of components by using:
+You update the configuration of components by using:
 
 `window.courier.inbox.setConfig(config: InboxConfig);`
 
 `window.courier.toast.setConfig(config: ToastConfig);`
 
-## [Using Preferences](#using-preferences)
+## [Using Preferences API](#using-preferences-api)
 
-This library provides access to advanced user preferences through `window.courier.preferences`. The available APIs can be found [in Courier's graphql-client](../client-graphql/src/preferences.ts) and have built-in tenant support. After initializing the client. The following methods are available for you to use.
+This library provides access to advanced user preferences through `window.courier.preferences`. The available APIs can be found [in Courier's graphql-client](../client-graphql/src/preferences.ts) and have built-in tenant support after initializing the client. The following methods are available to start fetching or updating the preferences. The following functions will dispatch the request; you must listen to `preferences/*/done` events to retrieve the data after the request is finished ([see below](#preference-event-data)).
 
-**\*fetchRecipientPreferences**: (tenantId?: string) => Promise\<any>\*
-Retrieves the recipient preferences for the given user. Will display the preferences for the user's tenant if provided.
+**\*fetchRecipientPreferences**: (tenantId?: string) => void\*
+Retrieves the recipient preferences for the given user. The preferences for the user's tenant will be displayed if provided.
 
+```javascript
+window.courier.preferences.fetchRecipientPreferences();
+window.courier.preferences.fetchRecipientPreferences("tenant_a");
 ```
-let recipient_preferences = window.courier.preferences.fetchRecipientPreferences();
-let recipient_tenant_preferences = window.courier.preferences.fetchRecipientPreferences("tenant_a");
-```
 
-**\*fetchPreferencePage**: (tenantId?: string, draft: boolean = false) => Promise\<any>\*
+**\*fetchPreferencePage**: (tenantId?: string, draft: boolean = false) => void\*
 Retrieves the preference pages for subscription topics with their respective defaults defaults. The default preferences for the tenant will be displayed if provided. You will use this in combination with getRecepientPreferences to build a customer user interface that displays the user's preferences.
 
-```
-let recipient_preferences = window.courier.preferences.fetchPreferencePage();
-let recipient_tenant_preferences = window.courier.preferences.fetchPreferencePage("tenant_a");
+```javascript
+window.courier.preferences.fetchPreferencePage();
+window.courier.preferences.fetchPreferencePage("tenant_a");
 ```
 
-**\*updateRecipientPreferences**: ( payload: [UpdateRecipientPreferencesPayload]() ) => Promise\<any>\*
+**\*updateRecipientPreferences**: ( payload: [UpdateRecipientPreferencesPayload]() ) => void\*
 Update the user's preference for a specific Subscription Topic (templateId) and an optional tenant (tenantId).
 
-```
+```typescript
 interface UpdateRecipientPreferencesPayload {
   templateId: string;
   status: string;
@@ -256,24 +269,39 @@ interface UpdateRecipientPreferencesPayload {
 
 window.courier.preferences.updateRecipientPreferences({
   templateId: "ABC",
-  status: "OPT_IN",
+  status: "OPTED_IN",
   hasCustomRouting: false,
   routingPreferences: [],
-  digestSchedule: null
+  digestSchedule: null,
 });
 
 window.courier.preferences.updateRecipientPreferences({
   templateId: "ABC",
-  status: "OPT_OUT",
+  status: "OPTED_OUT",
   hasCustomRouting: false,
   routingPreferences: [],
   digestSchedule: null,
-  tenantId: "tenant_a"
+  tenantId: "tenant_a",
 });
-
 ```
 
-## [Listening to Events](#events)
+### [Preference Event Data](#preference-event-data)
+
+When using this library's [preference APIs](#using-preferences-api), there are two methods to retrieving the preference data associated with the user and tenant. First is to access it through `window.courier.preferences.preferencePage` and `window.courier.preferences.recipientPreferences` after calling their respective fetch's. Alternatively, you can use this package's `.on()` to listen for calls to be finished.
+
+```javascript
+window.courier.on("preferences/fetch_preference_page/done", (payload) => {
+  // do something
+});
+window.courier.on("preferences/fetch_recipient_preferences/done", (payload) => {
+  // do something
+});
+window.courier.on("preferences/update_recipient_preferences/done", () => {
+  // do something
+});
+```
+
+## [Listening to Inbox Events](#events)
 
 You can listen to inbox events by adding a function to window.courierConfig.components.inbox.onEvent.
 
