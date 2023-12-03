@@ -13,6 +13,12 @@
       }
     </style>
     <script type="text/javascript">
+      window.courierAsyncInit = () => {
+        window.courier.on("*", (payload) => {
+          console.log(payload);
+        });
+      };
+
       const fontWeights = {
         thin: 200,
         normal: 400,
