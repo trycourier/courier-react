@@ -19,7 +19,13 @@ const middleware = () => (next) => (action) => {
     [];
 
   for (const __a of _action) {
-    __a(action.payload);
+    __a(action);
+  }
+
+  if (window?.courier?.__actions?.["*"]) {
+    for (const __a of window?.courier?.__actions?.["*"]) {
+      __a(action);
+    }
   }
 
   next(action);
