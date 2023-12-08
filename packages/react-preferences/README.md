@@ -25,6 +25,8 @@ A set of UI components for allowing your end users to manage their preferences. 
 yarn add @trycourier/react-provider @trycourier/react-preferences
 ```
 
+Note: Depending on your React version, if you get a `Cannot find module "prop-types"` error, you will need to `yarn add prop-types`.
+
 <a name="1easy-usagemd"></a>
 
 # [Easy Usage](#easy-usage)
@@ -32,6 +34,7 @@ yarn add @trycourier/react-provider @trycourier/react-preferences
 ```jsx
 import React from "react";
 import { Footer, Header, PreferencesV4 } from "@trycourier/react-preferences";
+import { CourierProvider } from "@trycourier/react-provider";
 
 const PreferencePage: React.FunctionComponent<{
   tenantId?: string,
