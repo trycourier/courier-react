@@ -17,6 +17,7 @@ export interface InboxTheme {
   footer?: CSSObject;
   header?: CSSObject;
   menu?: CSSObject;
+  rtl?: boolean;
   tooltip?: CSSObject;
   icon?: CSSObject & {
     open?: string;

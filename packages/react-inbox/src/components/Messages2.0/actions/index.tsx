@@ -61,24 +61,26 @@ const MobileActions = styled.div(({ theme }) =>
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Styled = styled.div((_props) => {
+const Styled = styled.div(({ theme }) => {
   return {
     display: "flex",
     height: 24,
     alignItems: "center",
     position: "absolute",
-    right: 12,
+    right: theme.rtl ? undefined : 12,
+    left: theme.rtl ? 12 : undefined,
 
     ".close": {
-      marginRight: -6,
-      marginLeft: 6,
+      marginRight: theme.rtl ? 6 : -6,
+      marginLeft: theme.rtl ? -6 : 6,
       marginTop: -3,
     },
 
     "> div": {
       opacity: 0,
       top: 4,
-      right: 0,
+      right: theme.rtl ? undefined : 0,
+      left: theme.rtl ? 0 : undefined,
       position: "absolute",
       visibility: "hidden",
       transition: "opacity 200ms ease-in-out",
@@ -86,7 +88,7 @@ const Styled = styled.div((_props) => {
       "&:not(.hidden)": {
         opacity: 1,
         visibility: "visible",
-        textAlign: "right",
+        textAlign: theme.rtl ? "left" : "right",
       },
     },
 
@@ -224,7 +226,6 @@ const MessageActions: React.FunctionComponent<{
           tabIndex={0}
           title={created}
           aria-label={`created ${readableTimeAgo}`}
-          style={{ textAlign: "right" }}
         >
           {archived ? `Archived: ${formattedTime}` : formattedTime}
         </TimeAgo>

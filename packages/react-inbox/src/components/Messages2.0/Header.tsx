@@ -95,7 +95,8 @@ const DropdownOptionButton = styled.button<{
 
     svg: {
       marginTop: "1px",
-      marginLeft: "3px",
+      marginLeft: theme.rtl ? undefined : "3px",
+      marginRight: theme.rtl ? "3px" : undefined,
       ...(showDropdown
         ? {
             transform: "rotate(180deg)",
@@ -155,7 +156,8 @@ const HeadingDropdownOptions = styled.div(({ theme }) => {
     {
       position: "absolute",
       top: "42px",
-      left: 0,
+      left: theme.rtl ? undefined : 0,
+      right: theme.rtl ? 0 : undefined,
       background: "white",
       width: "100%",
       zIndex: 2,
