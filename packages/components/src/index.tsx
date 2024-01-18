@@ -104,7 +104,7 @@ const initCourier = (courierConfig?: ICourierConfig) => {
     return;
   }
 
-  if (!userId || !clientKey) {
+  if (!authorization && (!userId || !clientKey)) {
     return;
   }
   const existingCourierRoot =
