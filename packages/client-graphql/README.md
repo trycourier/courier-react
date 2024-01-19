@@ -96,6 +96,54 @@ const getBrand = async (brandId?: string) => {
 };
 ```
 
+### Preferences
+
+You can use our GraphQL endpoints to read and write advanced user preferences and see draft preferences. This API has getRecipientPreferences, getPreferencePage, getDraftPreferencePage, and updateRecipientPreferences methods. You can see the response payloads in action on [User Preference Tester](https://bwebs.github.io/courier-test/window-preferences.html)
+
+```js
+import { Preferences } from "@trycourier/client-graphql";
+const preferencesApi = Preferences({
+  clientKey: "abc123",
+  userId: "@me",
+  userSignature: "SUPER_SECRET",
+});
+const getRecipientPreferences = async (tenantId?: string) => {
+  const user_preferences = await preferencesApi.getRecipientPreferences(
+    tenantId
+  );
+  return user_preferences;
+};
+const getPreferencePage = async (tenantId?: string) => {
+  const page_with_defaults = await preferencesApi.getPreferencePage(tenantId);
+  return page_with_defaults;
+};
+const getDraftPreferencePage = async (tenantId?: string) => {
+  const draft_page_with_defaults = await preferencesApi.getDraftPreferencePage(
+    tenantId
+  );
+  return draft_page_with_defaults;
+};
+const updateRecipientPreferences = async (
+  payload: UpdateRecipientPreferencesPayload
+) => {
+  const update_preferences = await preferencesApi.updateRecipientPreferences(
+    payload
+  );
+  return update_preferences;
+};
+```
+
+```ts
+interface UpdateRecipientPreferencesPayload {
+  templateId: string;
+  status: string;
+  hasCustomRouting: boolean;
+  routingPreferences: Array<string>;
+  digestSchedule: string;
+  tenantId?: string;
+}
+```
+
 ### Banners
 
 #### For one user
