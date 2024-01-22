@@ -33,9 +33,9 @@ export const Container = styled.div(({ theme }) =>
 );
 
 export const Contents = styled.div(({ theme }) => ({
-  marginRight: "auto",
-  marginLeft: 15,
-  textAlign: "left",
+  marginRight: theme.rtl ? 15 : "auto",
+  marginLeft: theme.rtl ? "auto" : 15,
+  textAlign: theme.rtl ? "right" : "left",
   ...theme.message?.contents,
 }));
 
@@ -46,7 +46,7 @@ export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
       fontStyle: "normal",
       fontWeight: "600",
       lineHeight: "16px",
-      textAlign: "left",
+      textAlign: theme.rtl ? "right" : "left",
       display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -67,7 +67,7 @@ export const TextElement = styled.div(({ theme }) =>
       maxWidth: 250,
       fontWeight: "400",
       lineHeight: "16px",
-      textAlign: "left",
+      textAlign: theme.rtl ? "right" : "left",
       overflow: "hidden",
       textOverflow: "ellipsis",
       whiteSpace: "pre-line",
@@ -101,7 +101,8 @@ export const ActionElement = styled.button<{
       padding: "0 16px",
       cursor: "pointer",
       border: `1px solid ${primary ? "transparent" : "rgba(28, 39, 58, 1)"}`,
-      marginRight: "12px",
+      marginRight: theme.rtl ? undefined : "12px",
+      marginLeft: theme.rtl ? "12px" : undefined,
       marginTop: "6px",
       transition: "all 100ms ease-in",
       "&:hover": {
@@ -127,6 +128,7 @@ export const TimeAgo = styled.div(({ theme }) =>
       maxWidth: "90px",
       textOverflow: "ellipsis",
       overflow: "hidden",
+      textAlign: theme.rtl ? "left" : "right",
     },
     theme.message?.timeAgo
   )
@@ -166,7 +168,8 @@ export const UnreadIndicator = styled.div(({ theme }) =>
       backgroundColor: theme?.brand?.colors?.primary ?? "#9121c2",
       borderRadius: "50%",
       position: "absolute",
-      left: "13px",
+      left: theme.rtl ? undefined : "13px",
+      right: theme.rtl ? "13px" : undefined,
     },
     theme?.message?.unreadIndicator
   )
@@ -204,7 +207,8 @@ export const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
           ? {
               position: "fixed",
               top: 0,
-              left: 0,
+              left: theme.rtl ? undefined : 0,
+              right: theme.rtl ? 0 : undefined,
               width: "100vw",
               height: "100vh",
             }
@@ -272,10 +276,12 @@ export const Footer = styled.div(({ theme }) =>
       fontWeight: "700",
       height: 45,
       justifyContent: "center",
-      paddingRight: 18,
+      paddingRight: theme.rtl ? undefined : 18,
+      paddingLeft: theme.rtl ? 18 : undefined,
       svg: {
         marginTop: 2,
-        marginLeft: -1,
+        marginLeft: theme.rtl ? undefined : -1,
+        marginRight: theme.rtl ? -1 : undefined,
       },
 
       a: {
@@ -293,9 +299,11 @@ export const Line = styled.div(({ theme }) => ({
   flex: 1,
   opacity: "0.18",
   ":first-child": {
-    marginRight: "15px",
+    marginRight: theme.rtl ? undefined : "15px",
+    marginLeft: theme.rtl ? "15px" : undefined,
   },
   ":last-child": {
-    marginLeft: "15px",
+    marginRight: theme.rtl ? "15px" : undefined,
+    marginLeft: theme.rtl ? undefined : "15px",
   },
 }));

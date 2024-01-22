@@ -37,6 +37,7 @@ export interface Brand {
     borderRadius?: string;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";
+    renderActionsAsButtons?: boolean;
     emptyState?: {
       textColor?: string;
       text?: string;

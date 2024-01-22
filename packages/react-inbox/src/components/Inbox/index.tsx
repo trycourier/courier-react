@@ -41,13 +41,15 @@ const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
             borderRadius: 17,
             padding: "0 4px",
             height: 16,
-            left: 12,
+            left: theme.rtl ? undefined : 12,
+            right: theme.rtl ? 12 : undefined,
             textAlign: "center",
             minWidth: 8,
           }
         : {
             top: -2,
-            right: 0,
+            right: theme.rtl ? undefined : 0,
+            left: theme.rtl ? 0 : undefined,
             borderRadius: "100%",
             padding: 5,
           },

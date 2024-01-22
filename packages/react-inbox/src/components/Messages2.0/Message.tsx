@@ -34,7 +34,8 @@ const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
         width: 2,
         background: primaryColor,
         position: "absolute",
-        left: "1px",
+        left: theme.rtl ? undefined : "1px",
+        right: theme.rtl ? "1px" : undefined,
         top: "1px",
         bottom: "1px",
       },
@@ -86,9 +87,9 @@ const MessageContainer = styled.div(({ theme }) => {
 });
 
 const Contents = styled.div<{ hasIcon: boolean }>(({ theme, hasIcon }) => ({
-  marginRight: "auto",
-  textAlign: "left",
-  marginLeft: hasIcon ? 12 : 0,
+  marginRight: theme.rtl ? (hasIcon ? 12 : 0) : "auto",
+  marginLeft: theme.rtl ? "auto" : hasIcon ? 12 : 0,
+  textAlign: theme.rtl ? "right" : "left",
   ...theme.message?.contents,
 }));
 
@@ -101,12 +102,14 @@ const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
       alignItems: "center",
       color: color ?? "rgb(115, 129, 155)",
       svg: {
-        paddingRight: "3px",
+        paddingRight: theme.rtl ? undefined : "3px",
+        paddingLeft: theme.rtl ? "3px" : undefined,
       },
 
       img: {
         width: "18px",
-        paddingRight: "3px",
+        paddingRight: theme.rtl ? undefined : "3px",
+        paddingLeft: theme.rtl ? "3px" : undefined,
       },
     },
     theme?.message?.pinned
