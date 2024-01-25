@@ -256,7 +256,7 @@ const MessageActions: React.FunctionComponent<{
         <TimeAgo>{formattedTime}</TimeAgo>
         {read && (
           <Checkmark
-            fill={"rgba(86, 96, 116, 0.3)"}
+            fill="var(--ci-icon)"
             style={{
               marginRight: -6,
               marginLeft: -3,

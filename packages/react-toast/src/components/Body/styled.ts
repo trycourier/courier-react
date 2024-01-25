@@ -27,17 +27,17 @@ export const Dismiss = styled.button(({ theme }) =>
       opacity: 0,
       cursor: "pointer",
       position: "absolute",
-      top: -10,
+      top: -15,
       fontFamily: `"Roboto", monospace`,
       right: -10,
-      width: 30,
-      height: 30,
+      width: 25,
+      height: 25,
       zIndex: 50,
       color: theme?.brand?.colors?.primary,
       background: "rgba(255, 255, 255, 0.8)",
       boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
       transition: "opacity 100ms ease-in",
-      padding: 6,
+      padding: 3,
       border: "none",
       "&:hover": {
         background: "white",
@@ -67,7 +67,7 @@ export const Message = styled.div(({ theme }) =>
       fontStyle: "normal",
       lineHeight: "14px",
       alignSelf: "center",
-      color: "#73819B",
+      color: "var(--ci-text-color)",
       overflow: "hidden",
     },
     theme?.message?.contents
@@ -88,7 +88,7 @@ export const Title = styled.div(({ theme }) =>
       textOverflow: "ellipsis",
       WebkitLineClamp: "1",
       WebkitBoxOrient: "vertical",
-      color: "#24324B",
+      color: "var(--ci-title-color)",
     },
     theme.message?.title
   )
@@ -97,7 +97,7 @@ export const Title = styled.div(({ theme }) =>
 export const TextElement = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "#73819B",
+      color: "var(--ci-text-color)",
       marginTop: "1px",
       wordBreak: "break-word",
       fontSize: "12px",

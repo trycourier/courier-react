@@ -18,9 +18,11 @@ import {
   EventType,
   ICourierContext,
   ICourierProviderProps,
-  PinDetails,
-  WSOptions,
   OnEvent,
+  PinDetails,
+  ProviderTheme,
+  ThemeVariables,
+  WSOptions,
 } from "./types";
 import { CourierTransport } from "./transports/courier";
 import {
@@ -39,6 +41,9 @@ import useCourierActions from "./hooks/use-courier-actions";
 import { usePageVisible } from "./hooks/use-page-visible";
 import useTransport from "./hooks/use-transport";
 import useClientSourceId from "./hooks/use-client-source-id";
+import deepExtend from "deep-extend";
+import { darkVariables, lightVariables } from "./theme";
+import { createGlobalStyle } from "styled-components";
 
 export * from "./transports";
 export * from "./hooks";
@@ -49,18 +54,35 @@ export const registerMiddleware = _registerMiddleware;
 
 export type {
   Brand,
+  EventType,
   IActionElemental,
   ICourierContext,
   ICourierEventMessage,
   IInboxMessagePreview,
+  Interceptor,
   ITextElemental,
   Middleware,
-  PinDetails,
-  WSOptions,
-  EventType,
   OnEvent,
-  Interceptor,
+  PinDetails,
+  ProviderTheme,
+  WSOptions,
 };
+
+const GlobalThemeVariables = createGlobalStyle<{
+  theme: {
+    variables: ThemeVariables;
+  };
+}>(({ theme }) => {
+  return {
+    ":root": {
+      "--ci-background": theme?.variables?.background,
+      "--ci-text-color": theme?.variables?.textColor,
+      "--ci-title-color": theme?.variables?.titleColor,
+      "--ci-structure": theme?.variables?.structure,
+      "--ci-icon": theme?.variables?.icon,
+    },
+  };
+});
 
 export const CourierContext =
   React.createContext<ICourierContext | undefined>(undefined);
@@ -68,7 +90,6 @@ export const CourierContext =
 export const CourierProvider: React.FunctionComponent<
   PropsWithChildren<ICourierProviderProps>
 > = ({
-  tenantId,
   apiUrl,
   authorization,
   brand,
@@ -76,6 +97,8 @@ export const CourierProvider: React.FunctionComponent<
   children,
   clientKey,
   id,
+  tenantId,
+  theme: _theme,
   inboxApiUrl,
   localStorage = typeof window !== "undefined"
     ? window?.localStorage
@@ -126,8 +149,19 @@ export const CourierProvider: React.FunctionComponent<
           wsOptions,
         });
 
+  const theme = useMemo(
+    () => ({
+      ..._theme,
+      variables: deepExtend(
+        {},
+        _theme?.colorMode === "dark" ? darkVariables : lightVariables,
+        _theme?.variables ?? {}
+      ),
+    }),
+    [_theme]
+  );
+
   const [state, dispatch] = useReducer(reducer, {
-    tenantId,
     apiUrl,
     authorization,
     brand,
@@ -138,6 +172,7 @@ export const CourierProvider: React.FunctionComponent<
     localStorage,
     middleware,
     onRouteChange,
+    tenantId,
     transport,
     userId,
     userSignature,
@@ -210,20 +245,19 @@ export const CourierProvider: React.FunctionComponent<
     }
 
     actions.init({
-      tenantId,
       apiUrl,
       authorization,
       brandId,
       clientKey,
       inboxApiUrl,
       localStorage,
+      tenantId,
       transport,
       userId,
       userSignature,
       ...parsedLocalStorageState,
     });
   }, [
-    tenantId,
     actions,
     apiUrl,
     authorization,
@@ -231,6 +265,7 @@ export const CourierProvider: React.FunctionComponent<
     clientKey,
     inboxApiUrl,
     localStorage,
+    tenantId,
     transport,
     userId,
     userSignature,
@@ -258,6 +293,7 @@ export const CourierProvider: React.FunctionComponent<
         dispatch,
       }}
     >
+      <GlobalThemeVariables theme={theme} />
       {children}
     </CourierContext.Provider>
   );

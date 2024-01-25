@@ -266,6 +266,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       : bell;
   };
 
+  const theme = useMemo(() => {
+    return deepExtend({}, props.theme ?? {}, {
+      brand,
+    });
+  }, [props.theme, brand]);
+
   if (!courierContext?.inbox) {
     return null;
   }
@@ -273,11 +279,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   return (
     <>
       <TippyGlobalStyle />
-      <ThemeProvider
-        theme={deepExtend({}, props.theme ?? {}, {
-          brand,
-        })}
-      >
+      <ThemeProvider theme={theme}>
         {tippyProps.visible ? (
           <>
             {isMobile ? (

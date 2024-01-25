@@ -38,7 +38,7 @@ const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
               "*, &": {
                 boxSizing: "border-box",
               },
-              background: "#F2F6F9",
+              background: "var(--ci-background)",
             }),
       },
       theme?.container
@@ -83,7 +83,7 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
     return deepExtend(
       {
         position: "relative",
-        background: "rgb(242, 246, 249)",
+        background: "var(--ci-background)",
         overflow: "scroll",
         display: "flex",
         height,
