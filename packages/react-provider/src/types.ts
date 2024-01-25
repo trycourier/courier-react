@@ -55,6 +55,7 @@ export interface Brand {
       borderRadius?: string;
       timerAutoClose?: number;
     };
+    renderActionsAsButtons?: boolean;
   };
   colors?: {
     primary?: string;
