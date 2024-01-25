@@ -14,6 +14,7 @@ export const toastStyles = ({ theme }) => ({
     width: 320,
     minHeight: 65,
     padding: 0,
+    background: "var(--ci-background)",
     borderRadius: "6px",
     borderBottomLeftRadius:
       theme?.brand?.inapp?.toast?.borderRadius ??

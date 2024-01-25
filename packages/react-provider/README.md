@@ -3,6 +3,7 @@
 
 - [Props](#props)
 - [Listening to Messsages](#listening-to-messsages)
+- [Dark Mode / Theme Variables](#dark-mode--theme-variables)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -152,3 +153,46 @@ const MyApp = ({ children }) => {
   );
 };
 ```
+
+<a name="2dark-modemd"></a>
+
+### [Dark Mode / Theme Variables](#dark-mode)
+
+Dark mode is supported by passing "theme.colorMode" to the CourierProvider
+
+```tsx
+import { CourierProvider } from "@trycourier/react-provider";
+
+const MyApp = ({ children }) => {
+  return (
+    <CourierProvider thene={{ colorMode: "dark" }}>{children}</CourierProvider>
+  );
+};
+```
+
+You can customize darkmode by passing in variables to the root level theme:
+
+````typescript
+export interface ThemeVariables {
+  background?: string;
+  textColor?: string;
+  titleColor?: string;
+  structure?: string;
+  icon?: string;
+}```
+
+```tsx
+import { CourierProvider } from "@trycourier/react-provider";
+
+const MyApp = ({ children }) => {
+  return (
+    <CourierProvider thene={{variables: {
+        background: "red",
+        textColor: "blue",
+        titleColor: "green",
+        structure: "pink",
+        icon: "orange"
+    }}}>{children}</CourierProvider>
+  );
+};
+````

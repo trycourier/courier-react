@@ -2,10 +2,11 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 
 import {
-  CourierProvider,
-  WSOptions,
   Brand,
+  CourierProvider,
   Interceptor,
+  ProviderTheme,
+  WSOptions,
 } from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
@@ -66,6 +67,7 @@ interface ICourierConfig {
   clientKey: string;
   enableMutationObserver?: boolean;
   inboxApiUrl?: string;
+  theme?: ProviderTheme;
   onRouteChange?: (route: string) => void;
   onMessage?: Interceptor;
   components?: {
@@ -87,7 +89,6 @@ interface ICourierConfig {
 
 const initCourier = (courierConfig?: ICourierConfig) => {
   const {
-    tenantId,
     apiUrl,
     authorization,
     brandId,
@@ -95,6 +96,8 @@ const initCourier = (courierConfig?: ICourierConfig) => {
     inboxApiUrl,
     onMessage,
     onRouteChange,
+    tenantId,
+    theme,
     userId,
     userSignature,
     wsOptions,
@@ -119,18 +122,19 @@ const initCourier = (courierConfig?: ICourierConfig) => {
 
   render(
     <CourierProvider
-      tenantId={tenantId}
       apiUrl={apiUrl}
       authorization={authorization}
       brandId={brandId}
       clientKey={clientKey}
       inboxApiUrl={inboxApiUrl}
+      middleware={[middleware]}
       onMessage={onMessage}
       onRouteChange={onRouteChange}
+      tenantId={tenantId}
+      theme={theme}
       userId={userId}
       userSignature={userSignature}
       wsOptions={wsOptions}
-      middleware={[middleware]}
     >
       <CourierComponents />
     </CourierProvider>,

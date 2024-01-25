@@ -10,7 +10,7 @@ export const StyledList = styled.div`
   display: flex;
   height: 433px;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--ci-background);
 `;
 
 const PreferenceV4Wrapper = styled.div`
@@ -22,12 +22,12 @@ export const PreferenceList: React.FunctionComponent<{
   theme?: any;
   draft?: boolean;
 }> = ({ theme, draft }) => {
-  const { brand, tenantId } = useCourier();
+  const courierContext = useCourier();
   const preferences = usePreferences();
 
   useEffect(() => {
-    preferences.fetchRecipientPreferences(tenantId);
-    preferences.fetchPreferencePage(tenantId, draft);
+    preferences.fetchRecipientPreferences(courierContext.tenantId);
+    preferences.fetchPreferencePage(courierContext.tenantId, draft);
   }, []);
 
   const renderPreferences = () => {
@@ -41,7 +41,7 @@ export const PreferenceList: React.FunctionComponent<{
     ) {
       return (
         <PreferenceV4Wrapper theme={theme}>
-          <PreferencesV4 tenantId={tenantId} draft={draft} />
+          <PreferencesV4 tenantId={courierContext.tenantId} draft={draft} />
         </PreferenceV4Wrapper>
       );
     }
@@ -51,7 +51,7 @@ export const PreferenceList: React.FunctionComponent<{
       !preferences.preferencePage?.sections?.nodes ||
       preferences.preferencePage?.sections?.nodes.length < 1
     ) {
-      return brand?.preferenceTemplates?.map((template) => (
+      return courierContext.brand?.preferenceTemplates?.map((template) => (
         <PreferenceTemplate
           key={template.templateId}
           preferenceTemplate={template}

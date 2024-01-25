@@ -35,6 +35,7 @@ export interface Brand {
   inapp?: {
     disableCourierFooter?: boolean;
     borderRadius?: string;
+    renderActionsAsButtons?: boolean;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";
     emptyState?: {
@@ -71,11 +72,25 @@ export type EventType =
   | "click"
   | "unpin";
 
+export interface ThemeVariables {
+  background?: string;
+  textColor?: string;
+  titleColor?: string;
+  textColorRead?: string;
+  structure?: string;
+  icon?: string;
+}
+
+export interface ProviderTheme {
+  colorMode?: "dark" | "light";
+  variables?: ThemeVariables;
+}
 export interface ICourierProviderProps {
   tenantId?: string;
   apiUrl?: string;
   authorization?: string;
   brand?: Brand;
+  theme?: ProviderTheme;
   brandId?: string;
   clientKey?: string;
   id?: string;

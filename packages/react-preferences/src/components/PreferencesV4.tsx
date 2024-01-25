@@ -43,6 +43,7 @@ const PreferenceSectionWrapper = styled.div`
 const SectionHeader = styled.h1`
   margin: 0;
   font-size: 24px;
+  color: var(--ci-title-color);
 `;
 
 const StyledItem = styled.div`
@@ -57,6 +58,7 @@ const StyledItem = styled.div`
     width: 100%;
     margin-bottom: 6px;
     font-weight: bold;
+    color: var(--ci-text-color);
   }
 
   .digest-schedules {
@@ -425,7 +427,8 @@ const PreferenceList = styled.ul`
 `;
 const PreferenceListItem = styled.li`
   list-style: none;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid;
+  border-color: var(--ci-structure);
   padding: 10px 0;
   margin: 0;
 

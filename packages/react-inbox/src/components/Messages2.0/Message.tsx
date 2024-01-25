@@ -70,7 +70,8 @@ const MessageContainer = styled.div(({ theme }) => {
       position: "relative",
       padding: "12px",
       minHeight: 60,
-      borderBottom: "1px solid rgb(222, 232, 240)",
+      borderBottom: "1px solid",
+      borderColor: "var(--ci-structure)",
       "&.read": {
         ".icon": {
           filter: "grayscale(100%)",

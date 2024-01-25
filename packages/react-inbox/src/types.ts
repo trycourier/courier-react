@@ -12,6 +12,10 @@ import { CSSObject } from "styled-components";
 
 export interface InboxTheme {
   brand?: Brand;
+  colorMode?: "light" | "dark";
+  variables?: {
+    background: string;
+  };
   container?: CSSObject;
   emptyState?: CSSObject;
   footer?: CSSObject;

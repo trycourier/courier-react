@@ -12,7 +12,7 @@ const Styled = styled.div(({ theme }) =>
     {
       width: "100%",
       height: "100%",
-      background: "white",
+      background: "var(--ci-background)",
       fontSize: 14,
       fontWeight: 600,
       color: theme?.brand?.inapp?.emptyState?.textColor ?? "inherit",
