@@ -20,6 +20,8 @@ jobs:
         with:
           node-version: "14.X"
       - run: yarn
+      - name: Typecheck
+        run: yarn types
       - name: Test
         run: yarn test
       - uses: codecov/codecov-action@v1
