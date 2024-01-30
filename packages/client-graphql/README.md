@@ -148,6 +148,8 @@ interface UpdateRecipientPreferencesPayload {
 
 #### For one user
 
+This will instantiate the client required to query the Courier GraphQL. getBanners will grab all banners for that user
+
 ```js
 import { Banner } from "@trycourier/client-graphql";
 const bannerApi = Banner({
@@ -155,10 +157,45 @@ const bannerApi = Banner({
   userId: "@me",
   userSignature: "SUPER_SECRET", //optional
 });
-const getBanners = async (params?: { tags?: string[], locale?: string }) => {
+const getBanners = async (params?: IGetBannerParams) => {
   const myBanners = await bannerApi.getBanners(params);
   return myBanners;
 };
+```
+
+#### Archive a banner
+
+The following code will archive the selected banner for that user. After receiving and processing in Courier, getBanners will no longer return the banner. Archiving is an asynchronous process; there will be a slight delay before the banner is removed in the getBanners API call.
+
+```
+const config = {
+  clientKey: "abc123",
+  userId: "@me",
+  userSignature: "SUPER_SECRET", //optional
+}
+const bannerApi = Banner(config);
+const eventsApi = Events(config);
+
+const getBanners = async (params?: IGetBannerParams) => {
+  const myBanners = await bannerApi.getBanners(params);
+  return myBanners;
+};
+const banners = await getBanner();
+await eventsApi.trackEvent(
+    banners.content.trackingIds.archiveTrackingId
+);
+```
+
+#### Banner Params
+
+```typescript
+interface IGetBannerParams {
+  from?: number;
+  limit?: number;
+  locale?: string;
+  tags?: string[];
+  trackingIds?: boolean;
+}
 ```
 
 #### With JWT (Supports multiple users)
