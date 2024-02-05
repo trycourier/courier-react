@@ -43,7 +43,7 @@ Installation is simple. All you need to do is add `<courier>` components to your
     };
   </script>
   <!-- Be sure to use the appropriate version -->
-  <script src="https://courier-components-xvdza5.s3.amazonaws.com/v{{CURRENT_VERSION}}.js"></script>
+  <script src="https://d1cqtzfenuyn1x.cloudfront.net/v{{CURRENT_VERSION}}.js"></script>
 </body>
 ```
 
