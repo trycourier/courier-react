@@ -99,7 +99,7 @@ export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
       alignItems: "center",
-      background: "white",
+      background: "var(--ci-background)",
       display: "flex",
       fontSize: "10px",
       fontStyle: "normal",
@@ -116,11 +116,15 @@ export const Footer = styled.div(({ theme }) =>
         marginTop: -4,
       },
 
+      "svg path": {
+        fill: "currentColor",
+      },
+
       a: {
         display: "flex",
         alignItems: "center",
         textDecoration: "none",
-        color: "rgba(86, 96, 116, 0.8)",
+        color: "var(--ci-text-color)",
       },
     },
     theme?.footer
