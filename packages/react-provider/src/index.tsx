@@ -225,7 +225,7 @@ export const CourierProvider: React.FunctionComponent<
   }, [tenantId, actions, transport, userId]);
 
   useEffect(() => {
-    if (!_transport && (!clientKey || !userId)) {
+    if (!_transport && (!clientKey || !userId || !authorization)) {
       return;
     }
 
