@@ -87,7 +87,7 @@ const useCourierActions = (state, dispatch) => {
     };
   }, [
     state.apiUrl,
-    state.authentication,
+    state.authorization,
     state.clientKey,
     state.userId,
     state.userSignature,

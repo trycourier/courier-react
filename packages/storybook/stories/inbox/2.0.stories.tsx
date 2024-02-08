@@ -5,6 +5,7 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 import mockMiddleware from "./mock-middleware";
+import { Authentication } from "../getting-started/index.stories";
 
 const API_URL = process.env.API_URL || "";
 const INBOX_API_URL = process.env.INBOX_API_URL || "";
