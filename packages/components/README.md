@@ -27,6 +27,8 @@ Installation is simple. All you need to do is add `<courier>` components to your
 1. Setup Courier Configurations
 2. Download the Components
 
+> Note in v4.10.0 we moved to a CDN instead of s3.  The new url is https://components.courier.com
+
 > This section covers synchronous initialization where you have all information like the `clientKey` and `userId` available on first render. See `Async Initialization` below for how to control the initialization.
 
 ```html
@@ -43,7 +45,7 @@ Installation is simple. All you need to do is add `<courier>` components to your
     };
   </script>
   <!-- Be sure to use the appropriate version -->
-  <script src="https://d1cqtzfenuyn1x.cloudfront.net/v{{CURRENT_VERSION}}.js"></script>
+  <script src="https://components.courier.com/v{{CURRENT_VERSION}}.js"></script>
 </body>
 ```
 
