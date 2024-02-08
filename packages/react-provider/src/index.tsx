@@ -225,7 +225,11 @@ export const CourierProvider: React.FunctionComponent<
   }, [tenantId, actions, transport, userId]);
 
   useEffect(() => {
-    if (!_transport && (!clientKey || !userId || !authorization)) {
+    const hasClientKeyAuth = clientKey && userId;
+    const hasCustomTransport = Boolean(_transport);
+    const hasJWTAuth = Boolean(authorization);
+
+    if (!hasCustomTransport && !hasClientKeyAuth && !hasJWTAuth) {
       return;
     }
 
