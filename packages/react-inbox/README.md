@@ -230,15 +230,15 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 function App() {
-  const [authentication, setAuthentication] = useState();
+  const [authorization, setAuthorization] = useState();
 
   useEffect(() => {
     const response = await fetchAuthToken();
-    setAuthentication(response);
+    setAuthentication(response.token);
   }, []);
 
   return (
-    <CourierProvider userId={yourUserId} authentication={authentication}>
+    <CourierProvider userId={yourUserId} authorization={authorization}>
       <Inbox />
     </CourierProvider>
   );
@@ -263,22 +263,22 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 function App() {
-  const [authentication, setAuthentication] = useState();
+  const [authorization, setAuthorization] = useState();
 
   useEffect(() => {
     const response = await fetchAuthToken();
-    setAuthentication(response);
+    setAuthorization(response.token);
 
     const interval = setInterval(async () => {
       const response = await fetchAuthToken();
-      setAuthentication(response);
+      setAuthorization(response.token);
     }, 300000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <CourierProvider userId={yourUserId} authentication={YOUR_CLIENT_KEY}>
+    <CourierProvider authorization={authorization}>
       <Inbox />
     </CourierProvider>
   );
