@@ -343,6 +343,14 @@ interface IActionBlock {
   url: string;
 }
 
+interface IGetInboxMessagesParams {
+    tenantId?: string;
+    archived?: boolean;
+    from?: string | number;
+    limit?: number;
+    status?: "read" | "unread";
+    tags?: string[];
+}
 
 interface InboxProps {
   tenantId?: string;
