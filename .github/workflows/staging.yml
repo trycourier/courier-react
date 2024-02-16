@@ -29,7 +29,7 @@ jobs:
           IS_STAGING: true
       - uses: jakejarvis/s3-sync-action@master
         with:
-          args: --follow-symlinks --cache-control max-age=31536000, public, immutable
+          args: --follow-symlinks --cache-control "max-age=31536000,public,immutable"
         env:
           AWS_S3_BUCKET: "courier-push-provider-prod-couriercomponentsbucket-jqacxmhbzmwx"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
