@@ -1,9 +1,9 @@
 import {
-  useCourier,
   IInboxMessagePreview,
-  registerReducer,
-  registerMiddleware,
   Middleware,
+  registerMiddleware,
+  registerReducer,
+  useCourier,
 } from "@trycourier/react-provider";
 import { IInbox } from "./types";
 
@@ -11,20 +11,20 @@ import { IGetInboxMessagesParams, Inbox } from "@trycourier/client-graphql";
 
 import { IGetMessagesParams } from "@trycourier/client-graphql";
 import { initInbox } from "./actions/init";
-import { toggleInbox } from "./actions/toggle-inbox";
-import { setView } from "./actions/set-view";
 import { markAllRead } from "./actions/mark-all-read";
+import { markMessageArchived } from "./actions/mark-message-archived";
 import { markMessageRead } from "./actions/mark-message-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
-import { markMessageArchived } from "./actions/mark-message-archived";
 import { resetLastFetched } from "./actions/reset-last-fetched";
+import { setView } from "./actions/set-view";
+import { toggleInbox } from "./actions/toggle-inbox";
 import { unpinMessage } from "./actions/unpin-message";
 
-import { newMessage } from "./actions/new-message";
-import { markMessageOpened } from "./actions/mark-message-opened";
 import { useEffect } from "react";
-import reducer from "./reducer";
+import { markMessageOpened } from "./actions/mark-message-opened";
+import { newMessage } from "./actions/new-message";
 import createMiddleware from "./middleware";
+import reducer from "./reducer";
 
 export interface IFetchMessagesParams {
   params?: IGetMessagesParams;
@@ -144,7 +144,7 @@ const useInboxActions = (): IInboxActions => {
           ? "read"
           : payload?.params?.isRead === false
           ? "unread"
-          : undefined,
+          : payload?.params?.status,
         from: inbox?.from,
       };
 
