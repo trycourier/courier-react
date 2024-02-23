@@ -55,7 +55,7 @@ export class WS {
     this.url =
       options?.url ||
       process.env.COURIER_WS_URL ||
-      "wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production";
+      "wss://realtime.courier.com";
     this.clientSourceId = clientSourceId;
     this.clientKey = clientKey;
     this.userSignature = userSignature;

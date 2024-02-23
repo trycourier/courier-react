@@ -18,7 +18,7 @@ describe("getMessages", () => {
 
     await inboxApi.getMessages();
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox?",
+      "https://inbox.courier.com/inbox?",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -42,7 +42,7 @@ describe("getMessages", () => {
       status: "read",
     });
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox?next=abc123&status=read&tags=foo%2Cbar",
+      "https://inbox.courier.com/inbox?next=abc123&status=read&tags=foo%2Cbar",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -68,7 +68,7 @@ describe("getMessageCount", () => {
 
     await inboxApi.getMessageCount();
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/count?",
+      "https://inbox.courier.com/inbox/count?",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -91,7 +91,7 @@ describe("getMessageCount", () => {
       status: "read",
     });
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/count?status=read&tags=foo%2Cbar",
+      "https://inbox.courier.com/inbox/count?status=read&tags=foo%2Cbar",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -117,7 +117,7 @@ describe("getMessage", () => {
 
     await inboxApi.getMessage("mockMessageId");
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/mockMessageId",
+      "https://inbox.courier.com/inbox/mockMessageId",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -143,7 +143,7 @@ describe("trackEvent", () => {
 
     await inboxApi.markRead("mockMessageId");
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/mockMessageId/event/read",
+      "https://inbox.courier.com/inbox/mockMessageId/event/read",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -164,7 +164,7 @@ describe("trackEvent", () => {
 
     await inboxApi.markUnread("mockMessageId");
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/mockMessageId/event/unread",
+      "https://inbox.courier.com/inbox/mockMessageId/event/unread",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -185,7 +185,7 @@ describe("trackEvent", () => {
 
     await inboxApi.markArchived("mockMessageId");
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/mockMessageId/event/archive",
+      "https://inbox.courier.com/inbox/mockMessageId/event/archive",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",
@@ -207,7 +207,7 @@ describe("trackEvent", () => {
 
     await inboxApi.markAllRead();
     expect(fetchMock.mock.calls[0]).toEqual([
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/inbox/mark-all-read",
+      "https://inbox.courier.com/inbox/mark-all-read",
       {
         headers: {
           "x-courier-client-key": "CLIENT_KEY",

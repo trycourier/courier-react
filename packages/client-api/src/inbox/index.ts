@@ -13,8 +13,7 @@ interface IGetMessageCountParams {
   status?: "read" | "unread";
 }
 
-const prodApiUrl =
-  "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production";
+const prodApiUrl = "https://inbox.courier.com";
 
 const Inbox = (params: ICourierClientBasicParams | ICourierClientJWTParams) => {
   const headers = getHttpHeaders(params);

@@ -20,7 +20,7 @@ describe("trackEvent", () => {
     await inboxApi.markRead("mockMessageId");
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+        "https://inbox.courier.com/q",
         Object {
           "body": "{\\"query\\":\\"mutation TrackEvent($messageId: String!) {\\\\n  read(messageId: $messageId)\\\\n}\\\\n\\",\\"operationName\\":\\"TrackEvent\\",\\"variables\\":{\\"messageId\\":\\"mockMessageId\\"}}",
           "headers": Object {
@@ -42,7 +42,7 @@ describe("trackEvent", () => {
     await inboxApi.markUnread("mockMessageId");
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+        "https://inbox.courier.com/q",
         Object {
           "body": "{\\"query\\":\\"mutation TrackEvent($messageId: String!) {\\\\n  unread(messageId: $messageId)\\\\n}\\\\n\\",\\"operationName\\":\\"TrackEvent\\",\\"variables\\":{\\"messageId\\":\\"mockMessageId\\"}}",
           "headers": Object {
@@ -64,7 +64,7 @@ describe("trackEvent", () => {
     await inboxApi.markArchive("mockMessageId");
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+        "https://inbox.courier.com/q",
         Object {
           "body": "{\\"query\\":\\"mutation TrackEvent($messageId: String!) {\\\\n  archive(messageId: $messageId)\\\\n}\\\\n\\",\\"operationName\\":\\"TrackEvent\\",\\"variables\\":{\\"messageId\\":\\"mockMessageId\\"}}",
           "headers": Object {

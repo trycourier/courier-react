@@ -20,7 +20,7 @@ describe("trackEvent", () => {
     await inboxApi.markAllRead();
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+        "https://inbox.courier.com/q",
         Object {
           "body": "{\\"query\\":\\"mutation TrackEvent {\\\\n  markAllRead\\\\n}\\\\n\\",\\"operationName\\":\\"TrackEvent\\",\\"variables\\":{}}",
           "headers": Object {

@@ -31,8 +31,7 @@ export default (
   unpinMessage: TrackEvent;
 } => {
   const client = createCourierClient(params, {
-    apiUrl:
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+    apiUrl: "https://inbox.courier.com/q",
   });
 
   return {
