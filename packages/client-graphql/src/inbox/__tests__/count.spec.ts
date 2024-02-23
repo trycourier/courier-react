@@ -19,7 +19,7 @@ describe("getInboxCount", () => {
     await inboxApi.getInboxCount();
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+        "https://inbox.courier.com/q",
         Object {
           "body": "{\\"query\\":\\"query GetInboxCount($params: FilterParamsInput) {\\\\n  count(params: $params)\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxCount\\",\\"variables\\":{\\"params\\":{}}}",
           "headers": Object {
@@ -49,7 +49,7 @@ describe("getInboxCount", () => {
 
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+        "https://inbox.courier.com/q",
         Object {
           "body": "{\\"query\\":\\"query GetInboxCount($params: FilterParamsInput) {\\\\n  count(params: $params)\\\\n}\\\\n\\",\\"operationName\\":\\"GetInboxCount\\",\\"variables\\":{\\"params\\":{\\"status\\":\\"read\\",\\"tags\\":[\\"abc\\",\\"123\\"]}}}",
           "headers": Object {
