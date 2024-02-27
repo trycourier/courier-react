@@ -86,19 +86,19 @@ export interface ProviderTheme {
   variables?: ThemeVariables;
 }
 export interface ICourierProviderProps {
-  tenantId?: string;
   apiUrl?: string;
+  applyMiddleware?: (defaultMiddleware: any) => any[];
   authorization?: string;
   brand?: Brand;
-  theme?: ProviderTheme;
   brandId?: string;
   clientKey?: string;
   id?: string;
   inboxApiUrl?: string;
   localStorage?: Storage;
-  middleware?: any;
   onMessage?: Interceptor;
   onRouteChange?: (route: string) => void;
+  tenantId?: string;
+  theme?: ProviderTheme;
   transport?: CourierTransport | Transport;
   userId?: string;
   userSignature?: string;

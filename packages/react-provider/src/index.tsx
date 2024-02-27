@@ -34,8 +34,8 @@ import {
 } from "./transports/types";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
-  registerMiddleware as _registerMiddleware,
   Middleware,
+  registerMiddleware as _registerMiddleware,
 } from "./middleware";
 import useCourierActions from "./hooks/use-courier-actions";
 import { usePageVisible } from "./hooks/use-page-visible";
@@ -103,7 +103,7 @@ export const CourierProvider: React.FunctionComponent<
   localStorage = typeof window !== "undefined"
     ? window?.localStorage
     : undefined,
-  middleware: _middleware = [],
+  applyMiddleware,
   onMessage,
   onRouteChange,
   transport: _transport,
@@ -130,10 +130,17 @@ export const CourierProvider: React.FunctionComponent<
     userId,
   });
 
-  const middleware = [...defaultMiddleware, ..._middleware];
+  const middleware = useMemo(() => {
+    if (!applyMiddleware) {
+      return defaultMiddleware;
+    }
+
+    return applyMiddleware(defaultMiddleware);
+  }, [applyMiddleware]);
+
   const useReducer = useCallback(
     createReducer<any, Partial<ICourierContext>>(...middleware),
-    [_middleware]
+    [middleware]
   );
 
   const transport =
@@ -170,7 +177,6 @@ export const CourierProvider: React.FunctionComponent<
     clientSourceId,
     inboxApiUrl,
     localStorage,
-    middleware,
     onRouteChange,
     tenantId,
     transport,

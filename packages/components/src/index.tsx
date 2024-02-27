@@ -127,7 +127,10 @@ const initCourier = (courierConfig?: ICourierConfig) => {
       brandId={brandId}
       clientKey={clientKey}
       inboxApiUrl={inboxApiUrl}
-      middleware={[middleware]}
+      applyMiddleware={(defaultMiddleware) => [
+        ...defaultMiddleware,
+        middleware,
+      ]}
       onMessage={onMessage}
       onRouteChange={onRouteChange}
       tenantId={tenantId}
