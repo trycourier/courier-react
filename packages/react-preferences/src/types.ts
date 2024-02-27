@@ -36,6 +36,14 @@ export interface DigestSchedule {
   repetition: string;
   scheduleId: string;
   default?: boolean;
+  start: string;
+  recurrence: string;
+  repeat?: {
+    frequency: number;
+    interval: "day" | "week" | "month" | "year";
+    on?: string | RepeatOn;
+  };
+  end?: number | string;
 }
 
 export interface IPreferenceTemplate {
@@ -52,3 +60,13 @@ export interface IRecipientPreference {
   routingPreferences: Array<ChannelClassification>;
   digestSchedule: string;
 }
+
+export type RepeatOn = {
+  sunday?: boolean;
+  monday?: boolean;
+  tuesday?: boolean;
+  wednesday?: boolean;
+  thursday?: boolean;
+  friday?: boolean;
+  saturday?: boolean;
+};

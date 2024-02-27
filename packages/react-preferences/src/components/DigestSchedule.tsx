@@ -1,7 +1,8 @@
+import { usePreferences } from "@trycourier/react-hooks";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { DigestSchedule } from "~/types";
-import { usePreferences } from "@trycourier/react-hooks";
+import formatDigest, { toUpperCaseFirstLetter } from "~/utils/format_digest";
 
 const DigestScheduleContainer = styled.div`
   display: flex;
@@ -68,12 +69,6 @@ const DigestSchedules: React.FunctionComponent<{
     onScheduleChange(value);
   };
 
-  const format = (schedule: string) => {
-    if (!schedule) return "";
-    const formatted = schedule.charAt(0).toUpperCase() + schedule.slice(1);
-    return formatted;
-  };
-
   return (
     <div>
       {schedules.map((schedule) => (
@@ -86,9 +81,9 @@ const DigestSchedules: React.FunctionComponent<{
             onChange={handleChange}
           />
           <div className="digest-details">
-            <div className="digest-period">{format(schedule.period)}</div>
+            <div className="digest-period">{formatDigest(schedule)}</div>
             <div className="digest-repetition">
-              {format(schedule.repetition)}
+              {toUpperCaseFirstLetter(schedule.repetition)}
             </div>
           </div>
         </DigestScheduleContainer>
