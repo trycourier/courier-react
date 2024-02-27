@@ -22,8 +22,6 @@ import {
 import customHeaderProps from "./custom-header";
 
 // @ts-ignore
-import myCustomInboxString from "!raw-loader!./hooks.tsx";
-import { MyCustomInbox } from "./hooks";
 import mockMiddleware from "./mock-middleware";
 
 const API_URL = process.env.API_URL || "";
@@ -95,7 +93,10 @@ export const ThemeExample = () => {
         )}\n\`\`\``}</ReactMarkdown>
       </div>
       <CourierProvider
-        middleware={[mockMiddleware]}
+        applyMiddleware={(defaultMiddleware) => [
+          mockMiddleware,
+          ...defaultMiddleware,
+        ]}
         clientKey="Y2U3OWI3NGEtY2FhZC00NTFjLTliZDMtMGZkOTVhMmQ0ZWE4"
         userId="Google_108669107033656954156"
       >
@@ -178,36 +179,6 @@ export const RenderPropsExample2 = () => {
   );
 };
 
-export const Hooks = () => {
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "top",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <ReactMarkdown>{`## Example`}</ReactMarkdown>
-          <ReactMarkdown>{`\`\`\`javascript\n${myCustomInboxString}\n\`\`\``}</ReactMarkdown>
-        </div>
-        <CourierProvider
-          middleware={[mockMiddleware]}
-          wsOptions={{
-            url: process.env.WS_URL,
-          }}
-          apiUrl={API_URL}
-          clientKey={CLIENT_KEY}
-          userId={USER_ID}
-        >
-          <MyCustomInbox />
-        </CourierProvider>
-      </div>
-    </>
-  );
-};
-
 export const CustomLabels = () => {
   return (
     <>
@@ -228,7 +199,10 @@ export const CustomLabels = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[mockMiddleware]}
+          applyMiddleware={(defaultMiddleware) => [
+            mockMiddleware,
+            ...defaultMiddleware,
+          ]}
           wsOptions={{
             url: process.env.WS_URL,
           }}

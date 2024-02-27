@@ -23,6 +23,7 @@ if (typeof window !== "undefined") {
       url: process.env.WS_URL,
     },
     clientKey,
+    clientSourceId: "abc123",
   });
 }
 

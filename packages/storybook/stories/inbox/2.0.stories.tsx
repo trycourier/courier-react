@@ -5,8 +5,6 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 import mockMiddleware from "./mock-middleware";
-import { Authentication } from "../getting-started/index.stories";
-
 const API_URL = process.env.API_URL || "";
 const INBOX_API_URL = process.env.INBOX_API_URL || "";
 const CLIENT_KEY = process.env.CLIENT_KEY || "";
@@ -142,7 +140,9 @@ export const Version2 = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[mockMiddleware]}
+          applyMiddleware={(defaultMiddleware) => {
+            return [mockMiddleware, ...defaultMiddleware];
+          }}
           wsOptions={{
             url: process.env.WS_URL,
           }}
@@ -175,7 +175,8 @@ export const Loading = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
             () => (next) => (action) => {
               if (action.type === "inbox/INIT") {
                 next({
@@ -228,7 +229,8 @@ export const LoadingMore = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
             () => (next) => (action) => {
               if (action.type === "inbox/INIT") {
                 next({
@@ -282,7 +284,8 @@ export const PaginationEnd = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
             () => (next) => (action) => {
               if (action.type === "inbox/INIT") {
                 next({
@@ -336,7 +339,8 @@ export const NoCourierFooter = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
             () => (next) => (action) => {
               if (action.type === "inbox/INIT") {
                 next({
@@ -393,7 +397,8 @@ export const NoMessages = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
             () => (next) => (action) => {
               if (action.type === "inbox/INIT") {
                 next({
@@ -447,7 +452,8 @@ export const WithPreferences = () => {
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
             () => (next) => (action) => {
               if (action.type === "inbox/FETCH_UNREAD_MESSAGE_COUNT/DONE") {
                 next({
