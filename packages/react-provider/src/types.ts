@@ -1,6 +1,6 @@
+import { ErrorEvent } from "reconnecting-websocket";
 import { CourierTransport, Transport } from "./transports";
 import { IInboxMessagePreview, Interceptor } from "./transports/types";
-import { ErrorEvent } from "reconnecting-websocket";
 export { IInboxMessagePreview } from "@trycourier/client-graphql";
 
 export { Interceptor } from "./transports/types";
@@ -35,7 +35,6 @@ export interface Brand {
   inapp?: {
     disableCourierFooter?: boolean;
     borderRadius?: string;
-    renderActionsAsButtons?: boolean;
     disableMessageIcon?: boolean;
     placement?: "top" | "bottom" | "left" | "right";
     emptyState?: {
