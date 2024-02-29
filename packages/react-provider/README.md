@@ -1,6 +1,7 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Version 5.X CSP Migration](#version-5-csp-migration)
 - [Props](#props)
 - [Listening to Messsages](#listening-to-messsages)
 - [Dark Mode / Theme Variables](#dark-mode--theme-variables)
@@ -8,6 +9,16 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 <a name="0propsmd"></a>
+
+### [Version 5.X CSP Migration](#version-5-migration)
+
+We've released new subdomains to power Inbox and Toast. This migration only applies to Inbox and Toast users who applied our old URLs to their Content Security Policy.
+
+| Before                                                 | After                      | Usage                       |
+| ------------------------------------------------------ | -------------------------- | --------------------------- |
+| https://api.courier.com                                | https://api.courier.com    | Brands and User Preferences |
+| wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com   | wss://realtime.courier.com | Websockets                  |
+| https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com | https://inbox.courier.com  | Inbox Messages              |
 
 ### [Props](#props)
 
