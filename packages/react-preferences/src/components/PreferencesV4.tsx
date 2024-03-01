@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 import {
@@ -405,7 +405,7 @@ export const PreferenceSections: React.FunctionComponent<{
     <>
       <SectionHeader>{section.name}</SectionHeader>
       {memoizedTopics.map(({ topic, recipientPreference }, index) => (
-        <>
+        <Fragment key={index}>
           <PreferenceTopic
             topic={topic}
             defaultRoutingOptions={section.routingOptions}
@@ -415,7 +415,7 @@ export const PreferenceSections: React.FunctionComponent<{
             routingPreferences={recipientPreference?.routingPreferences ?? []}
           />
           {index < memoizedTopics.length - 1 && <SubscriptionDivider />}
-        </>
+        </Fragment>
       ))}
     </>
   );
