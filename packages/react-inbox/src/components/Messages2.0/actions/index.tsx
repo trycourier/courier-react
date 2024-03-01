@@ -254,7 +254,7 @@ const MessageActions: React.FunctionComponent<{
         })}
       >
         <TimeAgo>{formattedTime}</TimeAgo>
-        {read && (
+        {read && !archived && (
           <Checkmark
             fill="var(--ci-icon)"
             style={{

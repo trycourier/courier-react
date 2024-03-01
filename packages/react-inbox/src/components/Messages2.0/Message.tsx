@@ -23,25 +23,25 @@ import { useOnScreen } from "~/hooks/use-on-screen";
 
 import { SlotIcon } from "./pins";
 
-const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
-  ({ theme, read }) => {
-    const primaryColor = theme.brand?.colors?.primary;
-
-    return deepExtend(
-      {
-        visibility: read ? "hidden" : "visible",
-        height: "auto",
-        width: 2,
-        background: primaryColor,
-        position: "absolute",
-        left: "1px",
-        top: "1px",
-        bottom: "1px",
-      },
-      theme?.message?.unreadIndicator
-    );
-  }
-);
+const UnreadIndicator = styled.div<{
+  read?: IInboxMessagePreview["read"];
+  archived?: IInboxMessagePreview["archived"];
+}>(({ theme, read, archived }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  return deepExtend(
+    {
+      visibility: read || archived ? "hidden" : "visible",
+      height: "auto",
+      width: 2,
+      background: primaryColor,
+      position: "absolute",
+      left: "1px",
+      top: "1px",
+      bottom: "1px",
+    },
+    theme?.message?.unreadIndicator
+  );
+});
 
 const ClickableContainer = styled.a(({ theme }) => {
   const primaryColor = theme.brand?.colors?.primary ?? "#9121c2";
@@ -80,6 +80,10 @@ const MessageContainer = styled.div(({ theme }) => {
       },
       "&.archived": {
         filter: "grayscale(100%)",
+        ".icon": {
+          filter: "grayscale(100%)",
+          opacity: "0.3",
+        },
       },
     },
     theme?.message?.container
@@ -190,7 +194,7 @@ const Message: React.FunctionComponent<{
         archived,
       })}
     >
-      <UnreadIndicator read={read} />
+      <UnreadIndicator read={read} archived={archived} />
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
         {pinDetails &&
