@@ -15,7 +15,8 @@ const PreferencesV4Container = styled.div`
   flex-direction: column;
   background: rgba(255, 255, 255, 0.2);
   display: flex;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding-bottom: 100px;
 `;
 //Must add padding bottom of 100px to offset the footer
