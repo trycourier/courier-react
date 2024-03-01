@@ -624,6 +624,33 @@ New Theme Properties:
 - `theme.menu`: clicking on the inbox title opens a dropdown menu with options to edit `preferences`
 - `theme.message.clickableContainer`: when a message has an action href, we now make the entire message clickable instead of rendering an explicit button. this theme property allows access to this component. `theme.message.container` will still apply to this component but if you want to target the clickableContainer separatly you can target `theme.message.clickableContainer` which will be an `anchor` element instead of a `div`;
 
+### [Using Custom Date Format](#using-custom-date-format)
+
+The inbox component accepts a function in property `formatDate` of type `(isoDate: string) => string;`. You can overwrite Courier's date formats on each message using `formatDate` for use cases like internationalization and override the browser's default.
+
+Example using [date-fns](https://date-fns.org):
+
+```
+import formatDistanceStrict from "date-fns/formatDistanceStrict";
+import { Locale } from "date-fns";
+
+const getTimeAgoShort = (created: string, locale: Locale) => {
+  const timeAgo = formatDistanceStrict(new Date(created).getTime(), Date.now(), {
+      addSuffix: true,
+      roundingMethod: "floor",
+      locale
+    })(created);
+
+  return timeAgo;
+}
+
+---
+
+<Inbox
+  formatDate={isoDate=>getTimeAgo(isoDate, users_locale)}
+>
+```
+
 ## [Listening to Events](#events)
 
 You can listen to inbox events by passing onEvent prop to <Inbox/>
