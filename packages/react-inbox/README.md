@@ -634,14 +634,12 @@ Example using [date-fns](https://date-fns.org):
 import formatDistanceStrict from "date-fns/formatDistanceStrict";
 import { Locale } from "date-fns";
 
-const getTimeAgoShort = (created: string, locale: Locale) => {
-  const timeAgo = formatDistanceStrict(new Date(created).getTime(), Date.now(), {
+const getTimeAgo = (created: string, locale: Locale) => {
+  return formatDistanceStrict(new Date(created).getTime(), Date.now(), {
       addSuffix: true,
       roundingMethod: "floor",
       locale
     })(created);
-
-  return timeAgo;
 }
 
 ---
