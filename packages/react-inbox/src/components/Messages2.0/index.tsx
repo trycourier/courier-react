@@ -84,7 +84,7 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
       {
         position: "relative",
         background: "var(--ci-background)",
-        overflow: "scroll",
+        overflow: "auto",
         display: "flex",
         height,
         maxHeight: height,
