@@ -5,6 +5,7 @@ import {
   ChannelClassification,
   IPreferenceTemplate,
   IRecipientPreference,
+  PreferenceStatus,
 } from "~/types";
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
@@ -91,12 +92,12 @@ export const Channel = styled.div`
     user-select: none;
   }
 
-  ${Input}:checked ~ ${ChannelOption} {
+  ${Input}.checked ~ ${ChannelOption} {
     background: ${({ theme }) => theme?.primary ?? "#9121c2"};
     border: 0;
   }
 
-  ${Input}:checked ~ ${ChannelOption} > div {
+  ${Input}.checked ~ ${ChannelOption} > div {
     color: white;
   }
 `;
@@ -184,7 +185,8 @@ const ChannelPreference: React.FunctionComponent<{
   handleChannelRouting: (channel: ChannelClassification) => void;
   routingPreferences: ChannelClassification[];
   channel: ChannelClassification;
-}> = ({ handleChannelRouting, routingPreferences, channel }) => {
+  defaultStatus: PreferenceStatus;
+}> = ({ handleChannelRouting, routingPreferences, channel, defaultStatus }) => {
   const [checked, setChecked] = useState(routingPreferences.includes(channel));
   const { preferencePage } = usePreferences();
 
@@ -193,9 +195,19 @@ const ChannelPreference: React.FunctionComponent<{
       <label>
         <Input
           type="checkbox"
-          onChange={() => {
-            handleChannelRouting(channel);
-            setChecked(!checked);
+          className={checked ? "checked" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            const prevent_uncheck =
+              // if the topic is required and this is the only channel selected, don't let them uncheck
+              defaultStatus === "REQUIRED" &&
+              routingPreferences.length === 1 &&
+              routingPreferences.includes(channel) &&
+              checked;
+            if (!prevent_uncheck) {
+              setChecked(!checked);
+              handleChannelRouting(channel);
+            }
           }}
           checked={checked}
         />
@@ -258,36 +270,23 @@ export const PreferenceTopic: React.FunctionComponent<{
       templateId: topicId,
       hasCustomRouting: !customizeDelivery,
       ...(!customizeDelivery && {
-        routingPreferences: [
-          "direct_message",
-          "email",
-          "inbox",
-          "push",
-          "sms",
-          "webhook",
-        ],
+        routingPreferences: defaultRoutingOptions,
       }),
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
       tenantId,
     });
 
     // If Customize Delivery is turned on, set the routing preferences to the default
-    !customizeDelivery &&
-      setRouting([
-        "direct_message",
-        "email",
-        "inbox",
-        "push",
-        "sms",
-        "webhook",
-      ]);
+    !customizeDelivery && setRouting(defaultRoutingOptions);
 
     setCustomizeDelivery(!customizeDelivery);
   };
 
   const handleChannelRouting = (channel: ChannelClassification) => {
     const newRouting = routing.includes(channel)
-      ? routing.filter((r) => r !== channel)
+      ? routing.filter(
+          (r) => r !== channel && defaultRoutingOptions.includes(r)
+        )
       : [...routing, channel];
 
     updateRecipientPreferences({
@@ -351,7 +350,7 @@ export const PreferenceTopic: React.FunctionComponent<{
           topicId={topicId}
         />
       </div>
-      {statusToggle && defaultHasCustomRouting && defaultStatus !== "REQUIRED" && (
+      {statusToggle && defaultHasCustomRouting && (
         <ChannelPreferenceStyles
           theme={{ primary: preferencePage?.brand.settings.colors.primary }}
         >
@@ -371,6 +370,7 @@ export const PreferenceTopic: React.FunctionComponent<{
                 channel={channel}
                 routingPreferences={routing}
                 handleChannelRouting={handleChannelRouting}
+                defaultStatus={defaultStatus}
               />
             ))}
         </ChannelPreferenceStyles>
