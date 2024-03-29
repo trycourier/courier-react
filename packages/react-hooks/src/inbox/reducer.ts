@@ -12,6 +12,9 @@ import {
   ResetLastFetched,
   INBOX_RESET_LAST_FETCHED,
 } from "./actions/reset-last-fetched";
+import { AddTag, INBOX_ADD_TAG } from "./actions/add-tag";
+import { RemoveTag, INBOX_REMOVE_TAG } from "./actions/remove-tag";
+
 import {
   MarkMessageArchived,
   INBOX_MARK_MESSAGE_ARCHIVED,
@@ -49,6 +52,7 @@ export const initialState: IInbox = {
 };
 
 type InboxAction =
+  | AddTag
   | FetchMessagesDone
   | FetchMessagesError
   | FetchMessagesPending
@@ -61,6 +65,7 @@ type InboxAction =
   | MarkMessageRead
   | MarkMessageUnread
   | NewMessage
+  | RemoveTag
   | ResetLastFetched
   | ToggleInbox
   | UnpinMessage;
@@ -246,6 +251,55 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         messages: newMessages,
         pinned: newPinned,
+      };
+    }
+
+    case INBOX_ADD_TAG: {
+      const handleAddTag = (message: IInboxMessagePreview) => {
+        if (message.messageId === action.payload.messageId) {
+          const tags = message.tags ?? [];
+          if (!tags.includes(action.payload.tag)) {
+            tags.push(action.payload.tag);
+          }
+          return {
+            ...message,
+            tags,
+          };
+        }
+
+        return message;
+      };
+
+      const newPinned = state.pinned?.map(handleAddTag);
+      const newMessages = state.messages?.map(handleAddTag);
+
+      return {
+        ...state,
+        pinned: newPinned,
+        messages: newMessages,
+      };
+    }
+
+    case INBOX_REMOVE_TAG: {
+      const handleRemoveTag = (message: IInboxMessagePreview) => {
+        if (message.messageId === action.payload.messageId) {
+          const tags = message?.tags?.filter((t) => t !== action.payload.tag);
+          return {
+            ...message,
+            tags,
+          };
+        }
+
+        return message;
+      };
+
+      const newPinned = state.pinned?.map(handleRemoveTag);
+      const newMessages = state.messages?.map(handleRemoveTag);
+
+      return {
+        ...state,
+        pinned: newPinned,
+        messages: newMessages,
       };
     }
 

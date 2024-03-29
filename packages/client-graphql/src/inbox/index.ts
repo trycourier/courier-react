@@ -18,6 +18,7 @@ export default (
     | ICourierClientJWTParams
     | { client?: Client }
 ): {
+  addTag: TrackEvent;
   getInboxCount: GetInboxCount;
   getMessage: message.GetInboxMessage;
   getMessageLists: messageLists.GetInboxMessageLists;
@@ -27,6 +28,7 @@ export default (
   markOpened: TrackEvent;
   markRead: TrackEvent;
   markUnread: TrackEvent;
+  removeTag: TrackEvent;
   trackClick: TrackEvent;
   unpinMessage: TrackEvent;
 } => {
@@ -35,6 +37,8 @@ export default (
   });
 
   return {
+    addTag: trackEvent(client)("addTag"),
+    removeTag: trackEvent(client)("removeTag"),
     getInboxCount: getInboxCount(client),
     getMessage: message.getInboxMessage(client),
     getMessageLists: messageLists.getMessageLists(client),

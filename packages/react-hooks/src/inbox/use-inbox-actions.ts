@@ -19,6 +19,8 @@ import { resetLastFetched } from "./actions/reset-last-fetched";
 import { setView } from "./actions/set-view";
 import { toggleInbox } from "./actions/toggle-inbox";
 import { unpinMessage } from "./actions/unpin-message";
+import { addTag } from "./actions/add-tag";
+import { removeTag } from "./actions/remove-tag";
 
 import { useEffect } from "react";
 import { markMessageOpened } from "./actions/mark-message-opened";
@@ -44,6 +46,12 @@ export interface IInboxActions {
   setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
   unpinMessage: (messageId: string, fromWS?: boolean) => Promise<void>;
+  addTag: (messageId: string, tag: string, fromWS?: boolean) => Promise<void>;
+  removeTag: (
+    messageId: string,
+    tag: string,
+    fromWS?: boolean
+  ) => Promise<void>;
   trackClick: (messageId: string, trackingId: string) => Promise<void>;
 }
 
@@ -239,6 +247,40 @@ const useInboxActions = (): IInboxActions => {
           messageId,
           message: allMessages.find((m) => m.messageId === messageId),
           event: "archive",
+        });
+      }
+    },
+    addTag: async (messageId, tag, fromWS) => {
+      dispatch(addTag(messageId, tag));
+      if (!fromWS) {
+        await inboxClient.addTag(messageId, { tag });
+      }
+
+      if (onEvent) {
+        onEvent({
+          event: "add-tag",
+          message: allMessages.find((m) => m.messageId === messageId),
+          messageId,
+          data: {
+            tag,
+          },
+        });
+      }
+    },
+    removeTag: async (messageId, tag, fromWS) => {
+      dispatch(removeTag(messageId, tag));
+      if (!fromWS) {
+        await inboxClient.removeTag(messageId, { tag });
+      }
+
+      if (onEvent) {
+        onEvent({
+          event: "remove-tag",
+          message: allMessages.find((m) => m.messageId === messageId),
+          messageId,
+          data: {
+            tag,
+          },
         });
       }
     },

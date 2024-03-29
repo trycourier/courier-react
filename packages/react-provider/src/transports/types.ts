@@ -33,6 +33,7 @@ export interface IInboxMessagePreview {
   data?: Record<string, any>;
   /** ISO 8601 date the message was read */
   read?: string;
+  tags?: string[];
   title?: string;
   trackingIds?: {
     openTrackingId?: string;
