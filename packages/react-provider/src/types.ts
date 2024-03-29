@@ -18,6 +18,7 @@ export type OnEvent = (eventParams: {
   messageId?: string;
   message?: IInboxMessagePreview;
   event: EventType;
+  data?: Record<string, unknown>;
 }) => void;
 
 export interface PinDetails {
@@ -64,13 +65,15 @@ export interface Brand {
 }
 
 export type EventType =
-  | "mark-all-read"
-  | "read"
-  | "unread"
+  | "add-tag"
   | "archive"
-  | "opened"
   | "click"
-  | "unpin";
+  | "mark-all-read"
+  | "opened"
+  | "read"
+  | "remove-tag"
+  | "unpin"
+  | "unread";
 
 export interface ThemeVariables {
   background?: string;

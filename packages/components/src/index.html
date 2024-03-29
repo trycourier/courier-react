@@ -271,19 +271,32 @@
       };*/
 
       window.courierConfig = {
+        /*
+        STAGING CONFIG
+        
         inboxApiUrl:
-          "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
+          "https://4rq7n8hhjd.execute-api.us-east-1.amazonaws.com/staging/q",
         apiUrl:
-          "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q",
+          "https://yubmnstah4.execute-api.us-east-1.amazonaws.com/staging/client/q",
         wsOptions: {
-          url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+          url: "wss://icnrz8ttcf.execute-api.us-east-1.amazonaws.com/staging",
         },
-        clientKey: "ZDJmNTVhMWQtYmZjMS00ODg0LThhMjQtZDg0ZDg5ZTlhN2Ri",
-        // JWT SMOKEY
-        //clientKey: "YzQzMGM3OGYtYzQ2NC00NTdjLThkM2QtNWIwYzI4OTdmYmE5",
-        //userId: "smokey12345",
+        clientKey: "MWIxZTk1M2YtMGViYi00N2FkLWJlYWItZjU3OWJkNjA2ZWIx=",
+        userId: "smokey12345",*/
+        //authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6MDB1ZDZjZGRlY1VSaEhybWkzNTcgaW5ib3g6cmVhZDptZXNzYWdlcyBpbmJveDp3cml0ZTpldmVudHMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvdGVzdCIsInRlbmFudF9pZCI6ImJiNjAyNDM5LTI2MmYtNGRlZS1iNDExLTNiZjdmMjM5NDYyMS90ZXN0IiwiYWNjb3VudF9pZCI6IjAxRkdTN1hWVDlBSEo4OE43QVpCMDE5UUdaIiwiaWF0IjoxNzEwNDYyMjg5LCJqdGkiOiJmMTc3NWJlMi1hNzVhLTQxNDktYjNhMC02YjA0MjdhNzg0NjQifQ.8FwrFCKPyFP1MCIH8kWBWfWCUUGDyP5w4oYuQGPWGtY",
 
-        userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+        //userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+
+        // rileydev config
+        inboxApiUrl:
+          "https://3gbm33p3pe.execute-api.us-east-1.amazonaws.com/dev/q",
+        apiUrl:
+          "https://ln3nzc1ca8.execute-api.us-east-1.amazonaws.com/dev/client/q",
+        wsOptions: {
+          url: "wss://p46x8j3l88.execute-api.us-east-1.amazonaws.com/dev",
+        },
+        clientKey: "NDBmYTEyODAtNjg0Ni00YjYwLTlkZjktNGE3M2RkMWM4ZWIw",
+        userId: "ed633018-217c-4b2d-a2e9-0548f0955bdc",
         components: {
           inbox: {
             appendTo: "#test",

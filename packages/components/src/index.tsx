@@ -107,9 +107,6 @@ const initCourier = (courierConfig?: ICourierConfig) => {
     return;
   }
 
-  if (!userId || !clientKey) {
-    return;
-  }
   const existingCourierRoot =
     document.getElementsByTagName("courier-root")?.[0];
 
