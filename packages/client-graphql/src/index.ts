@@ -9,11 +9,6 @@ export {
   IGetInboxMessagesParams,
 } from "./inbox";
 export {
-  default as Messages,
-  IGetMessagesParams,
-  IGraphMessageResponse,
-} from "./messages";
-export {
   default as Preferences,
   UpdateRecipientPreferencesPayload,
 } from "./preferences";

@@ -39,16 +39,16 @@ const events = Brands({ events: courierClient })
 ### Messages
 
 ```js
-import { Messages } from "@trycourier/client-graphql";
+import { Inbox } from "@trycourier/client-graphql";
 
-const messagesApi = Messages({ authorization: "abc123" });
+const inboxApi = Inbox({ authorization: "abc123" });
 
 const getMessageCount = async (params?: {
-  isRead?: boolean,
+  status?: "read" | "unread",
   from?: number,
   tags?: string[],
 }) => {
-  const messageCount = await messagesApi.getMessageCount(params);
+  const messageCount = await inboxApi.getInboxMessages(params);
   return messageCount;
 };
 const getMessages = async (

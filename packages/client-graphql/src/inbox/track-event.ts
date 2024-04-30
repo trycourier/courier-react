@@ -36,7 +36,10 @@ export const getTrackEventQueryWithTrackingId = (eventType: EventType) => `
   }
 `;
 
-export type TrackEvent = (messageId: string) => Promise<
+export type TrackEvent = (
+  messageId: string,
+  data?: Record<string, unknown>
+) => Promise<
   | {
       [eventType: string]: boolean;
     }

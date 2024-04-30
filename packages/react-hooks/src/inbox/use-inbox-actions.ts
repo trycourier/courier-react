@@ -9,7 +9,6 @@ import { IInbox } from "./types";
 
 import { IGetInboxMessagesParams, Inbox } from "@trycourier/client-graphql";
 
-import { IGetMessagesParams } from "@trycourier/client-graphql";
 import { initInbox } from "./actions/init";
 import { markAllRead } from "./actions/mark-all-read";
 import { markMessageArchived } from "./actions/mark-message-archived";
@@ -29,12 +28,12 @@ import createMiddleware from "./middleware";
 import reducer from "./reducer";
 
 export interface IFetchMessagesParams {
-  params?: IGetMessagesParams;
+  params?: IGetInboxMessagesParams;
   after?: string;
 }
 export interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
-  getUnreadMessageCount: (params?: IGetMessagesParams) => void;
+  getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
   init: (inbox?: IInbox) => void;
   markAllAsRead: (fromWS?: boolean) => void;
   markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
@@ -148,11 +147,7 @@ const useInboxActions = (): IInboxActions => {
     fetchMessages: (payload?: IFetchMessagesParams) => {
       const searchParams: IGetInboxMessagesParams = {
         ...payload?.params,
-        status: payload?.params?.isRead
-          ? "read"
-          : payload?.params?.isRead === false
-          ? "unread"
-          : payload?.params?.status,
+        status: payload?.params?.status,
         from: inbox?.from,
       };
 
@@ -184,7 +179,7 @@ const useInboxActions = (): IInboxActions => {
       }
     },
     trackClick: async (messageId, trackingId) => {
-      await inboxClient.trackClick(messageId, trackingId);
+      await inboxClient.trackClick(messageId, { trackingId });
 
       if (onEvent) {
         onEvent({
