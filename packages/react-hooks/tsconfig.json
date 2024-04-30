@@ -13,5 +13,12 @@
     "./src/**/*.tsx",
     "./src/**/*.ts"
   ],
-  "references": [{ "path": "../react-provider" }]
+  "references": [
+    {
+      "path": "../react-provider"
+    },
+    {
+      "path": "../client-graphql"
+    }
+  ]
 }

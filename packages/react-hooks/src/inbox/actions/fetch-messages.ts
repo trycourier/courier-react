@@ -1,7 +1,5 @@
-import {
-  IGetMessagesParams,
-  IInboxMessagePreview,
-} from "@trycourier/client-graphql";
+import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
+import { IInbox } from "../types";
 
 export const INBOX_FETCH_MESSAGES = "inbox/FETCH_MESSAGES";
 export const INBOX_FETCH_MESSAGES_PENDING = "inbox/FETCH_MESSAGES/PENDING";
@@ -27,8 +25,8 @@ export const fetchMessagesError = (): FetchMessagesError => ({
 export const INBOX_FETCH_MESSAGES_DONE = "inbox/FETCH_MESSAGES/DONE";
 
 interface FetchMessagesDonePayload {
-  messages: IInboxMessagePreview[];
-  pinned?: IInboxMessagePreview[];
+  messages: IInbox["messages"];
+  pinned?: IInbox["pinned"];
   appendMessages?: boolean;
   startCursor?: string;
 }
@@ -39,7 +37,7 @@ export type FetchMessagesDone = {
     tabId?: string;
     searchParams: {
       from?: string;
-      filters: IGetMessagesParams;
+      filters: IGetInboxMessagesParams;
     };
   };
   payload: FetchMessagesDonePayload;

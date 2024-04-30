@@ -70,7 +70,10 @@ type InboxAction =
   | ToggleInbox
   | UnpinMessage;
 
-const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
+const sortPinned = (
+  pinned: IInbox["pinned"],
+  brand: IInbox["brand"]
+): IInboxMessagePreview[] => {
   const configuredSlots = brand?.inapp?.slots?.map((s) => s.id);
 
   const pinnedBySlot = pinned?.reduce(
@@ -169,7 +172,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         isLoading: false,
         lastMessagesFetched: new Date().getTime(),
-        messages: newMessages,
+        messages: newMessages as IInboxMessagePreview[],
         pinned: action.payload?.appendMessages
           ? state.pinned
           : sortPinned(action.payload?.pinned, state.brand),

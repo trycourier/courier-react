@@ -1,4 +1,4 @@
-import { IInboxMessagePreview } from "@trycourier/client-graphql";
+import { IInboxMessagePreview } from "@trycourier/react-provider";
 
 import reducer, { initialState } from "../reducer";
 import { initInbox, INBOX_INIT } from "../actions/init";

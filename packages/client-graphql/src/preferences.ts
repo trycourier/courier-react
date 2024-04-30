@@ -138,9 +138,9 @@ const UPDATE_RECIPIENT_PREFERENCES = `
 export interface UpdateRecipientPreferencesPayload {
   templateId: string;
   status: string;
-  hasCustomRouting: boolean;
-  routingPreferences: Array<string>;
-  digestSchedule: string;
+  hasCustomRouting?: boolean;
+  routingPreferences?: Array<string>;
+  digestSchedule?: string;
   tenantId?: string;
 }
 
