@@ -185,7 +185,6 @@ describe("inbox reducer", () => {
         expect(state).toEqual({
           ...initialState,
           isLoading: false,
-          lastMessagesFetched: mockDate,
           messages: [mockGraphMessage],
           pinned: [],
           searchParams: {
@@ -216,7 +215,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [mockGraphMessage, mockGraphMessage2],
           isLoading: false,
           searchParams: {
@@ -345,7 +343,6 @@ describe("inbox reducer", () => {
       expect(state).toEqual({
         ...initialState,
         unreadMessageCount: 0,
-        lastMarkedAllRead: mockDate,
         messages: [
           {
             ...mockGraphMessage,

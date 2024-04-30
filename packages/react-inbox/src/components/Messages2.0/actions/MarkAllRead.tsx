@@ -19,13 +19,14 @@ const StyledButton = styled.button(({ theme }) => {
 });
 
 const MarkAllRead: React.FunctionComponent<{
+  disabled?: boolean;
   onClick: React.MouseEventHandler;
   label?: string;
-}> = ({ onClick, label }) => {
+}> = ({ onClick, disabled, label }) => {
   const title = label ?? "Mark All as Read";
   return (
     <StyledTippy content={title}>
-      <StyledButton title={title} onClick={onClick}>
+      <StyledButton disabled={disabled} title={title} onClick={onClick}>
         <svg
           width="24"
           height="24"

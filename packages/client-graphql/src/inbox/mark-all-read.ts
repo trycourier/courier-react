@@ -1,12 +1,13 @@
 import { Client } from "urql";
+import { IGetInboxMessagesParams } from "./messages";
 
 export const MARK_ALL_READ = `
-  mutation TrackEvent {
-    markAllRead
+  mutation TrackEvent($params: MarkAllAsReadParamsInput) {
+    markAllRead(params: $params)
   } 
 `;
 
-export type MarkAllRead = () => Promise<
+export type MarkAllRead = (params?: IGetInboxMessagesParams) => Promise<
   | {
       markAllRead: boolean;
     }
@@ -15,12 +16,14 @@ export type MarkAllRead = () => Promise<
 
 export const markAllRead =
   (client?: Client): MarkAllRead =>
-  async () => {
+  async (params: IGetInboxMessagesParams = {}) => {
     if (!client) {
       return Promise.resolve(undefined);
     }
 
-    const results = await client.mutation(MARK_ALL_READ).toPromise();
+    const results = await client
+      .mutation(MARK_ALL_READ, { params })
+      .toPromise();
     const markAllRead = results?.data?.markAllRead;
 
     return {
