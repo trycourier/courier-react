@@ -193,7 +193,7 @@ export const CourierComponents: React.FunctionComponent = () => {
       {toastElement &&
         createPortal(
           <Suspense fallback={<div />}>
-            <Toast config={toastConfig} />
+            <Toast {...toastConfig} />
           </Suspense>,
           toastElement
         )}

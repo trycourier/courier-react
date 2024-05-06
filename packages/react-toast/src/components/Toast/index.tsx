@@ -21,11 +21,7 @@ import { defaultConfig } from "~/defaults";
 
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
-export const Toast: React.FunctionComponent<
-  IToastConfig & {
-    config?: IToastConfig;
-  }
-> = (props) => {
+export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
   const courierContext = useCourier();
 
   if (!courierContext) {
