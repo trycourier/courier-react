@@ -23,7 +23,7 @@
     "build": "rimraf dist && yarn babel",
     "clean": "rimraf dist && rimraf typings",
     "type-check": "tsc --noEmit",
-    "types": "tsc --build"
+    "types": "tsc --emitDeclarationOnly"
   },
   "bugs": {
     "url": "https://github.com/trycourier/courier-react/issues"
