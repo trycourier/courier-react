@@ -8,17 +8,5 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": [
-    "../types/@types/*/index.d.ts",
-    "./src/**/*.tsx",
-    "./src/**/*.ts"
-  ],
-  "references": [
-    {
-      "path": "../react-provider"
-    },
-    {
-      "path": "../client-graphql"
-    }
-  ]
+  "include": ["../types/@types/*/index.d.ts", "./src/**/*.tsx", "./src/**/*.ts"]
 }

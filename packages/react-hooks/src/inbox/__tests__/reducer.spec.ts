@@ -57,6 +57,7 @@ Object.defineProperty(global, "IntersectionObserver", {
 
 const mockGraphMessage: IInboxMessagePreview = {
   messageId: "mockMessageId",
+  type: "message",
   created: new Date().toISOString(),
   title: "mockTitle",
   preview: "mockBody",
@@ -64,6 +65,7 @@ const mockGraphMessage: IInboxMessagePreview = {
 
 const mockGraphMessage2: IInboxMessagePreview = {
   messageId: "mockMessageId2",
+  type: "message",
   created: new Date().toISOString(),
   title: "mockTitle2",
   preview: "mockBody2",
@@ -278,7 +280,9 @@ describe("inbox reducer", () => {
           pinned: [
             {
               ...mockGraphMessage2,
-              pinned: "pinned",
+              pinned: {
+                slotId: "pinned",
+              },
             },
           ],
         },

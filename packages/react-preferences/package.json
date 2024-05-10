@@ -10,7 +10,7 @@
     "clean": "rimraf dist && rimraf typings",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "type-check": "tsc --noEmit",
-    "types": "tsc --build"
+    "types": "tsc --emitDeclarationOnly"
   },
   "peerDependencies": {
     "@trycourier/react-provider": ">=4.X.X",

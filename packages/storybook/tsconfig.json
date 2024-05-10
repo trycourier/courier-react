@@ -8,13 +8,6 @@
       "~/*": ["./stories/*"]
     }
   },
-  "references": [
-    { "path": "../react-provider" },
-    { "path": "../react-elements" },
-    { "path": "../react-toast" },
-    { "path": "../react-inbox" },
-    { "path": "../react-brand-designer" }
-  ],
   "include": [
     "../types/@types/*/index.d.ts",
     "./stories/**/*.tsx",

@@ -11,7 +11,7 @@
     "clean": "rimraf dist && rimraf typings",
     "test": "jest -c jest.config.js --runInBand",
     "type-check": "tsc --noEmit",
-    "types": "tsc --build"
+    "types": "tsc --emitDeclarationOnly"
   },
   "license": "ISC",
   "dependencies": {

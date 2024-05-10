@@ -42,7 +42,7 @@
     "type-check": "lerna run type-check --parallel --stream",
     "type-coverage:detail": "type-coverage --strict --detail",
     "type-coverage": "type-coverage --strict --at-least 92",
-    "types": "yarn tsc --build"
+    "types": "lerna run types --stream"
   },
   "repository": {
     "type": "git",
