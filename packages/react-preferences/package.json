@@ -13,6 +13,7 @@
     "types": "tsc --emitDeclarationOnly"
   },
   "peerDependencies": {
+    "styled-components": ">=^5.X.X",
     "@trycourier/react-provider": ">=4.X.X",
     "react": ">=17.X.X",
     "react-dom": ">=17.X.X"
@@ -25,7 +26,6 @@
   "dependencies": {
     "@trycourier/react-hooks": "^5.1.2",
     "date-fns": "^2.19.0",
-    "react-toggle": "^4.1.2",
-    "styled-components": "^5.3.6"
+    "react-toggle": "^4.1.2"
   }
 }
