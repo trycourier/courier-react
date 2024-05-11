@@ -33,7 +33,7 @@
     "react-markdown": "^8.0.1",
     "rehype-raw": "^6.1.1",
     "storybook": "^6.5.9",
-    "styled-components": "^5.2.1",
+    "styled-components": "^6.0.0",
     "styled-normalize": "^8.0.7"
   }
 }

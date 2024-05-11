@@ -14,7 +14,6 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@types/styled-components": "^5.1.7",
     "concat-md": "^0.3.5"
   },
   "dependencies": {
@@ -31,14 +30,14 @@
     "react-intersection-observer": "^9.4.0",
     "react-loading-skeleton": "^2.2.0",
     "rimraf": "^3.0.2",
-    "styled-components": "^5.2.1",
     "tinycolor2": "^1.4.2",
     "urql": "^2.0.1"
   },
   "peerDependencies": {
     "@trycourier/react-provider": ">=4.X.X",
     "react": ">=17.X.X",
-    "react-dom": ">=17.X.X"
+    "react-dom": ">=17.X.X",
+    "styled-components": ">=^5.X.X"
   },
   "files": [
     "dist/",
