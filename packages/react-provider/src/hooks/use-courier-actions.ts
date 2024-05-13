@@ -6,9 +6,11 @@ import {
   Events,
 } from "@trycourier/client-graphql";
 import { Brand, CourierTransport } from "..";
+import courier from "@trycourier/courier-js";
+
 import { ICourierContext } from "~/types";
 
-const useCourierActions = (state, dispatch) => {
+const useCourierActions = (state, dispatch): ICourierContext => {
   return useMemo(() => {
     const courierClient = createCourierClient({
       apiUrl: state.apiUrl,
@@ -19,10 +21,34 @@ const useCourierActions = (state, dispatch) => {
       userSignature: state.userSignature,
     });
 
+    courier.init({
+      baseUrl: state.apiUrl,
+      authorization: state.authorization,
+      clientKey: state.clientKey,
+      userId: state.userId,
+      userSignature: state.userSignature,
+    });
+
     const brands = Brands({ client: courierClient });
     const events = Events({ client: courierClient });
 
     return {
+      dispatch,
+      async track(
+        event: string,
+        properties?: Record<string, unknown> | undefined
+      ) {
+        await courier.track(event, properties);
+      },
+      async identify(userId: string, payload: Record<string, unknown>) {
+        await courier.identify(userId, payload);
+      },
+      async subscribe(userId: string, listId: string) {
+        await courier.subscribe(userId, listId);
+      },
+      async unsubscribe(userId: string, listId: string) {
+        await courier.unsubscribe(userId, listId);
+      },
       init: async (payload: Partial<ICourierContext>) => {
         dispatch({
           type: "root/INIT",

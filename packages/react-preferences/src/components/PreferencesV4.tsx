@@ -1,17 +1,16 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
-import {
-  ChannelClassification,
-  IPreferenceTemplate,
-  IRecipientPreference,
-  PreferenceStatus,
-} from "~/types";
+import { ChannelClassification, IRecipientPreference } from "~/types";
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
 import { PreferenceSection } from "@trycourier/react-hooks";
 import DigestSchedules from "./DigestSchedule";
-import { useCourier } from "@trycourier/react-provider";
+import {
+  IPreferenceTemplate,
+  PreferenceStatus,
+  useCourier,
+} from "@trycourier/react-provider";
 
 export const ChannelOption = styled.div`
   display: flex;

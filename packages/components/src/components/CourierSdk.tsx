@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useCourier } from "@trycourier/react-provider";
-import { useInbox, usePreferences } from "@trycourier/react-hooks";
+import { IInbox, useInbox, usePreferences } from "@trycourier/react-hooks";
+import { ToastProps } from "@trycourier/react-toast";
 
 export const CourierSdk: React.FunctionComponent<{
   activeComponents: {
@@ -9,7 +10,11 @@ export const CourierSdk: React.FunctionComponent<{
     preferences: boolean;
   };
 }> = ({ children }) => {
-  const courier = useCourier();
+  const courier =
+    useCourier<{
+      inbox: IInbox;
+      toast: ToastProps;
+    }>();
   const inbox = useInbox();
   const preferences = usePreferences();
 
@@ -40,8 +45,12 @@ export const CourierSdk: React.FunctionComponent<{
         ...courier.toast,
       },
       brand: courier.brand,
-      transport: courier.transport,
+      identify: courier.identify,
       renewSession: courier.renewSession,
+      subscribe: courier.subscribe,
+      track: courier.track,
+      transport: courier.transport,
+      unsubscribe: courier.unsubscribe,
     };
   }, [courier]);
 
