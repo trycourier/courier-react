@@ -3,11 +3,8 @@ import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
 
 import { StatusPreference } from "./Status";
-import {
-  ChannelClassification,
-  IPreferenceTemplate,
-  IRecipientPreference,
-} from "../types";
+import { ChannelClassification, IRecipientPreference } from "../types";
+import { IPreferenceTemplate } from "@trycourier/react-provider";
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;

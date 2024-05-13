@@ -52,6 +52,16 @@ declare global {
       transport?: any;
       brand?: Brand;
       renewSession?: (token: string) => void;
+      identify?: (
+        userId: string,
+        payload: Record<string, unknown>
+      ) => Promise<void>;
+      subscribe?: (userId: string, listId: string) => Promise<void>;
+      track?: (
+        event: string,
+        properties?: Record<string, unknown>
+      ) => Promise<void>;
+      unsubscribe?: (userId: string, listId: string) => Promise<void>;
       init: (config: ICourierConfig) => void;
       on: (action: string, cb: () => void) => void;
     };

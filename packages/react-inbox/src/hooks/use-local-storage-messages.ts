@@ -2,7 +2,13 @@ import { useEffect, useMemo } from "react";
 import { useInbox } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
 
-const useLocalStorageMessages = (clientKey: string, userId: string) => {
+const useLocalStorageMessages = ({
+  clientKey,
+  userId,
+}: {
+  clientKey?: string;
+  userId?: string;
+}) => {
   const { localStorage } = useCourier();
   const {
     lastMessagesFetched,
@@ -35,7 +41,8 @@ const useLocalStorageMessages = (clientKey: string, userId: string) => {
     }
 
     try {
-      return JSON.parse(localStorage.getItem(localStorageKey));
+      const item = localStorage.getItem(localStorageKey);
+      return item ? JSON.parse(item) : {};
     } catch {
       // do nothing
     }

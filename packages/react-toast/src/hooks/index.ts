@@ -25,11 +25,13 @@ export const useToast: UseToast = () => {
   ];
 };
 
-export const useListenForTransportEvent = (
-  clientKey: string,
-  transport: ICourierContext["transport"],
-  handleToast
-) => {
+export const useListenForTransportEvent = ({
+  transport,
+  handleToast,
+}: {
+  transport: ICourierContext["transport"];
+  handleToast;
+}) => {
   const { createTrackEvent } = useCourier();
 
   useEffect(() => {
@@ -50,5 +52,5 @@ export const useListenForTransportEvent = (
         handleToast(courierEvent?.data);
       },
     });
-  }, [clientKey, handleToast, transport]);
+  }, [handleToast, transport]);
 };

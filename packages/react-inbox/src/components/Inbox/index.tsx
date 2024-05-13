@@ -87,7 +87,7 @@ const StyledTippy = styled(LazyTippy)<{
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const ref = useRef(null);
-  const courierContext = useCourier();
+  const courierContext = useCourier<{ inbox: InboxProps }>();
 
   if (!courierContext) {
     throw new Error("Missing Courier Provider");
@@ -143,10 +143,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
     }
   }
 
-  const localStorageState = useLocalStorageMessages(
-    courierContext.clientKey,
-    courierContext.userId
-  );
+  const localStorageState = useLocalStorageMessages(courierContext);
 
   useEffect(() => {
     init({

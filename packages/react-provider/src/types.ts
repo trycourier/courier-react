@@ -6,6 +6,40 @@ export { IInboxMessagePreview } from "@trycourier/client-graphql";
 export { Interceptor } from "./transports/types";
 export type ErrorEventHandler = (event: ErrorEvent) => void;
 
+export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
+
+export type RepeatOn = {
+  sunday?: boolean;
+  monday?: boolean;
+  tuesday?: boolean;
+  wednesday?: boolean;
+  thursday?: boolean;
+  friday?: boolean;
+  saturday?: boolean;
+};
+
+export interface DigestSchedule {
+  period: string;
+  repetition: string;
+  scheduleId: string;
+  default?: boolean;
+  start: string;
+  recurrence: string;
+  repeat?: {
+    frequency: number;
+    interval: "day" | "week" | "month" | "year";
+    on?: string | RepeatOn;
+  };
+  end?: number | string;
+}
+
+export interface IPreferenceTemplate {
+  templateName: string;
+  templateId: string;
+  defaultStatus: PreferenceStatus;
+  digestSchedules?: DigestSchedule[];
+}
+
 export type WSOptions = {
   url?: string;
   onError?: ErrorEventHandler;
@@ -57,6 +91,7 @@ export interface Brand {
     };
     renderActionsAsButtons?: boolean;
   };
+  preferenceTemplates?: Array<IPreferenceTemplate>;
   colors?: {
     primary?: string;
     secondary?: string;
@@ -108,6 +143,19 @@ export interface ICourierProviderProps {
   wsOptions?: WSOptions;
 }
 export interface ICourierContext extends ICourierProviderProps {
+  clientSourceId?: string;
   dispatch: (action: { type: string; payload?: any; meta?: any }) => void;
-  clientSourceId: string;
+  getBrand: (brandId?: string) => void;
+  createTrackEvent: (trackingId: string) => void;
+  identify?: (
+    userId: string,
+    payload: Record<string, unknown>
+  ) => Promise<void>;
+  subscribe: (userId: string, listId: string) => Promise<void>;
+  track: (event: string, properties?: Record<string, unknown>) => Promise<void>;
+  unsubscribe: (userId: string, listId: string) => Promise<void>;
+  renewSession: (token: string) => void;
+  pageVisible: () => void;
+  init: (payload: Partial<ICourierContext>) => Promise<void>;
+  wsReconnected: () => void;
 }

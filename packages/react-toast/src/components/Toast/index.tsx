@@ -28,19 +28,14 @@ export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
     throw new Error("Missing Courier Provider");
   }
 
-  const {
-    clientKey,
-    transport,
-    dispatch,
-    brand: courierBrand,
-  } = courierContext;
+  const { transport, dispatch, brand: courierBrand } = courierContext;
 
   const brand = props?.brand ?? courierBrand;
 
   const theme = useMemo(() => {
     return {
       ...props.theme,
-      brand: deepExtend({}, themeDefaults, brand),
+      brand: deepExtend({}, themeDefaults, brand ?? {}),
     };
   }, [props.theme, brand]);
 
@@ -87,7 +82,7 @@ export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
     });
   }, [props, dispatch, handleToast]);
 
-  useListenForTransportEvent(clientKey, transport, handleToast);
+  useListenForTransportEvent({ transport, handleToast });
 
   const autoClose = props?.autoClose ?? brand?.inapp?.toast?.timerAutoClose;
 

@@ -231,39 +231,40 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   };
 
   const options = useMemo(() => {
-    const viewOptions = views?.map((v, index) => ({
-      id: v.id,
-      Component: ({
-        active,
-        disabled,
-        onClick,
-        selected,
-        showDropdown,
-      }: {
-        active?: boolean;
-        disabled?: boolean;
-        onClick?: React.MouseEventHandler;
-        selected?: boolean;
-        showDropdown?: boolean;
-      }) => (
-        <DropdownOptionButton
-          active={active}
-          onClick={onClick ?? handleSetView(v.id)}
-          selected={selected}
-          showDropdown={showDropdown}
-        >
-          <TitleWrapper
-            title={v.label}
-            unreadMessageCount={index === 0 ? unreadMessageCount : undefined}
-          />
-          {onClick && !disabled && <DownCarrot />}
-        </DropdownOptionButton>
-      ),
-    }));
+    const viewOptions = views
+      ?.map((v, index) => ({
+        id: v.id,
+        Component: ({
+          active,
+          disabled,
+          onClick,
+          selected,
+          showDropdown,
+        }: {
+          active?: boolean;
+          disabled?: boolean;
+          onClick?: React.MouseEventHandler;
+          selected?: boolean;
+          showDropdown?: boolean;
+        }) => (
+          <DropdownOptionButton
+            active={active}
+            onClick={onClick ?? handleSetView(v.id)}
+            selected={selected}
+            showDropdown={showDropdown}
+          >
+            <TitleWrapper
+              title={v.label}
+              unreadMessageCount={index === 0 ? unreadMessageCount : undefined}
+            />
+            {onClick && !disabled && <DownCarrot />}
+          </DropdownOptionButton>
+        ),
+      }))
+      .filter(Boolean);
 
-    return [
-      ...(viewOptions ?? []),
-      brand?.preferenceTemplates?.length && {
+    if (brand?.preferenceTemplates?.length) {
+      viewOptions?.push({
         id: "preferences",
         Component: ({
           active,
@@ -286,12 +287,13 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
             {onClick && <DownCarrot />}
           </DropdownOptionButton>
         ),
-      },
-    ].filter(Boolean);
+      });
+    }
+    return viewOptions;
   }, [brand?.preferenceTemplates?.length, title, unreadMessageCount]);
 
   const ActiveOption = options?.find((o) => o.id === view)?.Component;
-  const hasDropdownOptions = options?.length > 1;
+  const hasDropdownOptions = Boolean(options?.length);
 
   return (
     <Container data-testid="header">
@@ -310,7 +312,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           {showDropdown && (
             <HeadingDropdownOptions>
               {options
-                .map((o) => {
+                ?.map((o) => {
                   return <o.Component active={o.id === view} key={o.id} />;
                 })
                 .filter(Boolean)}

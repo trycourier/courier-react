@@ -15,12 +15,16 @@ import createReducer from "react-use/lib/factory/createReducer";
 
 import {
   Brand,
+  DigestSchedule,
   EventType,
   ICourierContext,
   ICourierProviderProps,
+  IPreferenceTemplate,
   OnEvent,
   PinDetails,
+  PreferenceStatus,
   ProviderTheme,
+  RepeatOn,
   ThemeVariables,
   WSOptions,
 } from "./types";
@@ -54,17 +58,21 @@ export const registerMiddleware = _registerMiddleware;
 
 export type {
   Brand,
+  DigestSchedule,
   EventType,
   IActionElemental,
   ICourierContext,
   ICourierEventMessage,
   IInboxMessagePreview,
   Interceptor,
+  IPreferenceTemplate,
   ITextElemental,
   Middleware,
   OnEvent,
   PinDetails,
+  PreferenceStatus,
   ProviderTheme,
+  RepeatOn,
   WSOptions,
 };
 
@@ -300,7 +308,6 @@ export const CourierProvider: React.FunctionComponent<
         ...state,
         ...actions,
         clientSourceId,
-        dispatch,
       }}
     >
       <GlobalThemeVariables theme={theme} />
