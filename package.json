@@ -112,7 +112,6 @@
     ]
   },
   "dependencies": {
-    "@trycourier/courier-js": "^1.4.2",
     "pkg-dir": "^7.0.0"
   }
 }

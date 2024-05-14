@@ -21,10 +21,17 @@ const useCourierActions = (state, dispatch): ICourierContext => {
       userSignature: state.userSignature,
     });
 
+    let clientKey = state.clientKey;
+
+    //ensure we always have a clientkey
+    if (!clientKey && state.authorization) {
+      clientKey = "JWT_AUTH";
+    }
+
     courier.init({
       baseUrl: state.apiUrl,
       authorization: state.authorization,
-      clientKey: state.clientKey,
+      clientKey,
       userId: state.userId,
       userSignature: state.userSignature,
     });
