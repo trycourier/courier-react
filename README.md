@@ -6,6 +6,14 @@ This repository, also called **In-App**, is a set of features and components tha
 
 Want to use packages with other frameworks/libraries like _angular_ or _vue_? Check out how to do [Embedded Integration](https://www.courier.com/docs/guides/providers/in-app/courier-push/#embedded-integration)
 
+## 6.0 Release
+
+We've cleaned up a bunch of stale code that isn't being used anymore. We no longer export "Messages" from client-graphql and only support "Inbox" as a datasource.
+
+Typings have also been fixed for client-graphql and useCourier hooks
+
+Styled Components is now a peer dependency
+
 ## 2.0 and 3.0 Releases
 
 We've recently created both 2.X and 3.X releases related to this monorepository. This is because we've migrated to a new simpler, streamlined style for our components and there are breaking changes with _props_ and _api_. Below is a short description of each of our versions:

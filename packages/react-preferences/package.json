@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-preferences",
-  "version": "5.1.2",
+  "version": "6.0.0",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
   "scripts": {
@@ -13,10 +13,10 @@
     "types": "tsc --emitDeclarationOnly"
   },
   "peerDependencies": {
-    "styled-components": ">=^5.X.X",
     "@trycourier/react-provider": ">=4.X.X",
     "react": ">=17.X.X",
-    "react-dom": ">=17.X.X"
+    "react-dom": ">=17.X.X",
+    "styled-components": ">=^5.X.X"
   },
   "files": [
     "dist/",
@@ -24,7 +24,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@trycourier/react-hooks": "^5.1.2",
+    "@trycourier/react-hooks": "^6.0.0",
     "date-fns": "^2.19.0",
     "react-toggle": "^4.1.2"
   }
