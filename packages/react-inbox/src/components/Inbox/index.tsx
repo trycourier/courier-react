@@ -297,13 +297,16 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
 
 const InboxWrapper: React.FunctionComponent<InboxProps> = (props) => {
   const courierContext = useCourier<{ inbox: InboxProps }>();
+  const contextExists = Boolean(courierContext);
 
-  if (!courierContext) {
-    console.warn("Inbox: Missing Courier Provider");
-    return null;
-  }
+  return useMemo(() => {
+    if (!contextExists) {
+      console.warn("Inbox: Missing Courier Provider");
+      return null;
+    }
 
-  return <Inbox {...props} />;
+    return <Inbox {...props} />;
+  }, [contextExists, props]);
 };
 
 export default InboxWrapper;

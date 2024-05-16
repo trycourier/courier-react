@@ -33,7 +33,7 @@
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "styled-components": ">=^5.X.X"
+    "styled-components": ">=5.X.X"
   },
   "files": [
     "dist/",
