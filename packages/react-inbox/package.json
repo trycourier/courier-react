@@ -37,7 +37,7 @@
     "@trycourier/react-provider": ">=4.X.X",
     "react": ">=17.X.X",
     "react-dom": ">=17.X.X",
-    "styled-components": ">=^5.X.X"
+    "styled-components": ">=5.X.X"
   },
   "files": [
     "dist/",

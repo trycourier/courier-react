@@ -100,13 +100,16 @@ export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
 
 const ToastWrapper: React.FunctionComponent<IToastConfig> = (props) => {
   const courierContext = useCourier();
+  const contextExists = Boolean(courierContext);
 
-  if (!courierContext) {
-    console.warn("Toast: Missing Courier Provider");
-    return null;
-  }
+  return useMemo(() => {
+    if (!contextExists) {
+      console.warn("Toast: Missing Courier Provider");
+      return null;
+    }
 
-  return <Toast {...props} />;
+    return <Toast {...props} />;
+  }, [contextExists, props]);
 };
 
 export default ToastWrapper;
