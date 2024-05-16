@@ -95,7 +95,7 @@ const GlobalThemeVariables = createGlobalStyle<{
 export const CourierContext =
   React.createContext<ICourierContext | undefined>(undefined);
 
-export const CourierProvider: React.FunctionComponent<
+const CourierProviderInner: React.FunctionComponent<
   PropsWithChildren<ICourierProviderProps>
 > = ({
   apiUrl,
@@ -314,4 +314,15 @@ export const CourierProvider: React.FunctionComponent<
       {children}
     </CourierContext.Provider>
   );
+};
+
+export const CourierProvider: React.FunctionComponent<
+  PropsWithChildren<ICourierProviderProps>
+> = (props) => {
+  if (!props.clientKey && !props.authorization) {
+    console.warn("Missing ClientKey or Authorization Token");
+    return <>{props.children}</>;
+  }
+
+  return <CourierProviderInner {...props} />;
 };

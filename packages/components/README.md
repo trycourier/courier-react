@@ -27,7 +27,7 @@ Installation is simple. All you need to do is add `<courier>` components to your
 1. Setup Courier Configurations
 2. Download the Components
 
-> Note in v4.10.0 we moved to a CDN instead of s3.  The new url is https://components.courier.com
+> Note in v4.10.0 we moved to a CDN instead of s3. The new url is https://components.courier.com
 
 > This section covers synchronous initialization where you have all information like the `clientKey` and `userId` available on first render. See `Async Initialization` below for how to control the initialization.
 
@@ -51,16 +51,66 @@ Installation is simple. All you need to do is add `<courier>` components to your
 
 ## [Config Option](#config-options)
 
-The supported configuration of `window.courierConfig` are:
+The supported configuration of `window.courierConfig` are the following:
 
-| Key        | Type              | Description                                                                                                           |
-| ---------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
-| clientKey  | `string`          | Key associated with your account. Found on https://app.courier.com/integrations/courier                               |
-| userId     | `string`          | The current user logged into your app. Associated with Courier's `recipientId`                                        |
-| initOnLoad | `boolean`         | If you don't want Courier to try and render the components right away, you can pass this flag to defer initialization |
-| components | `ComponentConfig` | Map of configuration for each component (`toast` and `inbox`) on the page                                             |
+```ts
+interface ICourierConfig {
+  // the tenant you would live to scope your requests to
+  tenantId?: string;
+  // override to render a separate brand from the default brand
+  brandId?: string;
 
-> The components will not render unless we have both the `userId` and `clientKey`
+  // ~~AUTHENTICATION~~
+
+  // JWT authentication token
+  // no other auth is required if you use this token
+  authorization?: string;
+
+  // required if no JWT
+  // found at app.courier.com/integrations/courier
+  clientKey?: string;
+
+  // required if no JWT
+  userId?: string;
+  // optional HMAC signature
+  userSignature?: string;
+
+  // by default we do not observe the dom for changes.  you can use this option to automatically render components when they
+  // are added to the dom.  note:  this may have performance impacts.
+  enableMutationObserver?: boolean;
+
+  // CSS theme overrides
+  theme?: ProviderTheme;
+
+  // handler that runs whenever a route changes.  this is useful for SPA apps to configure a router.push with
+  onRouteChange?: (route: string) => void;
+
+  // intercept function to incercept a message before rendering
+  onMessage?: Interceptor;
+
+  // component configuration
+  components?: {
+    inbox?: IInboxProps;
+    toast?: ToastConfig;
+    preferences?: PreferencesConfig;
+  };
+
+  // defaults to true, turn this off if you would like to wait for us to analyze the dom
+  initOnLoad?: boolean;
+
+  // websocket options
+  wsOptions?: WSOptions;
+}
+
+type WSOptions = {
+  onError?: ErrorEventHandler;
+  onClose?: () => void;
+  onReconnect?: () => void;
+  connectionTimeout?: number;
+};
+```
+
+> The components will not render unless we have user information and some for of authentication.
 
 ## [Asynchronous Initialization](#async-init)
 

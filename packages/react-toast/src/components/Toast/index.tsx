@@ -23,11 +23,6 @@ const GlobalStyle = createGlobalStyle`${toastCss}`;
 
 export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
   const courierContext = useCourier();
-
-  if (!courierContext) {
-    throw new Error("Missing Courier Provider");
-  }
-
   const { transport, dispatch, brand: courierBrand } = courierContext;
 
   const brand = props?.brand ?? courierBrand;
@@ -103,4 +98,15 @@ export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
   );
 };
 
-export default Toast;
+const ToastWrapper: React.FunctionComponent<IToastConfig> = (props) => {
+  const courierContext = useCourier();
+
+  if (!courierContext) {
+    console.warn("Toast: Missing Courier Provider");
+    return null;
+  }
+
+  return <Toast {...props} />;
+};
+
+export default ToastWrapper;
