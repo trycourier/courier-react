@@ -11,7 +11,7 @@
   },
   "scripts": {
     "export:storybook": "build-storybook -c .storybook -o .out",
-    "storybook": "start-storybook -p 6320"
+    "storybook": "export NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6320"
   },
   "license": "MIT",
   "dependencies": {

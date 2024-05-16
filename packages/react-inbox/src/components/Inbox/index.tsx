@@ -89,10 +89,6 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const ref = useRef(null);
   const courierContext = useCourier<{ inbox: InboxProps }>();
 
-  if (!courierContext) {
-    throw new Error("Missing Courier Provider");
-  }
-
   // set defaults
   props = useMemo(() => {
     return deepExtend(
@@ -299,4 +295,15 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   );
 };
 
-export default Inbox;
+const InboxWrapper: React.FunctionComponent<InboxProps> = (props) => {
+  const courierContext = useCourier<{ inbox: InboxProps }>();
+
+  if (!courierContext) {
+    console.warn("Inbox: Missing Courier Provider");
+    return null;
+  }
+
+  return <Inbox {...props} />;
+};
+
+export default InboxWrapper;
