@@ -33,7 +33,16 @@
     "typings/"
   ],
   "exports": {
-    ".": "./dist/index.js",
+    ".": {
+      "import": {
+        "types": "./typings/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./typings/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
     "./use-inbox": "./dist/inbox/use-inbox.js"
   }
 }
