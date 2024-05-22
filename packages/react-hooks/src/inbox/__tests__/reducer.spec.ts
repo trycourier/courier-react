@@ -184,10 +184,13 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          pinned: [],
+          isLoading: false,
           lastMessagesFetched: mockDate,
           messages: [mockGraphMessage],
-          isLoading: false,
+          pinned: [],
+          searchParams: {
+            filters: {},
+          },
         });
       });
 
@@ -216,6 +219,9 @@ describe("inbox reducer", () => {
           lastMessagesFetched: mockDate,
           messages: [mockGraphMessage, mockGraphMessage2],
           isLoading: false,
+          searchParams: {
+            filters: {},
+          },
         });
       });
     });
