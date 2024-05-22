@@ -56,7 +56,6 @@ export interface IInboxActions {
 
 const useInboxActions = (): IInboxActions => {
   const {
-    tenantId,
     apiUrl,
     authorization,
     clientKey,
@@ -64,6 +63,7 @@ const useInboxActions = (): IInboxActions => {
     dispatch,
     inbox,
     inboxApiUrl,
+    tenantId,
     userId,
     userSignature,
   } =
@@ -262,6 +262,17 @@ const useInboxActions = (): IInboxActions => {
           messageId,
           message,
           event: "archive",
+        });
+      }
+
+      const messageLength = inbox?.messages?.length ?? 0;
+      if (messageLength <= 1 && inbox.searchParams) {
+        dispatch({
+          meta: {
+            searchParams: inbox.searchParams,
+          },
+          payload: () => inboxClient.getMessages(inbox.searchParams),
+          type: "inbox/FETCH_MESSAGES",
         });
       }
     },

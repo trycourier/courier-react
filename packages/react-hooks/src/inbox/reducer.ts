@@ -171,6 +171,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
+        searchParams: action.meta.searchParams,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessages as IInboxMessagePreview[],
         pinned: action.payload?.appendMessages
@@ -355,6 +356,11 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_NEW_MESSAGE: {
+      if (state?.searchParams?.archived && !action.payload.archived) {
+        // don't add new message if we are on an archived list
+        return state;
+      }
+
       const newMessage = {
         ...action.payload,
         created: new Date().toISOString(),
