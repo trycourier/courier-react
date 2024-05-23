@@ -26,16 +26,19 @@ import {
   ProviderTheme,
   RepeatOn,
   ThemeVariables,
-  WSOptions,
 } from "./types";
-import { CourierTransport } from "./transports/courier";
+import {
+  CourierTransport,
+  WSOptions,
+  useTransport,
+} from "@trycourier/transport";
 import {
   IActionElemental,
   ICourierEventMessage,
   IInboxMessagePreview,
   ITextElemental,
   Interceptor,
-} from "./transports/types";
+} from "@trycourier/transport";
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
   Middleware,
@@ -43,13 +46,11 @@ import defaultMiddleware, {
 } from "./middleware";
 import useCourierActions from "./hooks/use-courier-actions";
 import { usePageVisible } from "./hooks/use-page-visible";
-import useTransport from "./hooks/use-transport";
 import useClientSourceId from "./hooks/use-client-source-id";
 import deepExtend from "deep-extend";
 import { darkVariables, lightVariables } from "./theme";
 import { createGlobalStyle } from "styled-components";
 
-export * from "./transports";
 export * from "./hooks";
 export * from "./lib";
 

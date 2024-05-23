@@ -29,12 +29,12 @@ const mockGraphMessage: IInboxMessagePreview = {
 };
 
 const server = setupServer(
-  rest.get(
-    "https://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production/",
-    (_, res, ctx) => {
-      return res(ctx.json({}));
-    }
-  ),
+  rest.get("https://inbox.courier.com/", (_, res, ctx) => {
+    return res(ctx.json({}));
+  }),
+  rest.post("https://inbox.courier.com/", (_, res, ctx) => {
+    return res(ctx.json({}));
+  }),
   graphql.query("GetInboxCount", (_, res, ctx) => {
     return res(
       ctx.data({

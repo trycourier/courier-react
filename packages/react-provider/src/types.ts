@@ -1,10 +1,10 @@
-import { ErrorEvent } from "reconnecting-websocket";
-import { CourierTransport, Transport } from "./transports";
-import { IInboxMessagePreview, Interceptor } from "./transports/types";
-export { IInboxMessagePreview } from "@trycourier/client-graphql";
-
-export { Interceptor } from "./transports/types";
-export type ErrorEventHandler = (event: ErrorEvent) => void;
+import {
+  CourierTransport,
+  Transport,
+  Interceptor,
+  IInboxMessagePreview,
+  WSOptions,
+} from "@trycourier/transport";
 
 export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
 
@@ -39,14 +39,6 @@ export interface IPreferenceTemplate {
   defaultStatus: PreferenceStatus;
   digestSchedules?: DigestSchedule[];
 }
-
-export type WSOptions = {
-  url?: string;
-  onError?: ErrorEventHandler;
-  onClose?: () => void;
-  onReconnect?: () => void;
-  connectionTimeout?: number;
-};
 
 export type OnEvent = (eventParams: {
   messageId?: string;

@@ -1,15 +1,15 @@
 import { renderHook } from "@testing-library/react-hooks"; // will attempt to auto-detect
-import { Transport } from "../../transports/base";
-import useTransport from "../use-transport";
+import { Transport } from "./base";
+import useTransport from "./use-transport";
 
-import { WS } from "../../ws";
+import { CourierWS } from "../ws";
 
-const ws = new WS({});
+const ws = new CourierWS({});
 
 const mockConnect = ws.connect as jest.Mock;
 const mockRenewSession = ws.renewSession as jest.Mock;
 
-jest.mock("../../ws");
+jest.mock("../ws");
 describe("useTransport", () => {
   afterEach(() => {
     jest.clearAllMocks();
