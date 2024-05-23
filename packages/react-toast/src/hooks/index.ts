@@ -1,11 +1,8 @@
-import {
-  ICourierContext,
-  IInboxMessagePreview,
-  useCourier,
-} from "@trycourier/react-provider";
+import { ICourierContext, useCourier } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export const useToast: UseToast = () => {
   const { toast, clientKey } =

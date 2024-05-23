@@ -2,11 +2,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { toast } from "react-toastify";
 
-import {
-  useCourier,
-  registerReducer,
-  IInboxMessagePreview,
-} from "@trycourier/react-provider";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 
 import toastCss from "react-toastify/dist/ReactToastify.css";
 import { getTransition } from "../../lib";
@@ -18,6 +14,7 @@ import Body from "~/components/Body";
 import deepExtend from "deep-extend";
 import { themeDefaults } from "~/constants";
 import { defaultConfig } from "~/defaults";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 

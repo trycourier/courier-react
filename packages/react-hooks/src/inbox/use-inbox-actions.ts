@@ -1,5 +1,4 @@
 import {
-  IInboxMessagePreview,
   Middleware,
   registerMiddleware,
   registerReducer,
@@ -26,6 +25,7 @@ import { markMessageOpened } from "./actions/mark-message-opened";
 import { newMessage } from "./actions/new-message";
 import createMiddleware from "./middleware";
 import reducer from "./reducer";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export interface IFetchMessagesParams {
   params?: IGetInboxMessagesParams;

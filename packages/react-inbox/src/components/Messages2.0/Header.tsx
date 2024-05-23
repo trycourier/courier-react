@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useInbox } from "@trycourier/react-hooks";
-import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
@@ -9,6 +9,7 @@ import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {

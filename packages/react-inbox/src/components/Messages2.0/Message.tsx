@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
-import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
 import {
@@ -22,6 +22,7 @@ import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
 
 import { SlotIcon } from "./pins";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 const UnreadIndicator = styled.div<{
   read?: IInboxMessagePreview["read"];

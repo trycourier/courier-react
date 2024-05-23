@@ -1,8 +1,5 @@
-import {
-  Brand,
-  IInboxMessagePreview,
-  OnEvent,
-} from "@trycourier/react-provider";
+import { Brand, IInboxMessagePreview } from "@trycourier/core";
+import { OnEvent } from "@trycourier/react-provider";
 export interface IInbox<T = IInboxMessagePreview> {
   tenantId?: string;
   brand?: Brand;

@@ -1,4 +1,4 @@
-import { IInboxMessagePreview } from "@trycourier/react-provider";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export type NewMessage = {
   type: "inbox/NEW_MESSAGE";

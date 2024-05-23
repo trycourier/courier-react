@@ -9,8 +9,7 @@ import * as messages from "./messages";
 import { MarkAllRead, markAllRead } from "./mark-all-read";
 import { TrackEvent, trackEvent } from "./track-event";
 
-export { IInboxMessage } from "./message";
-export { IInboxMessagePreview, IGetInboxMessagesParams } from "./messages";
+export { IGetInboxMessagesParams } from "./messages";
 
 export default (
   params:

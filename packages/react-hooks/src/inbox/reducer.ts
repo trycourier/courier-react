@@ -1,4 +1,4 @@
-import { IInboxMessagePreview } from "@trycourier/react-provider";
+import { IInboxMessagePreview } from "@trycourier/core";
 import { IInbox } from "./types";
 
 import { InboxInit, INBOX_INIT } from "./actions/init";

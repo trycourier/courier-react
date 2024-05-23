@@ -1,14 +1,11 @@
-import {
-  ICourierEventMessage,
-  IInboxMessagePreview,
-  useCourier,
-} from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { useEffect } from "react";
 
 import deepExtend from "deep-extend";
 
 import useInboxActions, { IInboxActions } from "./use-inbox-actions";
 import { IInbox } from "./types";
+import { ICourierEventMessage, IInboxMessagePreview } from "@trycourier/core";
 
 const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
   const {

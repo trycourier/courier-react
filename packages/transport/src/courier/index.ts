@@ -1,6 +1,6 @@
 import { CourierWS } from "../ws";
 import { Transport } from "../base";
-import { Interceptor } from "../types";
+import { Interceptor } from "@trycourier/core";
 import { ITransportOptions } from "./types";
 
 export class CourierTransport extends Transport {

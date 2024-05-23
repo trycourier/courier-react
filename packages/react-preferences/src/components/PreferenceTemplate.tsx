@@ -4,7 +4,7 @@ import { usePreferences } from "@trycourier/react-hooks";
 
 import { StatusPreference } from "./Status";
 import { ChannelClassification, IRecipientPreference } from "../types";
-import { IPreferenceTemplate } from "@trycourier/react-provider";
+import { IPreferenceTemplate } from "@trycourier/core";
 
 const StyledItem = styled.div`
   border-bottom: 1px solid #dadce0;

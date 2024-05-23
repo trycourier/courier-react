@@ -1,106 +1,7 @@
-import {
-  CourierTransport,
-  Transport,
-  Interceptor,
-  IInboxMessagePreview,
-  WSOptions,
-} from "@trycourier/transport";
-
-export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
-
-export type RepeatOn = {
-  sunday?: boolean;
-  monday?: boolean;
-  tuesday?: boolean;
-  wednesday?: boolean;
-  thursday?: boolean;
-  friday?: boolean;
-  saturday?: boolean;
-};
-
-export interface DigestSchedule {
-  period: string;
-  repetition: string;
-  scheduleId: string;
-  default?: boolean;
-  start: string;
-  recurrence: string;
-  repeat?: {
-    frequency: number;
-    interval: "day" | "week" | "month" | "year";
-    on?: string | RepeatOn;
-  };
-  end?: number | string;
-}
-
-export interface IPreferenceTemplate {
-  templateName: string;
-  templateId: string;
-  defaultStatus: PreferenceStatus;
-  digestSchedules?: DigestSchedule[];
-}
-
-export type OnEvent = (eventParams: {
-  messageId?: string;
-  message?: IInboxMessagePreview;
-  event: EventType;
-  data?: Record<string, unknown>;
-}) => void;
-
-export interface PinDetails {
-  id: string;
-  label: {
-    value: string;
-    color: string;
-  };
-  icon: {
-    value: string;
-    color: string;
-  };
-}
-export interface Brand {
-  inapp?: {
-    disableCourierFooter?: boolean;
-    borderRadius?: string;
-    disableMessageIcon?: boolean;
-    placement?: "top" | "bottom" | "left" | "right";
-    emptyState?: {
-      textColor?: string;
-      text?: string;
-    };
-    widgetBackground?: {
-      topColor?: string;
-      bottomColor?: string;
-    };
-    icons?: {
-      bell?: string;
-      message?: string;
-    };
-    slots?: Array<PinDetails>;
-    toast?: {
-      borderRadius?: string;
-      timerAutoClose?: number;
-    };
-    renderActionsAsButtons?: boolean;
-  };
-  preferenceTemplates?: Array<IPreferenceTemplate>;
-  colors?: {
-    primary?: string;
-    secondary?: string;
-    tertiary?: string;
-  };
-}
-
-export type EventType =
-  | "add-tag"
-  | "archive"
-  | "click"
-  | "mark-all-read"
-  | "opened"
-  | "read"
-  | "remove-tag"
-  | "unpin"
-  | "unread";
+import { CourierTransport, Transport, WSOptions } from "@trycourier/transport";
+import { Interceptor } from "@trycourier/core";
+import { Brand } from "@trycourier/core";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export interface ThemeVariables {
   background?: string;
@@ -110,6 +11,13 @@ export interface ThemeVariables {
   structure?: string;
   icon?: string;
 }
+
+export type OnEvent = (eventParams: {
+  messageId?: string;
+  message?: IInboxMessagePreview;
+  event: string;
+  data?: Record<string, unknown>;
+}) => void;
 
 export interface ProviderTheme {
   colorMode?: "dark" | "light";

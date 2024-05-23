@@ -1,14 +1,10 @@
 import { TippyProps } from "@tippyjs/react";
-import {
-  Brand,
-  PinDetails,
-  IInboxMessagePreview,
-  OnEvent,
-} from "@trycourier/react-provider";
+import { OnEvent } from "@trycourier/react-provider";
 import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
 import { CSSObject } from "styled-components";
+import { Brand, IInboxMessagePreview, PinDetails } from "@trycourier/core";
 
 export interface InboxTheme {
   brand?: Brand;

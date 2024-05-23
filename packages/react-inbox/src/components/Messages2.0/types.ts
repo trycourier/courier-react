@@ -1,5 +1,5 @@
+import { IInboxMessagePreview } from "@trycourier/core";
 import { InboxProps } from "~/types";
-import { IInboxMessagePreview } from "@trycourier/react-provider";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {

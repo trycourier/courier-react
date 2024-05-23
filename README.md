@@ -10,7 +10,9 @@ Want to use packages with other frameworks/libraries like _angular_ or _vue_? Ch
 
 We've cleaned up a bunch of stale code that isn't being used anymore. We no longer export "Messages" from client-graphql and only support "Inbox" as a datasource.
 
-Typings have also been fixed for client-graphql and useCourier hooks
+- Typings have also been fixed for client-graphql and useCourier hooks
+- Transport moved to a new package @trycourier/transport
+- New package @trycourier/core to hold common types and lib functions
 
 Styled Components is now a peer dependency
 

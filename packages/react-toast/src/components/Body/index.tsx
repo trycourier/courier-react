@@ -11,12 +11,13 @@ import {
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useInbox } from "@trycourier/react-hooks";
-import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import Markdown from "markdown-to-jsx";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 import tinycolor2 from "tinycolor2";
 import { themeDefaults } from "~/constants";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 const containerStyles = {
   height: "100%",

@@ -2,17 +2,14 @@ export { default as Toast } from "./Toast";
 import React, { ReactElement, useMemo } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import toastCss from "react-toastify/dist/ReactToastify.css";
-import {
-  Brand,
-  useCourier,
-  IInboxMessagePreview,
-} from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { Theme } from "../types";
 
 import Body from "./Body";
 import { toastStyles } from "./Toast/styled";
 import deepExtend from "deep-extend";
 import { themeDefaults } from "~/constants";
+import { Brand, IInboxMessagePreview } from "@trycourier/core";
 
 const Styled = styled.div(toastStyles);
 const GlobalStyle = createGlobalStyle`${toastCss}`;

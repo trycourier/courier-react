@@ -1,4 +1,4 @@
-import { ICourierEvent, Interceptor } from "./types";
+import { ICourierEvent, Interceptor } from "@trycourier/core";
 
 enum ListenerType {
   message = "message",

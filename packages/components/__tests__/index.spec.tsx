@@ -15,13 +15,14 @@ import {
 } from "@testing-library/react";
 import { graphql, rest } from "msw";
 import { setupServer } from "msw/node";
-import { IInboxMessagePreview } from "@trycourier/client-graphql";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 const mockGraphMessage: IInboxMessagePreview = {
+  type: "message",
   messageId: "mockMessageId",
   created: new Date().toISOString(),
   title: "mockTitle",
