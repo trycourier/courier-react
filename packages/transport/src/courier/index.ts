@@ -1,4 +1,4 @@
-import { WS } from "../../ws";
+import { CourierWS } from "../ws";
 import { Transport } from "../base";
 import { Interceptor } from "../types";
 import { ITransportOptions } from "./types";
@@ -10,7 +10,7 @@ export class CourierTransport extends Transport {
   protected clientKey?: string;
   protected declare interceptor?: Interceptor;
   protected userSignature?: string;
-  protected ws: WS;
+  protected ws: CourierWS;
 
   constructor(options: ITransportOptions) {
     super();
@@ -24,7 +24,7 @@ export class CourierTransport extends Transport {
     this.clientKey = options.clientKey;
     this.userSignature = options.userSignature;
 
-    this.ws = new WS({
+    this.ws = new CourierWS({
       tenantId: options.tenantId,
       authorization: options.authorization,
       clientSourceId: options.clientSourceId,

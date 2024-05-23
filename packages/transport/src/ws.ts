@@ -2,12 +2,12 @@ import {
   ICourierEventCallback,
   ICourierEventMessage,
   IInboxMessagePreview,
-} from "./transports/types";
+} from "./types";
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
 
 const SUBSCRIPTION_VERSION = 5;
-export class WS {
+export class CourierWS {
   connection?: ReconnectingWebSocket;
   private subscriptions: Array<{
     channel: string;
@@ -46,6 +46,14 @@ export class WS {
     options?: WSOptions;
     userSignature?: string;
   }) {
+    console.log("foo", {
+      tenantId,
+      authorization,
+      clientKey,
+      options,
+      clientSourceId,
+      userSignature,
+    });
     this.tenantId = tenantId;
     this.connectionCount = 0;
     this.authorization = authorization;
@@ -83,7 +91,9 @@ export class WS {
   }
 
   connect(): void {
-    this.connection = new ReconnectingWebSocket(this.getUrl.bind(this), [], {
+    const url = this.getUrl.bind(this);
+    console.log("url", url);
+    this.connection = new ReconnectingWebSocket(url, [], {
       connectionTimeout: this.connectionTimeout,
     });
 
@@ -94,6 +104,7 @@ export class WS {
   }
 
   private _onError(event: ErrorEvent): void {
+    console.log("error", event);
     if (this.onError) {
       this.onError(event);
     } else {

@@ -1,7 +1,6 @@
 import { useMemo, useRef } from "react";
-import { CourierTransport, Transport } from "~/transports";
+import { CourierTransport, Transport, ITransportOptions } from "./index";
 import jwtDecode from "jwt-decode";
-import { ITransportOptions } from "~/transports/courier/types";
 interface DecodedAuth {
   scope: string;
   tenantId: string;
