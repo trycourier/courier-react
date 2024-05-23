@@ -1,5 +1,5 @@
 {
-  "name": "@trycourier/transport",
+  "name": "@trycourier/core",
   "version": "6.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -14,9 +14,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@trycourier/core": "^6.0.0",
-    "jwt-decode": "^3.1.2",
-    "reconnecting-websocket": "^4.4.0",
     "rimraf": "^3.0.2"
   },
   "files": [

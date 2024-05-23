@@ -5,11 +5,11 @@ import {
   Brands,
   Events,
 } from "@trycourier/client-graphql";
-import { Brand } from "..";
 import { CourierTransport } from "@trycourier/transport";
 import courier from "@trycourier/courier-js";
 
 import { ICourierContext } from "~/types";
+import { Brand } from "@trycourier/core";
 
 const useCourierActions = (state, dispatch): ICourierContext => {
   return useMemo(() => {

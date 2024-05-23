@@ -1,5 +1,3 @@
-import { IInboxMessagePreview } from "@trycourier/react-provider";
-
 import reducer, { initialState } from "../reducer";
 import { initInbox, INBOX_INIT } from "../actions/init";
 import { setView, INBOX_SET_VIEW } from "../actions/set-view";
@@ -35,6 +33,7 @@ import {
   markMessageOpened,
 } from "../actions/mark-message-opened";
 import { INBOX_UNPIN_MESSAGE, unpinMessage } from "../actions/unpin-message";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 // Mock IntersectionObserver
 class IntersectionObserver {

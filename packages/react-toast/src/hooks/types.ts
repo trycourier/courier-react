@@ -1,4 +1,4 @@
-import { IInboxMessagePreview } from "@trycourier/react-provider";
+import { IInboxMessagePreview } from "@trycourier/core";
 import { IToastConfig } from "../types";
 
 export type ToastCaller = (

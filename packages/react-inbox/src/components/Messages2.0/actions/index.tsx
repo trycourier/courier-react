@@ -13,9 +13,9 @@ import MarkRead, { Checkmark } from "./MarkRead";
 import MarkUnread from "./MarkUnread";
 import styled from "styled-components";
 import { InboxProps } from "~/types";
-import { IInboxMessagePreview } from "@trycourier/react-provider";
 import { getTimeAgo, getTimeAgoShort } from "~/lib";
 import deepExtend from "deep-extend";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 const MobileActionsMenuButton = styled.button(({ theme }) =>
   deepExtend(

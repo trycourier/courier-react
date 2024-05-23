@@ -3,7 +3,7 @@ import Toggle from "react-toggle";
 import { PreferenceItemComponentFn } from "../types";
 import { ChannelPreferences } from "./ChannelPreferences";
 import { StyledToggle } from "./StyledToggle";
-import { PreferenceStatus } from "@trycourier/react-provider";
+import { PreferenceStatus } from "@trycourier/core";
 
 export const StatusPreference: PreferenceItemComponentFn = ({
   //label,

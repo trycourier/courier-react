@@ -6,11 +6,8 @@ import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
 import { PreferenceSection } from "@trycourier/react-hooks";
 import DigestSchedules from "./DigestSchedule";
-import {
-  IPreferenceTemplate,
-  PreferenceStatus,
-  useCourier,
-} from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
+import { IPreferenceTemplate, PreferenceStatus } from "@trycourier/core";
 
 export const ChannelOption = styled.div`
   display: flex;

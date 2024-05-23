@@ -1,5 +1,5 @@
+import { Brand, IInboxMessagePreview } from "@trycourier/core";
 import { ToastPosition } from "react-toastify";
-import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
 import { CSSObject } from "styled-components";
 
 export type Theme = {

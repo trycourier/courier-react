@@ -1,3 +1,4 @@
+import { IInboxMessage } from "@trycourier/core";
 import { Client } from "urql";
 
 export const GET_INBOX_MESSAGE = `
@@ -29,27 +30,6 @@ export const GET_INBOX_MESSAGE = `
     }
   }
 `;
-
-export interface ITextElemental {
-  type: "text";
-  content: string;
-}
-export interface IActionElemental {
-  background_color?: string;
-  content: string;
-  data?: Record<string, any>;
-  href: string;
-  type: "text";
-}
-export interface IInboxMessage {
-  messageId: string;
-  read?: string;
-  created?: string;
-  content: {
-    html?: string;
-    elemental?: Array<ITextElemental | IActionElemental>;
-  };
-}
 
 export type GetInboxMessage = (messageId: string) => Promise<
   | {

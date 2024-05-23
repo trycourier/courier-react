@@ -23,7 +23,6 @@
     "checkJs": false
   },
   "exclude": [
-    "**/__mocks__/**",
     "**/__tests__/**",
     "**/*.spec.ts",
     "**/*.story.ts",

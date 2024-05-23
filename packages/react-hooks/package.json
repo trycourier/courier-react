@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@trycourier/client-graphql": "^6.0.0",
+    "@trycourier/core": "^6.0.0",
     "deep-extend": "^0.6.0",
     "rimraf": "^3.0.2"
   },

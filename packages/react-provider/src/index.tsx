@@ -14,31 +14,16 @@ import React, {
 import createReducer from "react-use/lib/factory/createReducer";
 
 import {
-  Brand,
-  DigestSchedule,
-  EventType,
   ICourierContext,
   ICourierProviderProps,
-  IPreferenceTemplate,
   OnEvent,
-  PinDetails,
-  PreferenceStatus,
   ProviderTheme,
-  RepeatOn,
   ThemeVariables,
 } from "./types";
-import {
-  CourierTransport,
-  WSOptions,
-  useTransport,
-} from "@trycourier/transport";
-import {
-  IActionElemental,
-  ICourierEventMessage,
-  IInboxMessagePreview,
-  ITextElemental,
-  Interceptor,
-} from "@trycourier/transport";
+
+import { CourierTransport } from "@trycourier/transport";
+import { useTransport } from "@trycourier/react-hooks";
+
 import reducer, { registerReducer as _registerReducer } from "./reducer";
 import defaultMiddleware, {
   Middleware,
@@ -52,30 +37,11 @@ import { darkVariables, lightVariables } from "./theme";
 import { createGlobalStyle } from "styled-components";
 
 export * from "./hooks";
-export * from "./lib";
 
 export const registerReducer = _registerReducer;
 export const registerMiddleware = _registerMiddleware;
 
-export type {
-  Brand,
-  DigestSchedule,
-  EventType,
-  IActionElemental,
-  ICourierContext,
-  ICourierEventMessage,
-  IInboxMessagePreview,
-  Interceptor,
-  IPreferenceTemplate,
-  ITextElemental,
-  Middleware,
-  OnEvent,
-  PinDetails,
-  PreferenceStatus,
-  ProviderTheme,
-  RepeatOn,
-  WSOptions,
-};
+export type { Middleware, OnEvent, ProviderTheme, ICourierContext };
 
 const GlobalThemeVariables = createGlobalStyle<{
   theme: {

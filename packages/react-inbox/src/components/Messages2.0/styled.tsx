@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CourierSvg from "~/assets/courier_icon.svg";
 import CourierBigSvg from "~/assets/courier_big_icon.svg";
 import tinycolor2 from "tinycolor2";
-import { IActionElemental } from "@trycourier/react-provider";
+import { IActionElemental } from "@trycourier/core";
 
 export const PositionRelative = styled.div`
   position: relative;

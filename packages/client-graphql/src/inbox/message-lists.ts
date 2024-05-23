@@ -1,8 +1,5 @@
-import {
-  IGetInboxMessagesParams,
-  IInboxMessagePreview,
-  messagesProps,
-} from "./messages";
+import { IInboxMessagePreview } from "@trycourier/core";
+import { IGetInboxMessagesParams, messagesProps } from "./messages";
 import { Client } from "urql";
 
 export type GetInboxMessageLists = (

@@ -1,4 +1,4 @@
-import { DigestSchedule, RepeatOn } from "@trycourier/react-provider";
+import { DigestSchedule, RepeatOn } from "@trycourier/core";
 import format from "date-fns/format";
 
 export const toUpperCaseFirstLetter = (str: string) => {

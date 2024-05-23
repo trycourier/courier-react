@@ -1,5 +1,5 @@
+import { DigestSchedule } from "@trycourier/core";
 import { usePreferences } from "@trycourier/react-hooks";
-import { DigestSchedule } from "@trycourier/react-provider";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import formatDigest, { toUpperCaseFirstLetter } from "~/utils/format_digest";

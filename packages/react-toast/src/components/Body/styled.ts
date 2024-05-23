@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import deepExtend from "deep-extend";
-import { IActionElemental } from "@trycourier/react-provider";
 import tinycolor2 from "tinycolor2";
+import { IActionElemental } from "@trycourier/core";
 
 export const iconStyles = ({ theme }) =>
   deepExtend(

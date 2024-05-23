@@ -2,7 +2,7 @@ import {
   ICourierEventCallback,
   ICourierEventMessage,
   IInboxMessagePreview,
-} from "./types";
+} from "@trycourier/core";
 import ReconnectingWebSocket, { ErrorEvent } from "reconnecting-websocket";
 import { ErrorEventHandler, WSOptions } from "./types";
 
@@ -46,14 +46,6 @@ export class CourierWS {
     options?: WSOptions;
     userSignature?: string;
   }) {
-    console.log("foo", {
-      tenantId,
-      authorization,
-      clientKey,
-      options,
-      clientSourceId,
-      userSignature,
-    });
     this.tenantId = tenantId;
     this.connectionCount = 0;
     this.authorization = authorization;
@@ -92,7 +84,6 @@ export class CourierWS {
 
   connect(): void {
     const url = this.getUrl.bind(this);
-    console.log("url", url);
     this.connection = new ReconnectingWebSocket(url, [], {
       connectionTimeout: this.connectionTimeout,
     });
@@ -104,7 +95,6 @@ export class CourierWS {
   }
 
   private _onError(event: ErrorEvent): void {
-    console.log("error", event);
     if (this.onError) {
       this.onError(event);
     } else {

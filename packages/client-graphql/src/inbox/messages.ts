@@ -1,5 +1,5 @@
 import { Client } from "urql";
-import { IActionElemental } from "./message";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export interface IGetInboxMessagesParams {
   tenantId?: string;
@@ -67,19 +67,6 @@ export const createGetInboxMessagesQuery = (includePinned?: boolean) => `
     }
   }
 `;
-
-export interface IInboxMessagePreview {
-  actions?: IActionElemental[];
-  archived?: string;
-  created: string;
-  data?: Record<string, any>;
-  messageId: string;
-  opened?: string;
-  preview?: string;
-  read?: string;
-  tags?: string[];
-  title?: string;
-}
 
 export type GetInboxMessages = (
   params?: IGetInboxMessagesParams,

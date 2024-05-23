@@ -1,4 +1,4 @@
-import { PreferenceStatus } from "@trycourier/react-provider";
+import { PreferenceStatus } from "@trycourier/core";
 
 export type Preference = "channel_preferences" | "status" | "snooze";
 
