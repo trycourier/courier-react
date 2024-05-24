@@ -8,7 +8,9 @@ import { ErrorEventHandler, WSOptions } from "./types";
 
 const SUBSCRIPTION_VERSION = 5;
 export class CourierWS {
-  connection?: ReconnectingWebSocket;
+  public connection?: ReconnectingWebSocket;
+  public connected: boolean;
+
   private subscriptions: Array<{
     channel: string;
     event?: string;
@@ -28,7 +30,6 @@ export class CourierWS {
   private url: string;
   private userSignature?: string;
   private connectionCount: number;
-  protected connected;
   protected messageCallback;
 
   constructor({

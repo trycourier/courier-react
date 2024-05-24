@@ -200,7 +200,6 @@ test("will support onEvent to listen for events on the window", async (done) => 
       components: {
         inbox: {
           onEvent: (params) => {
-            console.log("params", params);
             expect(params).toEqual({
               messageId: mockGraphMessage.messageId,
               message: mockGraphMessage,

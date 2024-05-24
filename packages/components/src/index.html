@@ -301,7 +301,6 @@
           inbox: {
             appendTo: "#test",
             onEvent: (params) => {
-              console.log("params", params);
               if (
                 params.event === "read" &&
                 window.courier.inbox.pinned.find(

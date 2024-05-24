@@ -1,4 +1,4 @@
-import { CourierTransport, Transport, WSOptions } from "@trycourier/transport";
+import { CourierTransport, WSOptions } from "@trycourier/transport";
 import { Interceptor } from "@trycourier/core";
 import { Brand } from "@trycourier/core";
 import { IInboxMessagePreview } from "@trycourier/core";
@@ -37,7 +37,7 @@ export interface ICourierProviderProps {
   onRouteChange?: (route: string) => void;
   tenantId?: string;
   theme?: ProviderTheme;
-  transport?: CourierTransport | Transport;
+  transport?: CourierTransport;
   userId?: string;
   userSignature?: string;
   wsOptions?: WSOptions;

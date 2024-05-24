@@ -1,39 +1,40 @@
 import { CourierWS } from "../ws";
 import { Transport } from "../base";
 import { Interceptor } from "@trycourier/core";
-import { ITransportOptions } from "./types";
+import { TransportOptions, IClientKeyOptions, IJWTOptions } from "./types";
 
 export class CourierTransport extends Transport {
   protected tenantId?: string;
   protected authorization?: string;
-  protected clientSourceId: string;
+  protected clientSourceId?: string;
   protected clientKey?: string;
   protected declare interceptor?: Interceptor;
   protected userSignature?: string;
   protected ws: CourierWS;
 
-  constructor(options: ITransportOptions) {
+  constructor(options: TransportOptions) {
     super();
 
-    if (!options.clientKey && !options.authorization) {
+    const clientKeyOptions = options as IClientKeyOptions;
+    const jwtOptions = options as IJWTOptions;
+
+    if (!clientKeyOptions.clientKey && !jwtOptions.authorization) {
       throw new Error("Missing Authorization");
     }
 
-    this.authorization = options.authorization;
+    this.authorization = jwtOptions.authorization;
     this.clientSourceId = options.clientSourceId;
-    this.clientKey = options.clientKey;
-    this.userSignature = options.userSignature;
+    this.clientKey = clientKeyOptions.clientKey;
+    this.userSignature = clientKeyOptions.userSignature;
 
     this.ws = new CourierWS({
       tenantId: options.tenantId,
-      authorization: options.authorization,
+      authorization: jwtOptions.authorization,
       clientSourceId: options.clientSourceId,
-      clientKey: options.clientKey,
+      clientKey: clientKeyOptions.clientKey,
       options: options.wsOptions,
-      userSignature: options.userSignature,
+      userSignature: clientKeyOptions.userSignature,
     });
-
-    this.ws.connect();
 
     if (options.wsOptions?.onReconnect) {
       this.ws.onReconnection({
@@ -49,6 +50,10 @@ export class CourierTransport extends Transport {
 
   connect(): void {
     this.ws.connect();
+  }
+
+  isConnected(): boolean {
+    return this.ws.connected;
   }
 
   keepAlive(): void {
