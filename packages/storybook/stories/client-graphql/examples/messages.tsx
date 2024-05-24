@@ -55,7 +55,6 @@ const MessagesExample: React.FunctionComponent<{
     (messageId: string) => async (event: React.MouseEvent) => {
       event.preventDefault();
       const result = await inboxApi.getMessage(messageId);
-      console.log("message", message);
       if (!result?.message) {
         return;
       }

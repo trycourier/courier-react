@@ -106,7 +106,6 @@ export function AsyncUserId() {
 
 export function OnMessage() {
   const handleOnMessage = (message) => {
-    console.log(message);
     return message;
   };
 

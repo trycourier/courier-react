@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"; // will attempt to auto-detect
-import { CourierTransport, Transport } from "@trycourier/transport";
+import { CourierTransport } from "@trycourier/transport";
 import useTransport from "../use-transport";
 
 jest.mock("@trycourier/transport");
@@ -7,6 +7,7 @@ jest.mock("@trycourier/transport");
 const courierTransportMock = CourierTransport as jest.Mock;
 const courierTransport = new CourierTransport({
   clientSourceId: "foo",
+  clientKey: "foobar",
 });
 
 const renewSessionMock = courierTransport.renewSession as jest.Mock;
@@ -17,7 +18,11 @@ describe("useTransport", () => {
   });
 
   test("will return the same transport passed in", () => {
-    const transport = new Transport();
+    const transport = new CourierTransport({
+      clientSourceId: "abc123",
+      clientKey: "foo",
+    });
+
     const { result } = renderHook(() =>
       useTransport({
         transport,

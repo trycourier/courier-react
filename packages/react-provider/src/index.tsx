@@ -35,6 +35,7 @@ import useClientSourceId from "./hooks/use-client-source-id";
 import deepExtend from "deep-extend";
 import { darkVariables, lightVariables } from "./theme";
 import { createGlobalStyle } from "styled-components";
+import { useIsOnline } from "./hooks/use-is-online";
 
 export * from "./hooks";
 
@@ -117,15 +118,17 @@ const CourierProviderInner: React.FunctionComponent<
     createReducer<any, Partial<ICourierContext>>(...middleware),
     [middleware]
   );
+  const isOnline = useIsOnline();
 
   const transport =
     typeof window === "undefined"
       ? undefined
       : useTransport({
-          tenantId: tenantId,
           authorization,
-          clientSourceId,
           clientKey,
+          clientSourceId,
+          isOnline,
+          tenantId: tenantId,
           transport: _transport,
           userSignature,
           wsOptions,
@@ -224,7 +227,7 @@ const CourierProviderInner: React.FunctionComponent<
         try {
           parsedLocalStorageState = JSON.parse(localStorageState);
         } catch (ex) {
-          console.log("error", ex);
+          console.error(ex);
         }
       }
     }

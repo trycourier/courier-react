@@ -190,6 +190,11 @@ const useInboxActions = (): IInboxActions => {
       }
     },
     markMessageRead: async (messageId: string, fromWS?: boolean) => {
+      const message = allMessages.find((m) => m.messageId === messageId);
+      if (message?.read) {
+        return;
+      }
+
       dispatch(markMessageRead(messageId));
       if (!fromWS) {
         await inboxClient.markRead(messageId);
@@ -198,12 +203,17 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           event: "read",
-          message: allMessages.find((m) => m.messageId === messageId),
+          message,
           messageId,
         });
       }
     },
     markMessageUnread: async (messageId, fromWS) => {
+      const message = allMessages.find((m) => m.messageId === messageId);
+      if (!message?.read) {
+        return;
+      }
+
       dispatch(markMessageUnread(messageId));
       if (!fromWS) {
         await inboxClient.markUnread(messageId);
@@ -212,12 +222,17 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
-          message: allMessages.find((m) => m.messageId === messageId),
+          message,
           event: "unread",
         });
       }
     },
     markMessageOpened: async (messageId, fromWS) => {
+      const message = allMessages.find((m) => m.messageId === messageId);
+      if (message?.opened) {
+        return;
+      }
+
       dispatch(markMessageOpened(messageId));
       if (!fromWS) {
         await inboxClient.markOpened(messageId);
@@ -226,12 +241,17 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
-          message: allMessages.find((m) => m.messageId === messageId),
+          message,
           event: "opened",
         });
       }
     },
     markMessageArchived: async (messageId, fromWS) => {
+      const message = allMessages.find((m) => m.messageId === messageId);
+      if (message?.archived) {
+        return;
+      }
+
       dispatch(markMessageArchived(messageId));
       if (!fromWS) {
         await inboxClient.markArchive(messageId);
@@ -240,7 +260,7 @@ const useInboxActions = (): IInboxActions => {
       if (onEvent) {
         onEvent({
           messageId,
-          message: allMessages.find((m) => m.messageId === messageId),
+          message,
           event: "archive",
         });
       }

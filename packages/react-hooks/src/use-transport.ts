@@ -1,9 +1,5 @@
-import { useMemo, useRef } from "react";
-import {
-  CourierTransport,
-  Transport,
-  ITransportOptions,
-} from "@trycourier/transport";
+import { useMemo, useRef, useEffect } from "react";
+import { CourierTransport, TransportOptions } from "@trycourier/transport";
 import jwtDecode from "jwt-decode";
 interface DecodedAuth {
   scope: string;
@@ -11,22 +7,24 @@ interface DecodedAuth {
 }
 
 const useTransport = ({
-  tenantId,
   authorization,
-  clientSourceId,
   clientKey,
+  clientSourceId,
+  isOnline,
+  tenantId,
   transport,
   userSignature,
   wsOptions,
 }: {
-  tenantId?: string;
   authorization?: string;
-  clientSourceId?: string;
   clientKey?: string;
-  transport?: CourierTransport | Transport;
+  clientSourceId?: string;
+  isOnline?: boolean;
+  tenantId?: string;
+  transport?: CourierTransport;
   userSignature?: string;
-  wsOptions?: ITransportOptions["wsOptions"];
-}): CourierTransport | Transport | undefined => {
+  wsOptions?: TransportOptions["wsOptions"];
+}): CourierTransport | undefined => {
   const transportRef =
     useRef<{
       authorization: string;
@@ -71,24 +69,52 @@ const useTransport = ({
       return;
     }
 
-    const newTransport = new CourierTransport({
-      tenantId,
-      authorization,
-      clientSourceId,
-      clientKey,
-      userSignature,
-      wsOptions,
-    });
-
-    // keep track of the transport so we don't reconnect when we don't have to
     if (authorization) {
+      const courierTransport = new CourierTransport({
+        tenantId,
+        authorization,
+        clientSourceId,
+        wsOptions,
+      });
+
+      // keep track of the transport so we don't reconnect when we don't have to
       transportRef.current = {
         authorization,
-        transport: newTransport,
+        transport: courierTransport,
       };
+
+      return courierTransport;
     }
-    return newTransport;
+
+    if (clientKey) {
+      const courierTransport = new CourierTransport({
+        tenantId,
+        clientSourceId,
+        clientKey,
+        userSignature,
+        wsOptions,
+      });
+
+      return courierTransport;
+    }
   }, [tenantId, authorization, clientKey, transport, userSignature, wsOptions]);
+
+  const isConnected = newTransport?.isConnected
+    ? newTransport?.isConnected()
+    : undefined;
+  useEffect(() => {
+    if (!(newTransport instanceof CourierTransport)) {
+      return;
+    }
+
+    if (!isOnline && isConnected) {
+      newTransport.closeConnection();
+    }
+
+    if (isOnline && !isConnected) {
+      newTransport.connect();
+    }
+  }, [newTransport, isConnected, isOnline]);
 
   return newTransport;
 };
