@@ -48,7 +48,7 @@ declare global {
         setConfig?: (config: InboxProps) => void;
         config?: any;
       };
-      preferences?: UsePreferences | unknown;
+      preferences?: UsePreferences | {};
       transport?: any;
       brand?: Brand;
       renewSession?: (token: string) => void;

@@ -1,5 +1,4 @@
 import { Client } from "urql";
-import { IGetInboxMessagesParams } from "./messages";
 
 export const MARK_ALL_READ = `
   mutation TrackEvent($params: MarkAllAsReadParamsInput) {
@@ -7,7 +6,11 @@ export const MARK_ALL_READ = `
   } 
 `;
 
-export type MarkAllRead = (params?: IGetInboxMessagesParams) => Promise<
+export interface IMarkAllAsReadParams {
+  tags?: string[];
+}
+
+export type MarkAllRead = (params?: IMarkAllAsReadParams) => Promise<
   | {
       markAllRead: boolean;
     }
@@ -16,7 +19,7 @@ export type MarkAllRead = (params?: IGetInboxMessagesParams) => Promise<
 
 export const markAllRead =
   (client?: Client): MarkAllRead =>
-  async (params: IGetInboxMessagesParams = {}) => {
+  async (params: IMarkAllAsReadParams = {}) => {
     if (!client) {
       return Promise.resolve(undefined);
     }

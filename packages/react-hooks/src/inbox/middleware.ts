@@ -5,7 +5,6 @@ import {
   INBOX_FETCH_UNREAD_MESSAGE_COUNT,
 } from "./actions/fetch-unread-message-count";
 
-import { fetchMessages } from "./actions/fetch-messages";
 import { INBOX_MARK_ALL_READ_DONE } from "./actions/mark-all-read";
 
 export default (api) => (store) => (next) => async (action) => {
@@ -14,10 +13,6 @@ export default (api) => (store) => (next) => async (action) => {
   switch (action.type) {
     case INBOX_MARK_ALL_READ_DONE: {
       if (action.meta) {
-        const state = store.getState();
-
-        console.log("state", state);
-        store.dispatch(fetchMessages());
         store.dispatch(fetchUnreadMessageCount());
       }
 

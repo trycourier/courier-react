@@ -385,9 +385,25 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_MARK_ALL_READ_DONE: {
       const markAllAsReadDone = action as MarkAllReadDone;
       if (markAllAsReadDone.meta) {
+        const handleMarkRead = (message) => {
+          const tags = markAllAsReadDone?.meta?.tags;
+          const hasTags = message?.tags?.some((t) => tags?.includes(t));
+
+          if (hasTags) {
+            message.read = new Date().toISOString();
+          }
+
+          return message;
+        };
+
+        const newPinned = state.pinned?.map(handleMarkRead);
+        const newMessages = state.messages?.map(handleMarkRead);
+
         // we had params so we rely on the middleware to refetch count
         return {
           ...state,
+          messages: newMessages,
+          pinned: newPinned,
           markingAllAsRead: false,
         };
       }
