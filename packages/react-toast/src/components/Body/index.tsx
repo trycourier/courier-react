@@ -67,8 +67,19 @@ const Body: React.FunctionComponent<
     onClick?: (event: React.MouseEvent) => void;
     title?: IInboxMessagePreview["title"] | ReactElement;
     preview?: IInboxMessagePreview["preview"] | ReactElement;
+    additional_data: IInboxMessagePreview["data"];
   }
-> = ({ title, preview, actions, icon, data, onClick, messageId, ...props }) => {
+> = ({
+  title,
+  preview,
+  actions,
+  icon,
+  data,
+  additional_data,
+  onClick,
+  messageId,
+  ...props
+}) => {
   const courier = useCourier();
   const [, { config }] = useToast();
 
@@ -152,7 +163,7 @@ const Body: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(clickActionDetails?.href);
+        courier.onRouteChange(clickActionDetails?.href, additional_data);
         return;
       }
 
@@ -181,7 +192,7 @@ const Body: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(action?.href);
+        courier.onRouteChange(action?.href, additional_data);
         return;
       }
 

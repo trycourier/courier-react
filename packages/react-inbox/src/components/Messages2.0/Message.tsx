@@ -121,6 +121,7 @@ const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
 
 const Message: React.FunctionComponent<{
   actions?: IInboxMessagePreview["actions"];
+  data: IInboxMessagePreview["data"];
   archived?: IInboxMessagePreview["archived"];
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
@@ -139,6 +140,7 @@ const Message: React.FunctionComponent<{
   actions,
   archived,
   areActionsHovered,
+  data,
   isMessageActive,
   messageId,
   openLinksInNewTab,
@@ -175,7 +177,7 @@ const Message: React.FunctionComponent<{
     }
 
     if (courier.onRouteChange) {
-      courier.onRouteChange(action?.href);
+      courier.onRouteChange(action?.href, data);
       return;
     }
 
@@ -410,7 +412,7 @@ const MessageWrapper: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(clickActionDetails?.href);
+        courier.onRouteChange(clickActionDetails?.href, data);
         return;
       }
 
@@ -428,6 +430,7 @@ const MessageWrapper: React.FunctionComponent<
         actions={actions}
         archived={archived}
         areActionsHovered={areActionsHovered}
+        data={data}
         isMessageActive={isMessageFocused || isMessageHovered}
         messageId={messageId}
         openLinksInNewTab={openLinksInNewTab}
@@ -455,6 +458,7 @@ const MessageWrapper: React.FunctionComponent<
     renderedIcon,
     renderPin,
     title,
+    data,
   ]);
 
   return (
