@@ -46,7 +46,7 @@ export const ToastBody: React.FunctionComponent<
         >
           <div className="Toastify__toast Toastify__toast--default">
             <div className="Toastify__toast-body">
-              <Body {...props} />
+              <Body {...props} additional_data={props.data || {}} />
             </div>
             <div
               className="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
