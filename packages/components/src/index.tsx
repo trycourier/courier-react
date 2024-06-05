@@ -12,6 +12,7 @@ import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
 import { UsePreferences } from "@trycourier/react-hooks";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 const middleware = () => (next) => (action) => {
   const _action =
@@ -78,7 +79,7 @@ interface ICourierConfig {
   enableMutationObserver?: boolean;
   inboxApiUrl?: string;
   theme?: ProviderTheme;
-  onRouteChange?: (route: string) => void;
+  onRouteChange?: (route: string, data?: IInboxMessagePreview["data"]) => void;
   onMessage?: Interceptor;
   components?: {
     inbox?: any;

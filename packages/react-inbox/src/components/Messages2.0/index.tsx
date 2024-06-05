@@ -289,7 +289,7 @@ const Messages: React.ForwardRefExoticComponent<
 
     useEffect(() => {
       fetchRecipientPreferences(tenantId);
-    }, []);
+    }, [tenantId]);
 
     const handleCloseInbox = (event: React.MouseEvent) => {
       event.preventDefault();

@@ -44,6 +44,8 @@ export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
       toast(
         <Body
           {...message}
+          // toast() uses the data props, use additional_data
+          additional_data={message?.data || {}}
           icon={
             typeof message?.icon === "string"
               ? message.icon
