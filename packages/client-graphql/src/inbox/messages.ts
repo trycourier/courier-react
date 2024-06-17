@@ -76,6 +76,7 @@ export type GetInboxMessages = (
       appendMessages: boolean;
       startCursor: string;
       messages: IInboxMessagePreview[];
+      pinned?: IInboxMessagePreview[];
     }
   | undefined
 >;
