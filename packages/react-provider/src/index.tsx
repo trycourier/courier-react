@@ -36,6 +36,7 @@ import deepExtend from "deep-extend";
 import { darkVariables, lightVariables } from "./theme";
 import { createGlobalStyle } from "styled-components";
 import { useIsOnline } from "./hooks/use-is-online";
+import { useListenForTransportEvent } from "./hooks/use-listen-for-transport";
 
 export * from "./hooks";
 
@@ -271,6 +272,8 @@ const CourierProviderInner: React.FunctionComponent<
       })
     );
   }, [state.brand, clientKey, userId, state.localStorage]);
+
+  useListenForTransportEvent({ transport });
 
   return (
     <CourierContext.Provider
