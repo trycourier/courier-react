@@ -14,17 +14,16 @@ import { Brand, IInboxMessagePreview } from "@trycourier/core";
 const Styled = styled.div(toastStyles);
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
-export const ToastBody: React.FunctionComponent<
-  Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
-    theme?: Theme;
-    brand?: Brand;
-    title?: IInboxMessagePreview["title"] | ReactElement;
-    preview?: IInboxMessagePreview["preview"] | ReactElement;
-  }
-> = ({ theme, ...props }) => {
+export const ToastBody: React.FunctionComponent<{
+  message: IInboxMessagePreview;
+  theme?: Theme;
+  brand?: Brand;
+  title?: IInboxMessagePreview["title"] | ReactElement;
+  preview?: IInboxMessagePreview["preview"] | ReactElement;
+}> = ({ theme, message, ...props }) => {
   const { brand: remoteBrand } = useCourier();
   props.brand = props.brand ?? remoteBrand;
-  props.icon = props.icon ?? props?.brand?.inapp?.icons?.message;
+  message.icon = message.icon ?? props?.brand?.inapp?.icons?.message;
 
   theme = useMemo(() => {
     return {
@@ -46,7 +45,7 @@ export const ToastBody: React.FunctionComponent<
         >
           <div className="Toastify__toast Toastify__toast--default">
             <div className="Toastify__toast-body">
-              <Body {...props} additional_data={props.data || {}} />
+              <Body message={message} icon={message.icon} {...props} />
             </div>
             <div
               className="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
