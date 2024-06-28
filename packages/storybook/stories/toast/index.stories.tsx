@@ -104,7 +104,7 @@ export const Theme = () => {
         2
       )}\n\`\`\``}</ReactMarkdown>
       <CourierProvider>
-        <ToastBody title="Title" theme={theme} />
+        <ToastBody message={{} as any} title="Title" theme={theme} />
       </CourierProvider>
     </>
   );

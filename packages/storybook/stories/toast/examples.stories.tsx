@@ -19,6 +19,7 @@ export function Default({
   return (
     <CourierProvider clientKey="abc" userId="123">
       <ToastBody
+        message={{} as any}
         preview={bodyText}
         title="Title"
         brand={{
@@ -43,6 +44,7 @@ export function CustomTitleAndBody(): React.ReactElement {
   return (
     <CourierProvider clientKey="abc" userId="123">
       <ToastBody
+        message={{} as any}
         preview={<h3>Hello World</h3>}
         title={<h1>Title</h1>}
         brand={{
@@ -66,13 +68,17 @@ export function WithAction(): React.ReactElement {
   return (
     <CourierProvider clientKey="abc" userId="123">
       <ToastBody
-        actions={[
+        message={
           {
-            type: "action",
-            content: "View Details",
-            href: "https://www.courier.com",
-          },
-        ]}
+            actions: [
+              {
+                type: "action",
+                content: "View Details",
+                href: "https://www.courier.com",
+              },
+            ],
+          } as any
+        }
         preview="hello world"
         title="This is a really long title lalalalalala"
       />
@@ -84,18 +90,22 @@ export function WithMultipleAction(): React.ReactElement {
   return (
     <CourierProvider clientKey="abc" userId="123">
       <ToastBody
-        actions={[
+        message={
           {
-            type: "action",
-            content: "Approve",
-            href: "https://www.courier.com",
-          },
-          {
-            type: "action",
-            content: "Deny",
-            href: "https://www.courier.com",
-          },
-        ]}
+            actions: [
+              {
+                type: "action",
+                content: "Approve",
+                href: "https://www.courier.com",
+              },
+              {
+                type: "action",
+                content: "Deny",
+                href: "https://www.courier.com",
+              },
+            ],
+          } as any
+        }
         preview="hello world"
         title="This is a really long title lalalalalala"
       />
@@ -107,6 +117,7 @@ export function MultiLineMessage(): React.ReactElement {
   return (
     <CourierProvider clientKey="abc" userId="123">
       <ToastBody
+        message={{} as any}
         preview="This is a really long message lalalalalalalalalalalala lalalalalala"
         title="This is a really long title lalalalalala lalalalalala lalalalalala"
       />
