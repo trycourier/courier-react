@@ -83,7 +83,7 @@ interface ICourierConfig {
   theme?: ProviderTheme;
 
   // handler that runs whenever a route changes.  this is useful for SPA apps to configure a router.push with
-  onRouteChange?: (route: string, data?: IInboxMessagePreview["data"]) => void;
+  onRouteChange?: (route: string, message: IInboxMessagePreview) => void;
 
   // intercept function to incercept a message before rendering
   onMessage?: Interceptor;

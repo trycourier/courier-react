@@ -79,7 +79,7 @@ interface ICourierConfig {
   enableMutationObserver?: boolean;
   inboxApiUrl?: string;
   theme?: ProviderTheme;
-  onRouteChange?: (route: string, data?: IInboxMessagePreview["data"]) => void;
+  onRouteChange?: (route: string, message: IInboxMessagePreview) => void;
   onMessage?: Interceptor;
   components?: {
     inbox?: any;
