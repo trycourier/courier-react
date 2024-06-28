@@ -361,7 +361,7 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage(message)
                 ) : (
                   <Message
-                    {...message}
+                    message={message}
                     isMobile={isMobile}
                     defaultIcon={defaultIcon}
                     formatDate={formatDate}
@@ -389,7 +389,7 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage(message)
                 ) : (
                   <Message
-                    {...message}
+                    message={message}
                     defaultIcon={defaultIcon}
                     formatDate={formatDate}
                     isMessageFocused={focusedMessageId === message.messageId}
