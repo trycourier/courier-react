@@ -1,13 +1,14 @@
 import { IInboxMessagePreview } from "@trycourier/core";
-import { ICourierContext, useCourier } from "..";
+import { ICourierContext } from "..";
 import { useEffect } from "react";
 
 export const useListenForTransportEvent = ({
   transport,
+  createTrackEvent,
 }: {
   transport: ICourierContext["transport"];
+  createTrackEvent: (trackingId: string) => void;
 }) => {
-  const { createTrackEvent } = useCourier();
 
   useEffect(() => {
     if (!transport) {
@@ -25,5 +26,5 @@ export const useListenForTransportEvent = ({
         }
       },
     });
-  }, [transport]);
+  }, [createTrackEvent, transport]);
 };

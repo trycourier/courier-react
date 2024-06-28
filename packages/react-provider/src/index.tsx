@@ -273,7 +273,10 @@ const CourierProviderInner: React.FunctionComponent<
     );
   }, [state.brand, clientKey, userId, state.localStorage]);
 
-  useListenForTransportEvent({ transport });
+  useListenForTransportEvent({
+    transport,
+    createTrackEvent: actions.createTrackEvent,
+  });
 
   return (
     <CourierContext.Provider
