@@ -201,7 +201,7 @@ const MyInbox = () => {
     <Container>
       {inbox.messages.map((message) => {
         return (
-          <Message>
+          <Message message={message}>
             {message.read ? (
               <>
                 <button onClick={handleUnreadMessage(message)}>
