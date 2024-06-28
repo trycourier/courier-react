@@ -61,25 +61,15 @@ const NonClickableContainer = styled.div(({ theme }) => {
   );
 });
 
-const Body: React.FunctionComponent<
-  Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
-    toastProps?: ToastOptions;
-    onClick?: (event: React.MouseEvent) => void;
-    title?: IInboxMessagePreview["title"] | ReactElement;
-    preview?: IInboxMessagePreview["preview"] | ReactElement;
-    additional_data: IInboxMessagePreview["data"];
-  }
-> = ({
-  title,
-  preview,
-  actions,
-  icon,
-  data,
-  additional_data,
-  onClick,
-  messageId,
-  ...props
-}) => {
+const Body: React.FunctionComponent<{
+  message: IInboxMessagePreview;
+  toastProps?: ToastOptions;
+  onClick?: (event: React.MouseEvent) => void;
+  title?: IInboxMessagePreview["title"] | ReactElement;
+  preview?: IInboxMessagePreview["preview"] | ReactElement;
+  additional_data: IInboxMessagePreview["data"];
+}> = ({ message, onClick, title, preview, ...props }) => {
+  const { actions, icon, data, messageId } = message;
   const courier = useCourier();
   const [, { config }] = useToast();
 
@@ -163,7 +153,7 @@ const Body: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(clickActionDetails?.href, additional_data);
+        courier.onRouteChange(clickActionDetails?.href, message);
         return;
       }
 
@@ -192,7 +182,7 @@ const Body: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(action?.href, additional_data);
+        courier.onRouteChange(action?.href, message);
         return;
       }
 

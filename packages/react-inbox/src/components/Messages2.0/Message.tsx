@@ -120,38 +120,24 @@ const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
 );
 
 const Message: React.FunctionComponent<{
-  actions?: IInboxMessagePreview["actions"];
-  data: IInboxMessagePreview["data"];
-  archived?: IInboxMessagePreview["archived"];
+  message: IInboxMessagePreview;
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
-  messageId: string;
   openLinksInNewTab?: boolean;
-  pinned?: {
-    slotId?: string;
-  };
-  preview?: string;
-  read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
   renderActionsAsButtons?: boolean;
   renderPin?: InboxProps["renderPin"];
-  title?: string;
 }> = ({
-  actions,
-  archived,
+  message,
   areActionsHovered,
-  data,
   isMessageActive,
-  messageId,
   openLinksInNewTab,
-  pinned,
-  preview,
-  read,
   renderedIcon,
   renderActionsAsButtons,
   renderPin,
-  title,
 }) => {
+  const { actions, archived, messageId, pinned, preview, read, title } =
+    message;
   const courier = useCourier();
   const renderActionButtons =
     renderActionsAsButtons || (actions?.length ?? 0) > 1;
@@ -177,7 +163,7 @@ const Message: React.FunctionComponent<{
     }
 
     if (courier.onRouteChange) {
-      courier.onRouteChange(action?.href, data);
+      courier.onRouteChange(action?.href, message);
       return;
     }
 
@@ -238,41 +224,43 @@ const Message: React.FunctionComponent<{
   );
 };
 
-const MessageWrapper: React.FunctionComponent<
-  IInboxMessagePreview & {
-    defaultIcon: InboxProps["defaultIcon"];
-    formatDate: InboxProps["formatDate"];
-    isMessageFocused: boolean;
-    isMobile?: boolean;
-    labels: InboxProps["labels"];
-    openLinksInNewTab: InboxProps["openLinksInNewTab"];
-    renderActionsAsButtons?: boolean;
-    renderPin: InboxProps["renderPin"];
-    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
-  }
-> = ({
-  actions,
-  archived,
-  created,
-  data,
+const MessageWrapper: React.FunctionComponent<{
+  message: IInboxMessagePreview;
+  defaultIcon: InboxProps["defaultIcon"];
+  formatDate: InboxProps["formatDate"];
+  isMessageFocused: boolean;
+  isMobile?: boolean;
+  labels: InboxProps["labels"];
+  openLinksInNewTab: InboxProps["openLinksInNewTab"];
+  renderActionsAsButtons?: boolean;
+  renderPin: InboxProps["renderPin"];
+  setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
+}> = ({
+  message,
   defaultIcon,
   formatDate,
-  icon,
   isMessageFocused,
   isMobile,
   labels,
-  messageId,
-  opened,
   openLinksInNewTab,
-  pinned,
-  preview,
-  read,
   renderActionsAsButtons,
   renderPin,
   setFocusedMessageId,
-  title,
-  trackingIds,
 }) => {
+  const {
+    actions,
+    archived,
+    created,
+    data,
+    icon,
+    messageId,
+    opened,
+    pinned,
+    preview,
+    read,
+    title,
+    trackingIds,
+  } = message;
   const courier = useCourier();
   const [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout>();
   const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
@@ -412,7 +400,7 @@ const MessageWrapper: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(clickActionDetails?.href, data);
+        courier.onRouteChange(clickActionDetails?.href, message);
         return;
       }
 
@@ -427,20 +415,13 @@ const MessageWrapper: React.FunctionComponent<
   const renderedMessage = useMemo(() => {
     return (
       <Message
-        actions={actions}
-        archived={archived}
+        message={message}
         areActionsHovered={areActionsHovered}
-        data={data}
         isMessageActive={isMessageFocused || isMessageHovered}
-        messageId={messageId}
         openLinksInNewTab={openLinksInNewTab}
-        pinned={pinned}
-        preview={preview}
-        read={read}
         renderActionsAsButtons={renderActionsAsButtons}
         renderedIcon={renderedIcon}
         renderPin={renderPin}
-        title={title}
       />
     );
   }, [

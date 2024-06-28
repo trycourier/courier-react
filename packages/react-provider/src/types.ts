@@ -34,7 +34,7 @@ export interface ICourierProviderProps {
   inboxApiUrl?: string;
   localStorage?: Storage;
   onMessage?: Interceptor;
-  onRouteChange?: (route: string, data?: IInboxMessagePreview["data"]) => void;
+  onRouteChange?: (route: string, message: IInboxMessagePreview) => void;
   tenantId?: string;
   theme?: ProviderTheme;
   transport?: CourierTransport;
