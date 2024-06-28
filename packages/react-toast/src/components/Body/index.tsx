@@ -65,11 +65,11 @@ const Body: React.FunctionComponent<{
   message: IInboxMessagePreview;
   toastProps?: ToastOptions;
   onClick?: (event: React.MouseEvent) => void;
+  icon: IInboxMessagePreview["icon"] | ReactElement;
   title?: IInboxMessagePreview["title"] | ReactElement;
   preview?: IInboxMessagePreview["preview"] | ReactElement;
-  additional_data: IInboxMessagePreview["data"];
-}> = ({ message, onClick, title, preview, ...props }) => {
-  const { actions, icon, data, messageId } = message;
+}> = ({ message, onClick, title, preview, icon, ...props }) => {
+  const { actions, data, messageId } = message;
   const courier = useCourier();
   const [, { config }] = useToast();
 
