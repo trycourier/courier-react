@@ -26,7 +26,7 @@ import {
 
 import { INBOX_NEW_MESSAGE, newMessage } from "../actions/new-message";
 
-import { INBOX_MARK_ALL_READ, markAllRead } from "../actions/mark-all-read";
+import { INBOX_MARK_ALL_READ, markAllReadDone } from "../actions/mark-all-read";
 
 import {
   INBOX_MARK_MESSAGE_OPENED,
@@ -185,7 +185,6 @@ describe("inbox reducer", () => {
         expect(state).toEqual({
           ...initialState,
           isLoading: false,
-          lastMessagesFetched: mockDate,
           messages: [mockGraphMessage],
           pinned: [],
           searchParams: {
@@ -216,7 +215,6 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          lastMessagesFetched: mockDate,
           messages: [mockGraphMessage, mockGraphMessage2],
           isLoading: false,
           searchParams: {
@@ -339,13 +337,13 @@ describe("inbox reducer", () => {
           unreadMessageCount: 2,
           messages: [mockGraphMessage, mockGraphMessage],
         },
-        markAllRead()
+        markAllReadDone()
       );
 
       expect(state).toEqual({
         ...initialState,
         unreadMessageCount: 0,
-        lastMarkedAllRead: mockDate,
+        markingAllAsRead: false,
         messages: [
           {
             ...mockGraphMessage,

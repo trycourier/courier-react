@@ -209,8 +209,6 @@ interface IInboxState = {
   from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
-  lastMarkedAllRead?: number;
-  lastMessagesFetched?: number;
   messages?: Array<T>;
   pinned?: Array<T>;
   startCursor?: string;

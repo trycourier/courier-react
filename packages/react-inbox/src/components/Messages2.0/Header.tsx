@@ -213,7 +213,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
-  const { view, setView, toggleInbox } = useInbox();
+  const { view, setView, toggleInbox, markingAllAsRead } = useInbox();
   const handleSetView =
     (newView: string | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
@@ -328,6 +328,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
       <div className="actions">
         {messages.length > 0 && unreadMessageCount ? (
           <MarkAllRead
+            disabled={markingAllAsRead}
             label={labels?.markAllAsRead}
             onClick={() => markAllAsRead()}
           />

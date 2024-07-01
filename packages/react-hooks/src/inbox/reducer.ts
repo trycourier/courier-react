@@ -4,14 +4,17 @@ import { IInbox } from "./types";
 import { InboxInit, INBOX_INIT } from "./actions/init";
 import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
 import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
-import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
+import {
+  INBOX_MARK_ALL_READ_DONE,
+  MarkAllReadDone,
+  MarkAllReadPending,
+  MarkAllReadError,
+  INBOX_MARK_ALL_READ_PENDING,
+  INBOX_MARK_ALL_READ_ERROR,
+} from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
 import { UnpinMessage, INBOX_UNPIN_MESSAGE } from "./actions/unpin-message";
 
-import {
-  ResetLastFetched,
-  INBOX_RESET_LAST_FETCHED,
-} from "./actions/reset-last-fetched";
 import { AddTag, INBOX_ADD_TAG } from "./actions/add-tag";
 import { RemoveTag, INBOX_REMOVE_TAG } from "./actions/remove-tag";
 
@@ -59,14 +62,15 @@ type InboxAction =
   | FetchUnreadMessageCountDone
   | InboxInit
   | InboxSetView
-  | MarkAllRead
+  | MarkAllReadPending
+  | MarkAllReadError
+  | MarkAllReadDone
   | MarkMessageArchived
   | MarkMessageOpened
   | MarkMessageRead
   | MarkMessageUnread
   | NewMessage
   | RemoveTag
-  | ResetLastFetched
   | ToggleInbox
   | UnpinMessage;
 
@@ -156,13 +160,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
-    case INBOX_RESET_LAST_FETCHED: {
-      return {
-        ...state,
-        lastMessagesFetched: undefined,
-      };
-    }
-
     case INBOX_FETCH_MESSAGES_DONE: {
       const newMessages = action.payload?.appendMessages
         ? [...(state?.messages ?? []), ...(action.payload?.messages ?? [])]
@@ -172,7 +169,6 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ...state,
         isLoading: false,
         searchParams: action.meta.searchParams,
-        lastMessagesFetched: new Date().getTime(),
         messages: newMessages as IInboxMessagePreview[],
         pinned: action.payload?.appendMessages
           ? state.pinned
@@ -386,7 +382,32 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
-    case INBOX_MARK_ALL_READ: {
+    case INBOX_MARK_ALL_READ_DONE: {
+      const markAllAsReadDone = action as MarkAllReadDone;
+      if (markAllAsReadDone.meta) {
+        const handleMarkRead = (message) => {
+          const tags = markAllAsReadDone?.meta?.tags;
+          const hasTags = message?.tags?.some((t) => tags?.includes(t));
+
+          if (hasTags) {
+            message.read = new Date().toISOString();
+          }
+
+          return message;
+        };
+
+        const newPinned = state.pinned?.map(handleMarkRead);
+        const newMessages = state.messages?.map(handleMarkRead);
+
+        // we had params so we rely on the middleware to refetch count
+        return {
+          ...state,
+          messages: newMessages,
+          pinned: newPinned,
+          markingAllAsRead: false,
+        };
+      }
+
       const unreadMessageCount = 0;
 
       const handleMarkRead = (message) => {
@@ -401,10 +422,24 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
-        lastMarkedAllRead: new Date().getTime(),
         messages: newMessages,
         pinned: newPinned,
         unreadMessageCount,
+        markingAllAsRead: false,
+      };
+    }
+
+    case INBOX_MARK_ALL_READ_ERROR: {
+      return {
+        ...state,
+        markingAllAsRead: false,
+      };
+    }
+
+    case INBOX_MARK_ALL_READ_PENDING: {
+      return {
+        ...state,
+        markingAllAsRead: true,
       };
     }
   }

@@ -7,8 +7,7 @@ export interface IInbox<T = IInboxMessagePreview> {
   from?: number;
   isLoading?: boolean;
   isOpen?: boolean;
-  lastMarkedAllRead?: number;
-  lastMessagesFetched?: number;
+  markingAllAsRead?: boolean;
   messages?: Array<T>;
   onEvent?: OnEvent;
   searchParams?: IGetInboxMessagesParams;

@@ -21,7 +21,7 @@ describe("trackEvent", () => {
       Array [
         "https://inbox.courier.com/q",
         Object {
-          "body": "{\\"query\\":\\"mutation TrackEvent {\\\\n  markAllRead\\\\n}\\\\n\\",\\"operationName\\":\\"TrackEvent\\",\\"variables\\":{}}",
+          "body": "{\\"query\\":\\"mutation TrackEvent($params: MarkAllAsReadParamsInput) {\\\\n  markAllRead(params: $params)\\\\n}\\\\n\\",\\"operationName\\":\\"TrackEvent\\",\\"variables\\":{\\"params\\":{}}}",
           "headers": Object {
             "content-type": "application/json",
             "x-courier-client-key": "CLIENT_KEY",
