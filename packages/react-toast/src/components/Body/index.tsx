@@ -12,12 +12,12 @@ import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useInbox } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
-import Markdown from "markdown-to-jsx";
+import Markdown, { MarkdownToJSX } from "markdown-to-jsx";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 import tinycolor2 from "tinycolor2";
 import { themeDefaults } from "~/constants";
-import { IInboxMessagePreview } from "@trycourier/core";
+import { IInboxMessagePreview, defaultMarkdownOptions } from "@trycourier/core";
 
 const containerStyles = {
   height: "100%",
@@ -62,13 +62,22 @@ const NonClickableContainer = styled.div(({ theme }) => {
 });
 
 const Body: React.FunctionComponent<{
-  message: IInboxMessagePreview;
-  toastProps?: ToastOptions;
-  onClick?: (event: React.MouseEvent) => void;
   icon: IInboxMessagePreview["icon"] | ReactElement;
-  title?: IInboxMessagePreview["title"] | ReactElement;
+  markdownOptions?: MarkdownToJSX.Options;
+  message: IInboxMessagePreview;
+  onClick?: (event: React.MouseEvent) => void;
   preview?: IInboxMessagePreview["preview"] | ReactElement;
-}> = ({ message, onClick, title, preview, icon, ...props }) => {
+  title?: IInboxMessagePreview["title"] | ReactElement;
+  toastProps?: ToastOptions;
+}> = ({
+  message,
+  onClick,
+  title,
+  preview,
+  markdownOptions,
+  icon,
+  ...props
+}) => {
   const { actions, data, messageId } = message;
   const courier = useCourier();
   const [, { config }] = useToast();
@@ -200,7 +209,9 @@ const Body: React.FunctionComponent<{
           {title && <Title data-testid="message-title">{title}</Title>}
           <TextElement data-testid="message-body">
             {typeof preview === "string" ? (
-              <Markdown>{preview as string}</Markdown>
+              <Markdown options={markdownOptions ?? defaultMarkdownOptions}>
+                {preview as string}
+              </Markdown>
             ) : (
               preview
             )}
