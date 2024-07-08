@@ -13,7 +13,7 @@ import {
 import { InboxProps } from "../../types";
 
 import useHover from "~/hooks/use-hover";
-import Markdown from "markdown-to-jsx";
+import Markdown, { MarkdownToJSX } from "markdown-to-jsx";
 
 import deepExtend from "deep-extend";
 import styled from "styled-components";
@@ -22,7 +22,7 @@ import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
 
 import { SlotIcon } from "./pins";
-import { IInboxMessagePreview } from "@trycourier/core";
+import { IInboxMessagePreview, defaultMarkdownOptions } from "@trycourier/core";
 
 const UnreadIndicator = styled.div<{
   read?: IInboxMessagePreview["read"];
@@ -127,13 +127,15 @@ const Message: React.FunctionComponent<{
   renderedIcon: ReactNode;
   renderActionsAsButtons?: boolean;
   renderPin?: InboxProps["renderPin"];
+  markdownOptions?: MarkdownToJSX.Options;
 }> = ({
-  message,
   areActionsHovered,
   isMessageActive,
+  markdownOptions,
+  message,
   openLinksInNewTab,
-  renderedIcon,
   renderActionsAsButtons,
+  renderedIcon,
   renderPin,
 }) => {
   const { actions, archived, messageId, pinned, preview, read, title } =
@@ -205,7 +207,11 @@ const Message: React.FunctionComponent<{
           {title}
         </Title>
         <TextElement aria-label={`message body ${preview}`}>
-          {preview ? <Markdown>{preview}</Markdown> : null}
+          {preview ? (
+            <Markdown options={markdownOptions ?? defaultMarkdownOptions}>
+              {preview}
+            </Markdown>
+          ) : null}
         </TextElement>
         {renderActionButtons
           ? actions?.slice(0, 2)?.map((action, index) => (
@@ -225,23 +231,25 @@ const Message: React.FunctionComponent<{
 };
 
 const MessageWrapper: React.FunctionComponent<{
-  message: IInboxMessagePreview;
   defaultIcon: InboxProps["defaultIcon"];
   formatDate: InboxProps["formatDate"];
   isMessageFocused: boolean;
   isMobile?: boolean;
   labels: InboxProps["labels"];
+  markdownOptions?: MarkdownToJSX.Options;
+  message: IInboxMessagePreview;
   openLinksInNewTab: InboxProps["openLinksInNewTab"];
   renderActionsAsButtons?: boolean;
   renderPin: InboxProps["renderPin"];
   setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
-  message,
   defaultIcon,
   formatDate,
   isMessageFocused,
   isMobile,
   labels,
+  markdownOptions,
+  message,
   openLinksInNewTab,
   renderActionsAsButtons,
   renderPin,
@@ -415,9 +423,10 @@ const MessageWrapper: React.FunctionComponent<{
   const renderedMessage = useMemo(() => {
     return (
       <Message
-        message={message}
         areActionsHovered={areActionsHovered}
         isMessageActive={isMessageFocused || isMessageHovered}
+        markdownOptions={markdownOptions}
+        message={message}
         openLinksInNewTab={openLinksInNewTab}
         renderActionsAsButtons={renderActionsAsButtons}
         renderedIcon={renderedIcon}

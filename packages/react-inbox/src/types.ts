@@ -5,6 +5,7 @@ import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
 import { IHeaderProps } from "./components/Messages2.0/types";
 import { CSSObject } from "styled-components";
 import { Brand, IInboxMessagePreview, PinDetails } from "@trycourier/core";
+import { MarkdownToJSX } from "markdown-to-jsx";
 
 export interface InboxTheme {
   brand?: Brand;
@@ -42,12 +43,13 @@ export interface InboxTheme {
 }
 
 export interface InboxProps {
-  tenantId?: string;
   brand?: Brand;
   className?: string;
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
+  markdownOptions?: MarkdownToJSX.Options;
+  tenantId?: string;
   views?: Array<{
     id: string;
     label: string;

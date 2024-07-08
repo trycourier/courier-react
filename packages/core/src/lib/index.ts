@@ -9,3 +9,9 @@ export const getDateDiff = (date?: number) => {
   // if datediff is 0, return 1 so we can do "!datediff"
   return Math.max(dateDiff, 1);
 };
+
+export const defaultMarkdownOptions = {
+  overrides: {
+    iframe: () => null,
+  },
+};

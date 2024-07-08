@@ -195,14 +195,15 @@ const Messages: React.ForwardRefExoticComponent<
       formatDate,
       isMobile,
       labels,
+      markdownOptions,
       openLinksInNewTab,
       renderFooter,
       renderHeader,
       renderMessage,
       renderNoMessages,
       renderPin,
-      views,
       title,
+      views,
     },
     ref
   ) => {
@@ -361,13 +362,14 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage(message)
                 ) : (
                   <Message
-                    message={message}
-                    isMobile={isMobile}
                     defaultIcon={defaultIcon}
                     formatDate={formatDate}
                     isMessageFocused={focusedMessageId === message.messageId}
+                    isMobile={isMobile}
                     key={message.messageId}
                     labels={labels}
+                    markdownOptions={markdownOptions}
+                    message={message}
                     openLinksInNewTab={openLinksInNewTab}
                     renderPin={renderPin}
                     renderActionsAsButtons={
@@ -389,13 +391,14 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage(message)
                 ) : (
                   <Message
-                    message={message}
                     defaultIcon={defaultIcon}
                     formatDate={formatDate}
                     isMessageFocused={focusedMessageId === message.messageId}
                     isMobile={isMobile}
                     key={message.messageId}
                     labels={labels}
+                    markdownOptions={markdownOptions}
+                    message={message}
                     openLinksInNewTab={openLinksInNewTab}
                     renderActionsAsButtons={
                       brand?.inapp?.renderActionsAsButtons
