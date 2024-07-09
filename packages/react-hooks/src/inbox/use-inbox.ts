@@ -51,7 +51,7 @@ const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
         }
 
         if (data.event === "mark-all-read") {
-          actions.markAllAsRead(true);
+          actions.markAllAsRead({}, true);
         }
 
         if (!data?.messageId) {

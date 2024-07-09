@@ -1,4 +1,3 @@
-import { resetLastFetched } from "./actions/reset-last-fetched";
 import {
   fetchUnreadMessageCount,
   fetchUnreadMessageCountDone,
@@ -6,13 +5,22 @@ import {
   INBOX_FETCH_UNREAD_MESSAGE_COUNT,
 } from "./actions/fetch-unread-message-count";
 
+import { INBOX_MARK_ALL_READ_DONE } from "./actions/mark-all-read";
+
 export default (api) => (store) => (next) => async (action) => {
   const state = store.getState();
 
   switch (action.type) {
-    //case "root/PAGE_VISIBLE":
+    case INBOX_MARK_ALL_READ_DONE: {
+      if (action.meta) {
+        store.dispatch(fetchUnreadMessageCount());
+      }
+
+      next(action);
+      break;
+    }
+
     case "root/WS_RECONNECTED": {
-      store.dispatch(resetLastFetched());
       store.dispatch(fetchUnreadMessageCount());
       break;
     }

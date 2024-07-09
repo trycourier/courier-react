@@ -1,12 +1,16 @@
 import { Client } from "urql";
 
 export const MARK_ALL_READ = `
-  mutation TrackEvent {
-    markAllRead
+  mutation TrackEvent($params: MarkAllAsReadParamsInput) {
+    markAllRead(params: $params)
   } 
 `;
 
-export type MarkAllRead = () => Promise<
+export interface IMarkAllAsReadParams {
+  tags?: string[];
+}
+
+export type MarkAllRead = (params?: IMarkAllAsReadParams) => Promise<
   | {
       markAllRead: boolean;
     }
@@ -15,12 +19,14 @@ export type MarkAllRead = () => Promise<
 
 export const markAllRead =
   (client?: Client): MarkAllRead =>
-  async () => {
+  async (params: IMarkAllAsReadParams = {}) => {
     if (!client) {
       return Promise.resolve(undefined);
     }
 
-    const results = await client.mutation(MARK_ALL_READ).toPromise();
+    const results = await client
+      .mutation(MARK_ALL_READ, { params })
+      .toPromise();
     const markAllRead = results?.data?.markAllRead;
 
     return {

@@ -1,5 +1,8 @@
+import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
+
 export type MarkAllRead = {
   type: "inbox/MARK_ALL_READ";
+  payload?: IGetInboxMessagesParams;
 };
 
 export type MarkAllReadPending = {
@@ -12,9 +15,10 @@ export type MarkAllReadError = {
 
 export type MarkAllReadDone = {
   type: "inbox/MARK_ALL_READ/DONE";
-  payload: {
+  payload?: {
     ids: string[];
   };
+  meta?: IGetInboxMessagesParams;
 };
 
 export const INBOX_MARK_ALL_READ = "inbox/MARK_ALL_READ";
@@ -22,8 +26,11 @@ export const INBOX_MARK_ALL_READ_PENDING = "inbox/MARK_ALL_READ/PENDING";
 export const INBOX_MARK_ALL_READ_DONE = "inbox/MARK_ALL_READ/DONE";
 export const INBOX_MARK_ALL_READ_ERROR = "inbox/MARK_ALL_READ/ERROR";
 
-export const markAllRead = (): MarkAllRead => ({
+export const markAllRead = (
+  payload?: IGetInboxMessagesParams
+): MarkAllRead => ({
   type: INBOX_MARK_ALL_READ,
+  payload,
 });
 
 export const markAllReadPending = (): MarkAllReadPending => ({
@@ -39,7 +46,7 @@ interface MarkAllReadDonePayload {
 }
 
 export const markAllReadDone = (
-  payload: MarkAllReadDonePayload
+  payload?: MarkAllReadDonePayload
 ): MarkAllReadDone => ({
   type: INBOX_MARK_ALL_READ_DONE,
   payload,

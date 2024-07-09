@@ -9,11 +9,10 @@ import { IInbox } from "./types";
 import { IGetInboxMessagesParams, Inbox } from "@trycourier/client-graphql";
 
 import { initInbox } from "./actions/init";
-import { markAllRead } from "./actions/mark-all-read";
+import { markAllReadDone } from "./actions/mark-all-read";
 import { markMessageArchived } from "./actions/mark-message-archived";
 import { markMessageRead } from "./actions/mark-message-read";
 import { markMessageUnread } from "./actions/mark-message-unread";
-import { resetLastFetched } from "./actions/reset-last-fetched";
 import { setView } from "./actions/set-view";
 import { toggleInbox } from "./actions/toggle-inbox";
 import { unpinMessage } from "./actions/unpin-message";
@@ -35,13 +34,12 @@ export interface IInboxActions {
   fetchMessages: (params?: IFetchMessagesParams) => void;
   getUnreadMessageCount: (params?: IGetInboxMessagesParams) => void;
   init: (inbox?: IInbox) => void;
-  markAllAsRead: (fromWS?: boolean) => void;
+  markAllAsRead: (params?: IGetInboxMessagesParams, fromWS?: boolean) => void;
   markMessageArchived: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageOpened: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageRead: (messageId: string, fromWS?: boolean) => Promise<void>;
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
   newMessage: (transportMessage: IInboxMessagePreview) => void;
-  resetLastFetched: () => void;
   setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
   unpinMessage: (messageId: string, fromWS?: boolean) => Promise<void>;
@@ -135,9 +133,6 @@ const useInboxActions = (): IInboxActions => {
 
   return {
     init: handleInit,
-    resetLastFetched: () => {
-      dispatch(resetLastFetched());
-    },
     toggleInbox: (isOpen?: boolean) => {
       dispatch(toggleInbox(isOpen));
     },
@@ -166,15 +161,21 @@ const useInboxActions = (): IInboxActions => {
       });
     },
     getUnreadMessageCount: handleGetUnreadMessageCount,
-    markAllAsRead: async (fromWS) => {
-      dispatch(markAllRead());
+    markAllAsRead: async (params, fromWS) => {
       if (!fromWS) {
-        await inboxClient.markAllRead();
+        dispatch({
+          meta: params,
+          payload: () => inboxClient.markAllRead(params),
+          type: "inbox/MARK_ALL_READ",
+        });
+      } else {
+        dispatch(markAllReadDone());
       }
 
       if (onEvent) {
         onEvent({
           event: "mark-all-read",
+          data: params as Record<string, unknown>,
         });
       }
     },
