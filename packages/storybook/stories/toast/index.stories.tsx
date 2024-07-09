@@ -28,7 +28,8 @@ const ExampleButton: React.FunctionComponent<{ text?: string }> = ({
 
   const handleOnClick = () => {
     toast({
-      title: "Hello World",
+      preview: "Hello World",
+      title: "foo",
     });
   };
 
@@ -41,7 +42,7 @@ export const Props = () => {
   const autoCloseTimeout = number("Auto Close Timeout", 5000);
 
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="foobar">
       <ReactMarkdown>{propsMd}</ReactMarkdown>
       <ReactMarkdown>{`## Example`}</ReactMarkdown>
       <Toast
@@ -103,7 +104,7 @@ export const Theme = () => {
         null,
         2
       )}\n\`\`\``}</ReactMarkdown>
-      <CourierProvider>
+      <CourierProvider clientKey="foobar">
         <ToastBody message={{} as any} title="Title" theme={theme} />
       </CourierProvider>
     </>

@@ -62,31 +62,36 @@ const NonClickableContainer = styled.div(({ theme }) => {
 });
 
 const Body: React.FunctionComponent<{
-  icon: IInboxMessagePreview["icon"] | ReactElement;
-  markdownOptions?: MarkdownToJSX.Options;
   message: IInboxMessagePreview;
-  onClick?: (event: React.MouseEvent) => void;
-  preview?: IInboxMessagePreview["preview"] | ReactElement;
-  title?: IInboxMessagePreview["title"] | ReactElement;
+  markdownOptions?: MarkdownToJSX.Options;
   toastProps?: ToastOptions;
+  onClick?: (event: React.MouseEvent) => void;
+  icon: IInboxMessagePreview["icon"] | ReactElement;
+  title?: IInboxMessagePreview["title"] | ReactElement;
+  preview?: IInboxMessagePreview["preview"] | ReactElement;
 }> = ({
   message,
   onClick,
   title,
   preview,
-  markdownOptions,
   icon,
+  markdownOptions,
   ...props
 }) => {
   const { actions, data, messageId } = message;
-  const courier = useCourier();
+  title = message.title ?? title;
+  preview = message.preview ?? preview;
+  icon = message.icon ?? icon;
+
   const [, { config }] = useToast();
 
+  const courier = useCourier();
+  const { brand: courierBrand } = courier;
+  const brand = config?.brand ?? courierBrand;
+
   const { toastProps } = props;
-  const { brand: courierBrand } = useCourier();
   const { markMessageRead, trackClick } = useInbox();
 
-  const brand = config?.brand ?? courierBrand;
   const { openLinksInNewTab } = config;
 
   const handleOnClickDismiss = useCallback(
