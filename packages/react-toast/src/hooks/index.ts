@@ -4,13 +4,15 @@ import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
 
 export const useToast: UseToast = () => {
-  const { toast, clientKey } =
+  const courier =
     useCourier<{
       toast?: {
         toast: ToastCaller;
         config?: IToastConfig;
       };
     }>();
+
+  const { toast, clientKey } = courier ?? {};
   const toastCaller = toast?.toast ? toast.toast : () => {};
   return [
     toastCaller,

@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox-next",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "description": "",
   "private": true,
   "main": "dist/index.js",
