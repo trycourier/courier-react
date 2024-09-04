@@ -34,7 +34,6 @@ import { usePageVisible } from "./hooks/use-page-visible";
 import useClientSourceId from "./hooks/use-client-source-id";
 import deepExtend from "deep-extend";
 import { darkVariables, lightVariables } from "./theme";
-import { createGlobalStyle } from "styled-components";
 import { useIsOnline } from "./hooks/use-is-online";
 import { useListenForTransportEvent } from "./hooks/use-listen-for-transport";
 
@@ -45,21 +44,24 @@ export const registerMiddleware = _registerMiddleware;
 
 export type { Middleware, OnEvent, ProviderTheme, ICourierContext };
 
-const GlobalThemeVariables = createGlobalStyle<{
-  theme: {
-    variables: ThemeVariables;
-  };
-}>(({ theme }) => {
-  return {
-    ":root": {
-      "--ci-background": theme?.variables?.background,
-      "--ci-text-color": theme?.variables?.textColor,
-      "--ci-title-color": theme?.variables?.titleColor,
-      "--ci-structure": theme?.variables?.structure,
-      "--ci-icon": theme?.variables?.icon,
-    },
-  };
-});
+const GlobalThemeVariables: React.FC<{ variables: ThemeVariables }> = ({
+  variables,
+}) => {
+  useEffect(() => {
+    const setGlobalThemeVariables = (variables: ThemeVariables) => {
+      const root = document.documentElement;
+      root.style.setProperty("--ci-background", variables?.background ?? null);
+      root.style.setProperty("--ci-text-color", variables?.textColor ?? null);
+      root.style.setProperty("--ci-title-color", variables?.titleColor ?? null);
+      root.style.setProperty("--ci-structure", variables?.structure ?? null);
+      root.style.setProperty("--ci-icon", variables?.icon ?? null);
+    };
+
+    setGlobalThemeVariables(variables);
+  }, [variables]);
+
+  return null;
+};
 
 export const CourierContext =
   React.createContext<ICourierContext | undefined>(undefined);
@@ -286,7 +288,7 @@ const CourierProviderInner: React.FunctionComponent<
         clientSourceId,
       }}
     >
-      <GlobalThemeVariables theme={theme} />
+      <GlobalThemeVariables variables={theme.variables} />
       {children}
     </CourierContext.Provider>
   );
