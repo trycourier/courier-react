@@ -10,13 +10,7 @@ const useLocalStorageMessages = ({
   userId?: string;
 }) => {
   const { localStorage } = useCourier();
-  const {
-    lastMessagesFetched,
-    messages,
-    pinned,
-    startCursor,
-    unreadMessageCount,
-  } = useInbox();
+  const { messages, pinned, startCursor, unreadMessageCount } = useInbox();
 
   useEffect(() => {
     if (!localStorage) {
@@ -56,7 +50,6 @@ const useLocalStorageMessages = ({
     localStorage.setItem(
       localStorageKey,
       JSON.stringify({
-        lastMessagesFetched,
         messages,
         pinned,
         startCursor,
@@ -64,7 +57,6 @@ const useLocalStorageMessages = ({
       })
     );
   }, [
-    lastMessagesFetched,
     localStorage,
     localStorageKey,
     messages,
