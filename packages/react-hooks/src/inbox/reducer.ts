@@ -168,12 +168,20 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
         ? [...(state?.messages ?? []), ...(action.payload?.messages ?? [])]
         : action.payload?.messages;
 
+      const newMessagesFiltered = newMessages?.filter((m) => {
+        if (state?.recentlyArchiveMessageIds?.includes(m.messageId)) {
+          return false;
+        }
+
+        return true;
+      });
+
       return {
         ...state,
         isLoading: false,
         searchParams: action.meta.searchParams,
         lastMessagesFetched: new Date().getTime(),
-        messages: newMessages as IInboxMessagePreview[],
+        messages: newMessagesFiltered as IInboxMessagePreview[],
         pinned: action.payload?.appendMessages
           ? state.pinned
           : sortPinned(action.payload?.pinned, state.brand),
@@ -335,6 +343,8 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     case INBOX_MARK_MESSAGE_ARCHIVED: {
       let unreadMessageCount = state.unreadMessageCount ?? 0;
 
+      const recentlyArchiveMessageIds = state.recentlyArchiveMessageIds ?? [];
+      recentlyArchiveMessageIds.push(action.payload.messageId);
       const handleArchived = (message) => {
         const isMatching = message.messageId === action.payload.messageId;
         if (isMatching && !message.read) {
@@ -349,8 +359,9 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
-        pinned: newPinned,
         messages: newMessages,
+        pinned: newPinned,
+        recentlyArchiveMessageIds,
         unreadMessageCount,
       };
     }
