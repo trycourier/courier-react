@@ -197,6 +197,9 @@ export const CustomLabels = () => {
   backToInbox: "back it up!",
   markAllAsRead: "mark em all captn",
   closeInbox: "close me plz",
+  archiveMessage: "delete yo",
+  scrollTop: "scrollz",
+  emptyState: "nah dawg",
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
@@ -220,6 +223,9 @@ export const CustomLabels = () => {
               backToInbox: "back it up!",
               markAllAsRead: "mark em all captn",
               closeInbox: "close me plz",
+              archiveMessage: "delete yo",
+              scrollTop: "scrollz",
+              emptyState: "nah dawg",
             }}
           />
         </CourierProvider>

@@ -12,15 +12,10 @@ const CloseAction: React.FunctionComponent<{
   onClick: React.MouseEventHandler;
   tooltip: string;
   size?: "small";
-  title?: string;
-}> = ({ onClick, tooltip, size, title }) => {
+}> = ({ onClick, tooltip, size }) => {
   return (
     <StyledTippy content={tooltip}>
-      <StyledButton
-        title={title ?? "close inbox"}
-        className="close"
-        onClick={onClick}
-      >
+      <StyledButton aria-label={tooltip} className="close" onClick={onClick}>
         {size === "small" ? (
           <svg
             width="24"
