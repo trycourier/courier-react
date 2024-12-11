@@ -196,6 +196,7 @@ export const CustomLabels = () => {
   markAsUnread: "jk, unread me",
   backToInbox: "back it up!",
   markAllAsRead: "mark em all captn",
+  closeInbox: "close me plz",
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
@@ -218,6 +219,7 @@ export const CustomLabels = () => {
               markAsUnread: "jk, unread me",
               backToInbox: "back it up!",
               markAllAsRead: "mark em all captn",
+              closeInbox: "close me plz",
             }}
           />
         </CourierProvider>
