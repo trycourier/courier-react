@@ -332,7 +332,10 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
             onClick={() => markAllAsRead()}
           />
         ) : null}
-        <CloseInbox onClick={handleCloseInbox} tooltip="Close Inbox" />
+        <CloseInbox
+          onClick={handleCloseInbox}
+          tooltip={labels?.closeInbox ?? "Close Inbox"}
+        />
       </div>
     </Container>
   );
