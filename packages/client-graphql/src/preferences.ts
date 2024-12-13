@@ -40,6 +40,7 @@ const PREFERENCE_PAGE = `
           hasCustomRouting
           topics {
             nodes {
+              data
               defaultStatus
               templateName
               templateId
@@ -76,6 +77,7 @@ const DRAFT_PREFERENCE_PAGE = `
           hasCustomRouting
           topics {
             nodes {
+              data
               defaultStatus
               templateName
               templateId

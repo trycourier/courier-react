@@ -97,10 +97,11 @@ export interface DigestSchedule {
 }
 
 export interface IPreferenceTemplate {
-  templateName: string;
-  templateId: string;
+  data?: Record<string, unknown>;
   defaultStatus: PreferenceStatus;
   digestSchedules?: DigestSchedule[];
+  templateId: string;
+  templateName: string;
 }
 
 export type WSOptions = {
