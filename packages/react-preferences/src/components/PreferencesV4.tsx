@@ -300,6 +300,7 @@ export const PreferenceTopic: React.FunctionComponent<{
     await updateRecipientPreferences({
       templateId: topicId,
       digestSchedule: scheduleId,
+      tenantId,
     });
   };
 
