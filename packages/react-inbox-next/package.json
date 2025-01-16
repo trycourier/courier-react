@@ -26,7 +26,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
-    "markdown-to-jsx": "7.1.7",
+    "markdown-to-jsx": "^7.7.3",
     "react-loading-skeleton": "^2.2.0",
     "rimraf": "^3.0.2"
   },
