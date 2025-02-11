@@ -1,6 +1,6 @@
 import * as uuid from "uuid";
 import { useMemo } from "react";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const useClientSourceId = ({
   clientKey,
