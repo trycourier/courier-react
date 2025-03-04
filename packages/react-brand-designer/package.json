@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@trycourier/react-elements": "^6.4.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^5.0.0"
   },
   "peerDependencies": {
     "deep-extend": "0.6.x",

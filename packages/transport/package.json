@@ -17,7 +17,7 @@
     "@trycourier/core": "^6.4.1",
     "jwt-decode": "^4.0.0",
     "reconnecting-websocket": "^4.4.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^5.0.0"
   },
   "files": [
     "dist/",

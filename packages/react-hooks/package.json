@@ -23,7 +23,7 @@
     "@trycourier/client-graphql": "^6.4.1",
     "@trycourier/core": "^6.4.1",
     "deep-extend": "^0.6.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^5.0.0"
   },
   "peerDependencies": {
     "@trycourier/react-provider": ">=4.X.X",
