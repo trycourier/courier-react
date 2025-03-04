@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@trycourier/core": "^6.4.1",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "reconnecting-websocket": "^4.4.0",
     "rimraf": "^3.0.2"
   },

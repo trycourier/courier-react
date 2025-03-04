@@ -20,7 +20,7 @@
     "@trycourier/courier-js": "^1.4.2",
     "@trycourier/transport": "^6.4.1",
     "buffer": "^6.0.3",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "react-use": "^17.2.1",
     "rimraf": "^3.0.2",
     "urql": "^2.0.1",
