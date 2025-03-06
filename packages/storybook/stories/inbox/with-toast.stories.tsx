@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Inbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
-import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
+import { CourierProvider } from "@trycourier/react-provider";
+import { CourierTransport } from "@trycourier/transport";
 
 export default {
   title: "Inbox/With Toast",

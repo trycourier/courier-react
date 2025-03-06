@@ -199,6 +199,7 @@ const Messages: React.ForwardRefExoticComponent<
       openLinksInNewTab,
       renderFooter,
       renderHeader,
+      renderLoadingMore,
       renderMessage,
       renderNoMessages,
       renderPin,
@@ -415,9 +416,12 @@ const Messages: React.ForwardRefExoticComponent<
                   renderNoMessages({})
                 ))}
               {((isLoading && messages?.length > 0) ||
-                (!startCursor && messages.length > 5)) && (
-                <LoadingMore noResults={!isLoading} />
-              )}
+                (!startCursor && messages.length > 5)) &&
+                (renderLoadingMore ? (
+                  renderLoadingMore({ isLoading })
+                ) : (
+                  <LoadingMore noResults={!isLoading} />
+                ))}
             </MessageList>
           ) : (
             <PreferenceList theme={{ name: "2.0" }} />

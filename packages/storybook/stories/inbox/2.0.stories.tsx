@@ -14,7 +14,7 @@ export default {
   title: "Inbox/Redesign",
 };
 
-const mockMessages = [
+export const mockMessages = [
   {
     preview: "This Message is Unread",
     created: "2021-04-06T18:02:28.065Z",
