@@ -23,6 +23,7 @@
     "@trycourier/client-graphql": "^7.1.0",
     "@trycourier/core": "^7.1.0",
     "deep-extend": "^0.6.0",
+    "jwt-decode": "^4.0.0",
     "rimraf": "^5.0.0"
   },
   "peerDependencies": {
