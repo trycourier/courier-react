@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-toast",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "description": "Beautiful, easy React toast notifications",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -24,7 +24,7 @@
     "concat-md": "^0.3.5"
   },
   "dependencies": {
-    "@trycourier/react-hooks": "^7.1.0",
+    "@trycourier/react-hooks": "^7.1.1",
     "deep-extend": "^0.6.0",
     "markdown-to-jsx": "^7.7.3",
     "react-toastify": "^9.1.3",
