@@ -18,6 +18,7 @@ export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
       fontWeight: "600",
       lineHeight: "16px",
       textAlign: "left",
+      maxWidth: 300,
       display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
