@@ -210,7 +210,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
         aria-pressed={isOpen}
         data-testid="bell"
         className={`inbox-bell ${props.className ?? ""}`}
-        isOpen={isOpen ?? false}
+        $isOpen={isOpen ?? false}
         onClick={handleIconOnClick}
         onKeyDown={handleIconOnKeyDown}
         role="button"

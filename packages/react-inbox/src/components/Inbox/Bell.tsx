@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
-const bellStyles = ({ isOpen, theme }) =>
+const bellStyles = ({ $isOpen, theme }) =>
   deepExtend(
     {
       cursor: "pointer",
@@ -13,7 +13,7 @@ const bellStyles = ({ isOpen, theme }) =>
       outline: "none",
       display: "inline-block",
       path: {
-        fill: isOpen
+        fill: $isOpen
           ? theme?.icon?.open ?? theme?.brand?.colors?.primary ?? "#9121c2"
           : theme?.icon?.closed ?? theme?.brand?.colors?.secondary ?? "#C1B6DD",
       },
@@ -21,7 +21,7 @@ const bellStyles = ({ isOpen, theme }) =>
     theme.icon
   );
 
-export const Bell = styled.div<{ isOpen: boolean }>(bellStyles);
+export const Bell = styled.div<{ $isOpen: boolean }>(bellStyles);
 
 const BellSvg: React.FunctionComponent = () => {
   return (
