@@ -6,6 +6,7 @@ import { IHeaderProps } from "./components/Messages2.0/types";
 import { CSSObject } from "styled-components";
 import { Brand, IInboxMessagePreview, PinDetails } from "@trycourier/core";
 import { MarkdownToJSX } from "markdown-to-jsx";
+import React from "react";
 
 export interface InboxTheme {
   brand?: Brand;
@@ -89,4 +90,5 @@ export interface InboxProps {
   }>;
   renderMessage?: React.FunctionComponent<IInboxMessagePreview>;
   renderNoMessages?: React.FunctionComponent;
+  renderLoadingMore?: React.FunctionComponent<{ isLoading?: boolean }>;
 }

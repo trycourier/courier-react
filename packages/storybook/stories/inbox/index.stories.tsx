@@ -23,6 +23,7 @@ import customHeaderProps from "./custom-header";
 
 // @ts-ignore
 import mockMiddleware from "./mock-middleware";
+import { mockMessages } from "./2.0.stories";
 
 const API_URL = process.env.API_URL || "";
 const CLIENT_KEY = process.env.CLIENT_KEY || "";
@@ -147,7 +148,7 @@ export const RenderPropsExample = () => {
           2
         )}\n\`\`\``}</ReactMarkdown>
       </div>
-      <CourierProvider>
+      <CourierProvider clientKey={CLIENT_KEY}>
         <Inbox {...props} />
       </CourierProvider>
     </div>
@@ -172,10 +173,66 @@ export const RenderPropsExample2 = () => {
           2
         )}\n\`\`\``}</ReactMarkdown>
       </div>
-      <CourierProvider>
+      <CourierProvider clientKey={CLIENT_KEY}>
         <Inbox {...customHeaderProps} />
       </CourierProvider>
     </div>
+  );
+};
+
+export const RenderPropsLoadingMore = () => {
+  return (
+    <>
+      <ReactMarkdown>{"TODO"}</ReactMarkdown>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "top",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <ReactMarkdown>{`## Example`}</ReactMarkdown>
+          <ReactMarkdown>{`\`\`\`javascript\n<Inbox theme={{
+  name: "2.0",
+}} />\n\`\`\``}</ReactMarkdown>
+        </div>
+        <CourierProvider
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    isLoading: true,
+                    messages: mockMessages.slice(0, 2),
+                  },
+                });
+                return;
+              }
+            },
+          ]}
+          wsOptions={{
+            url: process.env.WS_URL,
+          }}
+          apiUrl={API_URL}
+          clientKey={CLIENT_KEY}
+          userId={USER_ID}
+        >
+          <Inbox
+            renderLoadingMore={() => <div>Loading more...</div>}
+            isOpen={true}
+            brand={{
+              colors: {
+                primary: "#FF93CD",
+              },
+            }}
+          />
+        </CourierProvider>
+      </div>
+    </>
   );
 };
 
@@ -196,6 +253,10 @@ export const CustomLabels = () => {
   markAsUnread: "jk, unread me",
   backToInbox: "back it up!",
   markAllAsRead: "mark em all captn",
+  closeInbox: "close me plz",
+  archiveMessage: "delete yo",
+  scrollTop: "scrollz",
+  emptyState: "nah dawg",
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
@@ -218,6 +279,10 @@ export const CustomLabels = () => {
               markAsUnread: "jk, unread me",
               backToInbox: "back it up!",
               markAllAsRead: "mark em all captn",
+              closeInbox: "close me plz",
+              archiveMessage: "delete yo",
+              scrollTop: "scrollz",
+              emptyState: "nah dawg",
             }}
           />
         </CourierProvider>

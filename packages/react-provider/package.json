@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-provider",
-  "version": "6.3.1",
+  "version": "7.1.1",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -15,14 +15,14 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@trycourier/client-graphql": "^6.3.1",
-    "@trycourier/core": "^6.3.1",
+    "@trycourier/client-graphql": "^7.1.1",
+    "@trycourier/core": "^7.1.1",
     "@trycourier/courier-js": "^1.4.2",
-    "@trycourier/transport": "^6.3.1",
+    "@trycourier/transport": "^7.1.1",
     "buffer": "^6.0.3",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "react-use": "^17.2.1",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.0",
     "urql": "^2.0.1",
     "uuid": "^9.0.0"
   },

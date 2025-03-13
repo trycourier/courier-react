@@ -175,7 +175,7 @@ const MessageActions: React.FunctionComponent<{
     : getTimeAgo(archived ? archived : created);
 
   const markAsReadLabel = labels?.markAsRead ?? "Mark as Read";
-  const markUnreadLabel = labels?.markAsRead ?? "Mark Unread";
+  const markUnreadLabel = labels?.markAsUnread ?? "Mark Unread";
   const archiveLabel = labels?.archiveMessage ?? "Archive Message";
 
   useClickOutside(mobileActionsRef, (event) => {
@@ -241,7 +241,6 @@ const MessageActions: React.FunctionComponent<{
             )}
             <CloseAction
               size="small"
-              title={archiveLabel}
               onClick={handleEvent("archive")}
               tooltip={archiveLabel}
             />
