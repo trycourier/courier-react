@@ -21,10 +21,12 @@ const querySelector = (element: HTMLElement, selector: string) => {
 export const CourierComponents: React.FunctionComponent = () => {
   const preferencePageDraftMode =
     window.courierConfig?.preferencePageDraftMode ?? false;
+  const tenantId = window.courierConfig?.tenantId;
   const unsubscribePageConfig = window.courierConfig?.unsubscribePage;
 
   const componentConfigs = window.courierConfig?.components;
   const initialInbox = querySelector(window?.document?.body, "courier-inbox");
+
   const [inboxElement, setInboxElement] = useState(initialInbox ?? undefined);
 
   const [inboxConfig, setInboxConfig] = useState({
@@ -33,6 +35,7 @@ export const CourierComponents: React.FunctionComponent = () => {
   });
 
   const initialToast = querySelector(window?.document?.body, "courier-toast");
+
   const [toastElement, setToastElement] = useState(initialToast ?? undefined);
 
   const [toastConfig, setToastConfig] = useState({
@@ -44,6 +47,7 @@ export const CourierComponents: React.FunctionComponent = () => {
     window?.document?.body,
     "courier-preferences"
   );
+
   const [preferencesElement, setPreferencesElement] = useState(
     initialPreferences ?? undefined
   );
@@ -86,6 +90,10 @@ export const CourierComponents: React.FunctionComponent = () => {
   }, [toastConfig, inboxConfig, inboxElement, toastElement]);
 
   useEffect(() => {
+    if (!window?.courierConfig?.enableMutationObserver) {
+      return;
+    }
+
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         switch (mutation.type) {
@@ -185,7 +193,7 @@ export const CourierComponents: React.FunctionComponent = () => {
       {toastElement &&
         createPortal(
           <Suspense fallback={<div />}>
-            <Toast config={toastConfig} />
+            <Toast {...toastConfig} />
           </Suspense>,
           toastElement
         )}
@@ -199,7 +207,10 @@ export const CourierComponents: React.FunctionComponent = () => {
       {preferencePage &&
         createPortal(
           <Suspense fallback={<div />}>
-            <PreferencePage draft={preferencePageDraftMode} />
+            <PreferencePage
+              tenantId={tenantId}
+              draft={preferencePageDraftMode}
+            />
           </Suspense>,
           preferencePage
         )}

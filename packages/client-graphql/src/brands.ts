@@ -11,8 +11,8 @@ settings {
   }
   inapp {
     borderRadius
-    disableMessageIcon
     disableCourierFooter
+    disableMessageIcon
     placement
     emptyState {
       textColor
@@ -30,10 +30,7 @@ settings {
       bell
       message
     }
-    toast {
-      timerAutoClose
-      borderRadius
-    }
+    renderActionsAsButtons
     slots {
       id
       label {
@@ -44,6 +41,10 @@ settings {
         value
         color
       }
+    }
+    toast {
+      timerAutoClose
+      borderRadius
     }
   }
 }

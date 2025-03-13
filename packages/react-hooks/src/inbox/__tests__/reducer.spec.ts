@@ -1,5 +1,3 @@
-import { IInboxMessagePreview } from "@trycourier/client-graphql";
-
 import reducer, { initialState } from "../reducer";
 import { initInbox, INBOX_INIT } from "../actions/init";
 import { setView, INBOX_SET_VIEW } from "../actions/set-view";
@@ -34,9 +32,31 @@ import {
   INBOX_MARK_MESSAGE_OPENED,
   markMessageOpened,
 } from "../actions/mark-message-opened";
+import { INBOX_UNPIN_MESSAGE, unpinMessage } from "../actions/unpin-message";
+import { IInboxMessagePreview } from "@trycourier/core";
+
+// Mock IntersectionObserver
+class IntersectionObserver {
+  observe = jest.fn();
+  disconnect = jest.fn();
+  unobserve = jest.fn();
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserver,
+});
+
+Object.defineProperty(global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserver,
+});
 
 const mockGraphMessage: IInboxMessagePreview = {
   messageId: "mockMessageId",
+  type: "message",
   created: new Date().toISOString(),
   title: "mockTitle",
   preview: "mockBody",
@@ -44,6 +64,7 @@ const mockGraphMessage: IInboxMessagePreview = {
 
 const mockGraphMessage2: IInboxMessagePreview = {
   messageId: "mockMessageId2",
+  type: "message",
   created: new Date().toISOString(),
   title: "mockTitle2",
   preview: "mockBody2",
@@ -163,10 +184,13 @@ describe("inbox reducer", () => {
 
         expect(state).toEqual({
           ...initialState,
-          pinned: [],
+          isLoading: false,
           lastMessagesFetched: mockDate,
           messages: [mockGraphMessage],
-          isLoading: false,
+          pinned: [],
+          searchParams: {
+            filters: {},
+          },
         });
       });
 
@@ -195,6 +219,9 @@ describe("inbox reducer", () => {
           lastMessagesFetched: mockDate,
           messages: [mockGraphMessage, mockGraphMessage2],
           isLoading: false,
+          searchParams: {
+            filters: {},
+          },
         });
       });
     });
@@ -244,6 +271,39 @@ describe("inbox reducer", () => {
         ...initialState,
         unreadMessageCount: 1,
         messages: [unreadMessage],
+      });
+    });
+  });
+
+  describe(`action ${INBOX_UNPIN_MESSAGE}`, () => {
+    it("will message, remove pinned property and put message into main message array", () => {
+      const state = reducer(
+        {
+          ...initialState,
+          unreadMessageCount: 0,
+          messages: [mockGraphMessage],
+          pinned: [
+            {
+              ...mockGraphMessage2,
+              pinned: {
+                slotId: "pinned",
+              },
+            },
+          ],
+        },
+        unpinMessage(mockGraphMessage2.messageId)
+      );
+
+      const mockUnpinnedGraphMessage2 = {
+        ...mockGraphMessage2,
+        pinned: undefined,
+      };
+
+      expect(state).toEqual({
+        ...initialState,
+        unreadMessageCount: 0,
+        messages: [mockGraphMessage, mockUnpinnedGraphMessage2],
+        pinned: [],
       });
     });
   });

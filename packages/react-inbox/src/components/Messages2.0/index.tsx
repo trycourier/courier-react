@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 
 import { PreferenceList } from "@trycourier/react-preferences";
+
 import { useInbox, usePreferences } from "@trycourier/react-hooks";
 import tinycolor2 from "tinycolor2";
 
@@ -37,7 +38,7 @@ const ResponsiveContainer = styled.div<{ isMobile?: boolean }>(
               "*, &": {
                 boxSizing: "border-box",
               },
-              background: "#F2F6F9",
+              background: "var(--ci-background)",
             }),
       },
       theme?.container
@@ -82,8 +83,8 @@ const MessageList = styled.div<{ isMobile?: boolean }>(
     return deepExtend(
       {
         position: "relative",
-        background: "rgb(242, 246, 249)",
-        overflow: "scroll",
+        background: "var(--ci-background)",
+        overflow: "auto",
         display: "flex",
         height,
         maxHeight: height,
@@ -98,7 +99,7 @@ export const Footer = styled.div(({ theme }) =>
   deepExtend(
     {
       alignItems: "center",
-      background: "white",
+      background: "var(--ci-background)",
       display: "flex",
       fontSize: "10px",
       fontStyle: "normal",
@@ -115,11 +116,15 @@ export const Footer = styled.div(({ theme }) =>
         marginTop: -4,
       },
 
+      "svg path": {
+        fill: "currentColor",
+      },
+
       a: {
         display: "flex",
         alignItems: "center",
         textDecoration: "none",
-        color: "rgba(86, 96, 116, 0.8)",
+        color: "var(--ci-text-color)",
       },
     },
     theme?.footer
@@ -131,47 +136,51 @@ const ScrollTop = styled.button<{ text: string }>(({ theme, text }) => {
   const tcPrimaryColor = tinycolor2(primaryColor);
   const lighten30 = tcPrimaryColor.lighten(30);
 
-  return {
-    position: "sticky",
-    top: "-1px",
-    width: "100%",
-    height: "3px",
-    zIndex: 1,
-    fontSize: "12px",
-    cursor: "pointer",
-    background: lighten30.toString(),
-    transition: "all 150ms ease-in",
-
-    "&.hidden": {
-      opacity: 0,
-      visibility: "hidden",
-    },
-
-    "&::before": {
-      transition: "all 150ms ease-in",
-      boxSizing: "border-box",
-      marginTop: "-10px",
-      content: `'${text}'`,
-      position: "absolute",
-      left: "50%",
-      transform: "translateX(-50%)",
-      padding: "2px 8px",
-      display: "inline-block",
-      borderRadius: "10px",
+  return deepExtend(
+    {},
+    {
+      position: "sticky",
+      top: "-1px",
+      width: "100%",
+      height: "3px",
+      zIndex: 1,
+      fontSize: "12px",
+      cursor: "pointer",
       background: lighten30.toString(),
-      height: "18px",
-      "&:hover": {
-        background: lighten30.darken(10).toString(),
+      transition: "all 150ms ease-in",
+
+      "&.hidden": {
+        opacity: 0,
+        visibility: "hidden",
       },
-    },
-    "&.stickied": {
+
       "&::before": {
-        marginTop: "6px",
+        transition: "all 150ms ease-in",
+        boxSizing: "border-box",
+        marginTop: "-10px",
+        content: `'${text}'`,
+        position: "absolute",
+        left: "50%",
+        transform: "translateX(-50%)",
+        padding: "2px 8px",
+        display: "inline-block",
+        borderRadius: "10px",
+        background: lighten30.toString(),
+        height: "18px",
+        "&:hover": {
+          background: lighten30.darken(10).toString(),
+        },
       },
-      boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
+      "&.stickied": {
+        "&::before": {
+          marginTop: "6px",
+        },
+        boxShadow: "0px 8px 24px rgba(28, 39, 58, 0.3)",
+      },
+      border: "none",
     },
-    border: "none",
-  };
+    theme?.messageList?.scrollTop
+  );
 });
 
 const Messages: React.ForwardRefExoticComponent<
@@ -186,13 +195,16 @@ const Messages: React.ForwardRefExoticComponent<
       formatDate,
       isMobile,
       labels,
+      markdownOptions,
       openLinksInNewTab,
       renderFooter,
       renderHeader,
+      renderLoadingMore,
       renderMessage,
       renderNoMessages,
       renderPin,
       title,
+      views,
     },
     ref
   ) => {
@@ -200,8 +212,10 @@ const Messages: React.ForwardRefExoticComponent<
     const { fetchRecipientPreferences } = usePreferences();
 
     const {
+      tenantId,
       brand,
       fetchMessages,
+      getUnreadMessageCount,
       isLoading,
       markAllAsRead,
       messages = [],
@@ -210,12 +224,26 @@ const Messages: React.ForwardRefExoticComponent<
       toggleInbox,
       unreadMessageCount,
       view,
-      resetLastFetched,
-      init,
     } = useInbox();
 
     const scrollTopRef = useRef<HTMLButtonElement>(null);
     const messageListRef = useRef<HTMLDivElement>(null);
+    const currentView = useMemo(() => {
+      return views?.find((v) => v.id === view);
+    }, [views, view]);
+
+    useEffect(() => {
+      if (view === "preferences") {
+        return;
+      }
+
+      fetchMessages({
+        params: {
+          ...currentView?.params,
+          tenantId,
+        },
+      });
+    }, [tenantId, view, currentView]);
 
     useOnScroll(
       messageListRef,
@@ -254,15 +282,16 @@ const Messages: React.ForwardRefExoticComponent<
 
           fetchMessages({
             after: startCursor,
+            params: currentView?.params,
           });
         },
       },
-      [scrollTopRef.current, isLoading, startCursor]
+      [scrollTopRef.current, isLoading, startCursor, currentView]
     );
 
     useEffect(() => {
-      fetchRecipientPreferences();
-    }, []);
+      fetchRecipientPreferences(tenantId);
+    }, [tenantId]);
 
     const handleCloseInbox = (event: React.MouseEvent) => {
       event.preventDefault();
@@ -270,8 +299,10 @@ const Messages: React.ForwardRefExoticComponent<
     };
 
     const handleClickScrollTop = () => {
-      resetLastFetched();
-      init();
+      getUnreadMessageCount();
+      fetchMessages({
+        params: currentView?.params,
+      });
 
       if (messageListRef.current) {
         messageListRef.current.scrollTop = 0;
@@ -279,6 +310,14 @@ const Messages: React.ForwardRefExoticComponent<
     };
 
     const scrollTopMessage = useMemo(() => {
+      if (typeof labels?.scrollTop === "string") {
+        return labels?.scrollTop;
+      }
+
+      if (typeof labels?.scrollTop === "function") {
+        return labels?.scrollTop(String(pinned.length));
+      }
+
       if (pinned.length) {
         const label =
           brand?.inapp?.slots?.length === 1
@@ -289,7 +328,7 @@ const Messages: React.ForwardRefExoticComponent<
       }
 
       return "Scroll Top";
-    }, [pinned.length, brand]);
+    }, [pinned.length, brand, labels?.scrollTop]);
 
     return (
       <ResponsiveContainer ref={ref} isMobile={isMobile}>
@@ -307,12 +346,13 @@ const Messages: React.ForwardRefExoticComponent<
             labels={labels}
             markAllAsRead={markAllAsRead}
             messages={messages}
+            views={views}
             title={title}
             unreadMessageCount={unreadMessageCount}
           />
         )}
         <PositionRelative>
-          {view === "messages" ? (
+          {view !== "preferences" ? (
             <MessageList
               ref={messageListRef}
               isMobile={isMobile}
@@ -323,14 +363,19 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage(message)
                 ) : (
                   <Message
-                    {...message}
                     defaultIcon={defaultIcon}
                     formatDate={formatDate}
                     isMessageFocused={focusedMessageId === message.messageId}
+                    isMobile={isMobile}
                     key={message.messageId}
                     labels={labels}
+                    markdownOptions={markdownOptions}
+                    message={message}
                     openLinksInNewTab={openLinksInNewTab}
                     renderPin={renderPin}
+                    renderActionsAsButtons={
+                      brand?.inapp?.renderActionsAsButtons
+                    }
                     setFocusedMessageId={setFocusedMessageId}
                   />
                 )
@@ -347,13 +392,18 @@ const Messages: React.ForwardRefExoticComponent<
                   renderMessage(message)
                 ) : (
                   <Message
-                    {...message}
                     defaultIcon={defaultIcon}
                     formatDate={formatDate}
                     isMessageFocused={focusedMessageId === message.messageId}
+                    isMobile={isMobile}
                     key={message.messageId}
                     labels={labels}
+                    markdownOptions={markdownOptions}
+                    message={message}
                     openLinksInNewTab={openLinksInNewTab}
+                    renderActionsAsButtons={
+                      brand?.inapp?.renderActionsAsButtons
+                    }
                     renderPin={renderPin}
                     setFocusedMessageId={setFocusedMessageId}
                   />
@@ -366,9 +416,12 @@ const Messages: React.ForwardRefExoticComponent<
                   renderNoMessages({})
                 ))}
               {((isLoading && messages?.length > 0) ||
-                (!startCursor && messages.length > 5)) && (
-                <LoadingMore noResults={!isLoading} />
-              )}
+                (!startCursor && messages.length > 5)) &&
+                (renderLoadingMore ? (
+                  renderLoadingMore({ isLoading })
+                ) : (
+                  <LoadingMore noResults={!isLoading} />
+                ))}
             </MessageList>
           ) : (
             <PreferenceList theme={{ name: "2.0" }} />

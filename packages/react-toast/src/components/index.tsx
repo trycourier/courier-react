@@ -2,32 +2,28 @@ export { default as Toast } from "./Toast";
 import React, { ReactElement, useMemo } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import toastCss from "react-toastify/dist/ReactToastify.css";
-import {
-  Brand,
-  useCourier,
-  IInboxMessagePreview,
-} from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { Theme } from "../types";
 
 import Body from "./Body";
 import { toastStyles } from "./Toast/styled";
 import deepExtend from "deep-extend";
 import { themeDefaults } from "~/constants";
+import { Brand, IInboxMessagePreview } from "@trycourier/core";
 
 const Styled = styled.div(toastStyles);
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
-export const ToastBody: React.FunctionComponent<
-  Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
-    theme?: Theme;
-    brand?: Brand;
-    title?: IInboxMessagePreview["title"] | ReactElement;
-    preview?: IInboxMessagePreview["preview"] | ReactElement;
-  }
-> = ({ theme, ...props }) => {
+export const ToastBody: React.FunctionComponent<{
+  message: IInboxMessagePreview;
+  theme?: Theme;
+  brand?: Brand;
+  title?: IInboxMessagePreview["title"] | ReactElement;
+  preview?: IInboxMessagePreview["preview"] | ReactElement;
+}> = ({ theme, message, ...props }) => {
   const { brand: remoteBrand } = useCourier();
   props.brand = props.brand ?? remoteBrand;
-  props.icon = props.icon ?? props?.brand?.inapp?.icons?.message;
+  message.icon = message.icon ?? props?.brand?.inapp?.icons?.message;
 
   theme = useMemo(() => {
     return {
@@ -49,7 +45,7 @@ export const ToastBody: React.FunctionComponent<
         >
           <div className="Toastify__toast Toastify__toast--default">
             <div className="Toastify__toast-body">
-              <Body {...props} />
+              <Body message={message} icon={message.icon} {...props} />
             </div>
             <div
               className="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"

@@ -1,20 +1,18 @@
-import {
-  ICourierContext,
-  IInboxMessagePreview,
-  useCourier,
-} from "@trycourier/react-provider";
+import { ICourierContext, useCourier } from "@trycourier/react-provider";
 import { useEffect } from "react";
 import { IToastConfig } from "../types";
 import { UseToast, ToastCaller } from "./types";
 
 export const useToast: UseToast = () => {
-  const { toast, clientKey } =
+  const courier =
     useCourier<{
       toast?: {
         toast: ToastCaller;
         config?: IToastConfig;
       };
     }>();
+
+  const { toast, clientKey } = courier ?? {};
   const toastCaller = toast?.toast ? toast.toast : () => {};
   return [
     toastCaller,
@@ -25,13 +23,13 @@ export const useToast: UseToast = () => {
   ];
 };
 
-export const useListenForTransportEvent = (
-  clientKey: string,
-  transport: ICourierContext["transport"],
-  handleToast
-) => {
-  const { createTrackEvent } = useCourier();
-
+export const useListenForTransportEvent = ({
+  transport,
+  handleToast,
+}: {
+  transport: ICourierContext["transport"];
+  handleToast;
+}) => {
   useEffect(() => {
     if (!transport) {
       return;
@@ -41,14 +39,8 @@ export const useListenForTransportEvent = (
       id: "toast-listener",
       type: "message",
       listener: (courierEvent) => {
-        const courierMessage = courierEvent?.data as IInboxMessagePreview;
-        const courierData = courierMessage?.data;
-        if (courierData?.trackingIds?.deliverTrackingId) {
-          createTrackEvent(courierData?.trackingIds?.deliverTrackingId);
-        }
-
         handleToast(courierEvent?.data);
       },
     });
-  }, [clientKey, handleToast, transport]);
+  }, [handleToast, transport]);
 };

@@ -1,15 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { usePreferences } from "@trycourier/react-hooks";
-import {
-  ChannelClassification,
-  IPreferenceTemplate,
-  IRecipientPreference,
-} from "~/types";
+import { ChannelClassification, IRecipientPreference } from "~/types";
 import { StyledToggle } from "./StyledToggle";
 import Toggle from "react-toggle";
 import { PreferenceSection } from "@trycourier/react-hooks";
-import DigestSchedule from "./DigestSchedule";
+import DigestSchedules from "./DigestSchedule";
+import { useCourier } from "@trycourier/react-provider";
+import { IPreferenceTemplate, PreferenceStatus } from "@trycourier/core";
 
 export const ChannelOption = styled.div`
   display: flex;
@@ -36,23 +34,19 @@ export const ChannelOption = styled.div`
 `;
 
 const PreferenceSectionWrapper = styled.div`
-  background: white;
-  text: black;
   width: 100%;
 `;
 
 const SectionHeader = styled.h1`
   margin: 0;
   font-size: 24px;
-  color: black;
+  color: var(--ci-title-color);
 `;
 
 const StyledItem = styled.div`
   padding: 16px 0;
   margin-top: 6px;
-  background: white;
   border-radius: 4px;
-  color: #333;
 
   .template-name {
     font-size: 14px;
@@ -61,6 +55,7 @@ const StyledItem = styled.div`
     width: 100%;
     margin-bottom: 6px;
     font-weight: bold;
+    color: var(--ci-text-color);
   }
 
   .digest-schedules {
@@ -85,7 +80,6 @@ export const Channel = styled.div`
   align-items: center;
   justify-content: center;
   label {
-    display: block;
     position: relative;
     cursor: pointer;
     -webkit-user-select: none;
@@ -94,13 +88,12 @@ export const Channel = styled.div`
     user-select: none;
   }
 
-  ${Input}:checked ~ ${ChannelOption} {
+  ${Input}.checked ~ ${ChannelOption} {
     background: ${({ theme }) => theme?.primary ?? "#9121c2"};
-    color: white;
     border: 0;
   }
 
-  ${Input}:checked ~ ${ChannelOption} > div {
+  ${Input}.checked ~ ${ChannelOption} > div {
     color: white;
   }
 `;
@@ -120,7 +113,7 @@ const ChannelPreferenceStyles = styled.div`
     margin: 0;
   }
 
-  .custmoize-delivery {
+  .customize-delivery {
     input {
       display: none;
       opacity: 0;
@@ -143,7 +136,6 @@ const ChannelPreferenceStyles = styled.div`
       border-radius: 100%;
       margin: 0 2.5px;
       position: static;
-      background-color: !white;
 
       display: flex;
       align-items: center;
@@ -189,7 +181,8 @@ const ChannelPreference: React.FunctionComponent<{
   handleChannelRouting: (channel: ChannelClassification) => void;
   routingPreferences: ChannelClassification[];
   channel: ChannelClassification;
-}> = ({ handleChannelRouting, routingPreferences, channel }) => {
+  defaultStatus: PreferenceStatus;
+}> = ({ handleChannelRouting, routingPreferences, channel, defaultStatus }) => {
   const [checked, setChecked] = useState(routingPreferences.includes(channel));
   const { preferencePage } = usePreferences();
 
@@ -198,9 +191,19 @@ const ChannelPreference: React.FunctionComponent<{
       <label>
         <Input
           type="checkbox"
-          onChange={() => {
-            handleChannelRouting(channel);
-            setChecked(!checked);
+          className={checked ? "checked" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            const prevent_uncheck =
+              // if the topic is required and this is the only channel selected, don't let them uncheck
+              defaultStatus === "REQUIRED" &&
+              routingPreferences.length === 1 &&
+              routingPreferences.includes(channel) &&
+              checked;
+            if (!prevent_uncheck) {
+              setChecked(!checked);
+              handleChannelRouting(channel);
+            }
           }}
           checked={checked}
         />
@@ -228,6 +231,7 @@ export const PreferenceTopic: React.FunctionComponent<{
   hasCustomRouting,
   defaultHasCustomRouting,
 }) => {
+  const { tenantId } = useCourier();
   const { preferencePage, updateRecipientPreferences } = usePreferences();
 
   //Temporary mapping until I update this in the backend
@@ -251,6 +255,7 @@ export const PreferenceTopic: React.FunctionComponent<{
     updateRecipientPreferences({
       templateId: topicId,
       status: newStatus,
+      tenantId,
     });
 
     setStatusToggle(!statusToggle);
@@ -261,27 +266,23 @@ export const PreferenceTopic: React.FunctionComponent<{
       templateId: topicId,
       hasCustomRouting: !customizeDelivery,
       ...(!customizeDelivery && {
-        routingPreferences: [
-          "sms",
-          "email",
-          "direct_message",
-          "push",
-          "webhook",
-        ],
+        routingPreferences: defaultRoutingOptions,
       }),
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
+      tenantId,
     });
 
     // If Customize Delivery is turned on, set the routing preferences to the default
-    !customizeDelivery &&
-      setRouting(["sms", "email", "direct_message", "push", "webhook"]);
+    !customizeDelivery && setRouting(defaultRoutingOptions);
 
     setCustomizeDelivery(!customizeDelivery);
   };
 
   const handleChannelRouting = (channel: ChannelClassification) => {
     const newRouting = routing.includes(channel)
-      ? routing.filter((r) => r !== channel)
+      ? routing.filter(
+          (r) => r !== channel && defaultRoutingOptions.includes(r)
+        )
       : [...routing, channel];
 
     updateRecipientPreferences({
@@ -289,9 +290,18 @@ export const PreferenceTopic: React.FunctionComponent<{
       routingPreferences: newRouting,
       hasCustomRouting: true,
       status: statusToggle ? "OPTED_IN" : "OPTED_OUT",
+      tenantId,
     });
 
     setRouting(newRouting);
+  };
+
+  const handleScheduleChange = async (scheduleId: string) => {
+    await updateRecipientPreferences({
+      templateId: topicId,
+      digestSchedule: scheduleId,
+      tenantId,
+    });
   };
 
   if (!topic) {
@@ -328,22 +338,20 @@ export const PreferenceTopic: React.FunctionComponent<{
         />
       </StyledToggle>
       <div className="digest-schedules">
-        {topic.digestSchedules?.map((schedule, index) => (
-          <DigestSchedule
-            period={schedule.period}
-            repetition={schedule.repetition}
-            isActive={!!index}
-            checkedColor={
-              preferencePage?.brand.settings.colors.primary ?? "#9121c2"
-            }
-          />
-        ))}
+        <DigestSchedules
+          schedules={topic.digestSchedules ?? []}
+          checkedColor={
+            preferencePage?.brand.settings.colors.primary ?? "#9121c2"
+          }
+          onScheduleChange={handleScheduleChange}
+          topicId={topicId}
+        />
       </div>
-      {statusToggle && defaultHasCustomRouting && defaultStatus !== "REQUIRED" && (
+      {statusToggle && defaultHasCustomRouting && (
         <ChannelPreferenceStyles
           theme={{ primary: preferencePage?.brand.settings.colors.primary }}
         >
-          <label className="custmoize-delivery">
+          <label className="customize-delivery">
             <Input
               type="checkbox"
               checked={customizeDelivery}
@@ -359,6 +367,7 @@ export const PreferenceTopic: React.FunctionComponent<{
                 channel={channel}
                 routingPreferences={routing}
                 handleChannelRouting={handleChannelRouting}
+                defaultStatus={defaultStatus}
               />
             ))}
         </ChannelPreferenceStyles>
@@ -388,11 +397,12 @@ export const PreferenceSections: React.FunctionComponent<{
   if (!recipientPreferences) {
     return null;
   }
+
   return (
     <>
       <SectionHeader>{section.name}</SectionHeader>
       {memoizedTopics.map(({ topic, recipientPreference }, index) => (
-        <>
+        <Fragment key={index}>
           <PreferenceTopic
             topic={topic}
             defaultRoutingOptions={section.routingOptions}
@@ -402,7 +412,7 @@ export const PreferenceSections: React.FunctionComponent<{
             routingPreferences={recipientPreference?.routingPreferences ?? []}
           />
           {index < memoizedTopics.length - 1 && <SubscriptionDivider />}
-        </>
+        </Fragment>
       ))}
     </>
   );
@@ -414,7 +424,8 @@ const PreferenceList = styled.ul`
 `;
 const PreferenceListItem = styled.li`
   list-style: none;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid;
+  border-color: var(--ci-structure);
   padding: 10px 0;
   margin: 0;
 
@@ -424,35 +435,32 @@ const PreferenceListItem = styled.li`
 `;
 
 // Doesn't include header or footer
-export const PreferencesV4: React.FC<{ draft?: boolean }> = ({ draft }) => {
-  const preferences = usePreferences();
+export const PreferencesV4: React.FC<{ tenantId?: string; draft?: boolean }> =
+  ({ tenantId, draft }) => {
+    const preferences = usePreferences();
 
-  useEffect(() => {
-    if (!preferences.preferencePage && !preferences.recipientPreferences) {
-      preferences.fetchPreferencePage(draft);
-      preferences.fetchRecipientPreferences();
+    useEffect(() => {
+      preferences.fetchPreferencePage(tenantId, draft);
+      preferences.fetchRecipientPreferences(tenantId);
+    }, []);
+
+    if (!preferences.preferencePage && !preferences.isLoading) {
+      return (
+        <div>
+          This page is not available. Please contact your administrator.
+        </div>
+      );
     }
-  }, []);
 
-  if (preferences.isLoading || typeof preferences.isLoading === "undefined") {
-    return null;
-  }
-
-  if (!preferences.preferencePage && !preferences.isLoading) {
     return (
-      <div>This page is not avaliable. Please contact your administrator.</div>
+      <PreferenceSectionWrapper>
+        <PreferenceList>
+          {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
+            <PreferenceListItem key={i}>
+              <PreferenceSections section={section} />
+            </PreferenceListItem>
+          ))}
+        </PreferenceList>
+      </PreferenceSectionWrapper>
     );
-  }
-
-  return (
-    <PreferenceSectionWrapper>
-      <PreferenceList>
-        {preferences?.preferencePage?.sections?.nodes.map((section, i) => (
-          <PreferenceListItem key={i}>
-            <PreferenceSections section={section} />
-          </PreferenceListItem>
-        ))}
-      </PreferenceList>
-    </PreferenceSectionWrapper>
-  );
-};
+  };

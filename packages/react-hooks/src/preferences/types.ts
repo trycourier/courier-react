@@ -52,6 +52,7 @@ export interface PreferenceState {
 export type ChannelClassification =
   | "email"
   | "push"
+  | "inbox"
   | "direct_message"
   | "sms"
   | "webhook";
@@ -80,4 +81,5 @@ export interface IRecipientPreference {
   status: PreferenceStatus;
   hasCustomRouting: boolean;
   routingPreferences: Array<ChannelClassification>;
+  digestSchedule: string;
 }

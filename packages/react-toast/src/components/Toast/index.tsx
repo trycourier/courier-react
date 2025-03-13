@@ -2,11 +2,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { toast } from "react-toastify";
 
-import {
-  useCourier,
-  registerReducer,
-  IInboxMessagePreview,
-} from "@trycourier/react-provider";
+import { useCourier, registerReducer } from "@trycourier/react-provider";
 
 import toastCss from "react-toastify/dist/ReactToastify.css";
 import { getTransition } from "../../lib";
@@ -17,33 +13,21 @@ import { useListenForTransportEvent } from "~/hooks";
 import Body from "~/components/Body";
 import deepExtend from "deep-extend";
 import { themeDefaults } from "~/constants";
+import { defaultConfig } from "~/defaults";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 const GlobalStyle = createGlobalStyle`${toastCss}`;
 
-export const Toast: React.FunctionComponent<
-  IToastConfig & {
-    config?: IToastConfig;
-  }
-> = (props) => {
+export const Toast: React.FunctionComponent<IToastConfig> = (props) => {
   const courierContext = useCourier();
-
-  if (!courierContext) {
-    throw new Error("Missing Courier Provider");
-  }
-
-  const {
-    clientKey,
-    transport,
-    dispatch,
-    brand: courierBrand,
-  } = courierContext;
+  const { transport, dispatch, brand: courierBrand } = courierContext;
 
   const brand = props?.brand ?? courierBrand;
 
   const theme = useMemo(() => {
     return {
       ...props.theme,
-      brand: deepExtend({}, themeDefaults, brand),
+      brand: deepExtend({}, themeDefaults, brand ?? {}),
     };
   }, [props.theme, brand]);
 
@@ -59,7 +43,7 @@ export const Toast: React.FunctionComponent<
 
       toast(
         <Body
-          {...message}
+          message={message}
           icon={
             typeof message?.icon === "string"
               ? message.icon
@@ -84,13 +68,13 @@ export const Toast: React.FunctionComponent<
     dispatch({
       type: "toast/INIT",
       payload: {
-        config: props,
+        config: deepExtend({}, defaultConfig, props),
         toast: handleToast,
       },
     });
   }, [props, dispatch, handleToast]);
 
-  useListenForTransportEvent(clientKey, transport, handleToast);
+  useListenForTransportEvent({ transport, handleToast });
 
   const autoClose = props?.autoClose ?? brand?.inapp?.toast?.timerAutoClose;
 
@@ -111,4 +95,18 @@ export const Toast: React.FunctionComponent<
   );
 };
 
-export default Toast;
+const ToastWrapper: React.FunctionComponent<IToastConfig> = (props) => {
+  const courierContext = useCourier();
+  const contextExists = Boolean(courierContext);
+
+  return useMemo(() => {
+    if (!contextExists) {
+      console.warn("Toast: Missing Courier Provider");
+      return null;
+    }
+
+    return <Toast {...props} />;
+  }, [contextExists, props]);
+};
+
+export default ToastWrapper;

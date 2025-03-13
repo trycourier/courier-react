@@ -1,4 +1,4 @@
-import { IInboxMessagePreview } from "@trycourier/react-provider";
+import { IInboxMessagePreview } from "@trycourier/core";
 import { IInbox } from "./types";
 
 import { InboxInit, INBOX_INIT } from "./actions/init";
@@ -6,11 +6,15 @@ import { InboxSetView, INBOX_SET_VIEW } from "./actions/set-view";
 import { ToggleInbox, INBOX_TOGGLE } from "./actions/toggle-inbox";
 import { MarkAllRead, INBOX_MARK_ALL_READ } from "./actions/mark-all-read";
 import { NewMessage, INBOX_NEW_MESSAGE } from "./actions/new-message";
+import { UnpinMessage, INBOX_UNPIN_MESSAGE } from "./actions/unpin-message";
 
 import {
   ResetLastFetched,
   INBOX_RESET_LAST_FETCHED,
 } from "./actions/reset-last-fetched";
+import { AddTag, INBOX_ADD_TAG } from "./actions/add-tag";
+import { RemoveTag, INBOX_REMOVE_TAG } from "./actions/remove-tag";
+
 import {
   MarkMessageArchived,
   INBOX_MARK_MESSAGE_ARCHIVED,
@@ -48,6 +52,7 @@ export const initialState: IInbox = {
 };
 
 type InboxAction =
+  | AddTag
   | FetchMessagesDone
   | FetchMessagesError
   | FetchMessagesPending
@@ -60,10 +65,15 @@ type InboxAction =
   | MarkMessageRead
   | MarkMessageUnread
   | NewMessage
+  | RemoveTag
   | ResetLastFetched
-  | ToggleInbox;
+  | ToggleInbox
+  | UnpinMessage;
 
-const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
+const sortPinned = (
+  pinned: IInbox["pinned"],
+  brand: IInbox["brand"]
+): IInboxMessagePreview[] => {
   const configuredSlots = brand?.inapp?.slots?.map((s) => s.id);
 
   const pinnedBySlot = pinned?.reduce(
@@ -95,6 +105,10 @@ const sortPinned = (pinned: IInbox["pinned"], brand: IInbox["brand"]) => {
     .flat();
 
   return [...mappedPinnedMessages, ...(pinnedBySlot?.unconfigured ?? [])];
+};
+
+const sortMessages = (a, b) => {
+  return new Date(b.created).getTime() - new Date(a.created).getTime();
 };
 
 export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
@@ -150,19 +164,28 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
     }
 
     case INBOX_FETCH_MESSAGES_DONE: {
-      const newMessages = action.payload.appendMessages
-        ? [...(state?.messages ?? []), ...action.payload.messages]
-        : action.payload.messages;
+      const newMessages = action.payload?.appendMessages
+        ? [...(state?.messages ?? []), ...(action.payload?.messages ?? [])]
+        : action.payload?.messages;
+
+      const newMessagesFiltered = newMessages?.filter((m) => {
+        if (state?.recentlyArchiveMessageIds?.includes(m.messageId)) {
+          return false;
+        }
+
+        return true;
+      });
 
       return {
         ...state,
         isLoading: false,
+        searchParams: action.meta.searchParams,
         lastMessagesFetched: new Date().getTime(),
-        messages: newMessages,
-        pinned: action.payload.appendMessages
+        messages: newMessagesFiltered as IInboxMessagePreview[],
+        pinned: action.payload?.appendMessages
           ? state.pinned
-          : sortPinned(action.payload.pinned, state.brand),
-        startCursor: action.payload.startCursor,
+          : sortPinned(action.payload?.pinned, state.brand),
+        startCursor: action.payload?.startCursor,
       };
     }
 
@@ -243,9 +266,85 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       };
     }
 
+    case INBOX_ADD_TAG: {
+      const handleAddTag = (message: IInboxMessagePreview) => {
+        if (message.messageId === action.payload.messageId) {
+          const tags = message.tags ?? [];
+          if (!tags.includes(action.payload.tag)) {
+            tags.push(action.payload.tag);
+          }
+          return {
+            ...message,
+            tags,
+          };
+        }
+
+        return message;
+      };
+
+      const newPinned = state.pinned?.map(handleAddTag);
+      const newMessages = state.messages?.map(handleAddTag);
+
+      return {
+        ...state,
+        pinned: newPinned,
+        messages: newMessages,
+      };
+    }
+
+    case INBOX_REMOVE_TAG: {
+      const handleRemoveTag = (message: IInboxMessagePreview) => {
+        if (message.messageId === action.payload.messageId) {
+          const tags = message?.tags?.filter((t) => t !== action.payload.tag);
+          return {
+            ...message,
+            tags,
+          };
+        }
+
+        return message;
+      };
+
+      const newPinned = state.pinned?.map(handleRemoveTag);
+      const newMessages = state.messages?.map(handleRemoveTag);
+
+      return {
+        ...state,
+        pinned: newPinned,
+        messages: newMessages,
+      };
+    }
+
+    case INBOX_UNPIN_MESSAGE: {
+      const pinned = state.pinned ?? [];
+      const messageToUnpin = pinned?.find((p) => {
+        return p.messageId === action.payload.messageId;
+      });
+
+      if (!messageToUnpin) {
+        return state;
+      }
+
+      return {
+        ...state,
+        pinned: pinned.filter((p) => {
+          return p.messageId !== action.payload.messageId;
+        }),
+        messages: [
+          ...(state.messages ?? []),
+          {
+            ...messageToUnpin,
+            pinned: undefined,
+          },
+        ].sort(sortMessages),
+      };
+    }
+
     case INBOX_MARK_MESSAGE_ARCHIVED: {
       let unreadMessageCount = state.unreadMessageCount ?? 0;
 
+      const recentlyArchiveMessageIds = state.recentlyArchiveMessageIds ?? [];
+      recentlyArchiveMessageIds.push(action.payload.messageId);
       const handleArchived = (message) => {
         const isMatching = message.messageId === action.payload.messageId;
         if (isMatching && !message.read) {
@@ -260,19 +359,25 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
 
       return {
         ...state,
-        pinned: newPinned,
         messages: newMessages,
+        pinned: newPinned,
+        recentlyArchiveMessageIds,
         unreadMessageCount,
       };
     }
 
     case INBOX_NEW_MESSAGE: {
+      if (state?.searchParams?.archived && !action.payload.archived) {
+        // don't add new message if we are on an archived list
+        return state;
+      }
+
       const newMessage = {
         ...action.payload,
         created: new Date().toISOString(),
       };
 
-      if (newMessage.pinned?.slotId) {
+      if (newMessage?.pinned?.slotId) {
         const newPinned = sortPinned(
           [newMessage, ...(state.pinned ?? [])],
           state.brand

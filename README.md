@@ -6,6 +6,16 @@ This repository, also called **In-App**, is a set of features and components tha
 
 Want to use packages with other frameworks/libraries like _angular_ or _vue_? Check out how to do [Embedded Integration](https://www.courier.com/docs/guides/providers/in-app/courier-push/#embedded-integration)
 
+## 6.0 Release
+
+We've cleaned up a bunch of stale code that isn't being used anymore. We no longer export "Messages" from client-graphql and only support "Inbox" as a datasource.
+
+- Typings have also been fixed for client-graphql and useCourier hooks
+- Transport moved to a new package @trycourier/transport
+- New package @trycourier/core to hold common types and lib functions
+
+Styled Components is now a peer dependency
+
 ## 2.0 and 3.0 Releases
 
 We've recently created both 2.X and 3.X releases related to this monorepository. This is because we've migrated to a new simpler, streamlined style for our components and there are breaking changes with _props_ and _api_. Below is a short description of each of our versions:
@@ -31,9 +41,54 @@ You can still access the 1.X designs by passing theme.name === "classic" to the 
 
 We created a separate breaking change branch to make sure our bundles are small and optimized. We didn't want to bundle any uneccesary code to support the "classic" theme so 3.0 has removed all the deprecated code. There are breaking changes and a
 
-- [Inbox migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox/docs/0.overview.md)
-- [Toast migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-toast/docs/0.overview.md)
-- [Hooks migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks/0.overview.md)
+- [Inbox migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-inbox/README.md)
+- [Toast migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-toast/docs/1.overview.md)
+- [Hooks migration guide](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks/README.md)
+
+### 4.x
+
+Version 4 adds support for [Tenants](https://www.courier.com/docs/reference/tenants/), which is useful for modeling multi-tenant notification environments. Version 4 makes a single breaking change from Version 3, Accounts (Beta) was renamed to Tenants. If you were not using Accounts (Beta), you can safely upgrade from v3 to v4 without making code changes. Otherwise, see migration guide below.
+
+#### Migration Guide
+
+1. In CourierProvider, change `accountId` to `tenantId`.
+2. Thats all.
+
+**Before:**
+
+```tsx
+<CourierProvider
+  accountId={"YOUR_ACCOUNT_ID"}
+  clientKey={props.clientKey}
+  userId={props.userId}
+  apiUrl={props.apiURL}
+  wsOptions={{
+    url: props.wsURL,
+  }}
+  authorization={props.authorizationToken}
+>
+  {props.children}
+</CourierProvider>
+```
+
+**After:**
+
+```tsx
+<CourierProvider
+  tenantId={"YOUR_TENANT_ID"}
+  clientKey={props.clientKey}
+  userId={props.userId}
+  apiUrl={props.apiURL}
+  wsOptions={{
+    url: props.wsURL,
+  }}
+  authorization={props.authorizationToken}
+>
+  {props.children}
+</CourierProvider>
+```
+
+**Full Changelog**: https://github.com/trycourier/courier-react/compare/v3.16.0...v4.0.0
 
 ## Table of Contents
 

@@ -1,29 +1,8 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [What is Inbox?](#what-is-inbox)
-  - [3.X Breaking Changes:](#3x-breaking-changes)
-  - [Message Interface](#message-interface)
-  - [Theme](#theme)
-- [Installation](#installation)
-  - [Courier Provider](#courier-provider)
-- [Authentication](#authentication)
-  - [JWT Authentication (Recommended)](#jwt-authentication-recommended)
-  - [Token Expiration](#token-expiration)
-  - [HMAC Authentication (Legacy)](#hmac-authentication-legacy)
-  - [Props](#props)
-  - [Hooks](#hooks)
-  - [Theme](#theme-1)
-  - [Render Props](#render-props)
-  - [Pinning](#pinning)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-<a name="0overviewmd"></a>
+<img width="584" alt="image" src="https://github.com/trycourier/courier-react/assets/7017640/6ea65539-e3a7-469c-870b-3ddf84793a80">
 
 ## [What is Inbox?](#what-is-inbox)
 
-Inbox is a React component that you can add to your application and show a user a list of recent messages they have received. Each message supports the following events:
+An in-app notification center list you can use to notify your users. Allows you to build high quality, flexible notification feeds very quickly. Each message supports the following events:
 
 1. `Opened`
    When the Inbox is opened and a message is in view, we will fire off `opened` events. One event per message. We will not send > 1 opened per message.
@@ -42,75 +21,47 @@ Inbox is a React component that you can add to your application and show a user 
 
    ![image](https://user-images.githubusercontent.com/7017640/207161575-3731bad0-1677-485f-b927-df08b2388155.png)
 
-### [3.X Breaking Changes](#3x-breaking-changes):
+## [Requirements](#Requirements)
 
-The _classic_ styling of the inbox has been deprecated. You can find more information about the old styling [here](https://github.com/trycourier/courier-react/tree/v2.0.1/packages/react-inbox). In summary, you can access the old styling and non-breaking changes by installing the 2.0.1 version linked above for `@trycourier/react-inbox` and `@trycourier/react-provider`.
-
-_Updated Theme:_
-
-![image](https://user-images.githubusercontent.com/7017640/207160274-ade22e0d-e919-4b4b-af27-f06cdd26b47d.png)
-
-Some of the main differences are the following:
-
-1.  Single list of messages for all messages instead of "Unread/All Messages"
-2.  Messages with one action block will now be clickable instead of rendering a button. There is a hover effect on the message to let the user know they can click on the entire message.
-3.  Archiving is message is now available via the UI
-
-### [Message Interface](#message-interface)
-
-The format of the message has changd, so if you have any code that utilizes any of the following you will need to update:
-
-1. Interacting with `useInbox`. See
-2. Intercepting messages with Courier Provider prop onMessage
-3. Implemented `renderMessage` or `renderAction`
-
-This is a contrived example of the changes:
-
-> Note we are utilized our new [elemental](https://www.courier.com/docs/elemental/elements/) standard:
-
-```ts
-interface ActionBlock {
-  type: "text";
-  text: string;
-  url: string;
-}
-
-interface OldMessage {
-  title: string;
-  body: string;
-  read?: boolean;
-  blocks: Array<TextBlock | ActionBlock>;
-}
-
-interface ActionElement {
-  type: "text";
-  content: string;
-  href: string;
-}
-
-interface NewMessage {
-  title: string;
-  preview: string;
-  read?: string;
-  actions: Array<ActionElement>;
-}
-```
-
-### [Theme](#theme)
-
-- theme.tabList -> deprecated
-- theme.message.actionBlock
-  - the entire message is now clickable when you have 1 button
-  - when 2 buttons you use theme.message.actionElement to style
-- theme.message.textBlock -> theme.message.textElement
-
-New Theme Properties:
-
-- `theme.tooltip`: accesses background and colors of tooltips
-- `theme.menu`: clicking on the inbox title opens a dropdown menu with options to edit `preferences`
-- `theme.message.clickableContainer`: when a message has an action href, we now make the entire message clickable instead of rendering an explicit button. this theme property allows access to this component. `theme.message.container` will still apply to this component but if you want to target the clickableContainer separatly you can target `theme.message.clickableContainer` which will be an `anchor` element instead of a `div`;
-
-<a name="1installationmd"></a>
+<table>
+    <thead>
+        <tr>
+            <th width="250px" align="left">Requirement</th>
+            <th width="750px" align="left">Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr width="600px">
+            <tr width="600px">
+                <td align="left">
+                    <a href="https://app.courier.com/channels/courier">
+                        <code>Courier Inbox Provider</code>
+                    </a>
+                </td>
+                <td align="left">
+                    Needed to link your Courier Inbox to the SDK
+                </td>
+            </tr>
+            <td align="left">
+                <a href="https://github.com/trycourier/courier-react/blob/master/packages/react-inbox/README.md#authentication">
+                    <code>Authentication</code>
+                </a>
+            </td>
+            <td align="left">
+                Needed to view inbox messages that belong to a user.
+            </td>
+        </tr>
+        <tr>
+        <td align="left">
+                <a href="https://github.com/trycourier/courier-react/blob/master/packages/react-provider">
+                    <code>Courier React Provider</code>
+                </a>
+            </td>
+            <td align="left">
+                Provides state, api connections, and context to the components.
+            </td></tr>
+    </tbody>
+</table>
 
 ## [Installation](#installation)
 
@@ -127,6 +78,16 @@ yarn add @trycourier/react-inbox
 ```
 
 > @trycourier/react-provider is a peer dependeny of @trycourier/react-inbox and must also be installed
+
+### [Version 5.X CSP Migration](#version-5-migration)
+
+We've released new subdomains to power Inbox and Toast. This migration only applies to Inbox and Toast users who applied our old URLs to their Content Security Policy.
+
+| Before                                                 | After                      | Usage                       |
+| ------------------------------------------------------ | -------------------------- | --------------------------- |
+| https://api.courier.com                                | https://api.courier.com    | Brands and User Preferences |
+| wss://1x60p1o3h8.execute-api.us-east-1.amazonaws.com   | wss://realtime.courier.com | Websockets                  |
+| https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com | https://inbox.courier.com  | Inbox Messages              |
 
 ### [Courier Provider](#courier-provider)
 
@@ -149,7 +110,103 @@ function App() {
 }
 ```
 
-<a name="2authenticationmd"></a>
+## [Default Inbox Example](#default-example)
+
+The default `CourierInbox` styles.
+
+<img width="500" alt="inbox-banner" src="https://user-images.githubusercontent.com/7017640/207160274-ade22e0d-e919-4b4b-af27-f06cdd26b47d.png">
+
+```js
+//App.js
+import { Inbox } from "@trycourier/react-inbox";
+import { CourierProvider } from "@trycourier/react-provider";
+
+function App() {
+  return (
+    <CourierProvider userId={yourUserId} clientKey={yourClientKey}>
+      <Inbox />
+    </CourierProvider>
+  );
+}
+```
+
+## [Styled Inbox Example](#styled-example)
+
+Example of a styled `CourierInbox`.
+
+<img width="480" alt="image" src="https://github.com/trycourier/courier-react/assets/7017640/f066b01c-2f97-4e7b-adcd-7fcebc26c331">
+
+```js
+//App.js
+import { Inbox } from "@trycourier/react-inbox";
+import { CourierProvider } from "@trycourier/react-provider";
+
+const theme = {
+  header: {
+    background: "pink",
+  },
+  messageList: {
+    container: {
+      background: "pink",
+    },
+  },
+  footer: {
+    background: "pink",
+  },
+  message: {
+    container: {
+      background: "red",
+      "&.read": {
+        background: "green",
+        div: {
+          color: "white",
+        },
+      },
+      "&:not(.read):hover": {
+        background: "yellow",
+      },
+    },
+  },
+};
+
+function App() {
+  return (
+    <CourierProvider userId={yourUserId} clientKey={yourClientKey}>
+      <Inbox theme={theme} />
+    </CourierProvider>
+  );
+}
+```
+
+&emsp;
+
+## [Courier Studio Branding (Optional)](#branding-studio)
+
+<img width="782" alt="setting" src="https://user-images.githubusercontent.com/6370613/228931428-04dc2130-789a-4ac3-bf3f-0bbb49d5519a.png">
+
+You can control your branding from the [`Courier Studio`](https://app.courier.com/designer/brands).
+
+```js
+//App.js
+import { Inbox } from "@trycourier/react-inbox";
+import { CourierProvider } from "@trycourier/react-provider";
+
+function App() {
+  return (
+    <CourierProvider
+      brandId={"BRAND_ID"}
+      userId={yourUserId}
+      clientKey={yourClientKey}
+    >
+      <Inbox />
+    </CourierProvider>
+  );
+}
+```
+
+## [Custom Inbox Example](#custom-inbox)
+
+You can use raw data you can use to build whatever UI you'd like by utilizing our [react-hooks](https://github.com/trycourier/courier-react/tree/main/packages/react-hooks) package.
 
 ## [Authentication](#authentication)
 
@@ -183,15 +240,15 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 function App() {
-  const [authentication, setAuthentication] = useState();
+  const [authorization, setAuthorization] = useState();
 
   useEffect(() => {
     const response = await fetchAuthToken();
-    setAuthentication(response);
+    setAuthentication(response.token);
   }, []);
 
   return (
-    <CourierProvider userId={yourUserId} authentication={authentication}>
+    <CourierProvider userId={yourUserId} authorization={authorization}>
       <Inbox />
     </CourierProvider>
   );
@@ -216,22 +273,22 @@ import { CourierProvider } from "@trycourier/react-provider";
 import { Inbox } from "@trycourier/react-inbox";
 
 function App() {
-  const [authentication, setAuthentication] = useState();
+  const [authorization, setAuthorization] = useState();
 
   useEffect(() => {
     const response = await fetchAuthToken();
-    setAuthentication(response);
+    setAuthorization(response.token);
 
     const interval = setInterval(async () => {
       const response = await fetchAuthToken();
-      setAuthentication(response);
+      setAuthorization(response.token);
     }, 300000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <CourierProvider userId={yourUserId} authentication={YOUR_CLIENT_KEY}>
+    <CourierProvider authorization={authorization}>
       <Inbox />
     </CourierProvider>
   );
@@ -274,8 +331,6 @@ const MyComponent = (props) => {
 };
 ```
 
-<a name="3propsmd"></a>
-
 ### [Props](#props)
 
 ```
@@ -298,42 +353,63 @@ interface IActionBlock {
   url: string;
 }
 
+interface IGetInboxMessagesParams {
+    tenantId?: string;
+    archived?: boolean;
+    from?: string | number;
+    limit?: number;
+    status?: "read" | "unread";
+    tags?: string[];
+}
+
 interface InboxProps {
-  //Brand Override
+  tenantId?: string;
   brand?: Brand;
-
-  //Icon Class Name
   className?: string;
-
-  // defaults to true
-  openLinksInNewTab?: boolean;
-
-  // Default Icon to use if no Icon is present in Message
   defaultIcon?: false | string;
 
-  formatDate?: (date: string) => string;
+  // start date of the inbox to fetch messages
+  from?: number;
+
+  isOpen?: boolean;
+
+  // allows different views with different filter params
+  views?: Array<{
+    id: string;
+    label: string;
+    params?: IGetInboxMessagesParams;
+  }>;
+  formatDate?: (isoDate: string) => string;
+
+  // html query selector to render the inbox into
+  appendTo?: string;
   labels?: {
     archiveMessage?: string;
+    backToInbox?: string;
     closeInbox?: string;
     emptyState?: string;
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
-  }
+    scrollTop?: string | ((count: string) => string);
+  };
 
-  // Placement of the Bell relative to the Inbox
-  placement?: "top" | "left" | "right" | "bottom";
+  // event listener for events such as "read", "unread", "archive"
+  onEvent?: OnEvent;
+  openLinksInNewTab?: boolean;
 
+  // relative to the inbox beel
+  placement?: TippyProps["placement"];
+  showUnreadMessageCount?: boolean;
+  theme?: InboxTheme;
+  title?: string;
+  trigger?: TippyProps["trigger"];
+  renderContainer?: React.FunctionComponent;
   renderBell?: React.FunctionComponent<{
     className?: string;
-    isOpen?: boolean;
+    isOpen: boolean;
     onClick?: (event: React.MouseEvent) => void;
-    onMouseEnter?: (event: React.MouseEvent) => void;
   }>;
-  renderBlocks?: {
-    action?: React.FunctionComponent<IActionBlock>;
-    text?: React.FunctionComponent<ITextBlock>;
-  }
   renderFooter?: React.FunctionComponent;
   renderHeader?: React.FunctionComponent<IHeaderProps>;
   renderPin?: React.FunctionComponent<PinDetails>;
@@ -341,24 +417,29 @@ interface InboxProps {
     isOpen: boolean;
     unreadMessageCount?: number;
   }>;
-  renderMessage?: React.FunctionComponent<IMessage>;
+  renderMessage?: React.FunctionComponent<IInboxMessagePreview>;
   renderNoMessages?: React.FunctionComponent;
-
-  theme?: ThemeObject;
-  title?: string;
-  trigger?: "click" | "hover";
 }
 ```
 
-<a name="4hooksmd"></a>
+### [Views](#views)
+
+You can add more views beyound the default "all messages" view. You can provide a few different filter params like `archived`, `status`, `limit`, `tags`, ect... to create the experience you are looking for. If you customize the views, you will overwrite the default view of:
+
+```json
+{
+  "id": "messages",
+  "label": "Notifications"
+}
+```
+
+> so make sure to include this view if you want to include an all messages view.
 
 ### [Hooks](#hooks)
 
 `useInbox` is a hook that you can import and use to interact with Inbox without having to use any of the react components. Think of it as a `headless` Inbox.
 
 See https://github.com/trycourier/courier-react/tree/main/packages/react-hooks
-
-<a name="4thememd"></a>
 
 ### [Theme](#theme)
 
@@ -377,9 +458,14 @@ interface ITheme {
   };
   messageList?: {
     container?: CSSObject;
+    scrollTop?: CSSObject;
   };
   message?: {
     actionElement?: CSSObject;
+    actionMenu?: {
+      button?: CSSObject;
+      dropdown?: CSSObject;
+    };
     clickableContainer?: CSSObject;
     container?: CSSObject;
     content?: CSSObject;
@@ -443,8 +529,6 @@ To overrwrite the rendering of each of these you can supply your own react compo
   renderNoMessages?: React.FunctionComponent;
 ```
 
-<a name="6pinningmd"></a>
-
 ### [Pinning](#pinning)
 
 Pinning is a new feature as of 3.6.0 that allows you to "pin" certain messages to the top of their inbox. The pins are configured into `slots` by editing your brand in the [Courier Studio]("https://app.courier.com/brands) or by passing in a brand object with the correct pin slots. A pin slot is defined as:
@@ -465,12 +549,117 @@ interface PinSlot {
 
 The default Pin looks like:
 
-![image](https://user-images.githubusercontent.com/7017640/236919801-fae03134-41e6-4fb4-9e8d-62c55ebca6a9.png)
+<img width="584" alt="image" src="https://user-images.githubusercontent.com/7017640/236919801-fae03134-41e6-4fb4-9e8d-62c55ebca6a9.png">
 
 They can be configured to look like:
 
-![image](https://user-images.githubusercontent.com/7017640/236103836-eccc0fb8-26b2-4ca0-8b28-8474a9ddbd18.png)
+<img width="584" alt="image" src="https://user-images.githubusercontent.com/7017640/236103836-eccc0fb8-26b2-4ca0-8b28-8474a9ddbd18.png">
 
 ---
 
 You can override the styling of the Pin through css accessing `theme?.message?.pinned` or by passing in a `renderPin(pinSlot)` as a property to the <Inbox> component.
+
+## [3.X Breaking Changes](#3x-breaking-changes):
+
+The _classic_ styling of the inbox has been deprecated. You can find more information about the old styling [here](https://github.com/trycourier/courier-react/tree/v2.0.1/packages/react-inbox). In summary, you can access the old styling and non-breaking changes by installing the 2.0.1 version linked above for `@trycourier/react-inbox` and `@trycourier/react-provider`.
+
+_Updated Theme:_
+Some of the main differences are the following:
+
+1.  Single list of messages for all messages instead of "Unread/All Messages"
+2.  Messages with one action block will now be clickable instead of rendering a button. There is a hover effect on the message to let the user know they can click on the entire message.
+3.  Archiving is message is now available via the UI
+
+### [Message Interface](#message-interface)
+
+The format of the message has changd, so if you have any code that utilizes any of the following you will need to update:
+
+1. Interacting with `useInbox`. See
+2. Intercepting messages with Courier Provider prop onMessage
+3. Implemented `renderMessage` or `renderAction`
+
+This is a contrived example of the changes:
+
+> Note we are utilized our new [elemental](https://www.courier.com/docs/elemental/elements/) standard:
+
+```ts
+interface ActionBlock {
+  type: "text";
+  text: string;
+  url: string;
+}
+
+interface OldMessage {
+  title: string;
+  body: string;
+  read?: boolean;
+  blocks: Array<TextBlock | ActionBlock>;
+}
+
+interface ActionElement {
+  type: "text";
+  content: string;
+  href: string;
+}
+
+interface NewMessage {
+  title: string;
+  preview: string;
+  read?: string;
+  actions: Array<ActionElement>;
+}
+```
+
+### [Theme](#theme)
+
+- theme.tabList -> deprecated
+- theme.message.actionBlock
+  - the entire message is now clickable when you have 1 button
+  - when 2 buttons you use theme.message.actionElement to style
+- theme.message.textBlock -> theme.message.textElement
+
+New Theme Properties:
+
+- `theme.tooltip`: accesses background and colors of tooltips
+- `theme.menu`: clicking on the inbox title opens a dropdown menu with options to edit `preferences`
+- `theme.message.clickableContainer`: when a message has an action href, we now make the entire message clickable instead of rendering an explicit button. this theme property allows access to this component. `theme.message.container` will still apply to this component but if you want to target the clickableContainer separatly you can target `theme.message.clickableContainer` which will be an `anchor` element instead of a `div`;
+
+### [Using Custom Date Format](#using-custom-date-format)
+
+The inbox component accepts a function in property `formatDate` of type `(isoDate: string) => string;`. You can overwrite Courier's date formats on each message using `formatDate` for use cases like internationalization and override the browser's default.
+
+Example using [date-fns](https://date-fns.org):
+
+```
+import formatDistanceStrict from "date-fns/formatDistanceStrict";
+import { Locale } from "date-fns";
+
+const getTimeAgo = (created: string, locale: Locale) => {
+  return formatDistanceStrict(new Date(created).getTime(), Date.now(), {
+      addSuffix: true,
+      roundingMethod: "floor",
+      locale
+    })(created);
+}
+
+---
+
+<Inbox
+  formatDate={isoDate=>getTimeAgo(isoDate, users_locale)}
+>
+```
+
+## [Listening to Events](#events)
+
+You can listen to inbox events by passing onEvent prop to <Inbox/>
+
+```typescript
+type EventType = "read" | "unread" | "archive" | "click" | "mark-all-read" | "unpin";
+interface IEventParams = {
+  message?: IInboxMessagePreview;
+  messageId?: string;
+  event: EventType;
+}
+type OnEvent = (params: IEventParams) => void;
+
+```

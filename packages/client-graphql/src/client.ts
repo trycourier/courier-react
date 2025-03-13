@@ -1,5 +1,4 @@
 require("isomorphic-fetch");
-import pkg from "../package.json";
 
 import { Client, createClient } from "urql";
 import {
@@ -59,11 +58,17 @@ export const createCourierClient = (
     }
   }
 
-  // add client version and platform
+  /* 
+  riley todo - 
+  turing this off for now because the way we made typescript happy before
+  broke our typings so we will need a better way to do this in the future
+  
+  add client version and platform
   headers = {
     ...headers,
-    "x-courier-client-version": pkg.version,
+    "x-courier-client-version": package.version,
   };
+  */
 
   return createClient({
     url:

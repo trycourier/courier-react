@@ -1,15 +1,19 @@
 import { TippyProps } from "@tippyjs/react";
-import {
-  Brand,
-  PinDetails,
-  IInboxMessagePreview,
-} from "@trycourier/react-provider";
+import { OnEvent } from "@trycourier/react-provider";
+import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
 
 import { IHeaderProps } from "./components/Messages2.0/types";
 import { CSSObject } from "styled-components";
+import { Brand, IInboxMessagePreview, PinDetails } from "@trycourier/core";
+import { MarkdownToJSX } from "markdown-to-jsx";
+import React from "react";
 
 export interface InboxTheme {
   brand?: Brand;
+  colorMode?: "light" | "dark";
+  variables?: {
+    background: string;
+  };
   container?: CSSObject;
   emptyState?: CSSObject;
   footer?: CSSObject;
@@ -22,6 +26,7 @@ export interface InboxTheme {
   };
   messageList?: {
     container?: CSSObject;
+    scrollTop?: CSSObject;
   };
   message?: {
     actionElement?: CSSObject;
@@ -37,13 +42,22 @@ export interface InboxTheme {
   root?: CSSObject;
   unreadIndicator?: CSSObject;
 }
+
 export interface InboxProps {
   brand?: Brand;
   className?: string;
   defaultIcon?: false | string;
   from?: number;
   isOpen?: boolean;
+  markdownOptions?: MarkdownToJSX.Options;
+  tenantId?: string;
+  views?: Array<{
+    id: string;
+    label: string;
+    params?: IGetInboxMessagesParams;
+  }>;
   formatDate?: (isoDate: string) => string;
+  appendTo?: string;
   labels?: {
     archiveMessage?: string;
     backToInbox?: string;
@@ -52,7 +66,9 @@ export interface InboxProps {
     markAllAsRead?: string;
     markAsRead?: string;
     markAsUnread?: string;
+    scrollTop?: string | ((count: string) => string);
   };
+  onEvent?: OnEvent;
   openLinksInNewTab?: boolean;
   placement?: TippyProps["placement"];
   showUnreadMessageCount?: boolean;
@@ -74,4 +90,5 @@ export interface InboxProps {
   }>;
   renderMessage?: React.FunctionComponent<IInboxMessagePreview>;
   renderNoMessages?: React.FunctionComponent;
+  renderLoadingMore?: React.FunctionComponent<{ isLoading?: boolean }>;
 }

@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import { DigestSchedule } from "@trycourier/core";
+import { usePreferences } from "@trycourier/react-hooks";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import formatDigest, { toUpperCaseFirstLetter } from "~/utils/format_digest";
 
-const DigestSheduleContainer = styled.div`
+const DigestScheduleContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 12px 0px;
@@ -28,36 +31,65 @@ const DigestSheduleContainer = styled.div`
   }
 `;
 
-const StyledCheckbox = styled.input<{ checkedColor: string }>`
+const StyledRadio = styled.input<{ checkedColor: string }>`
   height: 14px;
   width: 14px;
-  border-radius: 50%;
   margin-top: 4px !important;
   accent-color: ${({ checkedColor }) => checkedColor};
 `;
 
-//TODO: Add update function once backend is setup
-const DigestSchedule: React.FunctionComponent<{
-  period: string;
-  repetition;
-  isActive: boolean;
+const DigestSchedules: React.FunctionComponent<{
+  schedules: DigestSchedule[];
+  onScheduleChange: (scheduleId: string) => Promise<void>;
   checkedColor: string;
-}> = ({ period, repetition, isActive, checkedColor }) => {
-  const [isChecked, setIsChecked] = useState(isActive);
+  topicId: string;
+}> = ({ checkedColor, schedules, onScheduleChange, topicId }) => {
+  const { recipientPreferences } = usePreferences();
+
+  const [selectedOption, setSelectedOption] = useState<string | undefined>();
+
+  useEffect(() => {
+    const defaultSchedule = schedules.find((s) => s.default);
+    const userPreference = recipientPreferences?.find(
+      (pref) => pref.templateId === topicId
+    );
+    if (
+      userPreference?.digestSchedule &&
+      schedules.find((s) => s.scheduleId === userPreference.digestSchedule)
+    ) {
+      setSelectedOption(userPreference.digestSchedule);
+    } else {
+      setSelectedOption(defaultSchedule?.scheduleId);
+    }
+  }, [recipientPreferences, schedules]);
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSelectedOption(value);
+    onScheduleChange(value);
+  };
+
   return (
-    <DigestSheduleContainer>
-      <StyledCheckbox
-        type="checkbox"
-        checked={isChecked}
-        checkedColor={checkedColor}
-        onClick={() => setIsChecked(!isChecked)}
-      />
-      <div className="digest-details">
-        <div className="digest-period">{period}</div>
-        <div className="digest-repetition">{repetition}</div>
-      </div>
-    </DigestSheduleContainer>
+    <div>
+      {schedules.map((schedule) => (
+        <DigestScheduleContainer key={schedule.scheduleId}>
+          <StyledRadio
+            type="radio"
+            value={schedule.scheduleId}
+            checked={selectedOption === schedule.scheduleId}
+            checkedColor={checkedColor}
+            onChange={handleChange}
+          />
+          <div className="digest-details">
+            <div className="digest-period">{formatDigest(schedule)}</div>
+            <div className="digest-repetition">
+              {toUpperCaseFirstLetter(schedule.repetition)}
+            </div>
+          </div>
+        </DigestScheduleContainer>
+      ))}
+    </div>
   );
 };
 
-export default DigestSchedule;
+export default DigestSchedules;

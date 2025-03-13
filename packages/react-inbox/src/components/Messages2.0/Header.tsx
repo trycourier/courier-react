@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useInbox } from "@trycourier/react-hooks";
-import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 
@@ -9,12 +9,14 @@ import MarkAllRead from "./actions/MarkAllRead";
 import CloseInbox from "./actions/Close";
 
 import tinycolor2 from "tinycolor2";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export type InboxView = "settings" | "messages";
 export interface IHeaderProps {
   labels: InboxProps["labels"];
   markAllAsRead: () => void;
   messages: IInboxMessagePreview[];
+  views: InboxProps["views"];
   title?: string;
   unreadMessageCount?: number;
 }
@@ -34,9 +36,9 @@ const Container = styled.div<{ view?: string }>(({ theme }) => {
       fontSize: 16,
       fontWeight: 700,
       height: "42px",
-      color: "rgb(36, 50, 75)",
-      backgroundColor: "#F2F6F9",
-      borderBottom: "1px solid rgb(222, 232, 240)",
+      background: "var(--ci-background)",
+      borderBottom: "1px solid",
+      borderColor: "var(--ci-structure)",
 
       borderTopLeftRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
       borderTopRightRadius: theme?.brand?.inapp?.borderRadius ?? "12px",
@@ -81,10 +83,11 @@ const DropdownOptionButton = styled.button<{
   const cssProps = {
     background: active ? primaryColor : "transparent",
     border: "none",
-    borderBottom: selected ? undefined : "1px solid #DEE8F0",
+    borderBottom: selected ? undefined : "1px solid",
+    borderColor: "var(--ci-structure)",
     cursor: disabled ? "default" : "pointer",
     padding: selected ? "6px" : "12px",
-    color: active ? "white" : "rgba(28, 39, 58, 1)",
+    color: active ? "white" : "var(--ci-title-color)",
     fontWeight: active || selected ? 700 : 400,
     lineHeight: "21px",
     fontSize: "14px",
@@ -155,7 +158,7 @@ const HeadingDropdownOptions = styled.div(({ theme }) => {
       position: "absolute",
       top: "42px",
       left: 0,
-      background: "white",
+      background: "var(--ci-background)",
       width: "100%",
       zIndex: 2,
       height: "343px",
@@ -205,13 +208,14 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   messages = [],
   title,
   unreadMessageCount,
+  views,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { brand } = useCourier();
   const { view, setView, toggleInbox } = useInbox();
   const handleSetView =
-    (newView: "messages" | "preferences") => (event: React.MouseEvent) => {
+    (newView: string | "preferences") => (event: React.MouseEvent) => {
       event.preventDefault();
       setView(newView);
       setShowDropdown(false);
@@ -228,9 +232,9 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   };
 
   const options = useMemo(() => {
-    return [
-      {
-        id: "messages",
+    const viewOptions = views
+      ?.map((v, index) => ({
+        id: v.id,
         Component: ({
           active,
           disabled,
@@ -246,19 +250,22 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         }) => (
           <DropdownOptionButton
             active={active}
-            onClick={onClick ?? handleSetView("messages")}
+            onClick={onClick ?? handleSetView(v.id)}
             selected={selected}
             showDropdown={showDropdown}
           >
             <TitleWrapper
-              title={title}
-              unreadMessageCount={unreadMessageCount}
+              title={v.label}
+              unreadMessageCount={index === 0 ? unreadMessageCount : undefined}
             />
             {onClick && !disabled && <DownCarrot />}
           </DropdownOptionButton>
         ),
-      },
-      brand?.preferenceTemplates?.length && {
+      }))
+      .filter(Boolean);
+
+    if (brand?.preferenceTemplates?.length) {
+      viewOptions?.push({
         id: "preferences",
         Component: ({
           active,
@@ -281,12 +288,13 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
             {onClick && <DownCarrot />}
           </DropdownOptionButton>
         ),
-      },
-    ].filter(Boolean);
+      });
+    }
+    return viewOptions;
   }, [brand?.preferenceTemplates?.length, title, unreadMessageCount]);
 
   const ActiveOption = options?.find((o) => o.id === view)?.Component;
-  const hasDropdownOptions = options?.length > 1;
+  const hasDropdownOptions = Boolean(options?.length);
 
   return (
     <Container data-testid="header">
@@ -305,7 +313,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           {showDropdown && (
             <HeadingDropdownOptions>
               {options
-                .map((o) => {
+                ?.map((o) => {
                   return <o.Component active={o.id === view} key={o.id} />;
                 })
                 .filter(Boolean)}
@@ -318,13 +326,16 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         </HeadingContainer>
       )}
       <div className="actions">
-        {messages.length > 0 && (
+        {messages.length > 0 && unreadMessageCount ? (
           <MarkAllRead
             label={labels?.markAllAsRead}
             onClick={() => markAllAsRead()}
           />
-        )}
-        <CloseInbox onClick={handleCloseInbox} tooltip="Close Inbox" />
+        ) : null}
+        <CloseInbox
+          onClick={handleCloseInbox}
+          tooltip={labels?.closeInbox ?? "Close Inbox"}
+        />
       </div>
     </Container>
   );

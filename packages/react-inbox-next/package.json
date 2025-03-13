@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox-next",
-  "version": "3.6.2",
+  "version": "7.1.1",
   "description": "",
   "private": true,
   "main": "dist/index.js",
@@ -9,14 +9,13 @@
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf typings",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
-    "types": "tsc --build"
+    "types": "tsc --emitDeclarationOnly"
   },
   "license": "ISC",
   "devDependencies": {
-    "@types/styled-components": "^5.1.7",
     "concat-md": "^0.3.5"
   },
   "dependencies": {
@@ -27,14 +26,14 @@
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
-    "markdown-to-jsx": "^7.1.7",
+    "markdown-to-jsx": "^7.7.3",
     "react-loading-skeleton": "^2.2.0",
-    "rimraf": "^3.0.2",
-    "styled-components": "^5.2.1"
+    "rimraf": "^5.0.0"
   },
   "peerDependencies": {
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "styled-components": ">=5.X.X"
   },
   "files": [
     "dist/",

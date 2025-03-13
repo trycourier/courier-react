@@ -1,5 +1,6 @@
-import { Brand, IInboxMessagePreview } from "@trycourier/react-provider";
-
+import { IGetInboxMessagesParams } from "@trycourier/client-graphql";
+import { Brand, IInboxMessagePreview } from "@trycourier/core";
+import { OnEvent } from "@trycourier/react-provider";
 export interface IInbox<T = IInboxMessagePreview> {
   brand?: Brand;
   from?: number;
@@ -8,8 +9,12 @@ export interface IInbox<T = IInboxMessagePreview> {
   lastMarkedAllRead?: number;
   lastMessagesFetched?: number;
   messages?: Array<T>;
+  onEvent?: OnEvent;
   pinned?: Array<T>;
+  recentlyArchiveMessageIds?: Array<string>;
+  searchParams?: IGetInboxMessagesParams;
   startCursor?: string;
+  tenantId?: string;
   unreadMessageCount?: number;
-  view?: "messages" | "preferences";
+  view?: string | "preferences";
 }

@@ -1,0 +1,23 @@
+{
+  "name": "@trycourier/core",
+  "version": "7.1.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "typings/index.d.ts",
+  "scripts": {
+    "babel": "babel src -d dist --extensions \".ts\" --ignore \"src/**/__tests__/**\"",
+    "build:watch": "yarn babel --watch",
+    "build": "rimraf dist && yarn babel",
+    "clean": "rimraf dist && rimraf typings",
+    "type-check": "tsc --noEmit",
+    "types": "tsc --emitDeclarationOnly"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "rimraf": "^5.0.0"
+  },
+  "files": [
+    "dist/",
+    "typings/"
+  ]
+}

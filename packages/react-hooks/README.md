@@ -101,6 +101,7 @@ interface ActionElement {
 
 interface IInboxMessagePreview {
   actions?: IActionElemental[];
+  archived?: string;
   created: string;
   data?: Record<string, any>;
   messageId: string;
@@ -122,7 +123,7 @@ interface IInboxActions {
   markMessageUnread: (messageId: string, fromWS?: boolean) => Promise<void>;
   newMessage: (transportMessage: IInboxMessagePreview) => void;
   resetLastFetched: () => void;
-  setView: (view: "messages" | "preferences") => void;
+  setView: (view: string | "preferences") => void;
   toggleInbox: (isOpen?: boolean) => void;
 }
 
@@ -132,7 +133,7 @@ interface IInbox {
   messages?: Array<IInboxMessagePreview>;
   startCursor?: string;
   unreadMessageCount?: number;
-  view?: "messages" | "preferences";
+  view?: string | "preferences";
 }
 ```
 
@@ -149,6 +150,7 @@ These events are:
 - Unread
 - Click
 - Archive
+- Unpin
 
 Some of these events are called automatically.
 
@@ -175,6 +177,10 @@ const MyInbox = () => {
   const handleReadMessage = (message) => (event) => {
     event.preventDefault();
     inbox.markMessageRead(message.messageId);
+
+    if (message.pinned) {
+      inbox.unpinMessage(message.messageId);
+    }
   };
 
   const handleUnreadMessage = (message) => (event) => {
@@ -187,11 +193,15 @@ const MyInbox = () => {
     inbox.markMessageArchived(message.messageId);
   };
 
+  const handleArchiveMessage = (message) => (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Container>
       {inbox.messages.map((message) => {
         return (
-          <Message>
+          <Message message={message}>
             {message.read ? (
               <>
                 <button onClick={handleUnreadMessage(message)}>

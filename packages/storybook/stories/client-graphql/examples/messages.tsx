@@ -1,10 +1,7 @@
 import React, { useMemo, useEffect, useState } from "react";
-import {
-  Inbox,
-  IInboxMessagePreview,
-  IInboxMessage,
-} from "@trycourier/client-graphql";
+import { Inbox } from "@trycourier/client-graphql";
 import styled from "styled-components";
+import { IInboxMessage, IInboxMessagePreview } from "@trycourier/core";
 
 const Styled = styled.div`
   display: flex;
@@ -55,7 +52,6 @@ const MessagesExample: React.FunctionComponent<{
     (messageId: string) => async (event: React.MouseEvent) => {
       event.preventDefault();
       const result = await inboxApi.getMessage(messageId);
-      console.log("message", message);
       if (!result?.message) {
         return;
       }

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
 import { usePreferences } from "@trycourier/react-hooks";
 import { useCourier } from "@trycourier/react-provider";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { PreferenceTemplate } from "./PreferenceTemplate";
 import { PreferencesV4 } from "./PreferencesV4";
@@ -10,12 +10,11 @@ export const StyledList = styled.div`
   display: flex;
   height: 433px;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--ci-background);
 `;
 
 const PreferenceV4Wrapper = styled.div`
-  padding: ${(props) => (props.theme.name === "2.0" ? "10px" : "0 38px")};
-  background: white;
+  padding: 0 10px;
 `;
 
 export const PreferenceList: React.FunctionComponent<{
@@ -23,16 +22,16 @@ export const PreferenceList: React.FunctionComponent<{
   theme?: any;
   draft?: boolean;
 }> = ({ theme, draft }) => {
-  const { brand } = useCourier();
+  const courierContext = useCourier();
   const preferences = usePreferences();
 
   useEffect(() => {
-    preferences.fetchRecipientPreferences();
-    preferences.fetchPreferencePage(draft);
+    preferences.fetchRecipientPreferences(courierContext.tenantId);
+    preferences.fetchPreferencePage(courierContext.tenantId, draft);
   }, []);
 
   const renderPreferences = () => {
-    if (preferences?.isLoading) {
+    if (!preferences.preferencePage?.sections?.nodes.length) {
       return <></>;
     }
 
@@ -42,7 +41,7 @@ export const PreferenceList: React.FunctionComponent<{
     ) {
       return (
         <PreferenceV4Wrapper theme={theme}>
-          <PreferencesV4 />
+          <PreferencesV4 tenantId={courierContext.tenantId} draft={draft} />
         </PreferenceV4Wrapper>
       );
     }
@@ -52,7 +51,7 @@ export const PreferenceList: React.FunctionComponent<{
       !preferences.preferencePage?.sections?.nodes ||
       preferences.preferencePage?.sections?.nodes.length < 1
     ) {
-      return brand?.preferenceTemplates?.map((template) => (
+      return courierContext.brand?.preferenceTemplates?.map((template) => (
         <PreferenceTemplate
           key={template.templateId}
           preferenceTemplate={template}

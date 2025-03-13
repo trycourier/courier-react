@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
-import { toast, ToastProps } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 import {
   Container,
   Message,
@@ -11,12 +11,13 @@ import {
 import { getIcon } from "./helpers";
 import { useToast } from "~/hooks";
 import { useInbox } from "@trycourier/react-hooks";
-import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
-import Markdown from "markdown-to-jsx";
+import { useCourier } from "@trycourier/react-provider";
+import Markdown, { MarkdownToJSX } from "markdown-to-jsx";
 import styled from "styled-components";
 import deepExtend from "deep-extend";
 import tinycolor2 from "tinycolor2";
 import { themeDefaults } from "~/constants";
+import { IInboxMessagePreview, defaultMarkdownOptions } from "@trycourier/core";
 
 const containerStyles = {
   height: "100%",
@@ -60,22 +61,37 @@ const NonClickableContainer = styled.div(({ theme }) => {
   );
 });
 
-const Body: React.FunctionComponent<
-  Partial<Omit<IInboxMessagePreview, "title" | "preview">> & {
-    toastProps?: ToastProps;
-    onClick?: (event: React.MouseEvent) => void;
-    title?: IInboxMessagePreview["title"] | ReactElement;
-    preview?: IInboxMessagePreview["preview"] | ReactElement;
-  }
-> = ({ title, preview, actions, icon, data, onClick, messageId, ...props }) => {
-  const courier = useCourier();
+const Body: React.FunctionComponent<{
+  message: IInboxMessagePreview;
+  markdownOptions?: MarkdownToJSX.Options;
+  toastProps?: ToastOptions;
+  onClick?: (event: React.MouseEvent) => void;
+  icon: IInboxMessagePreview["icon"] | ReactElement;
+  title?: IInboxMessagePreview["title"] | ReactElement;
+  preview?: IInboxMessagePreview["preview"] | ReactElement;
+}> = ({
+  message,
+  onClick,
+  title,
+  preview,
+  icon,
+  markdownOptions,
+  ...props
+}) => {
+  const { actions, data, messageId } = message;
+  title = message.title ?? title;
+  preview = message.preview ?? preview;
+  icon = message.icon ?? icon;
+
   const [, { config }] = useToast();
 
+  const courier = useCourier();
+  const { brand: courierBrand } = courier;
+  const brand = config?.brand ?? courierBrand;
+
   const { toastProps } = props;
-  const { brand: courierBrand } = useCourier();
   const { markMessageRead, trackClick } = useInbox();
 
-  const brand = config?.brand ?? courierBrand;
   const { openLinksInNewTab } = config;
 
   const handleOnClickDismiss = useCallback(
@@ -151,7 +167,7 @@ const Body: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(clickActionDetails?.href);
+        courier.onRouteChange(clickActionDetails?.href, message);
         return;
       }
 
@@ -180,7 +196,7 @@ const Body: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(action?.href);
+        courier.onRouteChange(action?.href, message);
         return;
       }
 
@@ -198,7 +214,9 @@ const Body: React.FunctionComponent<
           {title && <Title data-testid="message-title">{title}</Title>}
           <TextElement data-testid="message-body">
             {typeof preview === "string" ? (
-              <Markdown>{preview as string}</Markdown>
+              <Markdown options={markdownOptions ?? defaultMarkdownOptions}>
+                {preview as string}
+              </Markdown>
             ) : (
               preview
             )}
@@ -208,7 +226,7 @@ const Body: React.FunctionComponent<
                 <ActionElement
                   primary={index === 0}
                   backgroundColor={action.background_color}
-                  key={action.href}
+                  key={`${action.href}-${index}`}
                   onClick={handleActionClick(action)}
                 >
                   {action.content}

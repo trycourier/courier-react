@@ -1,5 +1,5 @@
 import { TippyProps } from "@tippyjs/react";
-import { useCourier, getDateDiff } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import deepExtend from "deep-extend";
 import React, {
   useEffect,
@@ -33,7 +33,7 @@ const UnreadIndicator = styled.div<{ showUnreadMessageCount?: boolean }>(
         fontSize: 11,
         position: "absolute",
         background: theme?.brand?.colors?.primary ?? "#de5063",
-        animation: "badge-pulse 10s infinite",
+        animation: "inbox--badge-pulse 10s infinite",
       },
       showUnreadMessageCount
         ? {
@@ -87,11 +87,7 @@ const StyledTippy = styled(LazyTippy)<{
 
 const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const ref = useRef(null);
-  const courierContext = useCourier();
-
-  if (!courierContext) {
-    throw new Error("Missing Courier Provider");
-  }
+  const courierContext = useCourier<{ inbox: InboxProps }>();
 
   // set defaults
   props = useMemo(() => {
@@ -100,6 +96,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       {
         openLinksInNewTab: true,
         title: "Notifications",
+        views: [
+          {
+            id: "messages",
+            label: "Notifications",
+          },
+        ],
         theme: {
           brand: props.brand ?? {
             colors: {
@@ -115,10 +117,8 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const windowSize = useWindowSize();
   const {
     brand,
-    fetchMessages,
     init,
     isOpen: isOpenState,
-    lastMessagesFetched,
     setView,
     toggleInbox,
     unreadMessageCount = 0,
@@ -127,40 +127,41 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   const isOpen = props.isOpen ?? isOpenState;
 
   const tippyProps: TippyProps = {
-    visible: isOpen,
-    placement: props.placement ?? brand?.inapp?.placement ?? "right",
     interactive: true,
+    placement: props.placement ?? brand?.inapp?.placement ?? "right",
+    visible: isOpen,
   };
 
-  const localStorageState = useLocalStorageMessages(
-    courierContext.clientKey,
-    courierContext.userId
-  );
+  if (props.appendTo) {
+    const appendToElem = document.querySelector(props.appendTo);
+    if (appendToElem) {
+      tippyProps.appendTo = appendToElem;
+    }
+  }
+
+  const localStorageState = useLocalStorageMessages(courierContext);
 
   useEffect(() => {
     init({
       ...localStorageState,
       brand: props.brand,
       isOpen: props.isOpen,
+      onEvent: props.onEvent,
     });
 
     if (!props.brand || Object.entries(props.brand).length === 0) {
       courierContext.getBrand(courierContext.brandId);
     }
-  }, [localStorageState, props.brand, props.isOpen]);
+  }, [localStorageState, props.brand, props.isOpen, props.onEvent]);
 
   const handleIconEvent = useCallback(() => {
-    if (!isOpen) {
-      setView("messages");
-
-      const dateDiff = getDateDiff(lastMessagesFetched);
-      if (!dateDiff || dateDiff > 3600000) {
-        fetchMessages();
-      }
+    const viewId = props?.views?.[0]?.id;
+    if (!isOpen && viewId) {
+      setView(viewId);
     }
 
     toggleInbox();
-  }, [lastMessagesFetched, isOpen, setView]);
+  }, [isOpen, setView]);
 
   const handleIconOnClick = useCallback(
     (event: React.MouseEvent) => {
@@ -258,6 +259,12 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
       : bell;
   };
 
+  const theme = useMemo(() => {
+    return deepExtend({}, props.theme ?? {}, {
+      brand,
+    });
+  }, [props.theme, brand]);
+
   if (!courierContext?.inbox) {
     return null;
   }
@@ -265,11 +272,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   return (
     <>
       <TippyGlobalStyle />
-      <ThemeProvider
-        theme={deepExtend({}, props.theme ?? {}, {
-          brand,
-        })}
-      >
+      <ThemeProvider theme={theme}>
         {tippyProps.visible ? (
           <>
             {isMobile ? (
@@ -277,6 +280,7 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
             ) : (
               <StyledTippy
                 {...tippyProps}
+                className="inbox--tippy-main"
                 content={<Messages2 ref={ref} {...props} />}
               >
                 {BellWrapper()}
@@ -291,4 +295,18 @@ const Inbox: React.FunctionComponent<InboxProps> = (props) => {
   );
 };
 
-export default Inbox;
+const InboxWrapper: React.FunctionComponent<InboxProps> = (props) => {
+  const courierContext = useCourier<{ inbox: InboxProps }>();
+  const contextExists = Boolean(courierContext);
+
+  return useMemo(() => {
+    if (!contextExists) {
+      console.warn("Inbox: Missing Courier Provider");
+      return null;
+    }
+
+    return <Inbox {...props} />;
+  }, [contextExists, props]);
+};
+
+export default InboxWrapper;

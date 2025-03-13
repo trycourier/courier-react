@@ -8,7 +8,7 @@ jobs:
     steps:
       - run: echo "::set-output name=dir::$(yarn cache dir)"
         id: yarn-cache-dir-path
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -18,8 +18,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "14.X"
+          node-version: "18.X"
       - run: yarn
+      - name: Typecheck
+        run: yarn types
       - name: Test
         run: yarn test
       - uses: codecov/codecov-action@v1

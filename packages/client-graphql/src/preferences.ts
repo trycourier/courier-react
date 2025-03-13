@@ -3,21 +3,22 @@ import { ICourierClientBasicParams, ICourierClientJWTParams } from "./types";
 import { createCourierClient } from "./client";
 
 const RECIPIENT_PREFERENCES = `
-  query GetRecipientPreferences {
-    recipientPreferences {
+  query GetRecipientPreferences($accountId: String) {
+    recipientPreferences(accountId: $accountId) {
       nodes {
         templateId
         status
         hasCustomRouting
         routingPreferences
+        digestSchedule
       }
     }
   }
 `;
 
 const PREFERENCE_PAGE = `
-  query {
-    preferencePage {
+  query($accountId: String) {
+    preferencePage(accountId: $accountId) {
       showCourierFooter
       brand {
         settings {
@@ -39,6 +40,7 @@ const PREFERENCE_PAGE = `
           hasCustomRouting
           topics {
             nodes {
+              data
               defaultStatus
               templateName
               templateId
@@ -75,9 +77,11 @@ const DRAFT_PREFERENCE_PAGE = `
           hasCustomRouting
           topics {
             nodes {
+              data
               defaultStatus
               templateName
               templateId
+              digestSchedules
             }
           }
         }
@@ -86,27 +90,33 @@ const DRAFT_PREFERENCE_PAGE = `
   }
 `;
 
-type GetRecipientPreferences = () => Promise<any>;
+type GetRecipientPreferences = (tenantId?: string) => Promise<any>;
 export const getRecipientPreferences =
   (client: Client | undefined): GetRecipientPreferences =>
-  async () => {
+  async (tenantId?: string) => {
     if (!client) {
       return;
     }
 
-    const results = await client.query(RECIPIENT_PREFERENCES).toPromise();
+    const results = await client
+      .query(RECIPIENT_PREFERENCES, { accountId: tenantId })
+      .toPromise();
     return results.data?.recipientPreferences.nodes;
   };
 
-type GetPreferencePage = () => Promise<any>;
+type GetPreferencePage = (tenantId?: string) => Promise<any>;
 export const getPreferencePage =
   (client: Client | undefined): GetPreferencePage =>
-  async () => {
+  async (tenantId?: string) => {
     if (!client) {
       return;
     }
-
-    const results = await client.query(PREFERENCE_PAGE).toPromise();
+    const results = await client
+      .query(PREFERENCE_PAGE, {
+        // [HACK] map tenantId to accountId in order to keep this backwards compatible
+        accountId: tenantId,
+      })
+      .toPromise();
     return results.data?.preferencePage;
   };
 
@@ -122,17 +132,23 @@ export const getDraftPreferencePage =
   };
 
 const UPDATE_RECIPIENT_PREFERENCES = `
-  mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!) {
-    updatePreferences(templateId: $id preferences: $preferences)
+  mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!, $accountId: String) {
+    updatePreferences(templateId: $id preferences: $preferences accountId: $accountId)
   }
 `;
 
-type UpdateRecipientPreferences = (payload: {
+export interface UpdateRecipientPreferencesPayload {
   templateId: string;
-  status: string;
-  hasCustomRouting: boolean;
-  routingPreferences: Array<string>;
-}) => Promise<any>;
+  status?: string;
+  hasCustomRouting?: boolean;
+  routingPreferences?: Array<string>;
+  digestSchedule?: string;
+  tenantId?: string;
+}
+
+type UpdateRecipientPreferences = (
+  payload: UpdateRecipientPreferencesPayload
+) => Promise<any>;
 export const updateRecipientPreferences =
   (client: Client | undefined): UpdateRecipientPreferences =>
   async (payload) => {
@@ -147,7 +163,9 @@ export const updateRecipientPreferences =
           status: payload.status,
           hasCustomRouting: payload.hasCustomRouting,
           routingPreferences: payload.routingPreferences,
+          digestSchedule: payload.digestSchedule,
         },
+        accountId: payload.tenantId,
       })
       .toPromise();
 

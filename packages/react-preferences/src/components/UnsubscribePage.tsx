@@ -164,7 +164,7 @@ export const UnsubscribePage: React.FunctionComponent<{
   const handleStatusChange = async () => {
     const newStatus = !toggle ? "OPTED_IN" : "OPTED_OUT";
 
-    await preferences.updateRecipientPreferences({
+    preferences.updateRecipientPreferences({
       templateId: topicId,
       status: newStatus,
     });

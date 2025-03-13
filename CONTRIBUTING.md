@@ -55,3 +55,6 @@ All commands in a monorepo are run in the `root` of the project. You should neve
 - `yarn clean`
 
   Cleans all `node_modules` from each package and deletes the root `node_modules`. Sometimes useful if packages have gotten out of date.
+
+# Release
+- After landing your PR in the main, cut a release. We follow semantic versioning. If your changes are deemed breaking, please update the readme file with instructions on how users can safely migrate to a newer version of the package

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Inbox } from "@trycourier/react-inbox";
 import { Toast } from "@trycourier/react-toast";
-import { CourierProvider, CourierTransport } from "@trycourier/react-provider";
+import { CourierProvider } from "@trycourier/react-provider";
+import { CourierTransport } from "@trycourier/transport";
 
 export default {
   title: "Inbox/With Toast",
@@ -23,6 +24,7 @@ if (typeof window !== "undefined") {
       url: process.env.WS_URL,
     },
     clientKey,
+    clientSourceId: "abc123",
   });
 }
 
@@ -105,7 +107,6 @@ export function AsyncUserId() {
 
 export function OnMessage() {
   const handleOnMessage = (message) => {
-    console.log(message);
     return message;
   };
 

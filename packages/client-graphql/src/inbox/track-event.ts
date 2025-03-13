@@ -1,11 +1,29 @@
 import { Client } from "urql";
 
-type EventType = "read" | "unread" | "archive" | "opened" | "clicked";
+type EventType =
+  | "addTag"
+  | "archive"
+  | "clicked"
+  | "opened"
+  | "read"
+  | "removeTag"
+  | "unpin"
+  | "unread";
+
 export const getTrackEventQuery = (eventType: EventType) => `
   mutation TrackEvent(
     $messageId: String!
   ) {
     ${eventType}(messageId: $messageId)
+  }
+`;
+
+export const getTagMutation = (eventType: EventType) => `
+  mutation TrackEvent(
+    $messageId: String!
+    $tag: String!
+  ) {
+    ${eventType}(messageId: $messageId, tag: $tag)
   }
 `;
 
@@ -18,7 +36,10 @@ export const getTrackEventQueryWithTrackingId = (eventType: EventType) => `
   }
 `;
 
-export type TrackEvent = (messageId: string) => Promise<
+export type TrackEvent = (
+  messageId: string,
+  data?: Record<string, unknown>
+) => Promise<
   | {
       [eventType: string]: boolean;
     }
@@ -28,18 +49,47 @@ export type TrackEvent = (messageId: string) => Promise<
 export const trackEvent =
   (client?: Client) =>
   (eventType: EventType): TrackEvent =>
-  async (messageId: string, trackingId?: string) => {
+  async (messageId: string, data?: Record<string, unknown>) => {
     if (!client) {
       return Promise.resolve(undefined);
     }
 
-    const QUERY =
-      eventType === "clicked"
-        ? getTrackEventQueryWithTrackingId(eventType)
-        : getTrackEventQuery(eventType);
+    const params = (() => {
+      switch (eventType) {
+        case "clicked": {
+          return {
+            mutation: getTrackEventQueryWithTrackingId(eventType),
+            variables: {
+              messageId,
+              trackingId: data?.trackingId,
+            },
+          };
+        }
+
+        case "addTag":
+        case "removeTag": {
+          return {
+            mutation: getTagMutation(eventType),
+            variables: {
+              messageId,
+              tag: data?.tag,
+            },
+          };
+        }
+
+        default: {
+          return {
+            mutation: getTrackEventQuery(eventType),
+            variables: {
+              messageId,
+            },
+          };
+        }
+      }
+    })();
 
     const results = await client
-      .mutation(QUERY, { messageId, trackingId })
+      .mutation(params.mutation, params.variables)
       .toPromise();
     const status = results?.data?.[eventType];
 

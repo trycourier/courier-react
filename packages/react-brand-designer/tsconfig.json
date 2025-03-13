@@ -8,13 +8,5 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": [
-    "../types/@types/*/index.d.ts",
-    "./src/**/*.tsx",
-    "./src/**/*.ts"
-  ],
-  "references": [
-    { "path": "../react-elements" },
-    { "path": "../react-provider" }
-  ]
+  "include": ["../types/@types/*/index.d.ts", "./src/**/*.tsx", "./src/**/*.ts"]
 }

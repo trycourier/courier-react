@@ -1,25 +1,31 @@
-import {
-  ICourierEventMessage,
-  IInboxMessagePreview,
-  useCourier,
-} from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { useEffect } from "react";
 
 import deepExtend from "deep-extend";
 
-import useInboxActions from "./use-inbox-actions";
+import useInboxActions, { IInboxActions } from "./use-inbox-actions";
 import { IInbox } from "./types";
+import { ICourierEventMessage, IInboxMessagePreview } from "@trycourier/core";
 
-const useInbox = () => {
-  const { dispatch, inbox, transport, brand } =
-    useCourier<{
-      inbox: IInbox;
-    }>();
+const useInbox = (): IInbox<IInboxMessagePreview> & IInboxActions => {
+  const {
+    dispatch,
+    inbox,
+    transport,
+    brand,
+    tenantId: tenantId,
+  } = useCourier<{
+    inbox: IInbox;
+  }>();
 
   const actions = useInboxActions();
 
   if (inbox && (brand || inbox.brand)) {
     inbox.brand = deepExtend({}, brand ?? {}, inbox.brand ?? {});
+  }
+
+  if (inbox && tenantId) {
+    inbox.tenantId = tenantId;
   }
 
   useEffect(() => {
@@ -65,6 +71,11 @@ const useInbox = () => {
 
           case "unread": {
             actions.markMessageUnread(data.messageId, true);
+            return;
+          }
+
+          case "unpin": {
+            actions.unpinMessage(data.messageId, true);
             return;
           }
 

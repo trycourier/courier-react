@@ -9,8 +9,7 @@ import * as messages from "./messages";
 import { MarkAllRead, markAllRead } from "./mark-all-read";
 import { TrackEvent, trackEvent } from "./track-event";
 
-export { IInboxMessage } from "./message";
-export { IInboxMessagePreview, IGetInboxMessagesParams } from "./messages";
+export { IGetInboxMessagesParams } from "./messages";
 
 export default (
   params:
@@ -18,6 +17,7 @@ export default (
     | ICourierClientJWTParams
     | { client?: Client }
 ): {
+  addTag: TrackEvent;
   getInboxCount: GetInboxCount;
   getMessage: message.GetInboxMessage;
   getMessageLists: messageLists.GetInboxMessageLists;
@@ -27,14 +27,17 @@ export default (
   markOpened: TrackEvent;
   markRead: TrackEvent;
   markUnread: TrackEvent;
+  removeTag: TrackEvent;
   trackClick: TrackEvent;
+  unpinMessage: TrackEvent;
 } => {
   const client = createCourierClient(params, {
-    apiUrl:
-      "https://fxw3r7gdm9.execute-api.us-east-1.amazonaws.com/production/q",
+    apiUrl: "https://inbox.courier.com/q",
   });
 
   return {
+    addTag: trackEvent(client)("addTag"),
+    removeTag: trackEvent(client)("removeTag"),
     getInboxCount: getInboxCount(client),
     getMessage: message.getInboxMessage(client),
     getMessageLists: messageLists.getMessageLists(client),
@@ -45,5 +48,6 @@ export default (
     markRead: trackEvent(client)("read"),
     markUnread: trackEvent(client)("unread"),
     trackClick: trackEvent(client)("clicked"),
+    unpinMessage: trackEvent(client)("unpin"),
   };
 };

@@ -1,14 +1,9 @@
 import { usePreferences } from "@trycourier/react-hooks";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
-export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
-  draft = false,
-}) => {
+export const Header: React.FunctionComponent = () => {
   const preferences = usePreferences();
-  useEffect(() => {
-    preferences.fetchPreferencePage(draft);
-  }, []);
 
   const HeaderWrapper = styled.div`
     margin-top: 60px;
@@ -43,7 +38,7 @@ export const Header: React.FunctionComponent<{ draft?: boolean }> = ({
       font-weight: 400;
       font-size: 10px;
       line-height: 14px;
-      
+
       span {
         font-weight: bold;
       }

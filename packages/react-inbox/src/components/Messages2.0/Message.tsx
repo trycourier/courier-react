@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
-import { useCourier, IInboxMessagePreview } from "@trycourier/react-provider";
+import { useCourier } from "@trycourier/react-provider";
 import { useInbox } from "@trycourier/react-hooks";
 
 import {
@@ -13,7 +13,7 @@ import {
 import { InboxProps } from "../../types";
 
 import useHover from "~/hooks/use-hover";
-import Markdown from "markdown-to-jsx";
+import Markdown, { MarkdownToJSX } from "markdown-to-jsx";
 
 import deepExtend from "deep-extend";
 import styled from "styled-components";
@@ -22,29 +22,30 @@ import MessageActions from "./actions";
 import { useOnScreen } from "~/hooks/use-on-screen";
 
 import { SlotIcon } from "./pins";
+import { IInboxMessagePreview, defaultMarkdownOptions } from "@trycourier/core";
 
-const UnreadIndicator = styled.div<{ read?: IInboxMessagePreview["read"] }>(
-  ({ theme, read }) => {
-    const primaryColor = theme.brand?.colors?.primary;
-
-    return deepExtend(
-      {
-        visibility: read ? "hidden" : "visible",
-        height: "auto",
-        width: 2,
-        background: primaryColor,
-        position: "absolute",
-        left: "1px",
-        top: "1px",
-        bottom: "1px",
-      },
-      theme?.message?.unreadIndicator
-    );
-  }
-);
+const UnreadIndicator = styled.div<{
+  read?: IInboxMessagePreview["read"];
+  archived?: IInboxMessagePreview["archived"];
+}>(({ theme, read, archived }) => {
+  const primaryColor = theme.brand?.colors?.primary;
+  return deepExtend(
+    {
+      visibility: read || archived ? "hidden" : "visible",
+      height: "auto",
+      width: 2,
+      background: primaryColor,
+      position: "absolute",
+      left: "1px",
+      top: "1px",
+      bottom: "1px",
+    },
+    theme?.message?.unreadIndicator
+  );
+});
 
 const ClickableContainer = styled.a(({ theme }) => {
-  const primaryColor = theme.brand?.colors?.primary;
+  const primaryColor = theme.brand?.colors?.primary ?? "#9121c2";
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   return deepExtend(
@@ -70,8 +71,16 @@ const MessageContainer = styled.div(({ theme }) => {
       position: "relative",
       padding: "12px",
       minHeight: 60,
-      borderBottom: "1px solid rgb(222, 232, 240)",
+      borderBottom: "1px solid",
+      borderColor: "var(--ci-structure)",
       "&.read": {
+        ".icon": {
+          filter: "grayscale(100%)",
+          opacity: "0.3",
+        },
+      },
+      "&.archived": {
+        filter: "grayscale(100%)",
         ".icon": {
           filter: "grayscale(100%)",
           opacity: "0.3",
@@ -111,34 +120,29 @@ const Pinned = styled.div<{ color?: string }>(({ theme, color }) =>
 );
 
 const Message: React.FunctionComponent<{
-  actions?: IInboxMessagePreview["actions"];
+  message: IInboxMessagePreview;
   areActionsHovered?: boolean;
   isMessageActive?: boolean;
-  messageId: string;
   openLinksInNewTab?: boolean;
-  pinned?: {
-    slotId?: string;
-  };
-  preview?: string;
-  read?: IInboxMessagePreview["read"];
   renderedIcon: ReactNode;
+  renderActionsAsButtons?: boolean;
   renderPin?: InboxProps["renderPin"];
-  title?: string;
+  markdownOptions?: MarkdownToJSX.Options;
 }> = ({
-  actions,
   areActionsHovered,
   isMessageActive,
-  messageId,
+  markdownOptions,
+  message,
   openLinksInNewTab,
-  pinned,
-  preview,
-  read,
+  renderActionsAsButtons,
   renderedIcon,
   renderPin,
-  title,
 }) => {
+  const { actions, archived, messageId, pinned, preview, read, title } =
+    message;
   const courier = useCourier();
-  const renderActionButtons = (actions?.length ?? 0) > 1;
+  const renderActionButtons =
+    renderActionsAsButtons || (actions?.length ?? 0) > 1;
   const { brand, markMessageRead, trackClick } = useInbox();
 
   const pinDetails = pinned?.slotId
@@ -161,7 +165,7 @@ const Message: React.FunctionComponent<{
     }
 
     if (courier.onRouteChange) {
-      courier.onRouteChange(action?.href);
+      courier.onRouteChange(action?.href, message);
       return;
     }
 
@@ -178,9 +182,10 @@ const Message: React.FunctionComponent<{
         hover: isMessageActive && !areActionsHovered,
         pinned: isPinned,
         read,
+        archived,
       })}
     >
-      <UnreadIndicator read={read} />
+      <UnreadIndicator read={read} archived={archived} />
       {renderedIcon}
       <Contents hasIcon={Boolean(renderedIcon)}>
         {pinDetails &&
@@ -202,14 +207,18 @@ const Message: React.FunctionComponent<{
           {title}
         </Title>
         <TextElement aria-label={`message body ${preview}`}>
-          {preview ? <Markdown>{preview}</Markdown> : null}
+          {preview ? (
+            <Markdown options={markdownOptions ?? defaultMarkdownOptions}>
+              {preview}
+            </Markdown>
+          ) : null}
         </TextElement>
         {renderActionButtons
           ? actions?.slice(0, 2)?.map((action, index) => (
               <ActionElement
                 primary={index === 0}
                 backgroundColor={action.background_color}
-                key={action.href}
+                key={`${action.href}-${index}`}
                 onClick={handleActionClick(action)}
               >
                 {action.content}
@@ -221,36 +230,45 @@ const Message: React.FunctionComponent<{
   );
 };
 
-const MessageWrapper: React.FunctionComponent<
-  IInboxMessagePreview & {
-    defaultIcon: InboxProps["defaultIcon"];
-    formatDate: InboxProps["formatDate"];
-    isMessageFocused: boolean;
-    labels: InboxProps["labels"];
-    openLinksInNewTab: InboxProps["openLinksInNewTab"];
-    renderPin: InboxProps["renderPin"];
-    setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
-  }
-> = ({
-  actions,
-  created,
-  data,
+const MessageWrapper: React.FunctionComponent<{
+  defaultIcon: InboxProps["defaultIcon"];
+  formatDate: InboxProps["formatDate"];
+  isMessageFocused: boolean;
+  isMobile?: boolean;
+  labels: InboxProps["labels"];
+  markdownOptions?: MarkdownToJSX.Options;
+  message: IInboxMessagePreview;
+  openLinksInNewTab: InboxProps["openLinksInNewTab"];
+  renderActionsAsButtons?: boolean;
+  renderPin: InboxProps["renderPin"];
+  setFocusedMessageId: React.Dispatch<React.SetStateAction<string>>;
+}> = ({
   defaultIcon,
   formatDate,
-  icon,
   isMessageFocused,
+  isMobile,
   labels,
-  messageId,
-  opened,
+  markdownOptions,
+  message,
   openLinksInNewTab,
-  pinned,
-  preview,
-  read,
+  renderActionsAsButtons,
   renderPin,
   setFocusedMessageId,
-  title,
-  trackingIds,
 }) => {
+  const {
+    actions,
+    archived,
+    created,
+    data,
+    icon,
+    messageId,
+    opened,
+    pinned,
+    preview,
+    read,
+    title,
+    trackingIds,
+  } = message;
   const courier = useCourier();
   const [activeTimeout, setActiveTimeout] = useState<NodeJS.Timeout>();
   const messageRef: React.RefObject<HTMLDivElement> = useRef(null);
@@ -344,7 +362,7 @@ const MessageWrapper: React.FunctionComponent<
       };
     }
 
-    if (!actions?.length || actions.length > 1) {
+    if (renderActionsAsButtons || !actions?.length || actions.length > 1) {
       return;
     }
 
@@ -390,7 +408,7 @@ const MessageWrapper: React.FunctionComponent<
       }
 
       if (courier.onRouteChange) {
-        courier.onRouteChange(clickActionDetails?.href);
+        courier.onRouteChange(clickActionDetails?.href, message);
         return;
       }
 
@@ -405,21 +423,19 @@ const MessageWrapper: React.FunctionComponent<
   const renderedMessage = useMemo(() => {
     return (
       <Message
-        actions={actions}
         areActionsHovered={areActionsHovered}
         isMessageActive={isMessageFocused || isMessageHovered}
-        messageId={messageId}
+        markdownOptions={markdownOptions}
+        message={message}
         openLinksInNewTab={openLinksInNewTab}
-        pinned={pinned}
-        preview={preview}
-        read={read}
+        renderActionsAsButtons={renderActionsAsButtons}
         renderedIcon={renderedIcon}
         renderPin={renderPin}
-        title={title}
       />
     );
   }, [
     actions,
+    archived,
     areActionsHovered,
     isMessageFocused,
     isMessageHovered,
@@ -428,9 +444,11 @@ const MessageWrapper: React.FunctionComponent<
     pinned,
     preview,
     read,
+    renderActionsAsButtons,
     renderedIcon,
     renderPin,
     title,
+    data,
   ]);
 
   return (
@@ -447,9 +465,11 @@ const MessageWrapper: React.FunctionComponent<
         <div tabIndex={0}>{renderedMessage}</div>
       )}
       <MessageActions
+        archived={archived}
         created={created}
         formatDate={formatDate}
         isMessageActive={isMessageFocused || isMessageHovered}
+        isMobile={isMobile}
         labels={labels}
         messageId={messageId}
         read={read}

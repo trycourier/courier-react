@@ -1,9 +1,12 @@
+import { PreferenceStatus } from "@trycourier/core";
+
 export type Preference = "channel_preferences" | "status" | "snooze";
 
 export type ChannelClassification =
-  | "email"
-  | "push"
   | "direct_message"
+  | "email"
+  | "inbox"
+  | "push"
   | "sms"
   | "webhook";
 
@@ -17,8 +20,6 @@ export type PreferenceItemComponentFn = React.FunctionComponent<{
   customizeDeliveryChannel?: boolean;
 }>;
 
-export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
-
 export type SnoozePreference = {
   start?: string;
   until: string;
@@ -30,22 +31,10 @@ export interface IPreference {
   channel_preferences?: Array<ChannelClassification>;
 }
 
-export interface DigestSchedule {
-  period: string;
-  repetition: string;
-  digestId: string;
-}
-
-export interface IPreferenceTemplate {
-  templateName: string;
-  templateId: string;
-  defaultStatus: PreferenceStatus;
-  digestSchedules?: DigestSchedule[];
-}
-
 export interface IRecipientPreference {
   templateId: string;
   status: PreferenceStatus | null;
   hasCustomRouting: boolean;
   routingPreferences: Array<ChannelClassification>;
+  digestSchedule: string;
 }

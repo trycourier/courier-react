@@ -74,7 +74,7 @@ export default () => (next) => (action) => {
               ],
             },
             {
-              messageId: 790,
+              messageId: 791,
               created: "2021-04-06T18:02:28.065Z",
               title: "Blocks",
               preview: "I'm a text block with 2 actions and custom color",

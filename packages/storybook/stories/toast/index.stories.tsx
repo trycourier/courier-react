@@ -4,7 +4,7 @@ import propsMd from "@trycourier/react-toast/docs/3.props.md";
 import themeMd from "@trycourier/react-toast/docs/4.theme.md";
 import hooksMd from "@trycourier/react-toast/docs/5.hooks.md";
 
-import { CourierProvider, IBlocks } from "@trycourier/react-provider";
+import { CourierProvider } from "@trycourier/react-provider";
 
 import { Toast, useToast, ToastBody } from "@trycourier/react-toast";
 
@@ -21,18 +21,6 @@ export default {
   decorators: [withKnobs],
 };
 
-const mockBlocks: IBlocks = [
-  {
-    type: "text",
-    text: "Text Block",
-  },
-  {
-    type: "action",
-    text: "Action Block",
-    url: "My Url",
-  },
-];
-
 const ExampleButton: React.FunctionComponent<{ text?: string }> = ({
   text,
 }) => {
@@ -40,8 +28,8 @@ const ExampleButton: React.FunctionComponent<{ text?: string }> = ({
 
   const handleOnClick = () => {
     toast({
-      title: "Hello World",
-      blocks: mockBlocks,
+      preview: "Hello World",
+      title: "foo",
     });
   };
 
@@ -54,7 +42,7 @@ export const Props = () => {
   const autoCloseTimeout = number("Auto Close Timeout", 5000);
 
   return (
-    <CourierProvider>
+    <CourierProvider clientKey="foobar">
       <ReactMarkdown>{propsMd}</ReactMarkdown>
       <ReactMarkdown>{`## Example`}</ReactMarkdown>
       <Toast
@@ -116,8 +104,8 @@ export const Theme = () => {
         null,
         2
       )}\n\`\`\``}</ReactMarkdown>
-      <CourierProvider>
-        <ToastBody blocks={mockBlocks} title="Title" theme={theme} />
+      <CourierProvider clientKey="foobar">
+        <ToastBody message={{} as any} title="Title" theme={theme} />
       </CourierProvider>
     </>
   );

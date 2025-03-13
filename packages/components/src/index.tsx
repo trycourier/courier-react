@@ -1,16 +1,43 @@
 import React from "react";
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 
-import { CourierProvider, WSOptions } from "@trycourier/react-provider";
+import {
+  Brand,
+  CourierProvider,
+  Interceptor,
+  ProviderTheme,
+  WSOptions,
+} from "@trycourier/react-provider";
 import { CourierComponents } from "./components";
 import { InboxProps } from "@trycourier/react-inbox";
 import { ToastProps } from "@trycourier/react-toast";
+import { UsePreferences } from "@trycourier/react-hooks";
+import { IInboxMessagePreview } from "@trycourier/core";
+
+const middleware = () => (next) => (action) => {
+  const _action =
+    window?.courier?.__actions?.[action.type.toLowerCase()] ??
+    window?.courier?.__actions?.[action.type] ??
+    [];
+
+  for (const __a of _action) {
+    __a(action);
+  }
+
+  if (window?.courier?.__actions?.["*"]) {
+    for (const __a of window?.courier?.__actions?.["*"]) {
+      __a(action);
+    }
+  }
+
+  next(action);
+};
 
 declare global {
   interface Window {
     courier: {
       __actions: {
-        [action: string]: Array<() => void>;
+        [action: string]: Array<(payload: any) => void>;
       };
       toast?: {
         mergeConfig?: (config: ToastProps) => void;
@@ -22,7 +49,20 @@ declare global {
         setConfig?: (config: InboxProps) => void;
         config?: any;
       };
+      preferences?: UsePreferences | {};
       transport?: any;
+      brand?: Brand;
+      renewSession?: (token: string) => void;
+      identify?: (
+        userId: string,
+        payload: Record<string, unknown>
+      ) => Promise<void>;
+      subscribe?: (userId: string, listId: string) => Promise<void>;
+      track?: (
+        event: string,
+        properties?: Record<string, unknown>
+      ) => Promise<void>;
+      unsubscribe?: (userId: string, listId: string) => Promise<void>;
       init: (config: ICourierConfig) => void;
       on: (action: string, cb: () => void) => void;
     };
@@ -31,12 +71,16 @@ declare global {
   }
 }
 interface ICourierConfig {
+  tenantId?: string;
   apiUrl?: string;
-  inboxApiUrl?: string;
   authorization?: string;
   brandId?: string;
   clientKey: string;
-  onRouteChange?: (route: string) => void;
+  enableMutationObserver?: boolean;
+  inboxApiUrl?: string;
+  theme?: ProviderTheme;
+  onRouteChange?: (route: string, message: IInboxMessagePreview) => void;
+  onMessage?: Interceptor;
   components?: {
     inbox?: any;
     toast?: any;
@@ -54,31 +98,35 @@ interface ICourierConfig {
   preferencePageDraftMode?: boolean;
 }
 
-let hasInit = false;
-
-const initCourier = async (courierConfig?: ICourierConfig) => {
+const initCourier = (courierConfig?: ICourierConfig) => {
   const {
     apiUrl,
     authorization,
     brandId,
     clientKey,
     inboxApiUrl,
+    onMessage,
     onRouteChange,
+    tenantId,
+    theme,
     userId,
     userSignature,
     wsOptions,
   } = courierConfig ?? window.courierConfig ?? {};
 
-  if (hasInit || typeof document === "undefined") {
+  if (typeof document === "undefined") {
     return;
   }
 
-  if (!userId || !clientKey) {
-    return;
-  }
+  const existingCourierRoot =
+    document.getElementsByTagName("courier-root")?.[0];
 
-  const courierRoot = document.createElement("courier-root");
-  document.body.appendChild(courierRoot);
+  if (existingCourierRoot) {
+    unmountComponentAtNode(existingCourierRoot);
+  } else {
+    const courierRoot = document.createElement("courier-root");
+    document.body.appendChild(courierRoot);
+  }
 
   render(
     <CourierProvider
@@ -87,17 +135,22 @@ const initCourier = async (courierConfig?: ICourierConfig) => {
       brandId={brandId}
       clientKey={clientKey}
       inboxApiUrl={inboxApiUrl}
+      applyMiddleware={(defaultMiddleware) => [
+        ...defaultMiddleware,
+        middleware,
+      ]}
+      onMessage={onMessage}
       onRouteChange={onRouteChange}
+      tenantId={tenantId}
+      theme={theme}
       userId={userId}
       userSignature={userSignature}
       wsOptions={wsOptions}
     >
       <CourierComponents />
     </CourierProvider>,
-    courierRoot
+    document.getElementsByTagName("courier-root")?.[0]
   );
-
-  hasInit = true;
 };
 
 window.courier = {

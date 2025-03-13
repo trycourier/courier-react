@@ -39,16 +39,16 @@ const events = Brands({ events: courierClient })
 ### Messages
 
 ```js
-import { Messages } from "@trycourier/client-graphql";
+import { Inbox } from "@trycourier/client-graphql";
 
-const messagesApi = Messages({ authorization: "abc123" });
+const inboxApi = Inbox({ authorization: "abc123" });
 
 const getMessageCount = async (params?: {
-  isRead?: boolean,
+  status?: "read" | "unread",
   from?: number,
   tags?: string[],
 }) => {
-  const messageCount = await messagesApi.getMessageCount(params);
+  const messageCount = await inboxApi.getInboxMessages(params);
   return messageCount;
 };
 const getMessages = async (
@@ -96,9 +96,59 @@ const getBrand = async (brandId?: string) => {
 };
 ```
 
+### Preferences
+
+You can use our GraphQL endpoints to read and write advanced user preferences and see draft preferences. This API has getRecipientPreferences, getPreferencePage, getDraftPreferencePage, and updateRecipientPreferences methods. You can see the response payloads in action on [User Preference Tester](https://bwebs.github.io/courier-test/window-preferences.html)
+
+```js
+import { Preferences } from "@trycourier/client-graphql";
+const preferencesApi = Preferences({
+  clientKey: "abc123",
+  userId: "@me",
+  userSignature: "SUPER_SECRET",
+});
+const getRecipientPreferences = async (tenantId?: string) => {
+  const user_preferences = await preferencesApi.getRecipientPreferences(
+    tenantId
+  );
+  return user_preferences;
+};
+const getPreferencePage = async (tenantId?: string) => {
+  const page_with_defaults = await preferencesApi.getPreferencePage(tenantId);
+  return page_with_defaults;
+};
+const getDraftPreferencePage = async (tenantId?: string) => {
+  const draft_page_with_defaults = await preferencesApi.getDraftPreferencePage(
+    tenantId
+  );
+  return draft_page_with_defaults;
+};
+const updateRecipientPreferences = async (
+  payload: UpdateRecipientPreferencesPayload
+) => {
+  const update_preferences = await preferencesApi.updateRecipientPreferences(
+    payload
+  );
+  return update_preferences;
+};
+```
+
+```ts
+interface UpdateRecipientPreferencesPayload {
+  templateId: string;
+  status: string;
+  hasCustomRouting: boolean;
+  routingPreferences: Array<string>;
+  digestSchedule: string;
+  tenantId?: string;
+}
+```
+
 ### Banners
 
 #### For one user
+
+This will instantiate the client required to query the Courier GraphQL. getBanners will grab all banners for that user
 
 ```js
 import { Banner } from "@trycourier/client-graphql";
@@ -107,10 +157,45 @@ const bannerApi = Banner({
   userId: "@me",
   userSignature: "SUPER_SECRET", //optional
 });
-const getBanners = async (params?: { tags?: string[], locale?: string }) => {
+const getBanners = async (params?: IGetBannerParams) => {
   const myBanners = await bannerApi.getBanners(params);
   return myBanners;
 };
+```
+
+#### Archive a banner
+
+The following code will archive the selected banner for that user. After receiving and processing in Courier, getBanners will no longer return the banner. Archiving is an asynchronous process; there will be a slight delay before the banner is removed in the getBanners API call.
+
+```
+const config = {
+  clientKey: "abc123",
+  userId: "@me",
+  userSignature: "SUPER_SECRET", //optional
+}
+const bannerApi = Banner(config);
+const eventsApi = Events(config);
+
+const getBanners = async (params?: IGetBannerParams) => {
+  const myBanners = await bannerApi.getBanners(params);
+  return myBanners;
+};
+const banners = await getBanner();
+await eventsApi.trackEvent(
+    banners.content.trackingIds.archiveTrackingId
+);
+```
+
+#### Banner Params
+
+```typescript
+interface IGetBannerParams {
+  from?: number;
+  limit?: number;
+  locale?: string;
+  tags?: string[];
+  trackingIds?: boolean;
+}
 ```
 
 #### With JWT (Supports multiple users)

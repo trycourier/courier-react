@@ -13,6 +13,240 @@
       }
     </style>
     <script type="text/javascript">
+      window.courierAsyncInit = () => {
+        window.courier.on("*", (payload) => {
+          console.log(payload);
+        });
+      };
+
+      const fontWeights = {
+        thin: 200,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
+      };
+      const zedTheme = {
+        fontWeights: {
+          thin: 200,
+          normal: 400,
+          medium: 500,
+          semibold: 600,
+          bold: 700,
+        },
+        textStyles: {
+          pageHeading: {
+            color: "white.700",
+            opacity: "0.2",
+            fontWeight: "600",
+            fontSize: "1.8rem",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            lineHeight: "2.4rem",
+            verticalAlign: "middle",
+          },
+        },
+        colors: {
+          background: {
+            light: "rgba(34, 38, 45, 0.9)",
+            onSurface: "#ECF1FB1A",
+            surface1: "#22262D",
+            surface2: "#2C3138",
+          },
+          white: {
+            decorative: "rgba(240, 248, 255, 0.12)",
+            default: "#fff",
+          },
+          black: {
+            100: "#000",
+            200: "#171A1C",
+            300: "rgba(236, 241, 251, 0.1)",
+            400: "rgba(236, 241, 251, 0.33)",
+            500: "rgba(0, 0, 0, 0.8)",
+            600: "#373737",
+            1100: "#23262c",
+          },
+          gray: {
+            300: "#57606C",
+            400: "#3b3f46",
+            500: "#636464",
+            700: "#858F98",
+            800: "#2A2E35",
+            900: "#292829",
+            1000: "#373A42",
+            1100: "#22262D",
+            1200: "#2a2e35",
+            1300: "#18191C",
+            1400: "#1F2127",
+            1600: "#1E2128",
+            1700: "#3b3f47",
+          },
+          green: {
+            200: "#245E52",
+            300: "#326373",
+            400: "#375B55",
+            500: "#317d6c",
+            700: "#27b18a",
+            900: "#75E1C2",
+            1000: "#4DB379",
+            glow: "#9cb99c",
+            badge: "#0C6451",
+          },
+        },
+      };
+      const mainBackGroundColor = zedTheme.colors.background.surface2;
+      const secondaryBackGroundColor = zedTheme.colors.background.surface1;
+      const textWhite = zedTheme.colors.white["default"];
+      const mainTextColor = "rgba(236, 241, 251, 0.66)";
+
+      const courierBrand = {
+        inapp: {
+          disableCourierFooter: true,
+          placement: "bottom",
+          disableMessageIcon: false,
+          emptyState: {
+            textColor: zedTheme.colors.white.default,
+          },
+        },
+        colors: {
+          primary: "#f0f8ffa3",
+          secondary: "#f0f8ffa3",
+          tertiary: zedTheme.colors.gray["1200"],
+        },
+      };
+
+      const ZedCourierInboxTheme = {
+        brand: courierBrand,
+        container: {
+          label: {
+            color: "red !important",
+          },
+          backgroundColor: mainBackGroundColor,
+          color: textWhite,
+          zIndex: 1600,
+          //fontFamily: 'Montserrat',
+          marginRight: "0px",
+        },
+        tooltip: {
+          backgroundColor: zedTheme.colors.black["600"],
+        },
+        emptyState: {
+          marginRight: "0px",
+          backgroundColor: mainBackGroundColor,
+          fontStyle: "Montserrat",
+          color: zedTheme.colors.green["700"],
+        },
+        header: {
+          backgroundColor: mainBackGroundColor,
+          borderBottomColor: zedTheme.colors.gray["1100"],
+          color: textWhite,
+          letterSpacing: zedTheme.textStyles.pageHeading.letterSpacing,
+          '[type="button"]:not(:disabled), button:not(:disabled)': {
+            color: "#f0f8ffa3",
+          },
+          ".message-count": {
+            backgroundColor: "#f0f8ffa3",
+            color: secondaryBackGroundColor,
+          },
+        },
+        menu: {
+          backgroundColor: mainBackGroundColor,
+          color: textWhite,
+          //fontFamily: 'inherit',
+          //fontStyle: 'normal',
+          letterSpacing: zedTheme.textStyles.pageHeading.letterSpacing,
+          borderBottomColor: zedTheme.colors.gray["1100"],
+          "> button": {
+            backgroundColor: mainBackGroundColor,
+            color: textWhite,
+          },
+          ".message-count": {
+            backgroundColor: "#f0f8ffa3",
+            color: secondaryBackGroundColor,
+          },
+        },
+        icon: {
+          height: "24px",
+          width: "24px",
+          color: "#f0f8ffa3",
+          marginRight: "16px",
+          "> svg": {
+            width: "24px",
+            height: "24px",
+          },
+        },
+        messageList: {
+          container: {
+            color: textWhite,
+            backgroundColor: mainBackGroundColor,
+          },
+        },
+        message: {
+          timeAgo: {
+            color: mainTextColor,
+          },
+          actionElement: {
+            backgroundColor: zedTheme.colors.green["700"],
+            color: textWhite,
+            "&:hover": {
+              // backgroundColor: zedTheme.colors.green['1000'],
+              backgroundColor: "rgba(39, 177, 138, .9)",
+            },
+          },
+          clickableContainer: {
+            backgroundColor: mainBackGroundColor,
+            color: mainTextColor,
+            fontFamily: "Montserrat",
+            borderBottom: "none",
+          },
+          title: {
+            fontSize: "14px",
+            lineHeight: "20px",
+            fontWeight: zedTheme.fontWeights.bold,
+            color: mainTextColor,
+          },
+          textElement: {
+            color: mainTextColor,
+            lineHeight: "20px",
+            fontSize: "14px",
+            fontWeight: zedTheme.fontWeights.medium,
+          },
+          container: {
+            backgroundColor: mainBackGroundColor,
+            "&.read": {
+              backgroundColor: secondaryBackGroundColor,
+            },
+            borderBottom: "none",
+          },
+          content: {
+            color: mainTextColor,
+            fontWeight: zedTheme.fontWeights.medium,
+          },
+
+          unreadIndicator: {
+            backgroundColor: zedTheme.colors.green["700"],
+            color: zedTheme.colors.green["700"],
+          },
+        },
+        unreadIndicator: {
+          backgroundColor: zedTheme.colors.green["700"],
+          color: zedTheme.colors.green["700"],
+        },
+      };
+
+      const courierToastTheme = {
+        body: {
+          backgroundColor: mainBackGroundColor,
+        },
+        message: {
+          title: {
+            color: mainTextColor,
+          },
+        },
+        progressBar: {
+          background: zedTheme.colors.green["700"],
+        },
+      };
       const userId = "3b17362c-0c91-4fcd-a829-885a2343eb67";
       /* window.loadCourier = function (config) {
         if (!config || !config.clientKey || !config.userId) {
@@ -35,21 +269,65 @@
           })();
         });
       };*/
+
       window.courierConfig = {
+        /*
+        STAGING CONFIG
+        
         inboxApiUrl:
-          "https://3rjq5oe9b1.execute-api.us-east-1.amazonaws.com/dev/q",
+          "https://4rq7n8hhjd.execute-api.us-east-1.amazonaws.com/staging/q",
         apiUrl:
-          "https://rubmz24skk.execute-api.us-east-1.amazonaws.com/dev/client/q",
+          "https://yubmnstah4.execute-api.us-east-1.amazonaws.com/staging/client/q",
         wsOptions: {
-          url: "wss://20en15n3ng.execute-api.us-east-1.amazonaws.com/dev",
+          url: "wss://icnrz8ttcf.execute-api.us-east-1.amazonaws.com/staging",
         },
-        clientKey: "NzY4MjUxY2YtM2ViOC00MjZhLTkyZWItZmFhMGU3Njc4NzY4",
+        clientKey: "MWIxZTk1M2YtMGViYi00N2FkLWJlYWItZjU3OWJkNjA2ZWIx=",
+        userId: "smokey12345",*/
+        //authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6InVzZXJfaWQ6MDB1ZDZjZGRlY1VSaEhybWkzNTcgaW5ib3g6cmVhZDptZXNzYWdlcyBpbmJveDp3cml0ZTpldmVudHMiLCJ0ZW5hbnRfc2NvcGUiOiJwdWJsaXNoZWQvdGVzdCIsInRlbmFudF9pZCI6ImJiNjAyNDM5LTI2MmYtNGRlZS1iNDExLTNiZjdmMjM5NDYyMS90ZXN0IiwiYWNjb3VudF9pZCI6IjAxRkdTN1hWVDlBSEo4OE43QVpCMDE5UUdaIiwiaWF0IjoxNzEwNDYyMjg5LCJqdGkiOiJmMTc3NWJlMi1hNzVhLTQxNDktYjNhMC02YjA0MjdhNzg0NjQifQ.8FwrFCKPyFP1MCIH8kWBWfWCUUGDyP5w4oYuQGPWGtY",
 
-        // JWT SMOKEY
-        //clientKey: "YzQzMGM3OGYtYzQ2NC00NTdjLThkM2QtNWIwYzI4OTdmYmE5",
-        //userId: "smokey12345",
+        //userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
 
-        userId: "70f6a4f4-2907-4518-b8f3-b9cfab224764",
+        // rileydev config
+        inboxApiUrl:
+          "https://3gbm33p3pe.execute-api.us-east-1.amazonaws.com/dev/q",
+        apiUrl:
+          "https://ln3nzc1ca8.execute-api.us-east-1.amazonaws.com/dev/client/q",
+        wsOptions: {
+          url: "wss://p46x8j3l88.execute-api.us-east-1.amazonaws.com/dev",
+        },
+        clientKey: "NDBmYTEyODAtNjg0Ni00YjYwLTlkZjktNGE3M2RkMWM4ZWIw",
+        userId: "ed633018-217c-4b2d-a2e9-0548f0955bdc",
+        components: {
+          inbox: {
+            appendTo: "#test",
+            onEvent: (params) => {
+              if (
+                params.event === "read" &&
+                window.courier.inbox.pinned.find(
+                  (p) => p.messageId === params.messageId
+                )
+              ) {
+                window.courier.inbox.unpinMessage(params.messageId);
+              }
+            },
+            views: [
+              {
+                id: "messages",
+                label: "Messages!",
+                params: {
+                  archived: false,
+                },
+              },
+              {
+                id: "archived",
+                label: "Archived",
+                params: {
+                  archived: true,
+                },
+              },
+            ],
+          },
+        },
       };
 
       window.addInbox = () => {
@@ -71,7 +349,10 @@
   </head>
   <body>
     <courier-inbox></courier-inbox>
+    <courier-preference-page></courier-preference-page>
     <courier-toast></courier-toast>
-    <div id="root" />
+    <div id="root">
+      <div id="test">hello world</div>
+    </div>
   </body>
 </html>

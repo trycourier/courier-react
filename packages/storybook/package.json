@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/storybook",
-  "version": "3.6.2",
+  "version": "7.1.1",
   "private": true,
   "description": "Beautiful, easy React toast notifications",
   "author": "Courier <support@courier.com>",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "export:storybook": "build-storybook -c .storybook -o .out",
-    "storybook": "start-storybook -p 6320"
+    "storybook": "export NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6320"
   },
   "license": "MIT",
   "dependencies": {
@@ -23,16 +23,17 @@
     "@storybook/addon-links": "^6.5.9",
     "@storybook/addon-viewport": "^6.5.9",
     "@storybook/react": "^6.5.9",
-    "@trycourier/components": "^3.6.2",
-    "@trycourier/react-brand-designer": "^3.6.2",
-    "@trycourier/react-inbox": "^3.6.2",
-    "@trycourier/react-preferences": "^3.6.2",
-    "@trycourier/react-provider": "^3.6.2",
-    "@trycourier/react-toast": "^3.6.2",
+    "@trycourier/components": "^7.1.1",
+    "@trycourier/react-brand-designer": "^7.1.1",
+    "@trycourier/react-inbox": "^7.1.1",
+    "@trycourier/react-preferences": "^7.1.1",
+    "@trycourier/react-provider": "^7.1.1",
+    "@trycourier/react-toast": "^7.1.1",
     "react-frame-component": "^5.2.3",
-    "react-markdown": "^6.0.1",
+    "react-markdown": "^8.0.1",
+    "rehype-raw": "^6.1.1",
     "storybook": "^6.5.9",
-    "styled-components": "^5.2.1",
+    "styled-components": "^6.0.0",
     "styled-normalize": "^8.0.7"
   }
 }

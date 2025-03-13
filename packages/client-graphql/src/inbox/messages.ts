@@ -1,11 +1,13 @@
 import { Client } from "urql";
-import { IActionElemental } from "./message";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 export interface IGetInboxMessagesParams {
-  status?: "read" | "unread";
-  limit?: number;
-  tags?: string[];
+  tenantId?: string;
+  archived?: boolean;
   from?: string | number;
+  limit?: number;
+  status?: "read" | "unread";
+  tags?: string[];
 }
 
 export const messagesProps = `
@@ -22,6 +24,7 @@ export const messagesProps = `
       href
       style
     }
+    archived
     created
     data
     icon
@@ -65,18 +68,6 @@ export const createGetInboxMessagesQuery = (includePinned?: boolean) => `
   }
 `;
 
-export interface IInboxMessagePreview {
-  actions?: IActionElemental[];
-  created: string;
-  data?: Record<string, any>;
-  messageId: string;
-  opened?: string;
-  preview?: string;
-  read?: string;
-  tags?: string[];
-  title?: string;
-}
-
 export type GetInboxMessages = (
   params?: IGetInboxMessagesParams,
   after?: string
@@ -85,6 +76,7 @@ export type GetInboxMessages = (
       appendMessages: boolean;
       startCursor: string;
       messages: IInboxMessagePreview[];
+      pinned?: IInboxMessagePreview[];
     }
   | undefined
 >;
@@ -96,13 +88,15 @@ export const getInboxMessages =
       return Promise.resolve(undefined);
     }
 
-    const { limit, ...restParams } = params ?? {};
+    const { limit, tenantId, ...restParams } = params ?? {};
     const results = await client
       .query(createGetInboxMessagesQuery(!after), {
         after,
         limit,
         params: {
           ...restParams,
+          // [HACK] map tenantId to accountId in order to keep this backwards compatible
+          accountId: tenantId,
           pinned: false,
         },
         pinnedParams: {

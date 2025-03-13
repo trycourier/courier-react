@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useCourier } from "@trycourier/react-provider";
+import { IInbox, useInbox, usePreferences } from "@trycourier/react-hooks";
+import { ToastProps } from "@trycourier/react-toast";
 
 export const CourierSdk: React.FunctionComponent<{
   activeComponents: {
@@ -7,29 +9,50 @@ export const CourierSdk: React.FunctionComponent<{
     toast: boolean;
     preferences: boolean;
   };
-}> = ({ activeComponents, children }) => {
-  const courier = useCourier();
-
-  if (!window?.courier?.transport) {
-    window.courier = window.courier ?? {};
-    window.courier.transport = courier.transport;
-  }
+}> = ({ children }) => {
+  const courier =
+    useCourier<{
+      inbox: IInbox;
+      toast: ToastProps;
+    }>();
+  const inbox = useInbox();
+  const preferences = usePreferences();
 
   useEffect(() => {
-    for (const component of Object.keys(activeComponents)) {
-      const typedComponent = component as "inbox" | "toast";
+    window.courier = window.courier ?? {};
+    window.courier.inbox = window?.courier?.inbox ?? {};
+    window.courier.inbox = {
+      ...window.courier.inbox,
+      ...inbox,
+    };
+  }, [inbox]);
 
-      if (!courier[typedComponent]) {
-        continue;
-      }
+  useEffect(() => {
+    window.courier = window.courier ?? {};
+    window.courier.preferences = window?.courier?.preferences ?? {};
+    window.courier.preferences = {
+      ...window.courier.preferences,
+      ...preferences,
+    };
+  }, [preferences]);
 
-      const initActions =
-        window?.courier?.__actions?.[`${typedComponent}/init`] ?? [];
-      for (const initAction of initActions) {
-        initAction();
-      }
-    }
-  }, [courier?.inbox, courier?.toast, activeComponents]);
+  useEffect(() => {
+    window.courier = window.courier ?? {};
+    window.courier = {
+      ...window.courier,
+      toast: {
+        ...window.courier.toast,
+        ...courier.toast,
+      },
+      brand: courier.brand,
+      identify: courier.identify,
+      renewSession: courier.renewSession,
+      subscribe: courier.subscribe,
+      track: courier.track,
+      transport: courier.transport,
+      unsubscribe: courier.unsubscribe,
+    };
+  }, [courier]);
 
   return <>{children}</>;
 };

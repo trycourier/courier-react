@@ -15,18 +15,27 @@ import {
 } from "@testing-library/react";
 import { graphql, rest } from "msw";
 import { setupServer } from "msw/node";
+import { IInboxMessagePreview } from "@trycourier/core";
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const mockGraphMessage: IInboxMessagePreview = {
+  type: "message",
+  messageId: "mockMessageId",
+  created: new Date().toISOString(),
+  title: "mockTitle",
+  preview: "mockBody",
+};
+
 const server = setupServer(
-  rest.get(
-    "https://1x60p1o3h8.execute-api.us-east-1.amazonaws.com/production/",
-    (_, res, ctx) => {
-      return res(ctx.json({}));
-    }
-  ),
+  rest.get("https://inbox.courier.com/", (_, res, ctx) => {
+    return res(ctx.json({}));
+  }),
+  rest.post("https://inbox.courier.com/", (_, res, ctx) => {
+    return res(ctx.json({}));
+  }),
   graphql.query("GetInboxCount", (_, res, ctx) => {
     return res(
       ctx.data({
@@ -131,6 +140,11 @@ test("will render an inbox and can change labels", async () => {
 
 test("will render nothing and then render an inbox when the element is inserted", async () => {
   document.body.innerHTML = "";
+  act(() => {
+    (window as any).courierConfig = {
+      enableMutationObserver: true,
+    };
+  });
   render(
     <CourierProvider
       clientKey="MOCK_CLIENT_KEY"
@@ -166,4 +180,53 @@ test("will render nothing and then render an inbox when the element is inserted"
   await wait(100);
 
   expect(await screen.findByText("NO MESSAGES")).toBeInTheDocument();
+});
+
+test("will support onEvent to listen for events on the window", async (done) => {
+  server.use(
+    graphql.query("GetInboxMessages", (_, res, ctx) => {
+      return res(
+        ctx.data({
+          messages: {
+            nodes: [mockGraphMessage],
+          },
+        })
+      );
+    })
+  );
+
+  act(() => {
+    (window as any).courierConfig = {
+      components: {
+        inbox: {
+          onEvent: (params) => {
+            expect(params).toEqual({
+              messageId: mockGraphMessage.messageId,
+              message: mockGraphMessage,
+              event: "read",
+            });
+            done();
+          },
+        },
+      },
+    };
+  });
+
+  const inbox = document.createElement("courier-inbox");
+  document.body.appendChild(inbox);
+
+  render(
+    <CourierProvider
+      clientKey="MOCK_CLIENT_KEY"
+      userId="MOCK_USER_ID"
+      wsOptions={{
+        url: "ws://localhost:1234",
+      }}
+    >
+      <CourierComponents />
+    </CourierProvider>
+  );
+
+  await wait(100);
+  fireEvent.click(await screen.findByTitle("Mark as Read"));
 });

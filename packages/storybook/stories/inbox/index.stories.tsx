@@ -1,15 +1,13 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import propsMd from "@trycourier/react-inbox/docs/3.props.md";
-import themeMd from "@trycourier/react-inbox/docs/4.theme.md";
-import renderPropsMd from "@trycourier/react-inbox/docs/5.render-props.md";
-import hooksMd from "@trycourier/react-inbox/docs/4.hooks.md";
 
 import { CourierProvider } from "@trycourier/react-provider";
-import { Inbox, ActionBlock, TextBlock } from "@trycourier/react-inbox";
+import { Inbox } from "@trycourier/react-inbox";
+import rehypeRaw from "rehype-raw";
 
 import customComponentsString from "!raw-loader!./custom-components.tsx";
 import customHeaderString from "!raw-loader!./custom-header.tsx";
+import readmeMd from "@trycourier/react-inbox/README.md";
 
 import {
   CustomBell,
@@ -24,9 +22,8 @@ import {
 import customHeaderProps from "./custom-header";
 
 // @ts-ignore
-import myCustomInboxString from "!raw-loader!./hooks.tsx";
-import { MyCustomInbox } from "./hooks";
 import mockMiddleware from "./mock-middleware";
+import { mockMessages } from "./2.0.stories";
 
 const API_URL = process.env.API_URL || "";
 const CLIENT_KEY = process.env.CLIENT_KEY || "";
@@ -36,20 +33,20 @@ export default {
   title: "Inbox",
 };
 
-export const Props = () => {
-  return <ReactMarkdown>{propsMd}</ReactMarkdown>;
-};
-
-export const Theme = () => {
-  return <ReactMarkdown>{themeMd}</ReactMarkdown>;
+export const ReadMe = () => {
+  return <ReactMarkdown rehypePlugins={[rehypeRaw]}>{readmeMd}</ReactMarkdown>;
 };
 
 export const ThemeExample = () => {
   const theme = {
     container: {
       background: "green",
+      padding: "10px",
     },
     header: {
+      background: "pink",
+    },
+    footer: {
       background: "pink",
     },
     messageList: {
@@ -97,7 +94,10 @@ export const ThemeExample = () => {
         )}\n\`\`\``}</ReactMarkdown>
       </div>
       <CourierProvider
-        middleware={[mockMiddleware]}
+        applyMiddleware={(defaultMiddleware) => [
+          mockMiddleware,
+          ...defaultMiddleware,
+        ]}
         clientKey="Y2U3OWI3NGEtY2FhZC00NTFjLTliZDMtMGZkOTVhMmQ0ZWE4"
         userId="Google_108669107033656954156"
       >
@@ -105,10 +105,6 @@ export const ThemeExample = () => {
       </CourierProvider>
     </div>
   );
-};
-
-export const RenderProps = () => {
-  return <ReactMarkdown>{renderPropsMd}</ReactMarkdown>;
 };
 
 export const RenderPropsExample = () => {
@@ -152,7 +148,7 @@ export const RenderPropsExample = () => {
           2
         )}\n\`\`\``}</ReactMarkdown>
       </div>
-      <CourierProvider>
+      <CourierProvider clientKey={CLIENT_KEY}>
         <Inbox {...props} />
       </CourierProvider>
     </div>
@@ -177,17 +173,17 @@ export const RenderPropsExample2 = () => {
           2
         )}\n\`\`\``}</ReactMarkdown>
       </div>
-      <CourierProvider>
+      <CourierProvider clientKey={CLIENT_KEY}>
         <Inbox {...customHeaderProps} />
       </CourierProvider>
     </div>
   );
 };
 
-export const Hooks = () => {
+export const RenderPropsLoadingMore = () => {
   return (
     <>
-      <ReactMarkdown>{hooksMd}</ReactMarkdown>
+      <ReactMarkdown>{"TODO"}</ReactMarkdown>
       <div
         style={{
           display: "flex",
@@ -197,10 +193,27 @@ export const Hooks = () => {
       >
         <div>
           <ReactMarkdown>{`## Example`}</ReactMarkdown>
-          <ReactMarkdown>{`\`\`\`javascript\n${myCustomInboxString}\n\`\`\``}</ReactMarkdown>
+          <ReactMarkdown>{`\`\`\`javascript\n<Inbox theme={{
+  name: "2.0",
+}} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[mockMiddleware]}
+          applyMiddleware={(defaultMiddleware) => [
+            ...defaultMiddleware,
+            () => (next) => (action) => {
+              if (action.type === "inbox/INIT") {
+                next({
+                  ...action,
+                  payload: {
+                    ...action.payload,
+                    isLoading: true,
+                    messages: mockMessages.slice(0, 2),
+                  },
+                });
+                return;
+              }
+            },
+          ]}
           wsOptions={{
             url: process.env.WS_URL,
           }}
@@ -208,7 +221,15 @@ export const Hooks = () => {
           clientKey={CLIENT_KEY}
           userId={USER_ID}
         >
-          <MyCustomInbox />
+          <Inbox
+            renderLoadingMore={() => <div>Loading more...</div>}
+            isOpen={true}
+            brand={{
+              colors: {
+                primary: "#FF93CD",
+              },
+            }}
+          />
         </CourierProvider>
       </div>
     </>
@@ -218,7 +239,6 @@ export const Hooks = () => {
 export const CustomLabels = () => {
   return (
     <>
-      <ReactMarkdown>{hooksMd}</ReactMarkdown>
       <div
         style={{
           display: "flex",
@@ -233,10 +253,17 @@ export const CustomLabels = () => {
   markAsUnread: "jk, unread me",
   backToInbox: "back it up!",
   markAllAsRead: "mark em all captn",
+  closeInbox: "close me plz",
+  archiveMessage: "delete yo",
+  scrollTop: "scrollz",
+  emptyState: "nah dawg",
 }} />\n\`\`\``}</ReactMarkdown>
         </div>
         <CourierProvider
-          middleware={[mockMiddleware]}
+          applyMiddleware={(defaultMiddleware) => [
+            mockMiddleware,
+            ...defaultMiddleware,
+          ]}
           wsOptions={{
             url: process.env.WS_URL,
           }}
@@ -252,50 +279,10 @@ export const CustomLabels = () => {
               markAsUnread: "jk, unread me",
               backToInbox: "back it up!",
               markAllAsRead: "mark em all captn",
-            }}
-          />
-        </CourierProvider>
-      </div>
-    </>
-  );
-};
-
-export const CustomBlocks = () => {
-  return (
-    <>
-      <ReactMarkdown>{hooksMd}</ReactMarkdown>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "top",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <ReactMarkdown>{`## Example`}</ReactMarkdown>
-          <ReactMarkdown>{`\`\`\`javascript\n<Inbox labels={{
-            markAsRead: "markey read pwease",
-            markAsUnread: "jk, unread me",
-          }} />\n\`\`\``}</ReactMarkdown>
-        </div>
-        <CourierProvider
-          middleware={[mockMiddleware]}
-          wsOptions={{
-            url: process.env.WS_URL,
-          }}
-          apiUrl={API_URL}
-          clientKey={CLIENT_KEY}
-          userId={USER_ID}
-        >
-          <Inbox
-            isOpen={true}
-            renderBlocks={{
-              action: (props) => (
-                <ActionBlock>
-                  <a href={props.url}>{props.text}</a>
-                </ActionBlock>
-              ),
-              text: (props) => <TextBlock>{props.text}</TextBlock>,
+              closeInbox: "close me plz",
+              archiveMessage: "delete yo",
+              scrollTop: "scrollz",
+              emptyState: "nah dawg",
             }}
           />
         </CourierProvider>

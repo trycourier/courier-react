@@ -4,40 +4,11 @@ import styled from "styled-components";
 import CourierSvg from "~/assets/courier_icon.svg";
 import CourierBigSvg from "~/assets/courier_big_icon.svg";
 import tinycolor2 from "tinycolor2";
-import { IActionElemental } from "@trycourier/react-provider";
+import { IActionElemental } from "@trycourier/core";
 
 export const PositionRelative = styled.div`
   position: relative;
 `;
-
-export const Container = styled.div(({ theme }) =>
-  deepExtend(
-    {
-      display: "flex",
-      position: "relative",
-      padding: "10px 12px 10px 30px",
-      backgroundColor: "#F9FAFB",
-      alignItems: "center",
-      marginTop: 6,
-      borderRadius: 6,
-      borderBottom: "1px solid rgba(203,213,224,.5)",
-      "&.read": {
-        backgroundColor: "#F7F6F9",
-      },
-      "&:not(.read):hover": {
-        background: "#EDE4ED",
-      },
-    },
-    theme.message?.container ?? {}
-  )
-);
-
-export const Contents = styled.div(({ theme }) => ({
-  marginRight: "auto",
-  marginLeft: 15,
-  textAlign: "left",
-  ...theme.message?.contents,
-}));
 
 export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
   deepExtend(
@@ -50,7 +21,7 @@ export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
       display: "-webkit-box",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      color: read ? "rgba(86, 96, 116, 1)" : "rgb(28, 39, 58)",
+      color: read ? "var(--ci-text-color)" : "var(--ci-title-color)",
     },
     theme.message?.title
   )
@@ -59,7 +30,7 @@ export const Title = styled.div<{ read?: string }>(({ theme, read }) =>
 export const TextElement = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "rgb(28, 39, 58) ",
+      color: "var(--ci-text-color)",
       marginTop: "1px",
       wordBreak: "break-word",
       fontSize: "12px",
@@ -83,7 +54,8 @@ export const ActionElement = styled.button<{
   primary?: boolean;
   backgroundColor: IActionElemental["background_color"];
 }>(({ theme, primary, backgroundColor }) => {
-  const primaryColor = backgroundColor ?? theme?.brand?.colors?.primary;
+  const primaryColor =
+    backgroundColor ?? theme?.brand?.colors?.primary ?? "#9121c2";
   const tcPrimaryColor = tinycolor2(primaryColor);
 
   return deepExtend(
@@ -117,7 +89,7 @@ export const ActionElement = styled.button<{
 export const TimeAgo = styled.div(({ theme }) =>
   deepExtend(
     {
-      color: "rgb(86, 96, 116)",
+      color: "var(--ci-text-color)",
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: "400",
@@ -228,7 +200,7 @@ export const MessageList = styled.div<{ isMobile?: boolean }>(
     return deepExtend(
       {
         background: "rgba(255, 255, 255, 0.2)",
-        overflow: "scroll",
+        overflow: "auto",
         display: "flex",
         height,
         maxHeight: height,

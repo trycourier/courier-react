@@ -17,7 +17,7 @@ module.exports = (_env, argv) => {
     entry: path.resolve(__dirname, "./src/index.tsx"),
     output: {
       publicPath: isProduction
-        ? "https://courier-components-xvdza5.s3.amazonaws.com/"
+        ? "https://d1cqtzfenuyn1x.cloudfront.net/"
         : undefined,
       filename: `${versionedFilePrefix}${version}.js`,
       chunkFilename: "[id].[chunkhash:8].js",

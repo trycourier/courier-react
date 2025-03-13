@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-brand-designer",
-  "version": "3.6.2",
+  "version": "7.1.1",
   "description": "Embeddable brand designer for multi-channel notifications",
   "homepage": "https://github.com/trycourier/courier-react/tree/main/packages/react-elements#readme",
   "license": "ISC",
@@ -21,24 +21,21 @@
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
     "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf typings",
     "type-check": "tsc --noEmit",
-    "types": "tsc --build"
+    "types": "tsc --emitDeclarationOnly"
   },
   "bugs": {
     "url": "https://github.com/trycourier/courier-react/issues"
   },
   "dependencies": {
-    "@trycourier/react-elements": "^3.6.2",
-    "rimraf": "^3.0.2"
-  },
-  "devDependencies": {
-    "@types/styled-components": "^5.1.25"
+    "@trycourier/react-elements": "^7.1.1",
+    "rimraf": "^5.0.0"
   },
   "peerDependencies": {
     "deep-extend": "0.6.x",
     "react": ">=17.X.X",
     "react-dom": ">=17.X.X",
-    "styled-components": "5.x"
+    "styled-components": ">=5.X.X"
   }
 }

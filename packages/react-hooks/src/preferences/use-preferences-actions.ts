@@ -1,7 +1,19 @@
 import { useCourier } from "@trycourier/react-provider";
-import { createCourierClient, Preferences } from "@trycourier/client-graphql";
+import {
+  createCourierClient,
+  Preferences,
+  UpdateRecipientPreferencesPayload,
+} from "@trycourier/client-graphql";
 
-const usePreferencesActions = () => {
+export interface UsePreferenceActions {
+  fetchRecipientPreferences: (tenantId?: string) => void;
+  fetchPreferencePage: (tenantId?: string, draft?: boolean) => void;
+  updateRecipientPreferences: (
+    payload: UpdateRecipientPreferencesPayload
+  ) => void;
+}
+
+const usePreferencesActions = (): UsePreferenceActions => {
   const { apiUrl, clientKey, userId, userSignature, dispatch, authorization } =
     useCourier();
 
@@ -16,13 +28,13 @@ const usePreferencesActions = () => {
   const preferences = Preferences({ client: courierClient });
 
   return {
-    fetchRecipientPreferences: () => {
+    fetchRecipientPreferences: (tenantId?: string) => {
       dispatch({
         type: "preferences/FETCH_RECIPIENT_PREFERENCES",
-        payload: () => preferences.getRecipientPreferences(),
+        payload: () => preferences.getRecipientPreferences(tenantId),
       });
     },
-    fetchPreferencePage: (draft = false) => {
+    fetchPreferencePage: (tenantId?: string, draft = false) => {
       if (draft) {
         dispatch({
           type: "preferences/FETCH_DRAFT_PREFERENCE_PAGE",
@@ -31,7 +43,7 @@ const usePreferencesActions = () => {
       } else {
         dispatch({
           type: "preferences/FETCH_PREFERENCE_PAGE",
-          payload: () => preferences.getPreferencePage(),
+          payload: () => preferences.getPreferencePage(tenantId),
         });
       }
     },

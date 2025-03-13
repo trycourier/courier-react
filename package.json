@@ -42,7 +42,7 @@
     "type-check": "lerna run type-check --parallel --stream",
     "type-coverage:detail": "type-coverage --strict --detail",
     "type-coverage": "type-coverage --strict --at-least 92",
-    "types": "yarn tsc --build"
+    "types": "lerna run types --stream"
   },
   "repository": {
     "type": "git",
@@ -65,8 +65,8 @@
     "@commitlint/cli": "^17.4.3",
     "@commitlint/config-conventional": "^17.4.3",
     "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/react": "^12.1.5",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^26.0.20",
     "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
@@ -81,27 +81,27 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "commitizen": "^4.3.0",
+    "eslint": "^7.18.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^22.11.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-react-hooks": "^4.0.2",
     "eslint-plugin-react": "^7.20.0",
-    "eslint": "^7.18.0",
+    "eslint-plugin-react-hooks": "^4.0.2",
     "fetch-mock": "^9.11.0",
     "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.3",
     "jest-styled-components": "^7.0.3",
     "jest-websocket-mock": "^2.3.0",
-    "jest": "^26.6.3",
     "lerna": "^5.4.0",
     "msw": "^0.43.0",
     "nx": "^14.4.2",
     "pretty-quick": "^3.1.0",
-    "react-dom": "^17.0.1",
     "react": "^17.0.1",
-    "rimraf": "^3.0.2",
+    "react-dom": "^17.0.1",
+    "rimraf": "^5.0.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.3"
@@ -113,5 +113,6 @@
   },
   "dependencies": {
     "pkg-dir": "^7.0.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

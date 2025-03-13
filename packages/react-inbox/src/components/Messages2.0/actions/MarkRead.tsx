@@ -39,10 +39,9 @@ const MarkRead: React.FunctionComponent<{
   label?: string;
   onClick: React.MouseEventHandler;
 }> = ({ onClick, label }) => {
-  const title = label ?? "Mark as Read";
   return (
-    <StyledTippy content={title}>
-      <StyledButton title={title} onClick={onClick}>
+    <StyledTippy content={label}>
+      <StyledButton title={label} onClick={onClick}>
         <Checkmark />
       </StyledButton>
     </StyledTippy>

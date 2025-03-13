@@ -4,11 +4,9 @@
     "target": "esnext",
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "composite": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["dom", "esnext"],
     "module": "esnext",
@@ -25,7 +23,6 @@
     "checkJs": false
   },
   "exclude": [
-    "**/__mocks__/**",
     "**/__tests__/**",
     "**/*.spec.ts",
     "**/*.story.ts",
