@@ -179,7 +179,7 @@ export default (state: IInbox = initialState, action?: InboxAction): IInbox => {
       return {
         ...state,
         isLoading: false,
-        searchParams: action.meta.searchParams,
+        searchParams: action.meta?.searchParams,
         lastMessagesFetched: new Date().getTime(),
         messages: newMessagesFiltered as IInboxMessagePreview[],
         pinned: action.payload?.appendMessages
