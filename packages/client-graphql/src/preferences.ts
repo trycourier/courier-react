@@ -32,9 +32,11 @@ const PREFERENCE_PAGE = `
           image
         }
       }
-      channelNames {
-        channel
-        name
+      channelPreferences {
+        channelNames {
+          channel
+          name
+        }
       }
       sections {
         nodes {
@@ -73,9 +75,11 @@ const DRAFT_PREFERENCE_PAGE = `
           image
         }
       }
-      channelNames {
-        channel
-        name
+      channelPreferences {
+        channelNames {
+          channel
+          name
+        }
       }
       sections {
         nodes {

@@ -29,10 +29,12 @@ export type PreferencePage = {
     };
   };
   sections: PreferenceSection;
-  channelNames: Array<{
-    channel: ChannelClassification;
-    name: string;
-  }>;
+  channelPreferences: {
+    channelNames: Array<{
+      channel: ChannelClassification;
+      name: string;
+    }>;
+  };
 };
 
 export type PreferenceSection = {

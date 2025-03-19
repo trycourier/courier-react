@@ -320,14 +320,17 @@ export const PreferenceTopic: React.FunctionComponent<{
   };
 
   const customChannelNames = useMemo(() => {
-    if (!preferencePage?.channelNames) {
+    if (!preferencePage?.channelPreferences?.channelNames) {
       return {};
     }
-    return preferencePage?.channelNames?.reduce((acc, channel) => {
-      acc[channel.channel] = channel.name;
-      return acc;
-    }, {} as Record<ChannelClassification, string>);
-  }, [preferencePage?.channelNames]);
+    return preferencePage?.channelPreferences?.channelNames?.reduce(
+      (acc, channel) => {
+        acc[channel.channel] = channel.name;
+        return acc;
+      },
+      {} as Record<ChannelClassification, string>
+    );
+  }, [preferencePage?.channelPreferences?.channelNames]);
 
   return (
     <StyledItem>
