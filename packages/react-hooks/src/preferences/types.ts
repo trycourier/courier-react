@@ -29,6 +29,10 @@ export type PreferencePage = {
     };
   };
   sections: PreferenceSection;
+  channelNames: Array<{
+    channel: ChannelClassification;
+    name: string;
+  }>;
 };
 
 export type PreferenceSection = {

@@ -182,7 +182,14 @@ const ChannelPreference: React.FunctionComponent<{
   routingPreferences: ChannelClassification[];
   channel: ChannelClassification;
   defaultStatus: PreferenceStatus;
-}> = ({ handleChannelRouting, routingPreferences, channel, defaultStatus }) => {
+  channelName?: string;
+}> = ({
+  handleChannelRouting,
+  routingPreferences,
+  channel,
+  defaultStatus,
+  channelName,
+}) => {
   const [checked, setChecked] = useState(routingPreferences.includes(channel));
   const { preferencePage } = usePreferences();
 
@@ -209,7 +216,7 @@ const ChannelPreference: React.FunctionComponent<{
         />
         <ChannelOption>
           {checked && <Checkmark />}
-          <div>{DisplayChannel(channel)}</div>
+          <div>{channelName ?? DisplayChannel(channel)}</div>
         </ChannelOption>
       </label>
     </Channel>
@@ -312,6 +319,16 @@ export const PreferenceTopic: React.FunctionComponent<{
     return status ? "Opted In" : "Opted Out";
   };
 
+  const customChannelNames = useMemo(() => {
+    if (!preferencePage?.channelNames) {
+      return {};
+    }
+    return preferencePage?.channelNames?.reduce((acc, channel) => {
+      acc[channel.channel] = channel.name;
+      return acc;
+    }, {} as Record<ChannelClassification, string>);
+  }, [preferencePage?.channelNames]);
+
   return (
     <StyledItem>
       <div className="template-name">{topicName}</div>
@@ -365,6 +382,7 @@ export const PreferenceTopic: React.FunctionComponent<{
               <ChannelPreference
                 key={i}
                 channel={channel}
+                channelName={customChannelNames[channel]}
                 routingPreferences={routing}
                 handleChannelRouting={handleChannelRouting}
                 defaultStatus={defaultStatus}
