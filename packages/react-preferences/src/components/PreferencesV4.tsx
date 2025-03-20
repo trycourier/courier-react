@@ -216,7 +216,7 @@ const ChannelPreference: React.FunctionComponent<{
         />
         <ChannelOption>
           {checked && <Checkmark />}
-          <div>{channelName ?? DisplayChannel(channel)}</div>
+          <div>{channelName || DisplayChannel(channel)}</div>
         </ChannelOption>
       </label>
     </Channel>
@@ -320,17 +320,17 @@ export const PreferenceTopic: React.FunctionComponent<{
   };
 
   const customChannelNames = useMemo(() => {
-    if (!preferencePage?.channelPreferences?.channelNames) {
+    if (!preferencePage?.channelConfigs?.channelLabels) {
       return {};
     }
-    return preferencePage?.channelPreferences?.channelNames?.reduce(
+    return preferencePage?.channelConfigs?.channelLabels?.reduce(
       (acc, channel) => {
         acc[channel.channel] = channel.name;
         return acc;
       },
       {} as Record<ChannelClassification, string>
     );
-  }, [preferencePage?.channelPreferences?.channelNames]);
+  }, [preferencePage?.channelConfigs?.channelLabels]);
 
   return (
     <StyledItem>

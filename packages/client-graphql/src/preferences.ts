@@ -32,8 +32,8 @@ const PREFERENCE_PAGE = `
           image
         }
       }
-      channelPreferences {
-        channelNames {
+      channelConfigs {
+        channelLabels {
           channel
           name
         }
@@ -75,8 +75,8 @@ const DRAFT_PREFERENCE_PAGE = `
           image
         }
       }
-      channelPreferences {
-        channelNames {
+      channelConfigs {
+        channelLabels {
           channel
           name
         }
