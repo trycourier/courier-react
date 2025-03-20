@@ -29,8 +29,8 @@ export type PreferencePage = {
     };
   };
   sections: PreferenceSection;
-  channelPreferences: {
-    channelNames: Array<{
+  channelConfigs: {
+    channelLabels: Array<{
       channel: ChannelClassification;
       name: string;
     }>;
