@@ -32,6 +32,12 @@ const PREFERENCE_PAGE = `
           image
         }
       }
+      channelConfigs {
+        channelLabels {
+          channel
+          name
+        }
+      }
       sections {
         nodes {
           name
@@ -67,6 +73,12 @@ const DRAFT_PREFERENCE_PAGE = `
         logo {
           href
           image
+        }
+      }
+      channelConfigs {
+        channelLabels {
+          channel
+          name
         }
       }
       sections {
