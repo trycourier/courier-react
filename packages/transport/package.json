@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/transport",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -14,7 +14,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@trycourier/core": "^7.2.0",
+    "@trycourier/core": "^7.3.0",
     "jwt-decode": "^4.0.0",
     "reconnecting-websocket": "^4.4.0",
     "rimraf": "^5.0.0"
