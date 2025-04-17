@@ -1,5 +1,6 @@
 import { DigestSchedule, RepeatOn } from "@trycourier/core";
 import format from "date-fns/format";
+import { format as formatTZ, utcToZonedTime } from "date-fns-tz";
 
 export const toUpperCaseFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -45,11 +46,13 @@ const getScheduleString = (schedule: DigestSchedule) => {
   if (schedule?.recurrence === "instant") {
     return "Instant";
   }
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const dateFormattedInBrowserTimezone = formatDateBrowserTimezone(
+    schedule?.start,
+    timezone
+  );
 
-  return `${schedule?.recurrence} at ${format(
-    new Date(schedule?.start),
-    "h:mmaaaaa'm'" // lowercase am/pm while date-fns is older than 2.23.0
-  )}`;
+  return `${schedule?.recurrence} at ${dateFormattedInBrowserTimezone}`;
 };
 
 const getWeekdaysRepeatOnString = (repeatOn: RepeatOn) => {
@@ -63,5 +66,26 @@ const getWeekdaysRepeatOnString = (repeatOn: RepeatOn) => {
 
   return weekdays.join(", ");
 };
+
+function formatDateBrowserTimezone(dateStrUTC: string, tz: string) {
+  const _dateStrUTC = new Date(dateStrUTC);
+  const today = new Date();
+
+  const hoursUTC = _dateStrUTC.getUTCHours();
+  const minutesUTC = _dateStrUTC.getUTCMinutes();
+
+  const simulatedDateUtc = new Date(
+    Date.UTC(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      hoursUTC,
+      minutesUTC
+    )
+  );
+
+  const zoned = utcToZonedTime(simulatedDateUtc, tz);
+  return formatTZ(zoned, "h:mmaaaaa'm'", { timeZone: tz });
+}
 
 export default formatDigest;
