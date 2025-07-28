@@ -1,3 +1,5 @@
+> ⚠️ **Deprecated**: This package is no longer maintained. Please use [https://github.com/trycourier/courier-web/tree/main/@trycourier/courier-react) instead.
+
 <img width="584" alt="image" src="https://github.com/trycourier/courier-react/assets/7017640/6ea65539-e3a7-469c-870b-3ddf84793a80">
 
 ## [What is Inbox?](#what-is-inbox)
