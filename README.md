@@ -1,3 +1,5 @@
+> ⚠️ **Deprecated**: This package is no longer maintained. Please use [@trycourier/courier-react](https://github.com/trycourier/courier-web/tree/main/@trycourier/courier-react) instead.
+
 ## What is `courier-react`?
 
 This repository, also called **In-App**, is a set of features and components that can work inside our customers websites. Courier is a powerful application but integrating all of the features into your frontend manually can be overwhelming and time consuming. This is where In-App steps up and can superpower your application by providing Realtime Messaging (Toast), an Inbox, Notification Preferences, and many more coming soon!
