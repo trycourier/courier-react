@@ -3,7 +3,7 @@
 
 - [Version 5.X CSP Migration](#version-5-csp-migration)
 - [Props](#props)
-- [Listening to Messsages](#listening-to-messsages)
+- [Listening to Messages](#listening-to-messages)
 - [Dark Mode / Theme Variables](#dark-mode--theme-variables)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -84,7 +84,7 @@ interface Brand {
 
 <a name="1listening-to-messagesmd"></a>
 
-### [Listening to Messsages](#listening)
+### [Listening to Messages](#listening)
 
 There are a few ways to listen for messages and being able react.
 
@@ -94,7 +94,7 @@ There are a few ways to listen for messages and being able react.
 import { CourierProvider } from "@trycourier/react-provider";
 
 const MyApp = ({ children }) => {
-  const handleOnMessage = (messsage: IInboxMessagePreview) => {
+  const handleOnMessage = (message: IInboxMessagePreview) => {
     console.log(message);
     return message;
   };
@@ -176,34 +176,41 @@ import { CourierProvider } from "@trycourier/react-provider";
 
 const MyApp = ({ children }) => {
   return (
-    <CourierProvider thene={{ colorMode: "dark" }}>{children}</CourierProvider>
+    <CourierProvider theme={{ colorMode: "dark" }}>{children}</CourierProvider>
   );
 };
 ```
 
-You can customize darkmode by passing in variables to the root level theme:
+You can customize dark mode by passing in variables to the root level theme:
 
-````typescript
+```typescript
 export interface ThemeVariables {
   background?: string;
   textColor?: string;
   titleColor?: string;
   structure?: string;
   icon?: string;
-}```
+}
+```
 
 ```tsx
 import { CourierProvider } from "@trycourier/react-provider";
 
 const MyApp = ({ children }) => {
   return (
-    <CourierProvider thene={{variables: {
-        background: "red",
-        textColor: "blue",
-        titleColor: "green",
-        structure: "pink",
-        icon: "orange"
-    }}}>{children}</CourierProvider>
+    <CourierProvider
+      theme={{
+        variables: {
+          background: "red",
+          textColor: "blue",
+          titleColor: "green",
+          structure: "pink",
+          icon: "orange",
+        },
+      }}
+    >
+      {children}
+    </CourierProvider>
   );
 };
-````
+```
