@@ -1,8 +1,10 @@
-## 🚨 DEPRECATED
+## 🚨 DEPRECATED 🚨
 
 This version of `courier-react` is **deprecated**.
 
-👉 **Here is the latest version of [`courier-react`](https://www.courier.com/docs/sdk-libraries/courier-react-web)**
+👉 **Here is the latest version of [`courier-react`](https://www.courier.com/docs/sdk-libraries/courier-react-web)** 👈
+
+---
 
 ## What is `courier-react`?
 
