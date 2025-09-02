@@ -1,3 +1,9 @@
+## 🚨 THIS PROJECT HAS MOVED 🚨
+
+**This repository is deprecated. For the latest features, bug fixes, and more, visit [Courier UI documentation](https://www.courier.com/docs/sdk-libraries/courier-ui-inbox-web).**
+
+---
+
 # Courier Components
 
 # Table of Contents

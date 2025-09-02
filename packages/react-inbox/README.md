@@ -1,4 +1,8 @@
-> ⚠️ **Deprecated**: This package is no longer maintained. Please use [@trycourier/courier-react](https://github.com/trycourier/courier-web/tree/main/@trycourier/courier-react) instead.
+## 🚨 THIS PROJECT HAS MOVED 🚨
+
+**This repository is deprecated. For the latest features, bug fixes, and more, visit [Courier React SDK documentation](https://www.courier.com/docs/sdk-libraries/courier-react-web) or upgrade using the [v8 Migration Guide](https://www.courier.com/docs/sdk-libraries/courier-react-v8-migration-guide).**
+
+---
 
 <img width="584" alt="image" src="https://github.com/trycourier/courier-react/assets/7017640/6ea65539-e3a7-469c-870b-3ddf84793a80">
 
