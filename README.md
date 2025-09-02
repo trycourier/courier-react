@@ -1,10 +1,12 @@
-## 🚨 DEPRECATED 🚨
+## 🚨 PROJECT MOVED 🚨
 
-This version of `courier-react` is **deprecated**.
+This repository is **no longer maintained**. The `courier-react` project has moved to a new repository.
 
-👉 **Here is the latest version of [`courier-react`](https://www.courier.com/docs/sdk-libraries/courier-react-web)** 👈
+👉 **Please visit the [new `courier-react` repository and documentation](https://www.courier.com/docs/sdk-libraries/courier-react-web) for the latest version.** 👈
 
 ---
+
+&emsp;
 
 ## What is `courier-react`?
 
