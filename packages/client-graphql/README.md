@@ -1,3 +1,9 @@
+## 🚨 THIS PROJECT HAS MOVED 🚨
+
+**This repository is deprecated. For the latest features, bug fixes, and more, visit [CourierJS documentation](https://www.courier.com/docs/sdk-libraries/courier-js-web).**
+
+---
+
 ## Courier Client GraphQl
 
 Courier GraqphQl Client for usage in the browser.
