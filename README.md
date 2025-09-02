@@ -1,4 +1,4 @@
-## 🚨 `courier-react` HAS MOVED 🚨
+## 🚨 THIS PROJECT HAS MOVED 🚨
 
 **This repository is deprecated. For the latest features, bug fixes, and more, visit [Courier React SDK documentation](https://www.courier.com/docs/sdk-libraries/courier-react-web) and the [v8 Migration Guide](https://www.courier.com/docs/sdk-libraries/courier-react-v8-migration-guide).**
 
