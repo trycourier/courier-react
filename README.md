@@ -1,3 +1,5 @@
+> 🚨 **Deprecated** [Go here to use the latest version of `courier-react`](https://www.courier.com/docs/sdk-libraries/courier-react-web)
+
 ## What is `courier-react`?
 
 This repository, also called **In-App**, is a set of features and components that can work inside our customers websites. Courier is a powerful application but integrating all of the features into your frontend manually can be overwhelming and time consuming. This is where In-App steps up and can superpower your application by providing Realtime Messaging (Toast), an Inbox, Notification Preferences, and many more coming soon!
@@ -153,7 +155,5 @@ Utility package to share common Typescript types and interfaces shared between p
 [storybook](https://github.com/trycourier/courier-react/tree/main/packages/storybook)
 
 Our development environment. This package depends on all the other packages and imports them into a storybook instance. This allows us to develop in an isolated environment.
-
----
 
 ---
