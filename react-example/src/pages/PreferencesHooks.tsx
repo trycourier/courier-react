@@ -1,14 +1,18 @@
-import React from "react";
-// import { usePreferences } from "@trycourier/react-hooks";
-// import { useCourier } from "@trycourier/react-provider";
+import React, { useEffect } from "react";
+import { usePreferences } from "@trycourier/react-hooks";
 
 const PreferenceHooks: React.FC = () => {
-  // const courier = useCourier();
-  // const preferences = usePreferences();
+  const preferences = usePreferences();
+
+  useEffect(() => {
+    preferences.fetchRecipientPreferences();
+  }, []);
 
   return (
     <div>
-      <h1>Preferences Hooks</h1>
+      <pre style={{ whiteSpace: "pre-wrap", textAlign: "left" }}>
+        {JSON.stringify(preferences.recipientPreferences, null, 2)}
+      </pre>
     </div>
   );
 };
