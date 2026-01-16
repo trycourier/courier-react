@@ -108,8 +108,13 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "react-example"
     ]
+  },
+  "resolutions": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "dependencies": {
     "pkg-dir": "^7.0.0"
