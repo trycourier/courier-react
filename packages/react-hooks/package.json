@@ -45,5 +45,6 @@
       }
     },
     "./use-inbox": "./dist/inbox/use-inbox.js"
-  }
+  },
+  "gitHead": "d40638863e9bb860eaa9e08df26e2a9ef7ed41b9"
 }
