@@ -9,8 +9,9 @@ const App: React.FC = () => {
   const clientKey = process.env.REACT_APP_COURIER_CLIENT_KEY;
   const userId = process.env.REACT_APP_COURIER_USER_ID;
 
+  console.log(clientKey, userId);
+
   return (
-    // <CourierProvider clientKey={'M2RjODVkMTMtOTg1ZC00NmY3LWIxYTItY2E1OTU0MGZhMmE4L3Rlc3Q='} userId={'mike'} apiUrl={'https://api.staging-trycourier.com/client/q'}>
     <CourierProvider clientKey={clientKey} userId={userId}>
       <BrowserRouter>
         <div className="App">
