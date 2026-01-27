@@ -20,8 +20,8 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "rm -rf dist && yarn babel",
+    "clean": "rm -rf dist typings",
     "type-check": "tsc --noEmit",
     "types": "tsc --emitDeclarationOnly"
   },
@@ -29,8 +29,7 @@
     "url": "https://github.com/trycourier/courier-react/issues"
   },
   "dependencies": {
-    "@trycourier/react-elements": "^7.4.0",
-    "rimraf": "^5.0.0"
+    "@trycourier/react-elements": "^7.4.0"
   },
   "peerDependencies": {
     "deep-extend": "0.6.x",

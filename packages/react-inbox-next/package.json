@@ -8,8 +8,8 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "rm -rf dist && yarn babel",
+    "clean": "rm -rf dist typings",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --emitDeclarationOnly"
@@ -27,8 +27,7 @@
     "date-fns": "^2.19.0",
     "deep-extend": "^0.6.0",
     "markdown-to-jsx": "^7.7.3",
-    "react-loading-skeleton": "^2.2.0",
-    "rimraf": "^5.0.0"
+    "react-loading-skeleton": "^2.2.0"
   },
   "peerDependencies": {
     "react": "^17.0.1",

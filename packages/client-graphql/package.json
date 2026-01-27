@@ -7,8 +7,6 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
     "test": "jest -c jest.config.js --runInBand",
     "type-check": "tsc --noEmit",
     "types": "tsc --emitDeclarationOnly"
@@ -17,7 +15,6 @@
   "dependencies": {
     "graphql": "^15.5.0",
     "isomorphic-fetch": "^3.0.0",
-    "rimraf": "^5.0.0",
     "urql": "^2.0.1"
   },
   "files": [

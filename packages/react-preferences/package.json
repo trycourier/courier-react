@@ -6,8 +6,8 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "rm -rf dist && yarn babel",
+    "clean": "rm -rf dist typings",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "type-check": "tsc --noEmit",
     "types": "tsc --emitDeclarationOnly"
@@ -24,7 +24,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@trycourier/react-hooks": "^7.4.0",
+    "@trycourier/react-hooks": "^7.4.1",
     "date-fns": "^2.19.0",
     "date-fns-tz": "^2.0.0",
     "react-toggle": "^4.1.2"
