@@ -20,8 +20,8 @@
     "concat-md": "^0.3.5"
   },
   "dependencies": {
-    "@trycourier/client-graphql": "^7.4.0",
-    "@trycourier/core": "^7.4.1",
+    "@trycourier/client-graphql": "^7.4.1",
+    "@trycourier/core": "^7.4.2",
     "deep-extend": "^0.6.0",
     "jwt-decode": "^4.0.0"
   },
