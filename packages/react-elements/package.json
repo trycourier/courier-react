@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/trycourier/courier-react/issues"
   },
-  "dependencies": {
+  "devDependencies": {
     "rimraf": "^5.0.0"
   },
   "peerDependencies": {

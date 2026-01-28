@@ -17,14 +17,14 @@
   "license": "ISC",
   "devDependencies": {
     "@types/deep-extend": "^0.4.32",
-    "concat-md": "^0.3.5"
+    "concat-md": "^0.3.5",
+    "rimraf": "^5.0.0"
   },
   "dependencies": {
     "@trycourier/client-graphql": "^7.4.0",
     "@trycourier/core": "^7.4.0",
     "deep-extend": "^0.6.0",
-    "jwt-decode": "^4.0.0",
-    "rimraf": "^5.0.0"
+    "jwt-decode": "^4.0.0"
   },
   "peerDependencies": {
     "@trycourier/react-provider": ">=4.X.X",

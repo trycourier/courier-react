@@ -13,7 +13,7 @@
     "types": "tsc --emitDeclarationOnly"
   },
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "rimraf": "^5.0.0"
   },
   "files": [

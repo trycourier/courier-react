@@ -13,11 +13,13 @@
     "types": "tsc --emitDeclarationOnly"
   },
   "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^5.0.0"
+  },
   "dependencies": {
     "@trycourier/core": "^7.4.0",
     "jwt-decode": "^4.0.0",
-    "reconnecting-websocket": "^4.4.0",
-    "rimraf": "^5.0.0"
+    "reconnecting-websocket": "^4.4.0"
   },
   "files": [
     "dist/",
