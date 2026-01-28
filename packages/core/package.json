@@ -16,5 +16,6 @@
   "files": [
     "dist/",
     "typings/"
-  ]
+  ],
+  "gitHead": "39944f8461b285f34ae186bfbf5c70e9ab081875"
 }
