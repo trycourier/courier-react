@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/react-inbox-next",
-  "version": "7.4.2",
+  "version": "7.4.3",
   "description": "",
   "private": true,
   "main": "dist/index.js",
