@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Disabled commitlint to allow simple commit messages
-# npx --no -- commitlint --edit ${1}

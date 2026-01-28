@@ -9,13 +9,7 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true"
-    }
-  },
   "scripts": {
-    "prepare": "husky install",
     "analyze:components": "yarn run build && ANALYZE=true lerna run build:components --scope @trycourier/components --stream",
     "build:components": "lerna run build:components --stream",
     "build:watch": "lerna run build:watch --stream --parallel",
@@ -28,7 +22,7 @@
     "lerna:publish:internal": "lerna publish --yes --canary --dist-tag internal --no-verify-access --force-publish=* --preid",
     "lerna:version": "lerna version --no-push --no-git-tag-version",
     "lerna": "lerna",
-    "postinstall": "lerna bootstrap && yarn build && husky install",
+    "postinstall": "lerna bootstrap && yarn build",
     "prettier": "prettier --write \"packages/**/*{js,json,ts,tsx}\"",
     "readme": "lerna run readme --stream --parallel",
     "start:components": "lerna run build:watch --stream --parallel & yarn types & lerna run start:components --stream",
@@ -90,7 +84,6 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.2",
     "fetch-mock": "^9.11.0",
-    "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-styled-components": "^7.0.3",
