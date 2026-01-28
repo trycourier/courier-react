@@ -1,6 +1,6 @@
 {
   "name": "react-example",
-  "version": "0.1.0",
+  "version": "7.4.2",
   "private": true,
   "dependencies": {
     "@trycourier/react-hooks": "file:../packages/react-hooks",
