@@ -6,8 +6,8 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "node ../../scripts/rm.js dist && yarn babel",
+    "clean": "node ../../scripts/rm.js dist typings",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "type-check": "tsc --noEmit",
     "types": "tsc --emitDeclarationOnly"

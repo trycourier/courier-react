@@ -10,10 +10,10 @@
     "url": "https://github.com/trycourier/courier-react"
   },
   "scripts": {
-    "clean": "rimraf dist && rimraf typings",
+    "clean": "node ../../scripts/rm.js dist typings",
     "test": "DEBUG_PRINT_LIMIT=10000 jest -c jest.config.js --runInBand",
-    "build:components": "rimraf dist && webpack -p",
-    "start:components": "rimraf dist && webpack && webpack-dev-server"
+    "build:components": "node ../../scripts/rm.js dist && webpack -p",
+    "start:components": "node ../../scripts/rm.js dist && webpack && webpack-dev-server"
   },
   "license": "MIT",
   "dependencies": {

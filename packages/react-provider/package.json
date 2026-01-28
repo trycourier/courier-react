@@ -7,16 +7,13 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\" --ignore \"src/**/__mocks__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "node ../../scripts/rm.js dist && yarn babel",
+    "clean": "node ../../scripts/rm.js dist typings",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "type-check": "tsc --noEmit",
-    "types": "rimraf typings && tsc --emitDeclarationOnly"
+    "types": "node ../../scripts/rm.js typings && tsc --emitDeclarationOnly"
   },
   "license": "ISC",
-  "devDependencies": {
-    "rimraf": "^5.0.0"
-  },
   "dependencies": {
     "@trycourier/client-graphql": "^7.4.0",
     "@trycourier/core": "^7.4.0",

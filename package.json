@@ -20,7 +20,7 @@
     "build:components": "lerna run build:components --stream",
     "build:watch": "lerna run build:watch --stream --parallel",
     "build": "lerna run build --stream && yarn types",
-    "clean": "lerna run clean --stream && lerna clean --yes && rimraf node_modules",
+    "clean": "lerna run clean --stream && lerna clean --yes && node scripts/rm.js node_modules",
     "eslint": "eslint './packages/**/*.{ts,tsx}' --fix",
     "commit": "cz",
     "export:storybook": "lerna run build && lerna run export:storybook",
@@ -101,7 +101,6 @@
     "pretty-quick": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "rimraf": "^5.0.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.3"

@@ -8,8 +8,8 @@
     "test": "jest -c jest.config.js --runInBand",
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "node ../../scripts/rm.js dist && yarn babel",
+    "clean": "node ../../scripts/rm.js dist typings",
     "type-check": "tsc --noEmit",
     "readme": "concat-md --toc --decrease-title-levels --dir-name-as-title docs > README.md",
     "types": "tsc --emitDeclarationOnly"
@@ -17,8 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/deep-extend": "^0.4.32",
-    "concat-md": "^0.3.5",
-    "rimraf": "^5.0.0"
+    "concat-md": "^0.3.5"
   },
   "dependencies": {
     "@trycourier/client-graphql": "^7.4.0",
