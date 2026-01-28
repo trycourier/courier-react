@@ -20,16 +20,13 @@
   "scripts": {
     "babel": "babel src -d dist --extensions \".ts,.tsx\" --ignore \"src/**/__tests__/**\"",
     "build:watch": "yarn babel --watch",
-    "build": "rimraf dist && yarn babel",
-    "clean": "rimraf dist && rimraf typings",
+    "build": "node ../../scripts/rm.js dist && yarn babel",
+    "clean": "node ../../scripts/rm.js dist typings",
     "type-check": "tsc --noEmit",
     "types": "tsc --emitDeclarationOnly"
   },
   "bugs": {
     "url": "https://github.com/trycourier/courier-react/issues"
-  },
-  "devDependencies": {
-    "rimraf": "^5.0.0"
   },
   "dependencies": {
     "@trycourier/react-elements": "^7.4.0"
