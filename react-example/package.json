@@ -4,15 +4,16 @@
   "private": true,
   "dependencies": {
     "@trycourier/react-hooks": "file:../packages/react-hooks",
+    "@trycourier/react-inbox": "file:../packages/react-inbox",
     "@trycourier/react-provider": "file:../packages/react-provider",
     "@types/node": "^16.18.68",
-    "@types/react": "^17.0.62",
-    "@types/react-dom": "^17.0.21",
-    "@types/react-router-dom": "^5.3.3",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^5.3.4",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
+    "styled-components": "^5.3.5",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -41,7 +42,7 @@
     ]
   },
   "resolutions": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

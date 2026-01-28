@@ -108,8 +108,7 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
-      "react-example"
+      "packages/*"
     ]
   },
   "resolutions": {
