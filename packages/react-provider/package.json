@@ -14,6 +14,9 @@
     "types": "rimraf typings && tsc --emitDeclarationOnly"
   },
   "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^5.0.0"
+  },
   "dependencies": {
     "@trycourier/client-graphql": "^7.4.0",
     "@trycourier/core": "^7.4.0",
@@ -22,7 +25,6 @@
     "buffer": "^6.0.3",
     "jwt-decode": "^4.0.0",
     "react-use": "^17.2.1",
-    "rimraf": "^5.0.0",
     "urql": "^2.0.1",
     "uuid": "^9.0.0"
   },
