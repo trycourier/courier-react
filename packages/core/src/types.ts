@@ -66,10 +66,12 @@ export type Interceptor = (
   message?: ICourierEventMessage | IInboxMessagePreview
 ) => IInboxMessagePreview | ICourierEventMessage | undefined;
 
-export interface ErrorEvent extends Event {
-  error: unknown;
-  message: string;
-}
+// ErrorEvent type compatible with DOM ErrorEvent and reconnecting-websocket
+export type ErrorEvent = {
+  error?: unknown;
+  message?: string;
+  [key: string]: unknown;
+};
 export type ErrorEventHandler = (event: ErrorEvent) => void;
 
 export type PreferenceStatus = "OPTED_IN" | "OPTED_OUT" | "REQUIRED";
