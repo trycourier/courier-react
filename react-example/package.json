@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@trycourier/react-hooks": "file:../packages/react-hooks",
+    "@trycourier/react-inbox": "file:../packages/react-inbox",
     "@trycourier/react-provider": "file:../packages/react-provider",
     "@types/node": "^16.18.68",
     "@types/react": "^17.0.62",

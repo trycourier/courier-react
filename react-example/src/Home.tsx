@@ -9,8 +9,16 @@ const Home: React.FC = () => {
   }>;
 
   return (
-    <div>
-      <NavLink to="/preferences-hooks">Preferences Hooks</NavLink>
+    <div style={{ padding: "20px" }}>
+      <h1>Courier React Examples</h1>
+      <ul>
+        <li>
+          <NavLink to="/inbox">Inbox Example</NavLink>
+        </li>
+        <li>
+          <NavLink to="/preferences-hooks">Preferences Hooks</NavLink>
+        </li>
+      </ul>
     </div>
   );
 };
