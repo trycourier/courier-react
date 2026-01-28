@@ -36,5 +36,6 @@
     "react": ">=17.X.X",
     "react-dom": ">=17.X.X",
     "styled-components": ">=5.X.X"
-  }
+  },
+  "gitHead": "39944f8461b285f34ae186bfbf5c70e9ab081875"
 }

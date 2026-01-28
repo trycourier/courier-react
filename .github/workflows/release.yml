@@ -8,6 +8,7 @@ jobs:
   test:
     env:
       COURIER_WS_URL: ${{ secrets.COURIER_WS_URL }}
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,8 +20,6 @@ jobs:
           always-auth: true
       - run: yarn
       - run: yarn lerna:publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - run: yarn build:components
       - uses: jakejarvis/s3-sync-action@master
         with:
