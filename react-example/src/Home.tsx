@@ -2,15 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
-  // Type assertion for React 17 compatibility with react-router-dom v5
-  const NavLink = Link as React.ComponentType<{
-    to: string;
-    children: React.ReactNode;
-  }>;
-
   return (
-    <div>
-      <NavLink to="/preferences-hooks">Preferences Hooks</NavLink>
+    <div style={{ padding: "20px" }}>
+      <h1>Courier React Examples</h1>
+      <nav
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          marginTop: "20px",
+        }}
+      >
+        <Link to="/preferences-hooks">Preferences Hooks</Link>
+        <Link to="/inbox">Inbox Example</Link>
+      </nav>
     </div>
   );
 };
