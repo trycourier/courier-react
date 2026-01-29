@@ -1890,96 +1890,117 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@trycourier/client-graphql@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@trycourier/client-graphql/-/client-graphql-7.4.0.tgz#3699e3701582594290585e8e8758360270f3e210"
-  integrity sha512-dVIOgr7AfFX49JiGIzDQncqeyxqHPVRr7O2BS3nDnBocCZrYii6SSIdqlQx631FEzBYqsT+OA30lMTSzdOGFKA==
+"@trycourier/client-graphql@^7.4.1-internal.bee3903.0+bee3903":
+  version "7.4.1-internal.bee3903.0"
+  resolved "https://registry.yarnpkg.com/@trycourier/client-graphql/-/client-graphql-7.4.1-internal.bee3903.0.tgz#57d8d23d66f4b5aac81a68eb1f16920db683235e"
+  integrity sha512-tUTZaFE44vZSDjQ9creP7o8rhnOFtSd5M8dWnbOhLM288u6r2+/zRx2wUMwaOeO5+jj7Oh2ghj3Kn1WoYcAo9w==
   dependencies:
     graphql "^15.5.0"
     isomorphic-fetch "^3.0.0"
     rimraf "^5.0.0"
     urql "^2.0.1"
 
-"@trycourier/core@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@trycourier/core/-/core-7.4.0.tgz#97d331c0d33414a4cd9503a8acb345d3364b6ba0"
-  integrity sha512-jkbWCvZTNXm9wf/nBc4BK7jNJjMCvooOSP7IO6EBysU0Ff3mE/3xKoPOeUr4m8cyTJNhepTsl+lQN5B+1ODACg==
+"@trycourier/client-graphql@^7.4.4":
+  version "7.4.52-alpha.644"
+  resolved "https://registry.yarnpkg.com/@trycourier/client-graphql/-/client-graphql-7.4.52-alpha.644.tgz#8e10446f614e8ab6fbecd68288d46f33a15f394e"
+  integrity sha512-wlaZf45cNpHY5bemmMuxq3M5N23phnMq+n5lxixHKWPbtndTS2tcItBy0i8x20YS9wSAhmamhHo7RnXOVrHexQ==
+  dependencies:
+    graphql "^15.5.0"
+    isomorphic-fetch "^3.0.0"
+    urql "^2.0.1"
+
+"@trycourier/core@^7.4.1-internal.bee3903.0+bee3903":
+  version "7.4.1-internal.bee3903.0"
+  resolved "https://registry.yarnpkg.com/@trycourier/core/-/core-7.4.1-internal.bee3903.0.tgz#0e7eb0d52d570ff8bc45d2d12b899ff22c042498"
+  integrity sha512-/FzeQBidg8ixckgc7jlgiXLjkTumN+Nu77ELM0Lby7wDe8zd+Apj0InLmSzFUNEtpfZ2uFfQpR1BdYw65hKH7A==
   dependencies:
     rimraf "^5.0.0"
+
+"@trycourier/core@^7.4.4", "@trycourier/core@^7.4.52-alpha.644+cd6a9f63":
+  version "7.4.52-alpha.644"
+  resolved "https://registry.yarnpkg.com/@trycourier/core/-/core-7.4.52-alpha.644.tgz#af15074d90ac03657db13cc424ca51478bb7bd53"
+  integrity sha512-Nn1bXPa2UQW75/7ybZQQOAykuDynWe+atEg68H6KeuLPuhvfDJICBeI0lFYKwnTsuI4A+gMtVON5L272TPepsg==
 
 "@trycourier/courier-js@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@trycourier/courier-js/-/courier-js-1.4.2.tgz#93c15a2ac95af928796f50763164d64cae32ccbf"
   integrity sha512-OYVPxSfjxsfBDVSVAYX0EX/ABh0OhEW/pi/0vU07LBuCwSun/tVoxqQsqTz6T3M+86iDSxsfWUMNfnO9MLdLHA==
 
-"@trycourier/react-elements@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@trycourier/react-elements/-/react-elements-7.4.0.tgz#c7982b9fedea115e3b4e95b562af80e83c79e179"
-  integrity sha512-eTYk/R+Lbf+42nH3/ccQO/cH4d0N77W1sKiJc7L9FYbEWqsL1kgLub4Iy7mEC2cimjVGXzaHm54RVCX7iGK5wg==
+"@trycourier/react-elements@^7.4.4":
+  version "7.4.1-internal.bee3903.0"
+  resolved "https://registry.yarnpkg.com/@trycourier/react-elements/-/react-elements-7.4.1-internal.bee3903.0.tgz#ac0006fdc80b68870709c6943a63d3254d05f559"
+  integrity sha512-jN49l0uPg/kcnMySU5DB+Fzp8v6m4e+AU3qZFVvFkUE9XqSxjs3E5Awwgr3kcIxDkW6lrCcEolUKwJLv7k7kDg==
   dependencies:
     rimraf "^5.0.0"
 
-"@trycourier/react-hooks@^7.4.0", "@trycourier/react-hooks@file:../packages/react-hooks":
-  version "7.4.0"
+"@trycourier/react-hooks@^7.4.1-internal.bee3903.0+bee3903", "@trycourier/react-hooks@^7.4.4":
+  version "7.4.1-internal.bee3903.0"
+  resolved "https://registry.yarnpkg.com/@trycourier/react-hooks/-/react-hooks-7.4.1-internal.bee3903.0.tgz#f1d42af5f654cba3227f809639ae1f3b44548525"
+  integrity sha512-4rGvmGgcqmv0eC4VDrx9QqdFnzlIBycdA2fq+gsPoAqHzCwhJIDwJ2EefpjFPYgUa5UDFrh5NryRLPyepVHp9Q==
   dependencies:
-    "@trycourier/client-graphql" "^7.4.0"
-    "@trycourier/core" "^7.4.0"
+    "@trycourier/client-graphql" "^7.4.1-internal.bee3903.0+bee3903"
+    "@trycourier/core" "^7.4.1-internal.bee3903.0+bee3903"
     deep-extend "^0.6.0"
     jwt-decode "^4.0.0"
     rimraf "^5.0.0"
 
+"@trycourier/react-hooks@file:../packages/react-hooks":
+  version "7.4.4"
+  dependencies:
+    "@trycourier/client-graphql" "^7.4.4"
+    "@trycourier/core" "^7.4.4"
+    deep-extend "^0.6.0"
+    jwt-decode "^4.0.0"
+
 "@trycourier/react-inbox@file:../packages/react-inbox":
-  version "7.4.0"
+  version "7.4.4"
   dependencies:
     "@fontsource/poppins" "^4.5.9"
     "@tippyjs/react" "^4.2.3"
-    "@trycourier/client-graphql" "^7.4.0"
-    "@trycourier/react-elements" "^7.4.0"
-    "@trycourier/react-hooks" "^7.4.0"
-    "@trycourier/react-preferences" "^7.4.0"
+    "@trycourier/client-graphql" "^7.4.4"
+    "@trycourier/react-elements" "^7.4.4"
+    "@trycourier/react-hooks" "^7.4.4"
+    "@trycourier/react-preferences" "^7.4.4"
     classnames "^2.2.6"
     date-fns "^2.19.0"
     deep-extend "^0.6.0"
     markdown-to-jsx "^7.7.3"
     react-intersection-observer "^9.4.0"
     react-loading-skeleton "^2.2.0"
-    rimraf "^5.0.0"
     tinycolor2 "^1.4.2"
     urql "^2.0.1"
 
-"@trycourier/react-preferences@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@trycourier/react-preferences/-/react-preferences-7.4.0.tgz#5d8dde7cc873fbb843532783a3b2c812b0f89f88"
-  integrity sha512-nqTbRwbnpJWamNn93KVKn+7ZPXC/vEfIEimmvIOF7Li1OgwHdH3FXLDYhZrM6u3kWd1PNSdrV2XlVs1u0/7Zng==
+"@trycourier/react-preferences@^7.4.4":
+  version "7.4.1-internal.bee3903.0"
+  resolved "https://registry.yarnpkg.com/@trycourier/react-preferences/-/react-preferences-7.4.1-internal.bee3903.0.tgz#a584f389a98c816e667f607a274aa7b268f26609"
+  integrity sha512-j1Ism2q/2/rxbTYksCIrKIRsD3fnrXsc+80LGyObHV4xz+ET1/6KNYKdZtgEPsNJVThBBq4dLbIFkVbAzk89qw==
   dependencies:
-    "@trycourier/react-hooks" "^7.4.0"
+    "@trycourier/react-hooks" "^7.4.1-internal.bee3903.0+bee3903"
     date-fns "^2.19.0"
     date-fns-tz "^2.0.0"
     react-toggle "^4.1.2"
 
 "@trycourier/react-provider@file:../packages/react-provider":
-  version "7.4.0"
+  version "7.4.4"
   dependencies:
-    "@trycourier/client-graphql" "^7.4.0"
-    "@trycourier/core" "^7.4.0"
+    "@trycourier/client-graphql" "^7.4.4"
+    "@trycourier/core" "^7.4.4"
     "@trycourier/courier-js" "^1.4.2"
-    "@trycourier/transport" "^7.4.0"
+    "@trycourier/transport" "^7.4.4"
     buffer "^6.0.3"
     jwt-decode "^4.0.0"
     react-use "^17.2.1"
-    rimraf "^5.0.0"
     urql "^2.0.1"
     uuid "^9.0.0"
 
-"@trycourier/transport@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@trycourier/transport/-/transport-7.4.0.tgz#e820824c03a842f0d46bca804ddc4f2de20b6acf"
-  integrity sha512-bVlzOyxHlSTv7m58svhlaPif9qD3B09gKvSJypNC+Xr2VpS/94zIslImESAyGQHuExfFWiWO4qiQyqM82eUzIg==
+"@trycourier/transport@^7.4.4":
+  version "7.4.52-alpha.644"
+  resolved "https://registry.yarnpkg.com/@trycourier/transport/-/transport-7.4.52-alpha.644.tgz#c9e99b34b492c6a6f02b87671771e60a96e81c60"
+  integrity sha512-3HF/LKMkxLvMsxCnPGZO6VtkoEARIpc68K5OdkMPl3wgJUNSJxTqpLmsLzXgySyakrV5cOMul2R36VCVBjOYQg==
   dependencies:
-    "@trycourier/core" "^7.4.0"
+    "@trycourier/core" "^7.4.52-alpha.644+cd6a9f63"
     jwt-decode "^4.0.0"
     reconnecting-websocket "^4.4.0"
-    rimraf "^5.0.0"
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
