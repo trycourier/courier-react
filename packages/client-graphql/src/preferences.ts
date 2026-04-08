@@ -168,7 +168,7 @@ export const updateRecipientPreferences =
       return Promise.resolve();
     }
 
-    await client
+    const results = await client
       .mutation(UPDATE_RECIPIENT_PREFERENCES, {
         id: payload.templateId,
         preferences: {
@@ -180,6 +180,10 @@ export const updateRecipientPreferences =
         accountId: payload.tenantId,
       })
       .toPromise();
+
+    if (results.error) {
+      throw results.error;
+    }
 
     return payload;
   };
