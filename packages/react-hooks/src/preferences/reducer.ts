@@ -56,12 +56,21 @@ export default (state: PreferenceState = initialState, action) => {
       return {
         ...state,
         isUpdating: false,
+        error: undefined,
         recipientPreferences: state.recipientPreferences?.map((preference) => {
           if (preference.templateId === action?.payload?.templateId) {
             return action?.payload;
           }
           return preference;
         }),
+      };
+    }
+
+    case "preferences/UPDATE_RECIPIENT_PREFERENCES/ERROR": {
+      return {
+        ...state,
+        isUpdating: false,
+        error: action?.ex,
       };
     }
   }
