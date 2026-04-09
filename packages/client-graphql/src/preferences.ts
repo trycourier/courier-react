@@ -145,7 +145,13 @@ export const getDraftPreferencePage =
 
 const UPDATE_RECIPIENT_PREFERENCES = `
   mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!, $accountId: String) {
-    updatePreferences(templateId: $id preferences: $preferences accountId: $accountId)
+    updatePreferencesV2(templateId: $id preferences: $preferences accountId: $accountId) {
+      templateId
+      status
+      hasCustomRouting
+      routingPreferences
+      digestSchedule
+    }
   }
 `;
 
@@ -168,7 +174,7 @@ export const updateRecipientPreferences =
       return Promise.resolve();
     }
 
-    await client
+    const results = await client
       .mutation(UPDATE_RECIPIENT_PREFERENCES, {
         id: payload.templateId,
         preferences: {
@@ -181,7 +187,11 @@ export const updateRecipientPreferences =
       })
       .toPromise();
 
-    return payload;
+    if (results.error) {
+      throw results.error;
+    }
+
+    return results.data?.updatePreferencesV2 ?? payload;
   };
 
 export default (

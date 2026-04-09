@@ -48,6 +48,7 @@ export type PreferenceSection = {
 };
 
 export interface PreferenceState {
+  error?: Error;
   isLoading?: boolean;
   isUpdating?: boolean;
   preferences?: IPreferenceTemplate[];
