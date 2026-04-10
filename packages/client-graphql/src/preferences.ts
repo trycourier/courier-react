@@ -145,7 +145,7 @@ export const getDraftPreferencePage =
 
 const UPDATE_RECIPIENT_PREFERENCES = `
   mutation UpdateRecipientPreferences($id: String!, $preferences: PreferencesInput!, $accountId: String) {
-    updatePreferencesV2(templateId: $id preferences: $preferences accountId: $accountId) {
+    updatePreferences(templateId: $id preferences: $preferences accountId: $accountId) {
       templateId
       status
       hasCustomRouting
@@ -191,7 +191,7 @@ export const updateRecipientPreferences =
       throw results.error;
     }
 
-    return results.data?.updatePreferencesV2 ?? payload;
+    return results.data?.updatePreferences ?? payload;
   };
 
 export default (
