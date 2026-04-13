@@ -14,6 +14,7 @@ const Home: React.FC = () => {
         }}
       >
         <Link to="/preferences-hooks">Preferences Hooks</Link>
+        <Link to="/preference-list">Preference List</Link>
         <Link to="/inbox">Inbox Example</Link>
       </nav>
     </div>
