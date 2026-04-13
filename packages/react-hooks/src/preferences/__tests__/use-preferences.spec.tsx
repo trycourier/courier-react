@@ -17,17 +17,20 @@ jest.mock("@trycourier/transport", () => ({
   })),
 }));
 
-const CLIENT_KEY = process.env.CLIENT_KEY!;
-const USER_ID = process.env.USER_ID!;
+const CLIENT_KEY = process.env.CLIENT_KEY;
+const USER_ID = process.env.USER_ID;
 const TOPIC_ID = process.env.TOPIC_ID;
+const hasCredentials = !!(CLIENT_KEY && USER_ID);
 
 const wrapper: React.FC = ({ children }) => (
-  <CourierProvider clientKey={CLIENT_KEY} userId={USER_ID}>
+  <CourierProvider clientKey={CLIENT_KEY!} userId={USER_ID!}>
     {children}
   </CourierProvider>
 );
 
-describe("usePreferences (e2e — live API)", () => {
+const describeE2E = hasCredentials ? describe : describe.skip;
+
+describeE2E("usePreferences (e2e — live API)", () => {
   test("fetchRecipientPreferences returns and populates recipientPreferences", async () => {
     const { result, waitFor } = renderHook(() => usePreferences(), { wrapper });
 
