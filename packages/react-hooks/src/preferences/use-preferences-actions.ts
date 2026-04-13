@@ -6,11 +6,11 @@ import {
 } from "@trycourier/client-graphql";
 
 export interface UsePreferenceActions {
-  fetchRecipientPreferences: (tenantId?: string) => void;
-  fetchPreferencePage: (tenantId?: string, draft?: boolean) => void;
+  fetchRecipientPreferences: (tenantId?: string) => Promise<any>;
+  fetchPreferencePage: (tenantId?: string, draft?: boolean) => Promise<any>;
   updateRecipientPreferences: (
     payload: UpdateRecipientPreferencesPayload
-  ) => void;
+  ) => Promise<any>;
 }
 
 const usePreferencesActions = (): UsePreferenceActions => {
@@ -28,30 +28,38 @@ const usePreferencesActions = (): UsePreferenceActions => {
   const preferences = Preferences({ client: courierClient });
 
   return {
-    fetchRecipientPreferences: (tenantId?: string) => {
+    fetchRecipientPreferences: async (tenantId?: string) => {
+      const promise = preferences.getRecipientPreferences(tenantId);
       dispatch({
         type: "preferences/FETCH_RECIPIENT_PREFERENCES",
-        payload: () => preferences.getRecipientPreferences(tenantId),
+        payload: () => promise,
       });
+      return promise;
     },
-    fetchPreferencePage: (tenantId?: string, draft = false) => {
+    fetchPreferencePage: async (tenantId?: string, draft = false) => {
       if (draft) {
+        const promise = preferences.getDraftPreferencePage();
         dispatch({
           type: "preferences/FETCH_DRAFT_PREFERENCE_PAGE",
-          payload: () => preferences.getDraftPreferencePage(),
+          payload: () => promise,
         });
+        return promise;
       } else {
+        const promise = preferences.getPreferencePage(tenantId);
         dispatch({
           type: "preferences/FETCH_PREFERENCE_PAGE",
-          payload: () => preferences.getPreferencePage(tenantId),
+          payload: () => promise,
         });
+        return promise;
       }
     },
     updateRecipientPreferences: async (payload) => {
+      const promise = preferences.updateRecipientPreferences(payload);
       dispatch({
         type: "preferences/UPDATE_RECIPIENT_PREFERENCES",
-        payload: () => preferences.updateRecipientPreferences(payload),
+        payload: () => promise,
       });
+      return promise;
     },
   };
 };
