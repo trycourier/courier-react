@@ -1,0 +1,65 @@
+{
+  "folders": [
+    {
+      "path": ".."
+    },
+    {
+      "name": "client-graphql",
+      "path": "../packages/client-graphql"
+    },
+    {
+      "name": "core",
+      "path": "../packages/core"
+    },
+    {
+      "name": "react-provider",
+      "path": "../packages/react-provider"
+    },
+    {
+      "name": "react-hooks",
+      "path": "../packages/react-hooks"
+    },
+    {
+      "name": "react-inbox",
+      "path": "../packages/react-inbox"
+    },
+    {
+      "name": "react-preferences",
+      "path": "../packages/react-preferences"
+    },
+    {
+      "name": "react-toast",
+      "path": "../packages/react-toast"
+    },
+    {
+      "name": "react-elements",
+      "path": "../packages/react-elements"
+    },
+    {
+      "name": "components",
+      "path": "../packages/components"
+    },
+    {
+      "name": "transport",
+      "path": "../packages/transport"
+    },
+    {
+      "name": "react-brand-designer",
+      "path": "../packages/react-brand-designer"
+    },
+    {
+      "name": "react-example",
+      "path": "../react-example"
+    },
+    {
+      "name": "storybook",
+      "path": "../packages/storybook"
+    }
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": [
+      "react-example",
+      "storybook"
+    ]
+  }
+}
