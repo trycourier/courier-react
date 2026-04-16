@@ -2,8 +2,11 @@ import Preferences from "../preferences";
 
 const CLIENT_KEY = process.env.CLIENT_KEY;
 const USER_ID = process.env.USER_ID;
+const JWT = process.env.JWT;
 const TOPIC_ID = process.env.TOPIC_ID;
 const TENANT_ID = process.env.TENANT_ID;
+const DIGEST_SCHEDULE_ID = process.env.DIGEST_SCHEDULE_ID;
+const API_URL = process.env.API_URL;
 const hasCredentials = !!(CLIENT_KEY && USER_ID);
 
 const describeE2E = hasCredentials ? describe : describe.skip;
@@ -15,6 +18,8 @@ describeE2E("preferences (e2e — live API)", () => {
     api = Preferences({
       clientKey: CLIENT_KEY,
       userId: USER_ID,
+      authorization: JWT,
+      apiUrl: API_URL ? `${API_URL}/client/q` : undefined,
     });
   });
 
@@ -84,5 +89,22 @@ describeE2E("preferences (e2e — live API)", () => {
         tenantId: TENANT_ID,
       });
     });
+
+    if (DIGEST_SCHEDULE_ID) {
+      test("updateRecipientPreferences with digestSchedule", async () => {
+        const updated = await api.updateRecipientPreferences({
+          templateId: TOPIC_ID,
+          status: "OPTED_IN",
+          hasCustomRouting: false,
+          routingPreferences: [],
+          digestSchedule: DIGEST_SCHEDULE_ID,
+          tenantId: TENANT_ID,
+        });
+
+        expect(updated).toBeDefined();
+        expect(updated.templateId).toBe(TOPIC_ID);
+        expect(updated.digestSchedule).toBe(DIGEST_SCHEDULE_ID);
+      });
+    }
   }
 });
