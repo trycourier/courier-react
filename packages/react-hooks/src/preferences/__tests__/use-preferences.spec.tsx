@@ -76,71 +76,69 @@ describeE2E("usePreferences (e2e — live API)", () => {
     expect(result.current.preferencePage).toEqual(returnValue);
   });
 
-  if (TOPIC_ID) {
-    test("updateRecipientPreferences returns updated value and updates state", async () => {
-      const { result, waitFor } = renderHook(() => usePreferences(), {
-        wrapper,
-      });
-
-      await act(async () => {
-        await result.current.fetchRecipientPreferences();
-      });
-
-      await waitFor(
-        () => {
-          expect(result.current.recipientPreferences).toBeDefined();
-          expect(result.current.isLoading).toBeFalsy();
-        },
-        { timeout: 10000 }
-      );
-
-      let updated: any;
-      await act(async () => {
-        updated = await result.current.updateRecipientPreferences({
-          templateId: TOPIC_ID,
-          status: "OPTED_OUT",
-          hasCustomRouting: false,
-          routingPreferences: [],
-        });
-      });
-
-      expect(updated).toBeDefined();
-      expect(updated.templateId).toBe(TOPIC_ID);
-      expect(updated.status).toBe("OPTED_OUT");
-
-      await waitFor(
-        () => {
-          expect(result.current.isUpdating).toBeFalsy();
-          const pref = result.current.recipientPreferences?.find(
-            (p) => p.templateId === TOPIC_ID
-          );
-          expect(pref).toBeDefined();
-          expect(pref!.status).toBe("OPTED_OUT");
-        },
-        { timeout: 10000 }
-      );
-
-      // Clean up: reset back to OPTED_IN
-      let reset: any;
-      await act(async () => {
-        reset = await result.current.updateRecipientPreferences({
-          templateId: TOPIC_ID,
-          status: "OPTED_IN",
-          hasCustomRouting: false,
-          routingPreferences: [],
-        });
-      });
-
-      expect(reset).toBeDefined();
-      expect(reset.templateId).toBe(TOPIC_ID);
-      expect(reset.status).toBe("OPTED_IN");
-
-      await waitFor(
-        () => {
-          expect(result.current.isUpdating).toBeFalsy();
-        },
-        { timeout: 10000 }
-      );
+  test("updateRecipientPreferences returns updated value and updates state", async () => {
+    const { result, waitFor } = renderHook(() => usePreferences(), {
+      wrapper,
     });
-  }
+
+    await act(async () => {
+      await result.current.fetchRecipientPreferences();
+    });
+
+    await waitFor(
+      () => {
+        expect(result.current.recipientPreferences).toBeDefined();
+        expect(result.current.isLoading).toBeFalsy();
+      },
+      { timeout: 10000 }
+    );
+
+    let updated: any;
+    await act(async () => {
+      updated = await result.current.updateRecipientPreferences({
+        templateId: TOPIC_ID!,
+        status: "OPTED_OUT",
+        hasCustomRouting: false,
+        routingPreferences: [],
+      });
+    });
+
+    expect(updated).toBeDefined();
+    expect(updated.templateId).toBe(TOPIC_ID);
+    expect(updated.status).toBe("OPTED_OUT");
+
+    await waitFor(
+      () => {
+        expect(result.current.isUpdating).toBeFalsy();
+        const pref = result.current.recipientPreferences?.find(
+          (p) => p.templateId === TOPIC_ID
+        );
+        expect(pref).toBeDefined();
+        expect(pref!.status).toBe("OPTED_OUT");
+      },
+      { timeout: 10000 }
+    );
+
+    // Clean up: reset back to OPTED_IN
+    let reset: any;
+    await act(async () => {
+      reset = await result.current.updateRecipientPreferences({
+        templateId: TOPIC_ID!,
+        status: "OPTED_IN",
+        hasCustomRouting: false,
+        routingPreferences: [],
+      });
+    });
+
+    expect(reset).toBeDefined();
+    expect(reset.templateId).toBe(TOPIC_ID);
+    expect(reset.status).toBe("OPTED_IN");
+
+    await waitFor(
+      () => {
+        expect(result.current.isUpdating).toBeFalsy();
+      },
+      { timeout: 10000 }
+    );
+  });
 });
