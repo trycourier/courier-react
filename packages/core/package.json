@@ -1,6 +1,6 @@
 {
   "name": "@trycourier/core",
-  "version": "7.4.7",
+  "version": "7.4.8",
   "description": "",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
