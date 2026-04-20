@@ -2,28 +2,48 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+    tags-ignore:
+      - "*.*"
+
 jobs:
-  test:
+  release:
     env:
       COURIER_WS_URL: ${{ secrets.COURIER_WS_URL }}
       NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
         with:
           registry-url: "https://registry.npmjs.org"
           node-version: "18.x"
           scope: "@trycourier"
           always-auth: true
+
       - run: yarn
-      - run: yarn lerna:publish
-      - run: yarn build:components
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Version packages
+        run: npx lerna version patch --yes --force-publish=*
+
+      - name: Publish to npm
+        run: yarn lerna:publish
+
+      - name: Build components
+        run: yarn build:components
+
       - uses: jakejarvis/s3-sync-action@master
         with:
-          # Do not use --delete flag. We store previous versions in this bucket.
           args: --follow-symlinks --cache-control "max-age=31536000,public,immutable"
         env:
           AWS_S3_BUCKET: "courier-push-provider-prod-couriercomponentsbucket-jqacxmhbzmwx"
