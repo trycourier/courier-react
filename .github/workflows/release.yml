@@ -25,12 +25,37 @@ jobs:
       - name: Test
         run: yarn test
 
+  staging:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+
+      - run: yarn
+
+      - name: Build staging components
+        run: yarn build:components
+        env:
+          IS_STAGING: true
+
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --cache-control "max-age=31536000,public,immutable"
+        env:
+          AWS_S3_BUCKET: "courier-push-provider-prod-couriercomponentsbucket-jqacxmhbzmwx"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: "./packages/components/dist"
+
   release:
     needs: test
-    env:
-      COURIER_WS_URL: ${{ secrets.COURIER_WS_URL }}
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
