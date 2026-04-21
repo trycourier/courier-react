@@ -69,7 +69,17 @@ jobs:
       - run: yarn
 
       - name: Publish to npm
-        run: yarn lerna:publish
+        id: publish
+        run: |
+          OUTPUT=$(yarn lerna:publish 2>&1) || true
+          echo "$OUTPUT"
+          PUBLISHED=$(echo "$OUTPUT" | grep -oP '@trycourier/\S+' | sort -u | tr '\n' ', ' | sed 's/,$//')
+          echo "packages=$PUBLISHED" >> "$GITHUB_OUTPUT"
+          if echo "$OUTPUT" | grep -q "Successfully published"; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build components
         run: yarn build:components
@@ -82,3 +92,42 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           SOURCE_DIR: "./packages/components/dist"
+
+      - name: Get version for release
+        if: steps.publish.outputs.published == 'true'
+        id: version
+        run: |
+          VERSION=$(node -p "require('./packages/core/package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "prev_tag=$PREV_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        if: steps.publish.outputs.published == 'true'
+        id: notes
+        run: |
+          PREV_TAG="${{ steps.version.outputs.prev_tag }}"
+          if [ -n "$PREV_TAG" ]; then
+            CHANGES=$(git log "$PREV_TAG"..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          else
+            CHANGES=$(git log -20 --pretty=format:"- %s (%h)" --no-merges)
+          fi
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "changes<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "$CHANGES" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        if: steps.publish.outputs.published == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body: |
+            ## Published packages
+            ${{ steps.publish.outputs.packages }}
+
+            ## Changes
+            ${{ steps.notes.outputs.changes }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
